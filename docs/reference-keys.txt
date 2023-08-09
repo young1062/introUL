@@ -65,7 +65,7 @@ sec-mds
 classical-scaling
 metric-mds
 nonmetric-mds
-kernels
+kernels-and-nonlinearity
 exercises-2
 manifold-learning
 background
