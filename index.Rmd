@@ -1,0 +1,22 @@
+--- 
+title: "An Introduction to Unsupervised Learning"
+author: "Alex Young"
+date: "Version 0"
+documentclass: book
+bibliography: [book.bib, packages.bib]
+csl: the-annals-of-statistics.csl
+# url: your book url like https://bookdown.org/yihui/bookdown
+# cover-image: path to the social sharing image like images/cover.jpg
+description: |
+  An introductory text on the goals and methods of unsupervised learning
+link-citations: yes
+number_sections: true
+config:
+    toc_depth: 0
+---
+
+# Introduction
+
+
+
+## Prerequisites

@@ -1,0 +1,14 @@
+# Clustering
+
+
+## Hierarchical 
+
+## Center-based 
+
+## Model-based
+
+### k-means
+
+### k-mediods
+
+## Spectral

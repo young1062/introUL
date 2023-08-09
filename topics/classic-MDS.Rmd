@@ -1,0 +1,8 @@
+## Multidimensional Scaling {#sec-mds}
+ 
+ 
+### Classical Scaling
+
+### Metric MDS
+
+### Nonmetric MDS

@@ -1,0 +1,88 @@
+## Isometric Feature Map (ISOMAP)
+
+The first method we cover is the Isometric Feature Map (ISOMAP), originally published by Tenenbaum, de Silva, and Langford in 2000 [@isomap]. As suggested by the name, we will see that an assumption of isometry is central to this method.  Prior to discussing the ISOMAP algorithm, let's briefly discuss the notion of isometry through an example which motivates different notions of distance between two points.
+
+::: {.example #ex-helix-distance name="Distance between points on a Helix"}
+Consider the helix map $\Psi:\mathbb{R}\to\mathbb{R}^3$ given by the formula
+\begin{equation}
+\Psi(t) = \begin{bmatrix}
+\frac{1}{\sqrt{2}}\cos(t) \\
+\frac{1}{\sqrt{2}}\sin(t) \\
+\frac{1}{\sqrt{2}}t \\
+\end{bmatrix}
+\end{equation}
+Below, we show the result of applying the Helix map to each point in the interval $(0,25)$.  Let's focus on two points $\vec{x}_1 = \Psi(2\pi)= (1/\sqrt{2},0,\sqrt{2}\pi)^T$ and $\vec{x}_2 = \Psi(4\pi)=(1/\sqrt{2},0,2\sqrt{2}\pi)^T$ in particular which are shown as large black dots in the figure below.
+
+```{r, echo = FALSE, message = FALSE, warning=FALSE}
+library("threejs", quietly = T)
+N <- 1e4
+t <- sort(runif(N, min = 0, max = 25))
+helix <- matrix(NA,nrow = length(t), ncol = 3)
+for (n in 1:length(t)){
+  helix[n,] <- c( 2^-0.5*cos(t[n]), 2^-0.5*sin(t[n]) , 2^-0.5*t[n])
+}
+# par(mfrow = c(1,2))
+# plot(t,rep(0,N),
+#      xlab = 'z', ylab = '',
+#      main = "Low-Dimensional Samples",
+#      cex = 0.1)
+# points(c(2*pi,4*pi),rep(0,2), col = "red",cex = 1)
+scatterplot3js(helix, color = myColorRamp(c("red","purple","blue","green","yellow"), t),
+              xlab = expression(x[1]), ylab = expression(x[2]), zlab = expression(x[3]),
+              angle = 90,
+              main = "The Helix Map",
+              pch = '.',
+              size = 0.1) %>%
+  points3d(x = 2^-0.5*c(1,1), y = 2^-0.5*c(0,0), z = 2^-0.5*c(2*pi,4*pi), color = "black",
+           pch = "o")
+
+```
+
+There are a few different ways we could measure the distance between the two black points.  The first approach would be to ignore the helix (manifold) structure viewing them as vectors in $\mathbb{R}^3$ and directly measure their Euclidean distance which gives $$\|\vec{x}_1 - \vec{x}_2\| = \sqrt{2}\pi.$$  However, we also know that these points are images of the one-dimensional coordinate $z_1 = 2\pi$ and $z_2 = 4\pi$ respectively.  Thus, we could also consider the  Euclidean distance of the lower-dimemsional coordiates which is $|2\pi - 4\pi| = 2\pi$ which notably differs from the Euclidean distance.  
+
+A third option is to return to the three-dimensional representation but to also account for the manifold structure when considering distance.   Recall Euclidean distance gives the length of the shortest, **straightline** path connecting the two points.  Instead, let's restrict ourselves to only those paths which stay on the helix (manifold).  You may correctly conclude that the curve starting at $\Psi(2\pi)$, rotating up the helix one rotation, and ending at $\Psi(4\pi)$ is the shortest such path. Fortunately, computing arclength is relatively friendly in this example since $\Psi$ already parameterizes the path connecting these two points. The arclength is then 
+$$\int_{2\pi}^{4\pi} \left\|\frac{d\Psi}{dt}\right\| dt = \int_{2\pi}^{4\pi} dt = 2\pi.$$
+Jumping slightly ahead, we then say the manifold distance between $\Psi(2\pi)$ and $\Psi(4\pi)$ is $2\pi$.  Importantly, the manifold distance coincides exactly with the Euclidean distance between the **lower-dimensional** coordinates.  In fact, for any two points, $s$ and $t$, on the real line their Euclidean distance, $|s-t|$ will be the same as the manifold distance between $\Psi(s)$ and $\Psi(t)$. Thus, the helix map $\Psi$ above serves as our first example of an isometric (distance preserving) map.
+:::
+
+We may generalize this idea to any smooth manifold to define a new notion of distance.  Given a manifold $\mathcal{M}$, we define the manifold distance function $d_\mathcal{M} : \mathcal{M} \times \mathcal{M} \to [0,\infty)$ as follows 
+
+::: {.definition #def-manifold-dist name="Manifold Distance Function"}
+Given two points $\vec{x}$ and $\vec{y}$ on a smooth manifold, $\mathcal{M}$, let $\Gamma(\vec{x},\vec{y})$ be the set of all piecewise smooth curves connecting $\vec{x}$ and $\vec{y}$ constrained to stay on $\mathcal{M}$.  Then, we define the manifold distance to be
+\begin{equation}
+d_\mathcal{M}(\vec{x},\vec{y}) = \inf_{\gamma \in \Gamma(\vec{x},\vec{y})} L(\gamma)
+(\#eq:def-manifold-dist)
+\end{equation}
+where $L(\gamma)$ is the arclength of $\gamma.$  
+:::
+
+As we reviewed above, the helix example with the arclength formula is one example of a manifold and distance function.  Additional examples of a manifold and manifold distance include, 
+
+- Euclidean space $\mathbb{R}^d$ where standard Euclidean distance gives the manifold distance. 
+- The sphere in $\mathbb{R}^3$ which is a two-dimensional manifold. Its manifold distance is also called the [Great Circle Distance](https://en.wikipedia.org/wiki/Great-circle_distance).
+
+We may now define the notion of isometry which is a central assumption of ISOMAP.
+
+::: {.definition #def-isometry name="Isometry"}
+Let $\mathcal{M}_1$ be a manifold with distance function $d_{\mathcal{M}_1}$ and let $\mathcal{M}_2$ be a second manifold with distance function $d_{\mathcal{M}_2}$.  The mapping $\Psi:\mathcal{M}_1 \mapsto \mathcal{M}_2$ is an isometry if $$d_{\mathcal{M}_1}(x,y) = d_{\mathcal{M}_2}\left(\Psi(x),\Psi(y)\right) \qquad \text{ for all } x,y\in \mathcal{M}_1.$$
+:::
+
+For the purposes of ISOMAP, we will think of $\mathcal{M}_1$ as some subset of a $\mathbb{R}^k$ for $k$ small where we measure distances using the Euclidean norm.  Then $\mathcal{M}_2$ will be a $k$-dimensional manifold in $\mathbb{R}^d$ containing our data. Our first assumption is that the manifold mapping $\Psi$ is an isometry. Unfortunately, in practice we do not know the manifold nor will we have a method for parameterizing curves on the manifold to compute distances. 
+
+Instead, ISOMAP makes use of a data-driven approach to estimate the manifold distance between points following a three step procedure.  
+
+1) \underline{Construct Weighted Neighborhood Graph:} Fix tuning parameters $k >0$ or $\epsilon >0$.  Calculate all pairwise Euclidean distance $d_{ij} = \|\vec{x}_i - \vec{x}_j \|.$ Define a (directed) neighborhood graph $G$ by connecting nodes $i$ and $j$ 
+
+    i) {\bf Using $k$}, connect $\vec{x}_i$ to $\vec{x}_j$ if $\vec{x}_j$ is one of the $k$ nearest points to $\vec{x}_i$ as measured by $d_{ij}$. 
+    
+    ii) {\bf Using $\epsilon$}, connect $\vec{x}_i$ and \vec{x}_j$ if $d_ij < \epsilon.$
+    
+2) \underline{Compute graph distances}
+
+3) \underline{Embedding via MDS:}  The distances found in step 2 provide a distance matrix in which each entry approximates the manifold distance.  Under the assumption that the unknown manifold map is an isometry, we can seek a lower-dimensinoal collection of points which have these pairwise distance.  By default, we use classical scaling to find such a configuration.  As discussed in Chapter \@ref(sec-mds), we have a f
+
+    - For visualization, we may typically choose a dimension (usually one, two, or three) and find the corresponding classical MDS solution.
+    
+    - Alternatively, we use the eigenvalues of the inner product matrix based on the graph distances to choose a suitable cutoff for the appropriate 
+    
+    

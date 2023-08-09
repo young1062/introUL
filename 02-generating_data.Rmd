@@ -1,0 +1,9 @@
+# Central goals and assumptions
+
+## Dimension reduction and manifold learning
+
+## Clustering
+
+## Generating synthetic data 
+
+## Exercises

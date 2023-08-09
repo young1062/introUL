@@ -1,0 +1,124 @@
+## Lab
+
+Consider the MNIST dataset which contains pixellated images of handwritten digits. Each image is comprised of a $28 \times 28$ grid of greyscale pixels (0 = white, 255 = black). A subset of these images are shown below.
+
+```{r, echo = FALSE}
+load("../data/digits.Rdata")
+par(mfcol=c(6,6))
+par(mar=c(0, 0, 3, 0), xaxs='i', yaxs='i')
+for (idx in 1:36) { 
+    im <- matrix(digits$pixels[idx, ], ncol = 28, nrow = 28)
+    image(1:28, 1:28, im,
+          xaxt='n', main=paste(digits$labels[idx]))
+}
+```
+
+Each image can be thought of as a $28 \times 28$ matrix.  We convert this each image matrix into a $28^2 = 784$ dimensional vector by stacking its columns, $\vec{a}_1,\dots,\vec{a}_{28}$, each a vector in $\mathbb{R}^{28}$.
+
+\[
+\left[\vec{a}_1,\dots, \vec{a}_{28} \right] \longmapsto \left[\begin{matrix} \vec{a}_1 \\ \vdots \\ \vec{a}_{28} \end{matrix}\right].
+\]
+The image vectors are saved in the data matrix *digits\$pixels* with one image per row.
+
+
+For this exposition on PCA, let us focus on the zero digits.  The images of the first 36 zeros are
+```{r}
+digits0 <- digits$pixels[digits$labels ==0, ] # keep on the zero digits
+# visualize the digits
+par(mfcol=c(6,6))
+par(mar=c(0, 0, 3, 0), xaxs='i', yaxs='i')
+for (idx in 1:36) { 
+    im <- matrix(digits0[idx, ], ncol = 28, nrow = 28)
+    image(1:28, 1:28, im,
+          xaxt='n', yaxt='n')
+}
+```
+
+
+We will use the function *prcomp* for PCA focusing on the zero digits.  
+
+```{r}
+PCA.digits <- prcomp(digits0)
+```
+
+This functions takes a data matrix (with one subject per row) and computes,
+
+   * the sample mean, $\bar{x}$, of the data in *PCA.digits\$center* as a vector, 
+    
+   * the principal component scores with the scores of datum *i* in the *i*th row of *PCA.digits\$x* , 
+    
+   * the standard deviations of the principal component scores in *PCA.digits\$sdev*, 
+    
+   * and the principal component loadings as columns in the matrix *PCA.digits\$rotation*. 
+   
+To standardize the columns of the data matrix prior to running PCA, add the command *scale = TRUE* to the prcomp function.
+
+For an approximation of datum *i* using $k$ principal components, we have
+
+\[\vec{x}_i^{(k)} = \bar{x} + \sum_{s=1}^k y_{i,s}\vec{w}_s \]
+
+In code, we can calculate the approximations for each image using the sample mean and first $k$ principal component scores/loadings as follow.
+```{r}
+k <- 5
+xbar <- PCA.digits$center
+W <- PCA.digits$rotation
+Y <- PCA.digits$x
+n <- nrow(PCA.digits$x)
+digits.approx <- matrix(NA, nrow = n, ncol = 28^2)
+for (i in 1:n){
+  digits.approx[i,] <- xbar # add the center to each row
+}
+digits.approx <- digits.approx + Y[,1:k] %*% t(W)[1:k,]
+```
+
+We can generate the images of the approximates and compare with the originals. 
+```{r}
+par(mfcol=c(6,6))
+par(mar=c(0, 0, 3, 0), xaxs='i', yaxs='i')
+for (idx in 1:36) { 
+    im <- matrix(digits.approx[idx, ], ncol = 28, nrow = 28)
+    image(1:28, 1:28, im,
+          xaxt='n', yaxt='n')
+}
+```
+
+
+Here is the same image using the first 50 principal components.
+```{r, echo = FALSE}
+k <- 50;
+for (i in 1:n){
+  digits.approx[i,] <- xbar # add the center to each row
+}
+digits.approx <- digits.approx + Y[,1:k] %*% t(W)[1:k,]
+par(mfcol=c(6,6))
+par(mar=c(0, 0, 3, 0), xaxs='i', yaxs='i')
+for (idx in 1:36) { 
+    im <- matrix(digits.approx[idx, ], ncol = 28, nrow = 28)
+    image(1:28, 1:28, im,
+          xaxt='n', yaxt='n')
+}
+```
+
+
+Clearly the images using 50 principal components are clear and closer to the original. It is natural to wonder, how many principal components is enough.  To better answer this question, consider the *scree* plot which shows the variance of each principal component plotted in descending order.
+```{r}
+plot(1:784, PCA.digits$sdev^2,
+     type = 'l',
+     xlab = "Principal Component, d",
+     ylab = expression(paste("Variance, ",lambda[d])))
+```
+
+This is plot indicates that a large portion of the variability in the data is captured by very few component.  We can also view the cumulative variance as a function of the number of principal components.  The red dashed lines indicate that 90% of the variability in the image is explained by the first 61 principal components.  Importantly, since nearly 100% of the variability in the data is accounted for by the first 200 principal components, PCA is indicating that *our data lives near a lower dimensional affine subspace of* $\mathbb{R}^{784}$!
+```{r}
+plot(1:784, cumsum(PCA.digits$sdev^2)/sum(PCA.digits$sdev^2),
+     type = 'l',
+     xlab = "Principal Component, d",
+     ylab = "Cumulative Variance")
+abline(h = 0.9, v = 61, col="red", lwd=1, lty=2)
+
+```
+
+
+```{r, echo =  FALSE, warning = FALSE, message = FALSE}
+# biplot(PCA.digits,choices = 1:2, scale = 0)
+```

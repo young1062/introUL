@@ -1,0 +1,17 @@
+# Linear Methods
+
+<!-- PCA -->
+```{r child = 'topics/PCA.Rmd'}
+```
+
+<!-- SVD -->
+```{r child = 'topics/SVD.Rmd'}
+```
+
+<!-- NMF -->
+```{r child = 'topics/NMF.Rmd'}
+```
+
+<!-- MDS -->
+```{r child = 'topics/classic-MDS.Rmd'}
+```
