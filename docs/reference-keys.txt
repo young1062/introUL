@@ -32,7 +32,7 @@ eq:def-manifold-dist
 def:def-isometry
 introduction
 prerequisites
-probability-review
+ch-prob
 important-notation
 random-vectors-in-mathbbrd
 expectation-mean-and-covariance
@@ -53,7 +53,7 @@ dimension-reduction-and-manifold-learning
 clustering
 generating-synthetic-data
 exercises-1
-linear-methods
+ch-linear
 sec-pca
 derivation-1-iterative-projections
 geometric-interpretation-of-vecw_1
@@ -67,7 +67,7 @@ metric-mds
 nonmetric-mds
 kernels-and-nonlinearity
 exercises-2
-manifold-learning
+ch-nonlinear
 background
 data-on-a-manifold
 isometric-feature-map-isomap
@@ -75,7 +75,7 @@ local-linear-embeddings-lles
 autoencoders-aes
 additional-methods
 exercises-3
-clustering-1
+ch-clustering
 hierarchical
 center-based
 model-based

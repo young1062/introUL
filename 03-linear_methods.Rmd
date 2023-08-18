@@ -1,4 +1,4 @@
-# Linear Methods
+# Linear Methods {#ch-linear}
 
 <!-- PCA -->
 ```{r child = 'topics/PCA.Rmd'}

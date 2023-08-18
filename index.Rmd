@@ -5,7 +5,7 @@ date: "Version 0"
 documentclass: book
 bibliography: [book.bib, packages.bib]
 csl: the-annals-of-statistics.csl
-# url: your book url like https://bookdown.org/yihui/bookdown
+url: your book url like https://https://young1062.github.io/introUL/
 # cover-image: path to the social sharing image like images/cover.jpg
 description: |
   An introductory text on the goals and methods of unsupervised learning
@@ -17,6 +17,45 @@ config:
 
 # Introduction
 
+Unsupervised machine learning (UL) is an overarching term for methods designed to understand the patterns and relationships within a set of **unlabeled data**.  UL is often discussed in contrast to (semi-)supervised learning. In the latter setting(s), one is primarly focused on prediction and classification, and the machine learning algorithms therein focus on learning the relationship between a (often high dimensional) feature vector $\vec{x}$ and an observable outcome $y$ by training on a labeled dataset $\{(\vec{x}_i,y_i)\}_{i=1}^N$. As a concrete example, consider the MNIST dataset which contains a compendium of labeled digitized grayscale images of handwritten digits [@mnist].  The images themselves are the features, ($\vec{x}$), and the identity of the digit (0 to 9) gives the label, $y$ .  A supervised learning algorithm trained on the MNIST dataset would be able to classify a handwritten digit in a new grayscale image.
+
+Prediction and classification are clearly defined goals which naturally translate to many settings. As such, supervised ML has found numerous applications across diverse fields of research from healthcare and medicine to astronomy and chemistry.  Given the clearly translatable goals of supervised learning, most texts on Machine Learning tend to emphasize this setting with much smaller discussion on the un- or semi-supervised setting.  For example, both *The Elements of Statistical Learning* by Hastie et al [@esl] and *Modern Multivariate Statistical Techniques* by Izenman [@izenman] are wonderful texts -- which were central to the early development of this book -- but lean towards supervised problems.
+
+Unlike the supervised setting, however, UL algorithms are applied to datasets without (or ignoring) labels. In opposition the MNIST example above, you can think of have of a case where one has access to a large collection of $\vec{x}_i$, such as images, without any labels indicating the content(s) of the image.  Other examples include,
+
+- a corpus of emails without any indication of which, if any, are spam
+- genomic data for each individual in a large population of cancer patients
+- collections of consumer data or ratings
+  
+Without labels, it may be difficult (particularly to students first seeing this branch of machine learning) to grasp the usefulness of UL including its applicability and what one is *learning* in practice.  In this book, we hope to address this difficulty and provide readers with a clear understanding of UL by covering motivating ideas, fundamental techniques, and clear and compelling applications.  For now, we'll discuss the high-altitude view of unsupervised learning.  
+
+We'll focus on those cases where we have a collection of independent observations of (preprocessed) features stored in vectors $\vec{x}_1,\dots,\vec{x}_N\in\mathbb{R}^d$ where $d$ is typically large. This setting will be formalized in \@ref(ch-prob).  Broadly, UL learns patterns and similarities between the vectors which could allow us to 
+
+1) find subsets of the data which more similar to each other (clustering) or
+2) find simpler representations of the data which preserves important relationships (dimension reduction)
+3) identify common relationships between variables in the data (association rules)
+
+Each of three cases provide a simplified lens through which we can view our data, and in doing so, can open up a number of interesting possibilities.  
+
+Clustering different genomic data in cancer patients could provide information to medical practitioners on which cancers exhibit common genetics signatures.  Applying dimension reduction to spam emails could allow one to identify odd emails which might be spam (anomaly detection). Learning the common relationships between variables in a consumer data set opens the possibility of matching consumers which items they might enjoy (recommendation systems).
+
+The examples above are by no means exhaustive, but they do raise a few critical points.  
+
+1) **Where**  Each application above is one step in a larger data science problem.  Unsupervised learning is rarely detached from a broader data science pipeline.  This is a stark difference from classification and prediction which are often viewed as isolated statistical problems (though careful practitioners recognize that data collection and cleaning and the communication of results are often of equal or greater importance than analysis). Examples are provided throughout the text demonstrating where UL can be useful.
+
+2) **What** One data set could be approached from one or more different perspectives. For example, one could apply dimension reduction to the cancer data to *visualize* the potentially complex data in a manner that preserves important relationships. Combining many approaches together makes unsupervised learning a powerful tool to exploratory data analysis and featurization, particularly when combined with expert level content knowledge.  Choosing a UL method is linked with what we hope to learn about our data.  
+
+3) **How** If we want an algorithm that clusters similar vectors or provides a visualization that keeps close points together, then we should be mindful of the meaning of similarity or proximity.  UL algorithms, sometimes implicitly, prioritize different relationships. We explore how these algorithms work from a geometric perspective which is a helpful intellectual scaffolding.
+
+In the remainder of this text, we focus primarily on dimension reduction (\@ref(ch-linear) and \@ref(ch-nonlinear)) and clustering (\@ref(ch-clustering)).
 
 
 ## Prerequisites
+
+This text is targeted at upper level undergraduates with a well rounded background in the following courses and topics
+
+1) Probability: random variables, expectation, variance, and covariance
+2) Linear algebra: matrix-vector multiplication, linear spaces, eigendecompositions
+3) Multivariable calculus: gradients and basic optimization
+
+A brief review of the most important ideas is covered in Chapter \@ref(ch-prob).  Additional tools and techniques needed for specific algorithms are covered at a cursory level as needed. References to more thorough discussions are provided throughout for the interested reader.  

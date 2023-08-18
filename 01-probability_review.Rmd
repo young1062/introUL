@@ -1,4 +1,4 @@
-# Probability Review
+# Probability Review {#ch-prob}
 
 ## Important notation
 
