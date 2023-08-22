@@ -271,6 +271,7 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="central-goals-and-assumptions" class="section level1 hasAnchor" number="3">
 <h1><span class="header-section-number">Chapter 3</span> Central goals and assumptions<a href="central-goals-and-assumptions.html#central-goals-and-assumptions" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>In the remainder of this text, we will largely focus on the case where we are given a dataset containing samples <span class="math inline">\(\vec{x}_1,\dots,\vec{x}_N \in \mathbb{R}^d\)</span>. We will assume that the vectors were drawn independently from some unknown data generating process. As we discussed briefly in Chapter <a href="index.html#intro">1</a></p>
 <div id="dimension-reduction-and-manifold-learning" class="section level2 hasAnchor" number="3.1">
 <h2><span class="header-section-number">3.1</span> Dimension reduction and manifold learning<a href="central-goals-and-assumptions.html#dimension-reduction-and-manifold-learning" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 </div>
@@ -279,6 +280,10 @@ div.csl-indent {
 </div>
 <div id="generating-synthetic-data" class="section level2 hasAnchor" number="3.3">
 <h2><span class="header-section-number">3.3</span> Generating synthetic data<a href="central-goals-and-assumptions.html#generating-synthetic-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>At the beginning of this chapter, we indicated that our data are drawn from some unknown distribution. This is a practical assumption, but in many cases, it is also helpful to consider cases where we generate the data ourselves. In doing so, we can create whatever complicated structure we would like such as complicated clusters such as the concentric rings shown in Figure <a href="#rings-plot"><strong>??</strong></a></p>
+<p><img src="_main_files/figure-html/rings-plot-1.png" width="672" /></p>
+<p>We can run an Unsupervised Learning algorithm of interest on these synthetically generated data to see if important relationships or properties are accurately preserved. This is a helpful method for evaluating how well an algorithm works in a specific case, and importantly, can be used to build intuition on a number of natural complexities such as appropriately choosing tuning parameters, evaluating the effects of noise, and seeing how these algorithms may break when certain assumptions are not met.</p>
+<p>Below we show a few examples for generating high-dimensional data with a known <strong>shape</strong>. Additional exercises are provided for creating your own data.</p>
 </div>
 <div id="exercises-1" class="section level2 hasAnchor" number="3.4">
 <h2><span class="header-section-number">3.4</span> Exercises<a href="central-goals-and-assumptions.html#exercises-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>

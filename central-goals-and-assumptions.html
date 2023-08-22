@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 1 Central goals and assumptions | 02-generating_data.knit</title>
+  <meta name="description" content="" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 1 Central goals and assumptions | 02-generating_data.knit" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 1 Central goals and assumptions | 02-generating_data.knit" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="libs/threejs-111/three.min.js"></script>
+<script src="libs/threejs-111/Detector.js"></script>
+<script src="libs/threejs-111/Projector.js"></script>
+<script src="libs/threejs-111/CanvasRenderer.js"></script>
+<script src="libs/threejs-111/TrackballControls.js"></script>
+<script src="libs/threejs-111/StateOrbitControls.js"></script>
+<script src="libs/scatterplotThree-binding-0.3.3/scatterplotThree.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Unsupervised Learning</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path=""><a href="#central-goals-and-assumptions"><i class="fa fa-check"></i><b>1</b> Central goals and assumptions</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path=""><a href="#dimension-reduction-and-manifold-learning"><i class="fa fa-check"></i><b>1.1</b> Dimension reduction and manifold learning</a></li>
+<li class="chapter" data-level="1.2" data-path=""><a href="#clustering"><i class="fa fa-check"></i><b>1.2</b> Clustering</a></li>
+<li class="chapter" data-level="1.3" data-path=""><a href="#generating-synthetic-data"><i class="fa fa-check"></i><b>1.3</b> Generating synthetic data</a></li>
+<li class="chapter" data-level="1.4" data-path=""><a href="#exercises"><i class="fa fa-check"></i><b>1.4</b> Exercises</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<!--bookdown:title:end-->
+<!--bookdown:title:start-->
+<div id="central-goals-and-assumptions" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Chapter 1</span> Central goals and assumptions<a href="#central-goals-and-assumptions" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>In the remainder of this text, we will largely focus on the case where we are given a dataset containing samples <span class="math inline">\(\vec{x}_1,\dots,\vec{x}_N \in \mathbb{R}^d\)</span>. We will assume that the vectors were drawn independently from some unknown data generating process. As we discussed briefly in Chapter <a href="#intro"><strong>??</strong></a></p>
+<div id="dimension-reduction-and-manifold-learning" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Dimension reduction and manifold learning<a href="#dimension-reduction-and-manifold-learning" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="clustering" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Clustering<a href="#clustering" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="generating-synthetic-data" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> Generating synthetic data<a href="#generating-synthetic-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>At the beginning of this chapter, we indicated that our data are drawn from some unknown distribution. This is a practical assumption, but in many cases, it is also helpful to consider examples where we generate the data ourselves. In doing so, we can create whatever complicated structure we would like such as different clustering arrangements or lower dimensional structure. We can test an Unsupervised Learning algorithm of interest on these synthetically generated data to see if important relationships or properties are accurately preserved. This is a helpful method for evaluating how well an algorithm works in a specific case, and importantly, can be used to build intuition on a number of natural complexities such as appropriately choosing tuning parameters, evaluating the effects of noise, and seeing how these algorithms may break when certain assumptions are not met.</p>
+<p>First, let us consider the case of generating data with a known lower dimensional structure which will be valuable when testing a dimension reduction or manifold learning algorithm. We’ll begin with data on a hyperplane. Later in Chapter <a href="#ch-linear"><strong>??</strong></a>, we consider data on a hyperplane with additional constraints which can be generated by small changes to the method discussed below.</p>
+<div class="example">
+<p><span id="exm:hyperplane" class="example"><strong>Example 1.1  (Generating data on a hyperplane) </strong></span>Suppose we want to generate a set of <span class="math inline">\(d\)</span>-dimensional data which is on a <span class="math inline">\(k&lt;d\)</span> dimensional hyperplane. The span of <span class="math inline">\(k\)</span> linearly independent vectors <span class="math inline">\(\vec{z}_1,\dots,\vec{z}_k \in \mathbb{R}^d\)</span> defines a <span class="math inline">\(k\)</span> dimensional hyperplane. If we then generated random coefficient <span class="math inline">\(c_1,\dots,c_k\)</span>, then the vector <span class="math display">\[\vec{x} = c_{1}\vec{z}_1+\dots +c_{k}\vec{z}_k\]</span> would be an element on this hyperplane. To generate a data set we could then</p>
+<ol style="list-style-type: decimal">
+<li>Specify <span class="math inline">\(\vec{z}_1,\dots,\vec{z}_k\)</span> or generate them randomly</li>
+<li>Draw random coefficients <span class="math inline">\(c_1,\dots,c_k\)</span> and compute the random sample <span class="math inline">\(\vec{x}=c_{1}\vec{z}_1+\dots +c_{k}\vec{z}_k\)</span>.<br />
+</li>
+<li>Repeat step 2, <span class="math inline">\(N\)</span> times to generate the <span class="math inline">\(N\)</span> samples.</li>
+</ol>
+<p>In Figure <a href="#fig:hyperplane">1.1</a>, we show an example of data generated to reside on a random plane in <span class="math inline">\(\mathbb{R}^3\)</span>. We first generate <span class="math inline">\(\vec{z}_1,\dots,\vec{z}_k\)</span> randomly by drawing each vector from a <span class="math inline">\(\mathcal{N}(\vec{0},{\bf I})\)</span> distribution. These vectors will be independent with probability 1. When then take coefficients <span class="math inline">\(c_1,\dots,c_k\)</span> which are <strong>iid</strong> <span class="math inline">\(N(0,1)\)</span>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">185</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co"># basis</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>zs <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(<span class="at">n=</span><span class="dv">2</span>, <span class="at">mu =</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">3</span>), <span class="at">Sigma =</span> <span class="fu">diag</span>(<span class="dv">1</span>,<span class="dv">3</span>))</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#coeffs</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>coeffs <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">2</span><span class="sc">*</span>N),<span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co"># generate data matrix</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>samples <span class="ot">&lt;-</span> coeffs <span class="sc">%*%</span> zs</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co"># plot results</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="fu">scatterplot3js</span>(samples,</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>              <span class="at">xlab =</span> <span class="fu">expression</span>(x[<span class="dv">1</span>]), <span class="at">ylab =</span> <span class="fu">expression</span>(x[<span class="dv">2</span>]), <span class="at">zlab =</span> <span class="fu">expression</span>(x[<span class="dv">3</span>]),</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>              <span class="at">angle =</span> <span class="dv">90</span>,</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>              <span class="at">pch =</span> <span class="st">&#39;.&#39;</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>              <span class="at">size =</span> <span class="fl">0.2</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:hyperplane"></span>
+<div class="scatterplotThree html-widget html-fill-item-overflow-hidden html-fill-item" id="eIW5OPQUGv" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="eIW5OPQUGv">{"x":{"NROW":100,"height":null,"width":null,"axis":true,"numticks":[6,6,6],"xticklabs":null,"yticklabs":null,"zticklabs":null,"color":["#4682B4"],"size":0.2,"stroke":"black","flipy":true,"grid":true,"renderer":"auto","signif":8,"bg":"#ffffff","cexsymbols":1,"xlim":{},"ylim":{},"zlim":{},"axisscale":[1,1,1],"pch":[".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".","."],"elementId":"eIW5OPQUGv","xlab":{},"ylab":{},"zlab":{},"angle":90,"linealpha":1,"alpha":[1],"vertices":[[0.66912666,0.62567219,0.6631541,0.5502936899999999,0.48052623,0.55507545,0.65794171,0.49888495,0.66423795,0.32524975,0,0.37086119,0.47937068,0.43421579,0.4865592,0.86934036,0.50044298,0.88204311,0.16454357,0.36079104,0.16926639,0.6292051400000001,0.68398036,0.6161915100000001,0.46677185,0.37812703,0.47915043,0.60653038,0.3045367,0.63056949,0.50070201,0.29353177,0.5225513899999999,0.57389873,0.24035367,0.60331154,0.03847166,0.27880475,0.047439413,0.56057082,0.32813697,0.58083506,0.59008153,0.29855632,0.61420517,0.70846069,0.42595388,0.72358198,0.5585990199999999,0.37996718,0.5736447,0.85609473,0.45090336,0.87331579,0.76540512,0.49784203,0.77514066,0.35065187,0.3693556,0.36029903,0,0.35692789,0,0.38558718,0.6041542,0.37295507,0.34713885,0.34738046,0.35886361,0.66361501,0.40137924,0.67978965,0.68031482,0.61997293,0.67525664,0.71086037,0.23347414,0.74520884,0.75640473,0.28171259,0.7873668700000001,0.6177063,0.34942549,0.63762564,0.51467112,0.66171825,0.5003177,0.96411309,0.7142963,0.9584780000000001,0.53829026,0.70023586,0.52083725,0.73936231,0.67156469,0.73100325,0.7276007799999999,0.66607492,0.71942291,0.47914962,0.45715079,0.48404914,0.7210725,0.25074103,0.75401979,0.97721112,0.50373304,0.99293467,0.52655463,0.61515393,0.51720343,0.29180929,0.49709615,0.28691924,0.22044109,0.2007748,0.24282131,0.57553501,0.67930402,0.56132085,0.46327584,0.010593489,0.51211733,0.4262058,0.34686689,0.44043581,0.4394674,0.34042377,0.45475015,0.79780161,0.30140949,0.82808871,0.4559026,0.87228166,0.41877297,0.46039878,0.42431261,0.46798386,0.39718544,0.52476205,0.39281323,0.70735145,0.50437764,0.71463475,0.48411231,0.6381953299999999,0.47115102,0.72395765,0.5149701800000001,0.73070238,0.45893028,0.32099347,0.47675054,0.60371652,0.83057114,0.57532524,0.32045495,0.59052461,0.30715742,0.71251557,0.5181456,0.71858918,0.34612217,0.3875485,0.35381846,0.44254298,0.25485796,0.46643542,0.95417905,0.66655218,0.9529864,0.4922417,0.56601708,0.48671484,0.41550809,0.05786838,0.45816285,0.74160455,0.53107346,0.74729466,0.80168925,0.61657316,0.80073667,0.33289421,0.090762884,0.36971157,0.27512,0.52945044,0.26649252,0.74474628,0.425964,0.76099282,0.48776847,0.53247064,0.48544081,0.76776693,0.82325359,0.7451957,0.27818374,0.50647263,0.27193777,0.32825874,0.34956708,0.33917991,0.37629682,0.34540534,0.38912315,0.59444273,0.17434108,0.63106177,0.63176277,0.39196707,0.64788531,0.6574430999999999,0.82142763,0.63162925,0.78159331,0.7728531199999999,0.76446633,0.70400732,0.5031196,0.7113120000000001,0.4147421,0.52670934,0.41072107,0.69589495,0.79908167,0.67349814,0.58112719,0.44202607,0.59069695,0.83971115,0.58222411,0.84335662,0.6427903,0.64990899,0.63358861,0.46100605,0.3112775,0.47985753,0.42652459,0.44667435,0.43083314,0.5226873,0.55797078,0.51890608,0.36034805,0.39129766,0.36811283,0.53351991,0.27571412,0.55816086,0.5287268000000001,0.43563743,0.53730581,0.76545602,0.65620952,0.75943479,0.7043895100000001,0.64935612,0.69715479,0.457451,0.43715487,0.46366671,0.60210502,0.37850742,0.61864632,0.36935789,0.42789266,0.37376094,0.52905661,0.54864841,0.5264007000000001,0.75250997,0.25753162,0.78575735,0.66694508,0.15733357,0.70750683,0.7647805,0.86422294,0.73803992,0.48659902,1,0.43771356,0.63468243,0.47050575,0.6430806,0.508498,0.45094802,0.51492565,0.48161304,0.13035609,0.51910671,0.5920198800000001,0.31336996,0.61472965,1,0.66885925,1]],"xticklab":["-3.62","-2.35","-1.07","0.21","1.49","2.77"],"yticklab":["-4.07","-2.50","-0.93","0.64","2.22","3.79"],"zticklab":["1.67","1.08","0.49","-0.09","-0.68","-1.27"],"xtick":[0,0.2,0.4,0.6,0.7999999999999999,1],"ytick":[0,0.2,0.4,0.5999999999999999,0.7999999999999999,1],"ztick":[0,0.2,0.4,0.6,0.7999999999999999,1],"axislength":[1,1,1]},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 1.1: Randomly generated points concentrated on a two-dimensional hyperplane.
+</p>
+</div>
+</div>
+<p>Generating data on a curved surface is generally more complicated. In some cases, we may define them implicitly via a constraint such as the unit sphere in <span class="math inline">\(d\)</span>-dimensions <span class="math display">\[S^{d-1} = \{\vec{x}\in\mathbb{R}^d: \|\vec{x}\| = 1\}.\]</span> Generating data on the unit sphere can then be accomplished by drawing a vector from any distribution on <span class="math inline">\(\mathbb{R}^d\)</span> then rescaling the vector to have unit length. Alternatively, we could consider a function which parameterizes a surface. We show one such example below.</p>
+<p>::: {.example s-manifold name=“Generating data on the S-manifold”}</p>
+<p>:::</p>
+<p>In Figure <a href="#fig:ex-clusters">1.2</a>, we show two different ways to generate and define clusters in a set of vectors in <span class="math inline">\(\mathbb{R}^2\)</span>.</p>
+<div class="figure" style="text-align: left"><span style="display:block;" id="fig:ex-clusters"></span>
+<img src="02-generating_data_files/figure-html/ex-clusters-1.png" alt="In each subfigure below, different subsets of points were generated using different rules and are colored accordingly .  Ideally, a clustering algorithm could detect the different cluster shapes (left: ellipsoids, right: concentric rings) and correctly group points depending on how they were generated." width="672" />
+<p class="caption">
+Figure 1.2: In each subfigure below, different subsets of points were generated using different rules and are colored accordingly . Ideally, a clustering algorithm could detect the different cluster shapes (left: ellipsoids, right: concentric rings) and correctly group points depending on how they were generated.
+</p>
+</div>
+<p>If one did not have access to the actual data generating process (depicted by the different colors), it is still likely that they could recover the correct groupings upon visual inspection. In general, this strategy is not tractable. Naturally, we would like an Unsupervised clustering algorithm that can learn these clusters directly from the data automatically. As we shall see in Chapter <a href="#ch-clustering"><strong>??</strong></a>, certain algorithms which excel at grouping the data contained in disjoint ellipsoids will naturally struggle data clustering in concentric rings because the shape(s) of the different clusters matters has a major impact of the accuracy of the clustering.</p>
+</div>
+<div id="exercises" class="section level2 hasAnchor" number="1.4">
+<h2><span class="header-section-number">1.4</span> Exercises<a href="#exercises" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/%s",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": false,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

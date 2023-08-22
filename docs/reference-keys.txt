@@ -30,7 +30,7 @@ exm:ex-helix-distance
 def:def-manifold-dist
 eq:def-manifold-dist
 def:def-isometry
-introduction
+intro
 prerequisites
 ch-prob
 important-notation
