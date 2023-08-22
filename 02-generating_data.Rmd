@@ -4,10 +4,23 @@ library(threejs)
 ```
 # Central goals and assumptions
 
-In the remainder of this text, we will largely focus on the case where we are given a dataset containing samples $\vec{x}_1,\dots,\vec{x}_N \in \mathbb{R}^d$.  We will assume that the vectors were drawn independently from some unknown data generating process.  As we discussed briefly in Chapter \@ref(intro)
+In the remainder of this text, we will largely focus on the case where we are given a dataset containing samples $\vec{x}_1,\dots,\vec{x}_N \in \mathbb{R}^d$.  We will assume that the vectors were drawn independently from some unknown data generating process.  As we discussed briefly in Chapter \@ref(intro), in UL we want to learn important relationships within the dataset that can provide a simplified but meaningful summary of the data. The central assumption to UL is that such structure exists, though the specifics vary depending on the setting.  
+
+The two largest areas of focus herein are 
+
+1) dimension reduction/manifold learning, which is useful for  visualization, feature engineering, and data compression
+2) clustering, which is also useful for exploratory data analysis(EDA) and data compression too
+
+We'll briefly discuss association rules in Section \@ref(sec-svd).
+
 
 ## Dimension reduction and manifold learning
 
+Algorithms for dimension reduction and manifold learning have a number of different applications which are all based on the Manifold Hypothesis
+
+::: {.hypothesis #manifold-hypothesis name="Manifold Hypothesis"}
+The manifold hypothesis assumes that the points in a high-dimensional dataset actually live on a latent low-dimension surface (also called a manifold). As such, the data can be described by a much smaller number of dimensions.
+:::
 ## Clustering
 
 ## Generating synthetic data 
@@ -43,10 +56,23 @@ scatterplot3js(samples,
 ```
 :::
 
-Generating data on a curved surface is generally more complicated. In some cases, we may define them implicitly via a constraint such as the unit sphere in $d$-dimensions $$S^{d-1} = \{\vec{x}\in\mathbb{R}^d: \|\vec{x}\| = 1\}.$$  Generating data on the unit sphere can then be accomplished by drawing a vector from any distribution on $\mathbb{R}^d$ then rescaling the vector to have unit length.  Alternatively, we could consider a function which parameterizes a surface.  We show one such example below.
+Generating data on a curved surface is generally more complicated. In some cases, the curved surface is defined implicitly via a constraint such as the unit sphere in $d$-dimensions $$S^{d-1} = \{\vec{x}\in\mathbb{R}^d: \|\vec{x}\| = 1\}.$$  Generating data on the unit sphere can then be accomplished by drawing a vector from any distribution on $\mathbb{R}^d$ then rescaling the vector to have unit length.  Different choices of the original distribution will result in different distributions over the unit sphere.
 
-::: {.example s-manifold name="Generating data on the S-manifold"}
+Alternatively, we could consider a function which parameterizes a curve or surface.  We show one such example below.
 
+::: {.example ribbon-manifold name="Generating data on the S-manifold"}
+The function $$R(s) = (\cos(2*pi*s),\sin(2*pi*s),2*s)^T$$ maps the interval $(0,5)$ to a helix in $\mathbb{R}^3.$  For a given choice of $s$, if we let the third coordinate vary from $2s$ to $2s+1$ we would then trace out a ribbon in $\mathbb{R}^3.$  To do this, let's add a second coordinate $t$ which ranges from 0 to 1.  We then have function $R(s,t) = (\cos(2\pi s),\sin(2\pi s), 2s+t)$ which maps the rectangle $(0,5)\times (0,2)$ to a curved ribbon shape in $\mathbb{R}^3.$  To generate data on the ribbon, we draw **iid** points uniformly from  $(0,15)\times (0,1/2)$ then apply the ribbon function.  The results for $N=1000$ samples are shown below.
+```{r ribbon, fig.cap ="Realizations of points on a ribbon"}
+N <- 1e4
+s <- runif(N,0,5)
+t <- runif(N,0,1)
+ribbon <- cbind(cos(2*pi*s),sin(2*pi*s),2*s+t )
+scatterplot3js(ribbon,
+              xlab = expression(x[1]), ylab = expression(x[2]), zlab = expression(x[3]),
+              angle = 90,
+              pch = '.',
+              size = 0.1)
+```
 :::
 
 
