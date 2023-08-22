@@ -17,6 +17,13 @@ exm:mvn-level-curves
 def:svd
 eq:def-reduced-svd
 eq:def-svd
+hyp:manifold-hypothesis
+hyp:clustering-hypothesis
+exm:hyperplane
+fig:hyperplane
+exm:ribbon-manifold
+fig:ribbon
+fig:ex-clusters
 def:first-pca
 exm:pca-demo-1
 lem:proj-cov
@@ -52,6 +59,8 @@ central-goals-and-assumptions
 dimension-reduction-and-manifold-learning
 clustering
 generating-synthetic-data
+data-on-manifolds
+clustered-data
 exercises-1
 ch-linear
 sec-pca
@@ -59,7 +68,7 @@ derivation-1-iterative-projections
 geometric-interpretation-of-vecw_1
 additional-principal-components
 derivation-2-optimal-linear-subspace
-singular-value-decomposition-1
+sec-svd
 nonnegative-matrix-factorization
 sec-mds
 classical-scaling
