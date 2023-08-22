@@ -6,12 +6,7 @@ library(threejs)
 
 In the remainder of this text, we will largely focus on the case where we are given a dataset containing samples $\vec{x}_1,\dots,\vec{x}_N \in \mathbb{R}^d$.  We will assume that the vectors were drawn independently from some unknown data generating process.  As we discussed briefly in Chapter \@ref(intro), in UL we want to learn important relationships within the dataset that can provide a simplified but meaningful summary of the data. The central assumption to UL is that such structure exists, though the specifics vary depending on the setting.  
 
-The two largest areas of focus herein are 
-
-1) dimension reduction/manifold learning, which is useful for  visualization, feature engineering, and data compression
-2) clustering, which is also useful for exploratory data analysis(EDA) and data compression too
-
-We'll briefly discuss association rules in Section \@ref(sec-svd).
+The two largest areas of focus herein are dimension reduction/manifold learning and clustering which can both be used for feature engineering, data compression, and exploratory data analysis.  Dimension reduction is also commonly used for visualization.  We'll briefly discuss association rules in Section \@ref(sec-svd).
 
 
 ## Dimension reduction and manifold learning
@@ -19,11 +14,23 @@ We'll briefly discuss association rules in Section \@ref(sec-svd).
 Algorithms for dimension reduction and manifold learning have a number of different applications which are all based on the Manifold Hypothesis
 
 ::: {.hypothesis #manifold-hypothesis name="Manifold Hypothesis"}
-The manifold hypothesis assumes that the points in a high-dimensional dataset actually live on a latent low-dimension surface (also called a manifold). As such, the data can be described by a much smaller number of dimensions.
+The points in a high-dimensional dataset live on a latent low-dimension surface (also called a manifold). 
 :::
+
+The manifold hypothesis implies that the dataset can be described by a much smaller number of dimensions. Determining the manifold structure and a simplified set of coordinates for each point on the manifold is the central goal of these algorithms.
+
+
 ## Clustering
 
+::: {.hypothesis #clustering-hypothesis name="Clustering Hypothesis"}
+The points in a dataset can be grouped into well defined subsets. Points in each subset are similar and points in different subsets are not.
+:::
+
+The cluster hypothesis suggests there are non-overlapping regions. Within each region there are (many) similar points, and there are no points whose are comparably similar to those in more than one subset.
+
 ## Generating synthetic data 
+
+### Data on manifolds
 
 At the beginning of this chapter, we indicated that our data are drawn from some unknown distribution.  This is a practical assumption, but in many cases, it is also helpful to consider examples where we generate the data ourselves.  In doing so, we can create whatever complicated structure we would like such as different clustering arrangements or lower dimensional structure. We can test an Unsupervised Learning algorithm of interest on these synthetically generated data to see if important relationships or properties are accurately preserved.  This is a helpful method for evaluating how well an algorithm works in a specific case, and importantly, can be used to build intuition on a number of natural complexities such as appropriately choosing tuning parameters, evaluating the effects of noise, and seeing how these algorithms may break when certain assumptions are not met. 
 
@@ -60,8 +67,8 @@ Generating data on a curved surface is generally more complicated. In some cases
 
 Alternatively, we could consider a function which parameterizes a curve or surface.  We show one such example below.
 
-::: {.example ribbon-manifold name="Generating data on the S-manifold"}
-The function $$R(s) = (\cos(2*pi*s),\sin(2*pi*s),2*s)^T$$ maps the interval $(0,5)$ to a helix in $\mathbb{R}^3.$  For a given choice of $s$, if we let the third coordinate vary from $2s$ to $2s+1$ we would then trace out a ribbon in $\mathbb{R}^3.$  To do this, let's add a second coordinate $t$ which ranges from 0 to 1.  We then have function $R(s,t) = (\cos(2\pi s),\sin(2\pi s), 2s+t)$ which maps the rectangle $(0,5)\times (0,2)$ to a curved ribbon shape in $\mathbb{R}^3.$  To generate data on the ribbon, we draw **iid** points uniformly from  $(0,15)\times (0,1/2)$ then apply the ribbon function.  The results for $N=1000$ samples are shown below.
+::: {.example #ribbon-manifold name="Generating data on a Ribbon"}
+The function $$R(s) = (\cos(2\pi s),\sin(2\pi s),2s)^T$$ maps the interval $(0,5)$ to a helix in $\mathbb{R}^3.$  For a given choice of $s$, if we let the third coordinate vary from $2s$ to $2s+1$ we would then trace out a ribbon in $\mathbb{R}^3.$  To do this, let's add a second coordinate $t$ which ranges from 0 to 1.  We then have function $R(s,t) = (\cos(2\pi s),\sin(2\pi s), 2s+t)$ which maps the rectangle $(0,5)\times (0,2)$ to a curved ribbon shape in $\mathbb{R}^3.$  To generate data on the ribbon, we draw **iid** points uniformly from  $(0,5)\times (0,1)$ then apply the ribbon function.  The results for $N=1000$ samples are shown below.
 ```{r ribbon, fig.cap ="Realizations of points on a ribbon"}
 N <- 1e4
 s <- runif(N,0,5)
@@ -76,7 +83,11 @@ scatterplot3js(ribbon,
 :::
 
 
-In Figure \@ref(fig:ex-clusters), we show two different ways to generate and define clusters in a set of vectors in $\mathbb{R}^2$. 
+In both the surface is two-dimensional (if you were stand on the surface and look nearby data points, they would appear to be planar. A dimension reduction would be able to recover this two-dimensional structure which in the case of the plane corresponds to find the coefficients used to generate each point. For the ribbons, the coordinates $(s,t)$ used in the ribbon mapping would provide the simplified representation. 
+
+### Clustered data
+
+The most straightforward way to generate clustered data is to combine realizations from separate data generating mechanisms that tend to create points in disjoint regions of $\mathbb{R}^d$.   In Figure \@ref(fig:ex-clusters), we show two different cases in $\mathbb{R}^2$. 
 
 ```{r ex-clusters, fig.cap = "In each subfigure below, different subsets of points were generated using different rules and are colored accordingly .  Ideally, a clustering algorithm could detect the different cluster shapes (left: ellipsoids, right: concentric rings) and correctly group points depending on how they were generated.", fig.align = "left", echo = FALSE}
 ## use Gaussian mixture model to generate ellipsoidal clusters

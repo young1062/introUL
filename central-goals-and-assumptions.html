@@ -152,7 +152,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="1.1" data-path=""><a href="#dimension-reduction-and-manifold-learning"><i class="fa fa-check"></i><b>1.1</b> Dimension reduction and manifold learning</a></li>
 <li class="chapter" data-level="1.2" data-path=""><a href="#clustering"><i class="fa fa-check"></i><b>1.2</b> Clustering</a></li>
-<li class="chapter" data-level="1.3" data-path=""><a href="#generating-synthetic-data"><i class="fa fa-check"></i><b>1.3</b> Generating synthetic data</a></li>
+<li class="chapter" data-level="1.3" data-path=""><a href="#generating-synthetic-data"><i class="fa fa-check"></i><b>1.3</b> Generating synthetic data</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path=""><a href="#data-on-manifolds"><i class="fa fa-check"></i><b>1.3.1</b> Data on manifolds</a></li>
+<li class="chapter" data-level="1.3.2" data-path=""><a href="#clustered-data"><i class="fa fa-check"></i><b>1.3.2</b> Clustered data</a></li>
+</ul></li>
 <li class="chapter" data-level="1.4" data-path=""><a href="#exercises"><i class="fa fa-check"></i><b>1.4</b> Exercises</a></li>
 </ul></li>
 <li class="divider"></li>
@@ -180,24 +184,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="central-goals-and-assumptions" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">Chapter 1</span> Central goals and assumptions<a href="#central-goals-and-assumptions" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>In the remainder of this text, we will largely focus on the case where we are given a dataset containing samples <span class="math inline">\(\vec{x}_1,\dots,\vec{x}_N \in \mathbb{R}^d\)</span>. We will assume that the vectors were drawn independently from some unknown data generating process. As we discussed briefly in Chapter <a href="#intro"><strong>??</strong></a>, in UL we want to learn important relationships within the dataset that can provide a simplified but meaningful summary of the data. The central assumption to UL is that such structure exists, though the specifics vary depending on the setting.</p>
-<p>The two largest areas of focus herein are</p>
-<ol style="list-style-type: decimal">
-<li>dimension reduction/manifold learning, which is useful for visualization, feature engineering, and data compression</li>
-<li>clustering, which is also useful for exploratory data analysis(EDA) and data compression too</li>
-</ol>
-<p>We’ll briefly discuss association rules in Section <a href="#sec-svd"><strong>??</strong></a>.</p>
+<p>The two largest areas of focus herein are dimension reduction/manifold learning and clustering which can both be used for feature engineering, data compression, and exploratory data analysis. Dimension reduction is also commonly used for visualization. We’ll briefly discuss association rules in Section <a href="#sec-svd"><strong>??</strong></a>.</p>
 <div id="dimension-reduction-and-manifold-learning" class="section level2 hasAnchor" number="1.1">
 <h2><span class="header-section-number">1.1</span> Dimension reduction and manifold learning<a href="#dimension-reduction-and-manifold-learning" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Algorithms for dimension reduction and manifold learning have a number of different applications which are all based on the Manifold Hypothesis</p>
 <div class="hypothesis">
-<p><span id="hyp:manifold-hypothesis" class="hypothesis"><strong>Hypothesis 1.1  (Manifold Hypothesis) </strong></span>asd</p>
+<p><span id="hyp:manifold-hypothesis" class="hypothesis"><strong>Hypothesis 1.1  (Manifold Hypothesis) </strong></span>The points in a high-dimensional dataset live on a latent low-dimension surface (also called a manifold).</p>
 </div>
+<p>The manifold hypothesis implies that the dataset can be described by a much smaller number of dimensions. Determining the manifold structure and a simplified set of coordinates for each point on the manifold is the central goal of these algorithms.</p>
 </div>
 <div id="clustering" class="section level2 hasAnchor" number="1.2">
 <h2><span class="header-section-number">1.2</span> Clustering<a href="#clustering" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="hypothesis">
+<p><span id="hyp:clustering-hypothesis" class="hypothesis"><strong>Hypothesis 1.2  (Clustering Hypothesis) </strong></span>The points in a dataset can be grouped into well defined subsets. Points in each subset are similar and points in different subsets are not.</p>
+</div>
+<p>The cluster hypothesis suggests there are non-overlapping regions. Within each region there are (many) similar points, and there are no points whose are comparably similar to those in more than one subset.</p>
 </div>
 <div id="generating-synthetic-data" class="section level2 hasAnchor" number="1.3">
 <h2><span class="header-section-number">1.3</span> Generating synthetic data<a href="#generating-synthetic-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="data-on-manifolds" class="section level3 hasAnchor" number="1.3.1">
+<h3><span class="header-section-number">1.3.1</span> Data on manifolds<a href="#data-on-manifolds" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>At the beginning of this chapter, we indicated that our data are drawn from some unknown distribution. This is a practical assumption, but in many cases, it is also helpful to consider examples where we generate the data ourselves. In doing so, we can create whatever complicated structure we would like such as different clustering arrangements or lower dimensional structure. We can test an Unsupervised Learning algorithm of interest on these synthetically generated data to see if important relationships or properties are accurately preserved. This is a helpful method for evaluating how well an algorithm works in a specific case, and importantly, can be used to build intuition on a number of natural complexities such as appropriately choosing tuning parameters, evaluating the effects of noise, and seeing how these algorithms may break when certain assumptions are not met.</p>
 <p>First, let us consider the case of generating data with a known lower dimensional structure which will be valuable when testing a dimension reduction or manifold learning algorithm. We’ll begin with data on a hyperplane. Later in Chapter <a href="#ch-linear"><strong>??</strong></a>, we consider data on a hyperplane with additional constraints which can be generated by small changes to the method discussed below.</p>
 <div class="example">
@@ -233,8 +239,8 @@ Figure 1.1: Randomly generated points concentrated on a two-dimensional hyperpla
 </div>
 <p>Generating data on a curved surface is generally more complicated. In some cases, the curved surface is defined implicitly via a constraint such as the unit sphere in <span class="math inline">\(d\)</span>-dimensions <span class="math display">\[S^{d-1} = \{\vec{x}\in\mathbb{R}^d: \|\vec{x}\| = 1\}.\]</span> Generating data on the unit sphere can then be accomplished by drawing a vector from any distribution on <span class="math inline">\(\mathbb{R}^d\)</span> then rescaling the vector to have unit length. Different choices of the original distribution will result in different distributions over the unit sphere.</p>
 <p>Alternatively, we could consider a function which parameterizes a curve or surface. We show one such example below.</p>
-<p>::: {.example ribbon-manifold name=“Generating data on the S-manifold”}
-The function <span class="math display">\[R(s) = (\cos(2*pi*s),\sin(2*pi*s),2*s)^T\]</span> maps the interval <span class="math inline">\((0,5)\)</span> to a helix in <span class="math inline">\(\mathbb{R}^3.\)</span> For a given choice of <span class="math inline">\(s\)</span>, if we let the third coordinate vary from <span class="math inline">\(2s\)</span> to <span class="math inline">\(2s+1\)</span> we would then trace out a ribbon in <span class="math inline">\(\mathbb{R}^3.\)</span> To do this, let’s add a second coordinate <span class="math inline">\(t\)</span> which ranges from 0 to 1. We then have function <span class="math inline">\(R(s,t) = (\cos(2\pi s),\sin(2\pi s), 2s+t)\)</span> which maps the rectangle <span class="math inline">\((0,5)\times (0,2)\)</span> to a curved ribbon shape in <span class="math inline">\(\mathbb{R}^3.\)</span> To generate data on the ribbon, we draw <strong>iid</strong> points uniformly from <span class="math inline">\((0,15)\times (0,1/2)\)</span> then apply the ribbon function. The results for <span class="math inline">\(N=1000\)</span> samples are shown below.</p>
+<div class="example">
+<p><span id="exm:ribbon-manifold" class="example"><strong>Example 1.2  (Generating data on a Ribbon) </strong></span>The function <span class="math display">\[R(s) = (\cos(2\pi s),\sin(2\pi s),2s)^T\]</span> maps the interval <span class="math inline">\((0,5)\)</span> to a helix in <span class="math inline">\(\mathbb{R}^3.\)</span> For a given choice of <span class="math inline">\(s\)</span>, if we let the third coordinate vary from <span class="math inline">\(2s\)</span> to <span class="math inline">\(2s+1\)</span> we would then trace out a ribbon in <span class="math inline">\(\mathbb{R}^3.\)</span> To do this, let’s add a second coordinate <span class="math inline">\(t\)</span> which ranges from 0 to 1. We then have function <span class="math inline">\(R(s,t) = (\cos(2\pi s),\sin(2\pi s), 2s+t)\)</span> which maps the rectangle <span class="math inline">\((0,5)\times (0,2)\)</span> to a curved ribbon shape in <span class="math inline">\(\mathbb{R}^3.\)</span> To generate data on the ribbon, we draw <strong>iid</strong> points uniformly from <span class="math inline">\((0,5)\times (0,1)\)</span> then apply the ribbon function. The results for <span class="math inline">\(N=1000\)</span> samples are shown below.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fl">1e4</span></span>
 <span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">runif</span>(N,<span class="dv">0</span>,<span class="dv">5</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">runif</span>(N,<span class="dv">0</span>,<span class="dv">1</span>)</span>
@@ -251,8 +257,12 @@ The function <span class="math display">\[R(s) = (\cos(2*pi*s),\sin(2*pi*s),2*s)
 Figure 1.2: Realizations of points on a ribbon
 </p>
 </div>
-<p>:::</p>
-<p>In Figure <a href="#fig:ex-clusters">1.3</a>, we show two different ways to generate and define clusters in a set of vectors in <span class="math inline">\(\mathbb{R}^2\)</span>.</p>
+</div>
+<p>In both the surface is two-dimensional (if you were stand on the surface and look nearby data points, they would appear to be planar. A dimension reduction would be able to recover this two-dimensional structure which in the case of the plane corresponds to find the coefficients used to generate each point. For the ribbons, the coordinates <span class="math inline">\((s,t)\)</span> used in the ribbon mapping would provide the simplified representation.</p>
+</div>
+<div id="clustered-data" class="section level3 hasAnchor" number="1.3.2">
+<h3><span class="header-section-number">1.3.2</span> Clustered data<a href="#clustered-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The most straightforward way to generate clustered data is to combine realizations from separate data generating mechanisms that tend to create points in disjoint regions of <span class="math inline">\(\mathbb{R}^d\)</span>. In Figure <a href="#fig:ex-clusters">1.3</a>, we show two different cases in <span class="math inline">\(\mathbb{R}^2\)</span>.</p>
 <div class="figure" style="text-align: left"><span style="display:block;" id="fig:ex-clusters"></span>
 <img src="02-generating_data_files/figure-html/ex-clusters-1.png" alt="In each subfigure below, different subsets of points were generated using different rules and are colored accordingly .  Ideally, a clustering algorithm could detect the different cluster shapes (left: ellipsoids, right: concentric rings) and correctly group points depending on how they were generated." width="672" />
 <p class="caption">
@@ -260,6 +270,7 @@ Figure 1.3: In each subfigure below, different subsets of points were generated 
 </p>
 </div>
 <p>If one did not have access to the actual data generating process (depicted by the different colors), it is still likely that they could recover the correct groupings upon visual inspection. In general, this strategy is not tractable. Naturally, we would like an Unsupervised clustering algorithm that can learn these clusters directly from the data automatically. As we shall see in Chapter <a href="#ch-clustering"><strong>??</strong></a>, certain algorithms which excel at grouping the data contained in disjoint ellipsoids will naturally struggle data clustering in concentric rings because the shape(s) of the different clusters matters has a major impact of the accuracy of the clustering.</p>
+</div>
 </div>
 <div id="exercises" class="section level2 hasAnchor" number="1.4">
 <h2><span class="header-section-number">1.4</span> Exercises<a href="#exercises" class="anchor-section" aria-label="Anchor link to header"></a></h2>
