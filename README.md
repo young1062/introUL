@@ -1,12 +1,8 @@
 Welcome! 
 
-This is a minimal example of a book based on R Markdown and **bookdown** (https://github.com/rstudio/bookdown). 
+This repository contains the files for an e-book on Unsupervised Learning which is currently under development.
 
-This template provides a skeleton file structure that you can edit to create your book. 
-
-The contents inside the .Rmd files provide some pointers to help you get started, but feel free to also delete the content in each file and start fresh.
-
-Additional resources:
+For more on the bookdown package used to generate the text see these additional resources:
 
 The **bookdown** book: https://bookdown.org/yihui/bookdown/
 
