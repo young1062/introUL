@@ -15,13 +15,13 @@ config:
     toc_depth: 0
 ---
 
-# Introduction
+# Introduction {#intro}
 
-Unsupervised machine learning (UL) is an overarching term for methods designed to understand the patterns and relationships within a set of **unlabeled data**.  UL is often discussed in contrast to (semi-)supervised learning. In the latter setting(s), one is primarly focused on prediction and classification, and the machine learning algorithms therein focus on learning the relationship between a (often high dimensional) feature vector $\vec{x}$ and an observable outcome $y$ by training on a labeled dataset $\{(\vec{x}_i,y_i)\}_{i=1}^N$. As a concrete example, consider the MNIST dataset which contains a compendium of labeled digitized grayscale images of handwritten digits [@mnist].  The images themselves are the features, ($\vec{x}$), and the identity of the digit (0 to 9) gives the label, $y$ .  A supervised learning algorithm trained on the MNIST dataset would be able to classify a handwritten digit in a new grayscale image.
+Unsupervised machine learning (UL) is an overarching term for methods designed to understand the patterns and relationships within a set of **unlabeled data**.  UL is often discussed in contrast to (semi-)supervised learning. In the latter setting(s), one is primarly concerned with prediction and classification, and the machine learning algorithms therein focus on learning the relationship between a (often high dimensional) feature vector $\vec{x}$ and an observable outcome $y$ by training on a labeled dataset $\{(\vec{x}_i,y_i)\}_{i=1}^N$. As a concrete example, consider the MNIST dataset which contains a compendium of labeled digitized grayscale images of handwritten digits [@mnist].  The images themselves are the features, ($\vec{x}$), and the identity of the digit (0 to 9) gives the label, $y$ .  A supervised learning algorithm trained on the MNIST dataset would be able to classify a handwritten digit in a new grayscale image.
 
 Prediction and classification are clearly defined goals which naturally translate to many settings. As such, supervised ML has found numerous applications across diverse fields of research from healthcare and medicine to astronomy and chemistry.  Given the clearly translatable goals of supervised learning, most texts on Machine Learning tend to emphasize this setting with much smaller discussion on the un- or semi-supervised setting.  For example, both *The Elements of Statistical Learning* by Hastie et al [@esl] and *Modern Multivariate Statistical Techniques* by Izenman [@izenman] are wonderful texts -- which were central to the early development of this book -- but lean towards supervised problems.
 
-Unlike the supervised setting, however, UL algorithms are applied to datasets without (or ignoring) labels. In opposition the MNIST example above, you can think of have of a case where one has access to a large collection of $\vec{x}_i$, such as images, without any labels indicating the content(s) of the image.  Other examples include,
+Unlike the supervised setting, however, UL algorithms are applied to datasets without (or ignoring) labels. In contrast to the MNIST example above, you can think of have of a case where one has access to a large collection of $\vec{x}_i$, such as images, without any labels indicating the content(s) of the image.  Other examples include,
 
 - a corpus of emails without any indication of which, if any, are spam
 - genomic data for each individual in a large population of cancer patients
@@ -29,7 +29,7 @@ Unlike the supervised setting, however, UL algorithms are applied to datasets wi
   
 Without labels, it may be difficult (particularly to students first seeing this branch of machine learning) to grasp the usefulness of UL including its applicability and what one is *learning* in practice.  In this book, we hope to address this difficulty and provide readers with a clear understanding of UL by covering motivating ideas, fundamental techniques, and clear and compelling applications.  For now, we'll discuss the high-altitude view of unsupervised learning.  
 
-We'll focus on those cases where we have a collection of independent observations of (preprocessed) features stored in vectors $\vec{x}_1,\dots,\vec{x}_N\in\mathbb{R}^d$ where $d$ is typically large. This setting will be formalized in \@ref(ch-prob).  Broadly, UL learns patterns and similarities between the vectors which could allow us to 
+We'll focus on those cases where we have a collection of independent observations of (preprocessed) features stored in vectors $\vec{x}_1,\dots,\vec{x}_N\in\mathbb{R}^d$. This setting will be formalized in \@ref(ch-prob).  Broadly, UL learns patterns and similarities between the vectors which could allow us to 
 
 1) find subsets of the data which more similar to each other (clustering) or
 2) find simpler representations of the data which preserves important relationships (dimension reduction)
