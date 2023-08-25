@@ -18,6 +18,10 @@ write_matex <- function(x) {
 }
 ``` 
 
+Principal component analysis (PCA) is arguably the first method for dimension reduction, which dates back to papers by some of the earliest contributors to statistical theory including Karl Pearson and Harold Hotelling [@pca_pearson; @pca_hotelling].  Pearson's original development of PCA borrowed ideas from mechanics which provides a clear geometric/physical interpretation of the resulting PCA **loadings**, **variances**, and **scores**, which we will define later. This interpretability and an implementation that uses scalable linear algebra methods -- allowing PCA to be conducted on massive datasets -- is one of the reasons PCA is still used prolifically to this day.  In fact, many more modern and complex methods still rely on PCA as an internal step in their algorithmic structure.  
+
+There are number of different derivations of PCA including the construction of minimum least squares error, covariance decompositions, and low rank approximations.  We'll revisit these ideas later, but first, let's discuss PCA through a geometrically motivated lens via a method called iterative projections.
+
 ### Derivation 1: Iterative Projections
 
 We begin with a data matrix $${\bf X} = \begin{bmatrix} \vec{x}_1^T\\ \vdots \\\vec{x}_N^T\end{bmatrix} \in\mathbb{R}^{N\times d}.$$  Let's begin with an example of dimension reduction where we'll seek to replace each vector $\vec{x}_1,\dots,\vec{x}_N$ with corresponding scalars $y_1,\dots,y_N$ which preserve as much of the variability between these vectors as possible.  To formalize this idea, let's introduce a few assumptions.
