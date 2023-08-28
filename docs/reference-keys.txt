@@ -26,6 +26,8 @@ fig:ribbon
 fig:ex-clusters
 def:first-pca
 exm:pca-demo-1
+fig:unnamed-chunk-19
+fig:unnamed-chunk-20
 lem:proj-cov
 exm:pca-demo-all
 def:def-manifold

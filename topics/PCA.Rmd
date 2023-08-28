@@ -20,7 +20,7 @@ write_matex <- function(x) {
 
 Principal component analysis (PCA) is arguably the first method for dimension reduction, which dates back to papers by some of the earliest contributors to statistical theory including Karl Pearson and Harold Hotelling [@pca_pearson; @pca_hotelling].  Pearson's original development of PCA borrowed ideas from mechanics which provides a clear geometric/physical interpretation of the resulting PCA **loadings**, **variances**, and **scores**, which we will define later. This interpretability and an implementation that uses scalable linear algebra methods -- allowing PCA to be conducted on massive datasets -- is one of the reasons PCA is still used prolifically to this day.  In fact, many more modern and complex methods still rely on PCA as an internal step in their algorithmic structure.  
 
-There are number of different derivations of PCA including the construction of minimum least squares error, covariance decompositions, and low rank approximations.  We'll revisit these ideas later, but first, let's discuss PCA through a geometrically motivated lens via a method called iterative projections.
+There are number of different but equivalent derivations of PCA including the minimization of least squares error, covariance decompositions, and low rank approximations.  We'll revisit these ideas later, but first, let's discuss PCA through a geometrically motivated lens via a method called iterative projections.
 
 ### Derivation 1: Iterative Projections
 
@@ -46,7 +46,7 @@ The first **principal component loading** is the vector $\vec{w}_1$ solving the 
 \text{subject to constraint } &\|\vec{w}\|=1.
 \end{split}
 \end{equation}
-The first **principal component scores** are the scalars $y_i = \vec{x}_i^T\vec{w}_1$ for $i=1,\dots, N$.
+The first **principal component scores** are the projections, $y_i = \vec{x}_i^T\vec{w}_1$ for $i=1,\dots, N$, of each sample onto the first loading.
 :::
 
 To find the first PCA loading we can make use of Lagrange multipliers (see exercises) to show that $\vec{w}_1$ must also satisfy the equation $$\hat{\bf \Sigma}\vec{w}_1 = \lambda \vec{w}_1$$ where $\lambda$ is the Lagrange multiplier. From this expression, we can conclude that the first principal component loading is the unit length eigenvector associated with the largest eigenvalue of the sample covariance matrix $\hat{\bf \Sigma}$ and that the Lagrange multiplier $\lambda$ is the largest eigenvalue of $\hat{\bf \Sigma}$. In this case, we refer to $\lambda$ as the first **principal component variance**. 
@@ -67,69 +67,119 @@ The left-hand side of the above expression is fixed for a given set of data, whe
 
 
 ::: {.example #pca-demo-1 name="Computing the First PCA Loading and Scores"}
-Below, we show a scatterplot of $N=1000$ random points in $\mathbb{R}^3.$
+Below, we show a scatterplot of $N=500$ points in $\mathbb{R}^3$ drawn randomly from a MVN. These data have been centered.
 ```{r, echo = FALSE}
-N <- 1000
+N <- 500 # number of samples to draw
 set.seed(1) # fix random number generator for reproducibility
 mu = c(5,5,5); # set the mean
 Q <- svd(matrix(c(1,2,3,4,5,6,7,8,9), ncol = 3))$u # generate an orthonormal matrix
-Sigma <- Q %*% diag(c(25 , 9, 1)) %*% t(Q) # calculate Sigma = Q D Q' by eigendecomposition
-# N <- 100; # number of samples to draw
+Sigma <- Q %*% diag(c(25 , 9, 1)) %*% t(Q) # calculate Sigma = Q D Q' by its eigendecomposition
 data <- mvrnorm(N,mu,Sigma) # draw samples from normal, each sample saved in a row
-plot_ly(data.frame( x = data[,1], y= data[,2], z = data[,3]),
-        x = ~x, y = ~y, z = ~z,
-        marker = list(size = 5)) %>%
-  add_markers() %>%
-  layout(scene = list( xaxis = list(title = "x<sub>1</sub>", range = c(-2, 12)),
-                       yaxis = list(title = "x<sub>2</sub>", range = c(-2, 12)),
-                       zaxis = list(title = "x<sub>3</sub>", range = c(-2, 12)))
-         )
-
-```
-Notice the oblong shape of the cloud of points. Rotating this image, it is clear that the data varies more in certain directions than in others. 
-We begin by centering the data
-```{r}
 data <- scale(data, center = TRUE, scale = FALSE) # subtracts mean from each column
-```
-which appears the same as the previous figure except centered around the origin.
-```{r, echo = FALSE}
 plot_ly(data.frame( x = data[,1], y= data[,2], z = data[,3]),
         x = ~x, y = ~y, z = ~z,
-        marker = list(size = 5)) %>%
+        marker = list(size = 2)) %>%
   add_markers() %>%
-  layout(scene = list( xaxis = list(title = "x<sub>1</sub>", range = c(-7, 7)),
-                       yaxis = list(title = "x<sub>2</sub>", range = c(-7, 7)),
-                       zaxis = list(title = "x<sub>3</sub>", range = c(-7, 7)))
+  layout(scene = list( xaxis = list(title = "x<sub>1</sub>", range = c(-15, 15)),
+                       yaxis = list(title = "x<sub>2</sub>", range = c(-15, 15)),
+                       zaxis = list(title = "x<sub>3</sub>", range = c(-15, 15)))
          )
 Sigmahat <- (t(data) %*% data)/N # calculate the sample covariance matrix, recall the data has been centered 
-Sigmahat.eigen <- eigen(Sigmahat) # calculate the eigen decomposition of Sigmahat
-y <- data %*% Sigmahat.eigen$vectors # calculate the scores saved in rows
 ```
-To find the principal component scores and loading, let us calculate  of the sample covariance matrix. We can use the largest eigenvalue to find the first PCA variance. Its associated eigenvector (unit length) will be the first loading. The sample covariance 
+Notice the oblong shape of the cloud of points. Rotating this image, it is clear that the data varies more in certain directions than in others. 
+
+The sample covariance matrix of these data is 
 $$
 \hat{\Sigma} =  
 ```{r, echo = FALSE, results = 'asis'} 
 write_matex(round(Sigmahat,2))
 ``` 
-$$
-has largest eigenvalue $\lambda = `r round(Sigmahat.eigen$values[1],2)`$ and associated eigenvector $($`r round(Sigmahat.eigen$vectors[,1],2)`$)^T$.  We can conclude by plotting the first PCA scores below
+$$ 
+We can use the eigendecomposition of this matrix to find the first PCA loading and variance.  Given the first loading we can also compute the first PCA scores.  A short snippet of code for this calculation is shown below.
+
 ```{r}
-plot(y[,1], rep(0,N), ylab = '', xlab = 'First PCA scores', main = '')
+Sigmahat <- (t(data) %*% data)/N # calculate the sample covariance matrix, recall the data has been centered 
+Sigmahat.eigen <- eigen(Sigmahat) # calculate the eigen decomposition of Sigmahat
+y <- data %*% Sigmahat.eigen$vectors[,1] # calculate the scores 
 ```
-<!-- & =  -->
-<!-- ```{r, echo = FALSE, results = 'asis'} -->
-<!-- write_matex(round(Sigmahat.eigen$vectors,2)) -->
-<!-- ``` -->
 
-<!-- ```{r, echo = FALSE, results = 'asis'} -->
-<!-- write_matex(diag(round(Sigmahat.eigen$values,2))) -->
-<!-- ``` -->
+The largest eigenvalue (first PC variance) is $\lambda = `r round(Sigmahat.eigen$values[1],2)`$ with associated eigenvector $(`r round(Sigmahat.eigen$vectors[,1],2)`)^T$ which is the first PC loading.  
 
-<!-- ```{r, echo = FALSE, results = 'asis'} -->
-<!-- write_matex(t(round(Sigmahat.eigen$vectors,2))) -->
-<!-- ``` -->
+We can visualize these results in a few different ways.  First, we can add the span of $\vec{w}_1$ (shown in red) to the scatterplot of the data. One can see that $\vec{w}_1$ is oriented along the direction where the data is most spread out.
+```{r, echo = FALSE, fig.cap="Samples with Span of First Loading"}
+plot_ly(data.frame(x = 20*Sigmahat.eigen$vectors[1,1]*c(-1,1),
+                   y = 20*Sigmahat.eigen$vectors[2,1]*c(-1,1),
+                   z = 20*Sigmahat.eigen$vectors[3,1]*c(-1,1)),
+        x=~x, y=~y,z=~z,
+        color = I("red")) %>% add_lines() %>%
+  add_markers(x = data[,1],y=data[,2],z=data[,3],
+              marker = (list(size = 2)),
+              color = I("blue")) %>%
+  layout(scene = list( xaxis = list(title = "x<sub>1</sub>", range = c(-15, 15)),
+                       yaxis = list(title = "x<sub>2</sub>", range = c(-15, 15)),
+                       zaxis = list(title = "x<sub>3</sub>", range = c(-15, 15)))
+         )
+```
 
-<!-- so the principal component loadings are the columns of the lower matrix on the left.  The variance of the principal components are the entries of the diagonal matrix above. -->
+We could also generate a scatterplot of the scores, but we'll show this scores along the $\vec{w}_1$ axes so that they correspond to the projection of each sample onto span$\{\vec{w}_1\}$.  
+
+```{r, echo = FALSE, fig.width= 10, fig.cap="Decomposition of Samples into Components Parallel and Perpendicular to First Loading"}
+data1 <- y %*% t(Sigmahat.eigen$vectors[,1])
+fig1 <- plot_ly(data.frame(x = 20*Sigmahat.eigen$vectors[1,1]*c(-1,1),
+                   y = 20*Sigmahat.eigen$vectors[2,1]*c(-1,1),
+                   z = 20*Sigmahat.eigen$vectors[3,1]*c(-1,1)),
+        x=~x, y=~y,z=~z,
+        color = I("red"),
+        scene = "scene1") %>% add_lines() %>% 
+  add_markers(x = data1[,1], y=data1[,2], z=data1[,3],
+              marker = (list(size = 2)),
+              color = I("blue")) %>%
+  layout(scene = list( xaxis = list(title = "x<sub>1</sub>", range = c(-15, 15)),
+                       yaxis = list(title = "x<sub>2</sub>", range = c(-15, 15)),
+                       zaxis = list(title = "x<sub>3</sub>", range = c(-15, 15)))
+  )
+
+fig2 <- plot_ly(data.frame(x = 20*Sigmahat.eigen$vectors[1,1]*c(-1,1),
+                   y = 20*Sigmahat.eigen$vectors[2,1]*c(-1,1),
+                   z = 20*Sigmahat.eigen$vectors[3,1]*c(-1,1)),
+        x=~x, y=~y,z=~z,
+        color = I("red"),
+        scene = "scene2") %>% add_lines() %>% 
+  add_markers(x = data[,1]-data1[,1], y=data[,2]-data1[,2], z=data[,3]-data1[,3],
+              marker = (list(size = 2)),
+              color = I("blue")) %>%
+  layout(scene = list( xaxis = list(title = "x<sub>1</sub>", range = c(-15, 15)),
+                       yaxis = list(title = "x<sub>2</sub>", range = c(-15, 15)),
+                       zaxis = list(title = "x<sub>3</sub>", range = c(-15, 15)))
+  )
+
+scene = list(camera = list(eye = list(x = 2, y = 2, z = 2)))
+
+annotations = list( 
+  list( 
+    x = 0.2,  
+    y = 1.0,  
+    text = "Parallel component",  
+    xref = "paper",  
+    yref = "paper",  
+    xanchor = "center",  
+    yanchor = "bottom",  
+    showarrow = FALSE 
+  ),  
+  list( 
+    x = 0.8,  
+    y = 1,  
+    text = "Perpendicular component",  
+    xref = "paper",  
+    yref = "paper",  
+    xanchor = "center",  
+    yanchor = "bottom",  
+    showarrow = FALSE 
+  ))
+
+subplot(fig1,fig2, nrows = 1) %>% layout(scene = scene,
+                                         annotations = annotations) 
+```
 :::
 
 
@@ -179,6 +229,7 @@ Let's continue our example above to see this process in the case where $d=3$.
 
 ::: {.example #pca-demo-all name="Computing the Remaining PCA Loadings and Scores"}
 ```{r, echo = FALSE}
+y <- data %*% Sigmahat.eigen$vectors
 data2 <- data - y[,1] %*% t(Sigmahat.eigen$vectors[,1]) # remove first PC
 plot_ly(data.frame( x = data2[,1], y= data2[,2], z = data2[,3]),
         x = ~x, y = ~y, z = ~z,
