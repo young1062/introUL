@@ -26,10 +26,11 @@ fig:ribbon
 fig:ex-clusters
 def:first-pca
 exm:pca-demo-1
-fig:unnamed-chunk-19
-fig:unnamed-chunk-20
-lem:proj-cov
-exm:pca-demo-all
+fig:unnamed-chunk-18
+fig:pca1
+fig:pca2
+thm:pca-eig
+cor:pca-all
 def:def-manifold
 exm:ex-manifolds
 exm:ex-non-manifold
