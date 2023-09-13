@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 Central goals and assumptions | An Introduction to Unsupervised Learning</title>
+  <title>7.1 Hierarchical | An Introduction to Unsupervised Learning</title>
   <meta name="description" content="An introductory text on the goals and methods of unsupervised learning" />
   <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 Central goals and assumptions | An Introduction to Unsupervised Learning" />
+  <meta property="og:title" content="7.1 Hierarchical | An Introduction to Unsupervised Learning" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="An introductory text on the goals and methods of unsupervised learning" />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Central goals and assumptions | An Introduction to Unsupervised Learning" />
+  <meta name="twitter:title" content="7.1 Hierarchical | An Introduction to Unsupervised Learning" />
   
   <meta name="twitter:description" content="An introductory text on the goals and methods of unsupervised learning" />
   
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="exercises.html"/>
-<link rel="next" href="dimension-reduction-and-manifold-learning.html"/>
+<link rel="prev" href="ch-clustering.html"/>
+<link rel="next" href="center-based.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -273,18 +273,16 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="central-goals-and-assumptions" class="section level1 hasAnchor" number="3">
-<h1><span class="header-section-number">Chapter 3</span> Central goals and assumptions<a href="central-goals-and-assumptions.html#central-goals-and-assumptions" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>In the remainder of this text, we will largely focus on the case where we are given a dataset containing samples <span class="math inline">\(\vec{x}_1,\dots,\vec{x}_N \in \mathbb{R}^d\)</span>. We will assume that the vectors were drawn independently from some unknown data generating process. As we discussed briefly in Chapter <a href="index.html#intro">1</a>, in UL we want to learn important relationships within the dataset that can provide a simplified but meaningful summary of the data. The central assumption to UL is that such structure exists, though the specifics vary depending on the setting.</p>
-<p>The two largest areas of focus herein are dimension reduction/manifold learning and clustering which can both be used for feature engineering, data compression, and exploratory data analysis. Dimension reduction is also commonly used for visualization. We’ll briefly discuss association rules in Section <a href="sec-svd.html#sec-svd">4.2</a>.</p>
+<div id="hierarchical" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> Hierarchical<a href="hierarchical.html#hierarchical" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="exercises.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="dimension-reduction-and-manifold-learning.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="ch-clustering.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="center-based.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -315,7 +313,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/02-generating_data.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/06-clustering.Rmd",
 "text": "Edit"
 },
 "history": {
