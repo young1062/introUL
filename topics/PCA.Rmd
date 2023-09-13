@@ -296,13 +296,26 @@ As a result, we can immediately compute the PCA variances and loadings given the
 \end{equation}
 
 
-Again, thanks to orthogonality, we can also compute the PCA scores directly from the original data without iteratively removing components of each vector in the direction of the various loadings.  To summarize PCA,  given **centered** data in the data matrix ${\bf X}$ we first compute the spectral decomposition of the sample covariance matrix $\hat{\bf \Sigma}$. The eigenvalues (in decreasing magnitude) provide the PC variance and the corresponding unit-length eigenvectors give the corresponding loadings, which form an orthonormal basis in $\mathbb{R}^d$. The PC scores are the inner product of each vector with these loadings.  Thus, the PCA scores are $\vec{x}_i^T\vec{w}_1,\dots,\vec{x}_i^T\vec{w}_d$ for $i=1,\dots,d.$  We can compactly (again assuming our data are centered) express the scores in terms of the original data matrix and the loadings as
+Again, thanks to orthogonality, we can also compute the PCA scores directly from the original data without iteratively removing components of each vector in the direction of the various loadings.  To summarize PCA, given data ${\bf X}$ we first compute the spectral decomposition of the sample covariance matrix $\hat{\bf \Sigma}$. The eigenvalues (in decreasing magnitude) provide the PC variance and the corresponding unit-length eigenvectors give the corresponding loadings, which form an orthonormal basis in $\mathbb{R}^d$. The PC scores are the inner product of each vector with these loadings (assuming the data are centered).  Thus, the PCA scores are $\vec{x}_i^T\vec{w}_1,\dots,\vec{x}_i^T\vec{w}_d$ for $i=1,\dots,d.$  We can compactly (again assuming our data are centered) express the scores in terms of the original data matrix and the loadings as
 
 \begin{equation}
 {\bf Y} = {\bf XW}
 \end{equation}
 
 where ${\bf Y}\in \mathbb{R}^{N\times d}$ is a matrix of PC scores and ${\bf W}$ is the orthonormal matrix with columns given by the loadings.
+
+#### Geometric interpretation of PCA
+
+We have begun with an $N\times d$ data matrix ${\bf X}$ and now we have an $N\times d$ matrix of PCA scores ${\bf Y}$. One may be inclined to ask: where is the dimension reduction?  To answer this question, let's first consider the sample covariance matrix of the PCA scores, which one can show is diagonal
+\begin{equation}
+\hat{\bf \Sigma}_Y = 
+\begin{bmatrix}
+\lambda_1 &  & \\
+&\ddots & \\
+&& \lambda_d
+\end{bmatrix}
+\end{equation}
+
 
 
 
