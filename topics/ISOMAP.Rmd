@@ -108,7 +108,7 @@ For the purposes of ISOMAP, we will think of $\mathcal{M}_1$ as some subset of a
 ### Algorithm
 Instead, ISOMAP makes use of a data-driven approach to estimate the manifold distance between points following a three-step procedure.  
 
-**Construct Weighted Neighborhood Graph:** 
+**1) Construct Weighted Neighborhood Graph:** 
 
 MDS uses Euclidean distance to measure pairwise distance between points $\vec{x}_i$ and $\vec{x}_j$ (data points in space $\mathcal{M}_2$), while ISOMAP uses the geodesic distance in order to reveal the underlying manifold structure. However, when the data points in the high dimensional space $\mathcal{M}_2$ have a manifold structure, usually the Euclidean pairwise distance is quite different from their pairwise geodesic distance. Fortunately, for small distances on a smoothly embedded manifold, the geodesic path between two close-by points lies nearly flat in the ambient space. So, the length of this path will be very close to the straight line (Euclidean) distance between those points in the ambient space.
 
@@ -128,7 +128,7 @@ According to this rule, a weighted neighborhood graph $G = G(V,E)$ can be built.
 <!--     ii) {\bf Using $\epsilon$}, connect $\vec{x}_i$ and \vec{x}_j$ if $d_ij < \epsilon.$ -->
     
     
-**Compute graph distances**
+**2) Compute graph distances**
 
 In this step, we want to estimate the unknown true geodesic distances $\{d^{\mathcal{M}}_{ij}\}$ between all pairs of points with the help of the neighborhood graph $G$ we have just built. We use the graph distances $\{d^{\mathcal{G}}_{ij}\}$--- the shortest distances between all pairs of points in the graph $G$ to estimate $\{d^{\mathcal{M}}_{ij}\}$. For $\vec{x}_i$ and $\vec{x}_j$ that are not connected to each other, we try to find the shortest path that goes along the connected points on the graph. Following this particular sequence of neighbor-to-neighbor links, the sum of all the link weights along the path is defined as $\{d^{\mathcal{G}}_{ij}\}$. In other words, we use a number of short Euclidean distances (representing the local structure of the manifold) to approximate the geodesic distance $\{d^{\mathcal{M}}_{ij}\}$. 
 
@@ -194,7 +194,7 @@ result <- floyd_warshall(matrix)
 print(result)
 ```
 
-3) Applying MDS to $\Delta$
+**3) Applying MDS to $\Delta$**
 
 As mentioned before, ISOMAP can be viewed as the application of classical MDS in non-linear case. As a result, the reconstruction of $\{\vec{z}_i\}$ in the $k$ dimensional feature space $\mathcal{M}_1$ follows similar steps as that of classical MDS. The main goal is to preserve the geodesic distance of the manifold in $\mathcal{M}_2$ as much as possible. 
 
@@ -283,19 +283,19 @@ par(mfrow = c(2,2))
 # K = 10
 plot(embed(Swiss_sparse, "Isomap", .mute = c("message", "output"), ndim =2, knn = 10)@data@data,
      xlab = "1st Dimension", ylab = "2nd Dimension", main = "K = 10",
-    col=rainbow(nrow(Swiss_sparse)))
+    col = myColorRamp(c("red","purple","blue","green","yellow"), S))
 # k = 20
 plot(embed(Swiss_sparse, "Isomap", .mute = c("message", "output"), ndim =2, knn = 20)@data@data,
      xlab = "1st Dimension", ylab = "2nd Dimension", main = "K = 20",
-    col=rainbow(nrow(Swiss_sparse)))
+    col = myColorRamp(c("red","purple","blue","green","yellow"), S))
 # K = 50
 plot(embed(Swiss_sparse, "Isomap", .mute = c("message", "output"), ndim =2, knn = 50)@data@data,
      xlab = "1st Dimension", ylab = "2nd Dimension", main = "K = 50",
-    col=rainbow(nrow(Swiss_sparse)))
+    col = myColorRamp(c("red","purple","blue","green","yellow"), S))
 # K = 100
 plot(embed(Swiss_sparse, "Isomap", .mute = c("message", "output"), ndim =2, knn = 100)@data@data,
      xlab = "1st Dimension", ylab = "2nd Dimension", main = "K = 100",
-    col=rainbow(nrow(Swiss_sparse)))
+    col = myColorRamp(c("red","purple","blue","green","yellow"), S))
 ```
 
 
@@ -331,12 +331,12 @@ par(mfrow = c(2,2))
 scatterplot3d(washer3[1:N,], color = myColorRamp(c("red","purple","blue","green","yellow"), washer[1:N,1] ),
                xlab = expression(x[1]), ylab = expression(x[2]), zlab = expression(x[3]))
 plot(embed(washer3[1:N,], "Isomap", .mute = c("message", "output"), ndim =2, knn = 10)@data@data %*% matrix(c(0,1,1,0),nrow = 2),
-     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=20",
+     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=10",
      col = myColorRamp(c("red","purple","blue","green","yellow"), washer[,1])  )
 
 # K = 20
 plot(embed(washer3[1:N,], "Isomap", .mute = c("message", "output"), ndim =2, knn = 20)@data@data %*% matrix(c(0,1,1,0),nrow = 2),
-     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=50",
+     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=20",
      col = myColorRamp(c("red","purple","blue","green","yellow"), washer[,1])  )
 
 # K = 50
