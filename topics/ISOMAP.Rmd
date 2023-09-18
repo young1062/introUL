@@ -1,6 +1,10 @@
 ## Isometric Feature Map (ISOMAP)
 
-The first method we cover is the Isometric Feature Map (ISOMAP), originally published by Tenenbaum, de Silva, and Langford in 2000 [@isomap]. As suggested by the name, we will see that an assumption of isometry is central to this method.  Prior to discussing the ISOMAP algorithm, let's briefly discuss the notion of isometry through an example which motivates different notions of distance between two points.
+### Introduction
+
+The first manifold learning method we are going to cover is the Isometric Feature Map (ISOMAP), originally published by Tenenbaum, de Silva, and Langford in 2000 [@isomap]. As suggested by the name, we will see that the assumption of isometry is central to this method. ISOMAP combines the major algorithmic features of PCA and MDS --- computational efficiency, global optimality, and asymptotic convergence guarantees. Thanks to these extraordinary features, ISOMAP is capable of learning a broad class of nonlinear manifolds. 
+
+Prior to discussing the ISOMAP algorithm, let's briefly discuss the notion of isometry through an example which motivates different notions of distance between two points.
 
 ::: {.example #ex-helix-distance name="Distance between points on a Helix"}
 Consider the helix map $\Psi:\mathbb{R}\to\mathbb{R}^3$ given by the formula
@@ -15,6 +19,7 @@ Below, we show the result of applying the Helix map to each point in the interva
 
 ```{r, echo = FALSE, message = FALSE, warning=FALSE}
 library("threejs", quietly = T)
+library("geoelectrics")
 N <- 1e4
 t <- sort(runif(N, min = 0, max = 25))
 helix <- matrix(NA,nrow = length(t), ncol = 3)
