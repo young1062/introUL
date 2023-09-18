@@ -1,8 +1,388 @@
 ## Multidimensional Scaling {#sec-mds}
+
+1) Introduction and Settings
  
- 
+Imagine there are $N$ objects (geographical locations, characteristics of people, etc.) In some cases, it is hard to depict each of these $N$ objects explicitly with a vector $\vec{y} \in \mathbb{R}^{N}$, however, we can measure the degree of "closeness" (proximity) between these $N$ objects. In other words, we can obtain a $N \times N$ matrix $\Delta$, with $\Delta_{rs}$ representing the distance/dissimilarity between objects $r$ and $s$. Assume $\Delta_{rr}=0$ and $\Delta_{sr} = \Delta_{rs}$. $\Delta$ is often called a Proximity/Distance/Dissimilarity Matrix. 
+
+Given the Proximity Matrix $\Delta$, MDS (Multi-dimensional Scaling) comes to place when it comes to recovering the original/latent individual configuration $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N \in \mathbb{R}^{t}$. 
+
+The primary goal of MDS is to reconstruct the original configuration as close as possible, say, find points $\tilde{y}_1, \tilde{y}_2, \dots, \tilde{y}_N \in \mathbb{R}^{t^{\prime}}$ s.t. the distance between $\tilde{y}_r$ and $\tilde{y}_s$ is close to $\Delta_{rs}$. Sometimes, the true dimension $t$ is unknown, so determining the number of dimensions is also a major problem to be solved.
+
+MDS can also serve as a data visualization method. Usually, $t^{\prime}$ is set to be either two or three, and the $N$ points in the two-dimensional (or three-dimensional) plot can show an obvious sign of clustering, where points in a particular cluster are viewed as being “closer” to the other points in that cluster than to points in other clusters.
+
+
+2) Example
+
+Here we use the sphere distances of multiple large cities as an example to illustrate the power of MDS in recovering the original expressions and visualizing them.
+
+```{r setup, include=FALSE, echo = FALSE, message = FALSE, fig.align='center'}
+require("scatterplot3d")
+knitr::opts_chunk$set(echo = FALSE)
+library('MASS')
+library('maps')
+library("gdata")
+library('plotly')
+```
+
+The *eurodist* R package provides road distance between 21 cities in Europe and 9 cities in the US. For the moment, we will focus on the 10 US cities with names and distances given in the following tables
+
+```{r, echo = FALSE}
+knitr::kable(as.matrix(UScitiesD), "simple")
+```
+
+After conducting classical MDS (a method of MDS, details will be discussed in proceeding parts), we acquire the plot below. The plot complies to our geographical knowledge. Miami and Seattle are the farthest from our plot, and these two cities are actually thousands of miles away (Seattle in the north-west end of US mainland and Miami in the south-east corner). NY and D.C. are quite close on the plot, same for LA and San Francisco.
+
+
+```{r, echo = FALSE}
+city.loc <- cmdscale(UScitiesD, k =2);
+plot(city.loc, type = 'n', 
+     xlab = 'Dimension 1',
+     ylab = 'Dimension 2')
+text(city.loc, labels = attr(UScitiesD, "Labels"),
+     cex = 0.75)
+```
+Actually, if we rotate the above plot 180 degrees, a US map appears. It is amazing!
+
+```{r, echo = FALSE}
+city.loc.rot <- -city.loc
+plot(city.loc.rot, type = 'n', 
+     xlab = 'Dimension 1',
+     ylab = 'Dimension 2')
+text(city.loc.rot, labels = attr(UScitiesD, "Labels"),
+     cex = 0.75)
+```
+Again, let's try MDS on the 21 European cities. We make some flipping on the map to make it comply to the true European map.
+
+```{r}
+knitr::kable(as.matrix(eurodist),"simple")
+```
+
+```{r, echo = FALSE}
+city.loc <- cmdscale(eurodist)
+# plot(city.loc, type = 'n', 
+#      xlab = 'Dimension 1',
+#      ylab = 'Dimension 2')
+# text(city.loc, labels = attr(eurodist, "Labels"),
+#      cex = 0.75)
+
+city.loc.flip <- city.loc %*% matrix(c(1,0,0,-1),nrow = 2)
+plot(city.loc.flip, type = 'n', 
+     xlab = 'Dimension 1',
+     ylab = 'Dimension 2')
+text(city.loc.flip, labels = attr(eurodist, "Labels"),
+     cex = 0.75)
+```
+
+The above plot reconstructs the European map quite well. Gibraltar, Lisbon and Madrid are in the south-west corner, the two North European cities Stockholm and Copenhagen are in the north end, and Athens is in the south-west corner.
+
+Finally, let's consider the 18 representative global cities. Their pairwise flight lengths (geodesic distance) are shown in the table below. As we can see, the geodesic distances between the three Southern-Hemisphere cities: Rio, Cape Town, Melbourne and other Northern-Hemisphere cities are generally large (almost all over 10,000 kilometers)
+
+```{r, echo = FALSE}
+D <- matrix(0, 18,18)
+row.names(D) <- names <- c("Beijing","Cape Town","Hong Kong", "Honolulu", "London", "Melbourne", 
+                  "Mexico City", "Montreal", "Moscow", "New Delhi", "New York", "Paris",
+                  "Rio", "Rome", "S.F.", "Singapore", "Stockholm", "Tokyo")
+continent <- c("blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue")
+colnames(D) <- names
+
+D[2:18,  1] <- c(12947, 1972, 8171, 8160, 9093, 12478, 10490, 5809, 2788, 11012, 8236, 17325, 8144, 9524, 4465, 6725, 2104)
+D[3:18,  2] <- c(11867, 18562, 9635, 10388, 13703, 12744, 10101, 9284, 12551, 9307, 6075, 8417, 16487, 9671, 10334, 14737)
+D[4:18,  3] <- c(8945, 9646, 7392, 14155, 12462, 7158, 3770, 12984, 9650, 17710, 9300, 11121, 2575, 8243, 2893)
+D[5:18,  4] <- c(11653, 8862, 6098, 7915, 11342, 11930, 7996, 11988, 13343, 12936, 3857, 10824, 11059, 6208)
+D[6:18,  5] <- c(16902, 8947, 5240, 2506, 6724, 5586, 341, 9254, 1434, 8640, 10860, 1436, 9585)
+D[7:18,  6] <- c(13557, 16730, 14418, 10192, 16671, 16793, 13227, 15987, 12644, 6050, 15593, 8159)
+D[8:18,  7] <- c(3728, 10740, 14679, 3362, 9213, 7669, 10260, 3038, 16623, 9603, 11319)
+D[9:18,  8] <- c(7077, 11286, 533, 5522, 8175, 6601, 4092, 14816, 5900, 10409)
+D[10:18, 9] <- c(4349, 7530, 2492, 11529, 2378, 9469, 8426, 1231, 7502)
+D[11:18, 10] <- c(11779, 6601, 14080, 5929, 12380, 4142, 5579, 5857)
+D[12:18, 11] <- c(5851, 7729, 6907, 4140, 15349, 6336, 10870)
+D[13:18, 12] <- c(9146, 1108, 8975, 10743, 1546, 9738)
+D[14:18, 13] <- c(9181, 10647, 15740, 10682, 18557)
+D[15:18, 14] <- c(10071, 10030, 1977, 9881)
+D[16:18, 15] <- c(13598, 8644, 8284)
+D[17:18, 16] <- c(9646, 5317)
+D[18:18, 17] <- 8193
+
+D <- D + t(D)
+
+knitr::kable(D, "simple")
+```
+
+```{r, echo = FALSE}
+MDS1 <- cmdscale(D,k=1, eig = TRUE, x.ret = TRUE)
+MDS2 <- cmdscale(D,k=2, eig = TRUE, x.ret = TRUE)
+MDS3 <- cmdscale(D,k=3, eig = TRUE, x.ret = TRUE)
+MDS4 <- cmdscale(D,k=4, eig = TRUE, x.ret = TRUE)
+distances1 <- distances2 <- distances3 <- distances4 <- matrix(0,18,18)
+for (s in 2:18){
+  for (t in 1:(s-1)){
+    distances1[s,t] <- (MDS1$points[s] - MDS1$points[t])^2
+    distances2[s,t] <- t(MDS2$points[s,] - MDS2$points[t,]) %*% (MDS2$points[s,] - MDS2$points[t,])
+    distances3[s,t] <- t(MDS3$points[s,] - MDS3$points[t,]) %*% (MDS3$points[s,] - MDS3$points[t,])
+    distances4[s,t] <- t(MDS4$points[s,] - MDS4$points[t,]) %*% (MDS4$points[s,] - MDS4$points[t,])
+  }
+}
+```
+
+```{r,echo = FALSE, webgl=TRUE, warning = FALSE, message = FALSE}
+ax <- list(
+  title = "",
+  zeroline = FALSE,
+  showline = FALSE,
+  showticklabels = FALSE,
+  showgrid = TRUE
+)
+scene = list(
+  xaxis = ax,
+  yaxis = ax,
+  zaxis = ax)
+plot_ly(data.frame( x = MDS3$points[,1], y= MDS3$points[,2], z = MDS3$points[,3]),
+        text = names,
+        x = ~x, y = ~y, z = ~z,
+        marker = list(size = 5, color = continent)) %>%
+  add_markers() %>%
+  add_text() %>%
+  layout(scene = scene)
+# fig <- scatterplot3d(,
+#                   xlab = "", ylab = "", zlab = "", 
+#                   tick.marks = FALSE, label.tick.marks = FALSE,
+#                   grid = FALSE, box = TRUE, color = continent)
+# text(fig$xyz.convert(MDS3$points[,1:3]),labels= rownames(MDS3$points), pos=1) 
+```
+
+The three-dimensional visualization result of MDS is shown above. You can rotate and magnify it on your laptop. The blue points represent Asian cities, the black points represent European cities, and the red points represent North American cities. They are clustered together within the group. If you try to rotate the plot and make these three clusters in the bottom, you will find the three separate cities: Rio, Melbourne and Cape Town on the top of the plot. This actually represents that they are the only cities in Southern-Hemisphere. If you inspect the plot clearly, you will find that these cities actually locate on a sphere, which complies to the true scenario. MDS is quite successful in recovering their relative locations!
+
+
+3) Key features of MDS
+
+Besides showing the capacity of MDS in recovering original expressions and visualization, we also gain two by-products from the examples above.
+
+\noindent (i) The pairwise distances/proximity between two objects don't have to be Euclidean distance. In the above example, they are actually geodesic distance. Actually, based on the type of distance metric and the specific recovery method of the Proximity Matrix, MDS can be divided into three major types: Classical Scaling; Metric MDS; and Non-Metric MDS. 
+
+Classical Scaling and Metric MDS generally require that the input data is a true distance metric, while Non-metric MDS is usually used when the input data doesn't satisfy the properties of a true distance metric or when the relationships are ordinal (i.e., we only know which distances are larger, but not by how much). 
+
+To add, Classical MDS operates by applying an eigen-decomposition to the "double-centered" dissimilarity matrix, while Metric MDS and Non-Metric MDS may employ iterative optimization methods to better accommodate non-linear relationships in data structure.
+
+(ii) As we can tell from the recovery of US map and European map, the configurations of $\tilde{y}_1, \tilde{y}_2, \dots, \tilde{y}_N$ are not unique, as we can rotate or flip the map. Actually, if $\tilde{y}_1, \tilde{y}_2, \dots, \tilde{y}_N \in \mathbb{R}^{t^{\prime}}$ is considered as the optimal solution, given any vector $\vec{b} \in \mathbb{R}^{t^{\prime}}$ and orthogonal matrix $A \in \mathbb{R}^{t^{\prime} \times t^{\prime}}$, $||(A \tilde{y}_r + \vec{b} - (A \tilde{y}_s + \vec{b})|| = ||\tilde{y}_r - \tilde{y}_s||$. Rotation, Reflection or Translation don't alter the pairwise distances. So $A \tilde{y}_1 + \vec{b}, A \tilde{y}_2 + \vec{b}, \dots, A \tilde{y}_N + \vec{b}$ is also an optimal solution.
+
+
+
 ### Classical Scaling
 
+Before going deep into Classical Scaling, we first need to introduce some important definitions.
+
+#### Definitions:
+
+(i) A matrix $\Delta \in \mathbb{R}^{N \times N}$ is called a distance matrix if it possesses the following properties:
+
+a) Symmetry
+
+$\Delta$ is symmetric, meaning that:
+
+$$\Delta_{rs} = \Delta_{sr} \quad \text{for all } r \text{ and } s$$
+
+This implies that the distance between points $r$ and $s$ is the same as the distance between points $s$ and $r$.
+
+b) Zero Diagonal
+
+The diagonal entries of the matrix represent the distance of a point to itself, and are thus all zeros:
+
+$$\Delta_{rr} \equiv 0 \quad \text{for all } 1 \leq r \leq N$$
+
+c) Non-negativity
+
+All distances are non-negative:
+
+$$\Delta_{rs} \geq 0$$
+
+d) Triangle Inequality
+
+The matrix respects the triangle inequality:
+
+$$\Delta_{rs} \leq \Delta_{rt} + \Delta_{ts}$$
+
+This property ensures that the direct distance between two points $r$ and $s$ is never greater than the sum of the distances from $r$ to a third point $t$ and from $t$ to $s$.
+
+
+(ii) Further, the distance matrix $\Delta \in \mathbb{R}^{N \times N}$ is a Euclidean distance matrix if there exists a configuration $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N$ s.t. $\Delta_{rs}$ represents the Euclidean distance between points $r$ and $s$, i.e., $||\vec{y}_r-\vec{y}_s||=\Delta_{rs} \forall r,s$. 
+
+For configuration $\vec{y}_i, \vec{y}_j \in \mathbb{R}^t$, the Euclidean distance between point $r$ and point $s$ is defined as $\delta_{ij}=||\vec{y}_i - \vec{y}_j||= \left\{\sum_{k=1}^t \left(y_{i k}-x_{j k}\right)^2\right\}^{1/2}$. **Remember to take the square root**
+
+3) Prerequisite for Classical Scaling: 
+
+(i) Strictly speaking, we require that the Proximity Matrix $\Delta$ is an Euclidean distance matrix. 
+
+(ii) Furthermore, it is assumed that the configurations $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N$ are centered. In other words, $\sum_{i=1}^N \vec{y}_i = \vec{0}$. This step eliminates the influence of location.
+
+#### Recover Coordinates
+
+It may sound difficult to recover the configuration $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N$ from merely the Euclidean distance matrix $\Delta$ at the first glance. However, the situation becomes clearer after some analysis.
+
+$\Delta^2_{rs}$ can be expressed as $\Delta^2_{rs} = ||\vec{y}_r||^2 + ||\vec{y}_s||^2 - 2 \vec{y}_r^T \vec{y}_s$. It's not difficult to observe that both terms are both very easy to be expressed with the original configuration: $Y = \left(\begin{array}{c} \vec{y}_1^{\top} \\ \vec{y}_2^{\top} \\ \vdots \\ \dot{y}_N^{\top} \end{array}\right)$.
+
+The entries of the inner product matrix, i.e. $B = YY^T \in \mathbb{R}^{N \times N}$ are able to express the Euclidean distance matrix $\Delta$. 
+
+**(1) Computing the inner product matrix $B$**
+
+The inner product term can be represented as: $B_{ij} = \vec{y}_r^T \vec{y}_s$, while the norms of $\vec{y}_r$ and $\vec{y}_s$ can be represented by the entry of $B$, i.e. $B_{ii}} = ||\vec{y}_i||^2$. As a result, $\Delta^2_{ij} = B_{ii} + B_{jj} - 2 B_{ij}$. 
+
+**Key Observation** Here, we successfully express the entries of $\Delta$ (known) with entries of $B$ (unknown). However, our goal is to find a way to express entries of $B$ (unknown) with entries of $\Delta$. Intuitively, we want to cancel out $B_{ij}$ terms in the expression. Considering that $\sum_{i=1}^N \vec{y}_i = \vec{0}$, we sum both sides of the equation over the index $i$. We can get the following expression: (Because $\sum_{i=1}^N B_{ij} = \vec{y}_j^T (\sum_{i=1}^N \vec{y}_i) = 0$)
+$$\sum_{i=1}^N \Delta_{ij}^2=\operatorname{tr}(B) + N B_{ii}$$
+
+Similarly, we can also sum both sides of the equation over index $j$, and get the expression:
+$$\sum_{j=1}^N \Delta_{ij}^2=\operatorname{tr}(B) + N B_{jj}$$
+
+We successfully eliminate all the off-diagonal terms of $B$ through the above steps. Now, we want to take a step further. Sum both sides of the equations over both indexes $i$ and $j$. We acquire the following expression:
+$$\sum_{i=1}^N \sum_{j=1}^N \Delta_{ij}^2 = 2N \operatorname{tr}(B)$$
+
+Now we can solve the entries of $\Delta$ using the entries of $B$ through a backward calculation. From the last equation, we get 
+$$\operatorname{tr}(B) = \frac{1}{2N} \sum_{i=1}^N \sum_{j=1}^N \Delta_{ij}^2$$
+
+Then substitute the above expression into above formulas, we get the expression of the diagonal entries of $B$:
+
+$$B_{ii} = \frac{1}{N} (\sum_{j=1}^{N} \Delta_{ij}^2 - \operatorname{tr} (B))$$
+
+After that, we can finally get the off-diagonal entries of $B$:
+
+\begin{aligned}
+B_{ij} & = \frac{1}{2} (B_{ii} + B_{jj} - \Delta_{ij}^2) \\
+& = -\frac{1}{2} \Delta_{ij}^2 + \frac{1}{N} \sum_{i=1}^N \Delta_{ij}^2 + \frac{1}{N} \sum_{j=1}^N \Delta_{ij}^2-\frac{1}{2 N^2} \sum_{i=1}^N \sum_{j=1}^N \Delta_{ij}^2
+\end{aligned}
+
+Actually, we may also express the inner product matrix $B$ in a matrix form, which is what we do in real data computation. Here $A \in \mathbb{R}^{N \times N}, A_{ij} = \Delta^2_{ij} \forall 1 \leq i,j \leq N$, $H = \mathbb{I}_N - \frac{1}{N} \mathbb{1}_N \mathbb{1}_N^T$. 
+
+$$B = H A H$$
+
+
+
+**(2) Recover the coordinates using inner product matrix $B$**
+
+Both diagonal and off-diagonal entries of the inner product matrix $B$ has been shown. We assumed that $B$ = $YY^T$, so $B$ is symmetric and positive semi-definite (all eigenvalues are non-negative), with $t$ positive eigenvalues and $N-t$ 'zero' eigenvalues. 
+
+Our intuition is to apply SVD to $B$ in order to recover the configuration $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N \in \mathbb{R}^t$.
+
+\begin{align}
+B & = \left(\vec{u}_1\left|\vec{u}_2\right| \ldots \mid \vec{u}_t\right) \begin{pmatrix}
+\lambda_1 & \cdots & 0 \\
+ \vdots & \ddots & \vdots \\
+0 & \cdots & \lambda_t
+\end{pmatrix} \left(\begin{array}{c}
+\vec{u}_1^{\top} \\
+\vec{u}_2^{\top} \\
+\vdots \\ 
+\vec{u}_t^{\top} 
+\end{array}\right) \\
+& = \tilde{u} \begin{pmatrix}
+\lambda^{1/2}_1 & \cdots & 0 \\
+\vdots & \ddots & \vdots \\
+0 & \cdots & \lambda^{1/2}_t \end{pmatrix}
+\begin{pmatrix}
+\lambda^{1/2}_1 & \cdots & 0 \\
+\vdots & \ddots & \vdots \\
+0 & \cdots & \lambda^{1/2}_t \end{pmatrix}
+\tilde{u}^T \\
+& = (\tilde{u} \Lambda^{1/2}) (\tilde{u} \Lambda^{1/2})^T
+\end{align}
+
+Let $Y=\tilde{u} \Lambda^{1/2}$, use rows of $\tilde{u} \Lambda^{1/2}$ as $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N$. It satisfies every entry of the inner product matrix $B$, as well as all pairwise distances $\Delta_{ij}$. 
+
+**Dealing with real data case**
+
+In real data case, sometimes the Euclidean condition is not met. As in the previous globe map example, the distance matrix actually computes the geodesic distance instead of the Euclidean distance. Under this circumstance, the "inner product" matrix $B = HAH$ (we put a quotation mark here because $B$ is no longer the inner product matrix) is not necssarily positive semi-definite.
+
+Let's put a numeric example here to illustrate this point. 
+
+Suppose we have a proximity matrix $\Delta$:
+
+Given the matrix:
+\[ 
+\Delta = \begin{pmatrix} 0 & 1 & 3 \\ 1 & 0 & 1 \\ 3 & 1 & 0 \end{pmatrix} 
+\]
+
+```{r}
+# Given matrix Delta
+Delta <- matrix(c(0,1,3,1,0,1,3,1,0), nrow=3, byrow=TRUE)
+Delta
+```
+
+Obviously, matrix $\Delta$ does not satisfy Triangle Inequality, so it's not an Euclidean distance matrix (even not a distance matrix actually)
+
+1. Compute matrix \( A \) as:
+\[ 
+A = -\frac{1}{2} \Delta^2 
+\]
+
+```{r}
+A <- -0.5 * Delta^2
+A
+```
+
+2. Compute matrix \( B \) using:
+\[ 
+H = I - \frac{1}{n} \mathbf{11}^T 
+\]
+Where \( I \) is the identity matrix and \( n \) is the number of rows (or columns) in \( \Delta \). Then:
+\[ 
+B = H A H 
+\]
+
+```{r}
+# compute matrix H
+n <- nrow(Delta)
+I <- diag(n)
+one_vec <- matrix(1, n, 1)
+H <- I - (1/n) * one_vec %*% t(one_vec)
+
+# compute matrix B
+B <- H %*% A %*% H
+B
+```
+
+3. Finally, perform an eigen-decomposition on matrix \( B \).
+
+```{r}
+eigen_decomp_B <- eigen(B)
+
+# Extract eigenvalues and eigenvectors
+eigenvalues_B <- eigen_decomp_B$values
+eigenvectors_B <- eigen_decomp_B$vectors
+
+eigenvalues_B
+eigenvectors_B
+```
+Here, we have a negative eigenvalue $-\frac{5}{6}$. This is because the original proximity matrix $\Delta$ is not a distance matrix.
+
+
+**Handle Negative Eigenvalues**
+
+a) **non-symetric issue:** There are cases where the proximity matrix $\Delta$ is not symmetric (though it rarely happens in classical scaling scenario). Usually we set $\Delta \leftarrow \Delta + \Delta^T$. In that way, we manually make $\Delta$ symmetric.
+
+b) When there exist some negative eigenvalues in the inner product matrix $B$, we usually have two options to deal with it. 
+
+i) Inflate the original proximity matrix $\Delta$ by a small constant factor $c$, i.e., $\Delta_{ij} \leftarrow \Delta_{ij} + c, \text{if} \quad i \neq j$. In this way, we can deal with the violence of **Triangular Inequality**.
+
+ii) If there exist several negative eigenvalues with small absolute value (compared to the largest several positive eigenvalues), and there are more positive eigenvalues than our prior estimation (the dimension of the original configuration), we may just pick the largest $t$ eigenvalues and eliminate the rest.
+
+
+**Global City Distance case revisit**
+
+We can also consider the previous global city distance matrix example. Plot the scree plot of the inner product matrix. 
+
+```{r, echo = FALSE}
+plot(cmdscale(D, eig = TRUE)$eig, xlab = 'k', ylab = expression(lambda[k]))
+```
+
+We find that the first three eigenvalues are much larger than the rest, so we assume that the dimension of the original configuration is 3, which also complies to our knowledge about global map.
+
+
+
+
+
+
+
+
 ### Metric MDS
+
+
 
 ### Nonmetric MDS

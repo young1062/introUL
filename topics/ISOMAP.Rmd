@@ -86,3 +86,9 @@ Instead, ISOMAP makes use of a data-driven approach to estimate the manifold dis
     - Alternatively, we use the eigenvalues of the inner product matrix based on the graph distances to choose a suitable cutoff for the appropriate 
     
     
+    
+    
+    
+
+
+
