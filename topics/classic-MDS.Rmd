@@ -15,7 +15,7 @@ MDS can also serve as a data visualization method. Usually, $t^{\prime}$ is set 
 
 Here we use the sphere distances of multiple large cities as an example to illustrate the power of MDS in recovering the original expressions and visualizing them.
 
-```{r setup, include=FALSE, echo = FALSE, message = FALSE, fig.align='center'}
+```{r setup-mds, include=FALSE, echo = FALSE, message = FALSE, fig.align='center'}
 require("scatterplot3d")
 knitr::opts_chunk$set(echo = FALSE)
 library('MASS')

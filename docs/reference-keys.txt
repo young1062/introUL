@@ -27,9 +27,7 @@ exm:ex-non-manifold
 exm:ex-swiss-roll
 exm:ex-swiss-w-noise
 exm:ex-helix-distance
-def:def-manifold-dist
 eq:def-manifold-dist
-def:def-isometry
 introduction
 prerequisites
 probability-review
@@ -63,6 +61,8 @@ singular-value-decomposition-1
 nonnegative-matrix-factorization
 sec-mds
 classical-scaling
+definitions
+recover-coordinates
 metric-mds
 nonmetric-mds
 kernels-and-nonlinearity
@@ -71,6 +71,10 @@ manifold-learning
 background
 data-on-a-manifold
 isometric-feature-map-isomap
+introduction-1
+key-definitions
+algorithm
+limitations-of-isomap
 local-linear-embeddings-lles
 autoencoders-aes
 additional-methods
