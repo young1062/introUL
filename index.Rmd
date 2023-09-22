@@ -1,6 +1,6 @@
 --- 
 title: "An Introduction to Unsupervised Learning"
-author: "Alex Young"
+author: "Alex Young and Cenhao Zhu"
 date: "Version 0"
 documentclass: book
 bibliography: [book.bib, packages.bib]
