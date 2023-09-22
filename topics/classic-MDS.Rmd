@@ -1,19 +1,15 @@
 ## Multidimensional Scaling {#sec-mds}
 
-1) Introduction and Settings
- 
-Imagine there are $N$ objects (geographical locations, characteristics of people, etc.) In some cases, it is hard to depict each of these $N$ objects explicitly with a vector $\vec{y} \in \mathbb{R}^{N}$, however, we can measure the degree of "closeness" (proximity) between these $N$ objects. In other words, we can obtain a $N \times N$ matrix $\Delta$, with $\Delta_{rs}$ representing the distance/dissimilarity between objects $r$ and $s$. Assume $\Delta_{rr}=0$ and $\Delta_{sr} = \Delta_{rs}$. $\Delta$ is often called a Proximity/Distance/Dissimilarity Matrix. 
+Multidimensional scaling (MDS) is a broad name for a myriad of different methods which are designed to handle a common problem.  Suppose there are $N$ objects of interest in a dataset.  Examples include a set of geographic locations or cells from mass spectrometry or census blocks, etc.  Importantly, we do not need actual data corresponding to each object.  In MDS, we instead require a measure the distance or dissimilarity between each pair of objects.  We can organize these distances into a matrix ${\bf \Delta}\in\mathbb{R}^{N\times N}$, with ${\bf \Delta}_{rs}$ representing the distance/dissimilarity between objects $r$ and $s$. Thus, ${\bf \Delta}_{rr}=0$ and for now, we may assume that ${\bf \Delta}_{sr} = {\bf \Delta}_{rs}$. The matrix ${\bf \Delta}$ is often called a *Distance* or *Dissimilarity* matrix. In practice, we may construct a distance matrix from observations, but for the purposes of MDS we only require ${\bf \Delta}$.
 
-Given the Proximity Matrix $\Delta$, MDS (Multi-dimensional Scaling) comes to place when it comes to recovering the original/latent individual configuration $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N \in \mathbb{R}^{t}$. 
+The primary goal of MDS is to find a set of lower-dimensional points $\vec{y}_1, \dots, \vec{y}_N \in \mathbb{R}^{t}$ corresponding to each of the $N$ objects such that the distance between $\vec{y}_r$ and $\vec{y}_s$ is close to ${\bf \Delta}_{rs}$. There are numerous different notions of distance one use in $\mathbb{R}^t$. Additionally, we may not know the notion of distance/dissimilarity used when computing ${\bf \Delta}$ or if the dissimilarity corresponds to any well defined notion of distance.  Euclidean distance is a common choice for the distance of the lower-dimensional vectors.  Fixing this choice still leaves many open questions. Are the original distances Euclidean? If so, can we determine the dimensionality of the original data?
 
-The primary goal of MDS is to reconstruct the original configuration as close as possible, say, find points $\tilde{y}_1, \tilde{y}_2, \dots, \tilde{y}_N \in \mathbb{R}^{t^{\prime}}$ s.t. the distance between $\tilde{y}_r$ and $\tilde{y}_s$ is close to $\Delta_{rs}$. Sometimes, the true dimension $t$ is unknown, so determining the number of dimensions is also a major problem to be solved.
-
-MDS can also serve as a data visualization method. Usually, $t^{\prime}$ is set to be either two or three, and the $N$ points in the two-dimensional (or three-dimensional) plot can show an obvious sign of clustering, where points in a particular cluster are viewed as being “closer” to the other points in that cluster than to points in other clusters.
+MDS also serves as a data visualization method. In this case, $t$ is typically chosen to be either two or three, and the $N$ points in the two-dimensional (or three-dimensional) representation may be plotted so that one can visualize the relationships between data.  Before turning to the most common methods of MDS, let's view a few examples using distances between cities.
 
 
-2) Example
+::: {.example #mds-cities name="MDS applied to distances between cities"}
 
-Here we use the sphere distances of multiple large cities as an example to illustrate the power of MDS in recovering the original expressions and visualizing them.
+<!-- Here we use the sphere distances of multiple large cities as an example to illustrate the power of MDS in recovering the original expressions and visualizing them. -->
 
 ```{r setup-mds, include=FALSE, echo = FALSE, message = FALSE, fig.align='center'}
 require("scatterplot3d")
@@ -24,13 +20,13 @@ library("gdata")
 library('plotly')
 ```
 
-The *eurodist* R package provides road distance between 21 cities in Europe and 9 cities in the US. For the moment, we will focus on the 10 US cities with names and distances given in the following tables
+The *eurodist* R package provides air travel distances between 21 cities in Europe and 10 cities in the US. For the moment, we will focus on the 10 US cities with names and distances given in the following tables
 
 ```{r, echo = FALSE}
 knitr::kable(as.matrix(UScitiesD), "simple")
 ```
 
-After conducting classical MDS (a method of MDS, details will be discussed in proceeding parts), we acquire the plot below. The plot complies to our geographical knowledge. Miami and Seattle are the farthest from our plot, and these two cities are actually thousands of miles away (Seattle in the north-west end of US mainland and Miami in the south-east corner). NY and D.C. are quite close on the plot, same for LA and San Francisco.
+After conducting classical MDS (a method of MDS, details will be discussed later), we acquire the plot below. The plot is consistent with the geographical relationships between the cities. Miami and Seattle are the farthest apart in our plot. NY and D.C. are quite close on the plot, which is also true for Los Angeles and San Francisco.
 
 
 ```{r, echo = FALSE}
@@ -41,7 +37,8 @@ plot(city.loc, type = 'n',
 text(city.loc, labels = attr(UScitiesD, "Labels"),
      cex = 0.75)
 ```
-Actually, if we rotate the above plot 180 degrees, a US map appears. It is amazing!
+
+Actually, if we rotate the above plot 180 degrees, a crude US map appears impressively. 
 
 ```{r, echo = FALSE}
 city.loc.rot <- -city.loc
@@ -51,7 +48,8 @@ plot(city.loc.rot, type = 'n',
 text(city.loc.rot, labels = attr(UScitiesD, "Labels"),
      cex = 0.75)
 ```
-Again, let's try MDS on the 21 European cities. We make some flipping on the map to make it comply to the true European map.
+
+Again, let's try MDS on the 21 European cities, again applying some reflections of the map given by MDS to help it comply to the conventional orientation of a European map.
 
 ```{r}
 knitr::kable(as.matrix(eurodist),"simple")
@@ -73,7 +71,7 @@ text(city.loc.flip, labels = attr(eurodist, "Labels"),
      cex = 0.75)
 ```
 
-The above plot reconstructs the European map quite well. Gibraltar, Lisbon and Madrid are in the south-west corner, the two North European cities Stockholm and Copenhagen are in the north end, and Athens is in the south-west corner.
+The above plot reconstructs the European map quite well. Gibraltar, Lisbon and Madrid are in the south-west corner, the two North European cities Stockholm and Copenhagen are in the north end, and Athens is in the south-est corner.
 
 Finally, let's consider the 18 representative global cities. Their pairwise flight lengths (geodesic distance) are shown in the table below. As we can see, the geodesic distances between the three Southern-Hemisphere cities: Rio, Cape Town, Melbourne and other Northern-Hemisphere cities are generally large (almost all over 10,000 kilometers)
 
@@ -136,7 +134,7 @@ scene = list(
   xaxis = ax,
   yaxis = ax,
   zaxis = ax)
-plot_ly(data.frame( x = MDS3$points[,1], y= MDS3$points[,2], z = MDS3$points[,3]),
+plot_ly(data.frame( x = MDS3$points[,1], y= MDS3$points[,2], z = -MDS3$points[,3]),
         text = names,
         x = ~x, y = ~y, z = ~z,
         marker = list(size = 5, color = continent)) %>%
@@ -150,20 +148,24 @@ plot_ly(data.frame( x = MDS3$points[,1], y= MDS3$points[,2], z = MDS3$points[,3]
 # text(fig$xyz.convert(MDS3$points[,1:3]),labels= rownames(MDS3$points), pos=1) 
 ```
 
-The three-dimensional visualization result of MDS is shown above. You can rotate and magnify it on your laptop. The blue points represent Asian cities, the black points represent European cities, and the red points represent North American cities. They are clustered together within the group. If you try to rotate the plot and make these three clusters in the bottom, you will find the three separate cities: Rio, Melbourne and Cape Town on the top of the plot. This actually represents that they are the only cities in Southern-Hemisphere. If you inspect the plot clearly, you will find that these cities actually locate on a sphere, which complies to the true scenario. MDS is quite successful in recovering their relative locations!
+The three-dimensional visualization result of classical MDS is shown above. You can rotate and magnify it on your laptop. The blue points represent Asian cities, the black points represent European cities, and the red points represent North American cities. If you inspect the plot clearly, you may notice that the cities appear to be constrained to the surface of a sphere, which complies to the true scenario. 
+
+In each of the examples, classical MDS was quite successful in generating maps which reflected the geographical configuration with continental or global maps which were (after some reflections/rotations) consistent with conventional maps.
+
+:::
 
 
-3) Key features of MDS
+### Key features of MDS
 
-Besides showing the capacity of MDS in recovering original expressions and visualization, we also gain two by-products from the examples above.
+Beyond demonstrating the capacity of MDS to recover meaningful visualization, we also gain two insights from the examples above.
 
-\noindent (i) The pairwise distances/proximity between two objects don't have to be Euclidean distance. In the above example, they are actually geodesic distance. Actually, based on the type of distance metric and the specific recovery method of the Proximity Matrix, MDS can be divided into three major types: Classical Scaling; Metric MDS; and Non-Metric MDS. 
+i) The pairwise distance between two objects need not be Euclidean. In the above example, they are actually [great circle distance](https://en.wikipedia.org/wiki/Great-circle_distance). Actually, based on the type of distance metric and the specific recovery method of the Proximity Matrix, MDS can be divided into three major types: Classical Scaling; Metric MDS; and Non-Metric MDS. 
 
 Classical Scaling and Metric MDS generally require that the input data is a true distance metric, while Non-metric MDS is usually used when the input data doesn't satisfy the properties of a true distance metric or when the relationships are ordinal (i.e., we only know which distances are larger, but not by how much). 
 
 To add, Classical MDS operates by applying an eigen-decomposition to the "double-centered" dissimilarity matrix, while Metric MDS and Non-Metric MDS may employ iterative optimization methods to better accommodate non-linear relationships in data structure.
 
-(ii) As we can tell from the recovery of US map and European map, the configurations of $\tilde{y}_1, \tilde{y}_2, \dots, \tilde{y}_N$ are not unique, as we can rotate or flip the map. Actually, if $\tilde{y}_1, \tilde{y}_2, \dots, \tilde{y}_N \in \mathbb{R}^{t^{\prime}}$ is considered as the optimal solution, given any vector $\vec{b} \in \mathbb{R}^{t^{\prime}}$ and orthogonal matrix $A \in \mathbb{R}^{t^{\prime} \times t^{\prime}}$, $||(A \tilde{y}_r + \vec{b} - (A \tilde{y}_s + \vec{b})|| = ||\tilde{y}_r - \tilde{y}_s||$. Rotation, Reflection or Translation don't alter the pairwise distances. So $A \tilde{y}_1 + \vec{b}, A \tilde{y}_2 + \vec{b}, \dots, A \tilde{y}_N + \vec{b}$ is also an optimal solution.
+(ii) As we can tell from the recovery of US map and European map, the configurations of $\vec{y}_1,  \dots, \vec{y}_N$ are not unique, as we can rotate or flip the map. Actually, if $\vec{y}_1, \dots, \tilde{y}_N \in \mathbb{R}^{t^{\prime}}$ is considered as the optimal solution, given any vector $\vec{b} \in \mathbb{R}^{t^{\prime}}$ and orthogonal matrix $A \in \mathbb{R}^{t^{\prime} \times t^{\prime}}$, $||(A \tilde{y}_r + \vec{b} - (A \tilde{y}_s + \vec{b})|| = ||\tilde{y}_r - \tilde{y}_s||$. Rotation, Reflection or Translation don't alter the pairwise distances. So $A \tilde{y}_1 + \vec{b}, A \tilde{y}_2 + \vec{b}, \dots, A \tilde{y}_N + \vec{b}$ is also an optimal solution.
 
 
 
