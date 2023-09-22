@@ -11,12 +11,15 @@ eq:def-sample-mean-data-matrix
 eq:def-sample-covariance-data-matrix
 exm:mvn-draws
 def:def-symm
-def:def-psd
+def:def-eigen
 thm:spectral
 exm:mvn-level-curves
+exm:svd-23
+fig:svd-ex
 def:svd
 eq:def-reduced-svd
 eq:def-svd
+def:unlabeled-div-1
 hyp:manifold-hypothesis
 hyp:clustering-hypothesis
 exm:hyperplane
@@ -26,7 +29,7 @@ fig:ribbon
 fig:ex-clusters
 def:first-pca
 exm:pca-demo-1
-fig:unnamed-chunk-18
+fig:unnamed-chunk-19
 fig:pca1
 fig:pca2
 thm:pca-eig
@@ -56,7 +59,7 @@ important-properties
 matrix-factorizations
 eigenvalue-decomposition
 singular-value-decomposition
-symmetry-positive-definiteness-and-matrix-powers
+positive-definiteness-and-matrix-powers
 exercises
 central-goals-and-assumptions
 dimension-reduction-and-manifold-learning
