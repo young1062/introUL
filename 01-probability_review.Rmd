@@ -417,7 +417,7 @@ A matrix, ${\bf A}\in\mathbb{R}^{n\times n}$ is positive definite if $\vec{x}^T{
 A matrix is positive semidefinite if $\vec{x}^T{\bf A}\vec{x} \ge 0$ for all $\vec{x}\ne 0.$  Equivalently, ${\bf A}$ is positive semidefinite if all of its eigenvalues are non-negative.
 :::
 
-One may interpret the powers of a matrix as repeated multiplication of a square matrix.  More specifically, for any $m\in \{1,2,\dots}$, let ${\bf A}^m = \underbrace{{\bf A} \dots {\bf A}}_{m \text{ times}}$.  For diagonalizable positive definite matrices, we may extend this interpretation to negative and fractional power using the eigenvalue decomposition.  If the eigenvalue decomposition of the ${\bf A}$ is ${\bf A} = {\bf W \Lambda W}^{-1}$ for some diagonal matrix ${\Lambda}$ with positive entries, $\lambda_1,\dots,\lambda_n$ along its diagonal. For any $s\in\mathbb{R}$, we define ${\bf A}^s = {\bf W \Lambda}^s {\bf W}^{-1}$ where $$\Lambda^s = \begin{bmatrix} \lambda_1^s & 0 & 0 \\ 0 & \ddots & 0 \\0&0&\lambda_n^s\end{bmatrix}.$$
+One may interpret the powers of a matrix as repeated multiplication of a square matrix.  More specifically, for any $m\in \{1,2,\dots\}$, let ${\bf A}^m = \underbrace{{\bf A} \dots {\bf A}}_{m \text{ times}}$.  For diagonalizable positive definite matrices, we may extend this interpretation to negative and fractional power using the eigenvalue decomposition.  If the eigenvalue decomposition of the ${\bf A}$ is ${\bf A} = {\bf W \Lambda W}^{-1}$ for some diagonal matrix ${\Lambda}$ with positive entries, $\lambda_1,\dots,\lambda_n$ along its diagonal. For any $s\in\mathbb{R}$, we define ${\bf A}^s = {\bf W \Lambda}^s {\bf W}^{-1}$ where $$\Lambda^s = \begin{bmatrix} \lambda_1^s & 0 & 0 \\ 0 & \ddots & 0 \\0&0&\lambda_n^s\end{bmatrix}.$$
 
 
 
