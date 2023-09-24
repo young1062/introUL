@@ -1,1 +1,2 @@
-## Local Linear Embeddings (LLEs)
+## Locally Linear Embeddings (LLEs)
+
