@@ -215,9 +215,14 @@ div.csl-indent {
 <li class="chapter" data-level="4.1" data-path="sec-pca.html"><a href="sec-pca.html"><i class="fa fa-check"></i><b>4.1</b> Principal Component Analysis</a>
 <ul>
 <li class="chapter" data-level="4.1.1" data-path="sec-pca.html"><a href="sec-pca.html#derivation-1-iterative-projections"><i class="fa fa-check"></i><b>4.1.1</b> Derivation 1: Iterative Projections</a></li>
-<li class="chapter" data-level="4.1.2" data-path="sec-pca.html"><a href="sec-pca.html#derivation-2-optimal-linear-subspace"><i class="fa fa-check"></i><b>4.1.2</b> Derivation 2: Optimal Linear Subspace</a></li>
 </ul></li>
-<li class="chapter" data-level="4.2" data-path="sec-svd.html"><a href="sec-svd.html"><i class="fa fa-check"></i><b>4.2</b> Singular Value Decomposition</a></li>
+<li class="chapter" data-level="4.2" data-path="sec-svd.html"><a href="sec-svd.html"><i class="fa fa-check"></i><b>4.2</b> Singular Value Decomposition</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="sec-svd.html"><a href="sec-svd.html#low-rank-approximations"><i class="fa fa-check"></i><b>4.2.1</b> Low-rank approximations</a></li>
+<li class="chapter" data-level="4.2.2" data-path="sec-svd.html"><a href="sec-svd.html#svd-and-low-rank-approximations"><i class="fa fa-check"></i><b>4.2.2</b> SVD and Low Rank Approximations</a></li>
+<li class="chapter" data-level="4.2.3" data-path="sec-svd.html"><a href="sec-svd.html#connections-with-pca"><i class="fa fa-check"></i><b>4.2.3</b> Connections with PCA</a></li>
+<li class="chapter" data-level="4.2.4" data-path="sec-svd.html"><a href="sec-svd.html#recommender-systems"><i class="fa fa-check"></i><b>4.2.4</b> Recommender Systems</a></li>
+</ul></li>
 <li class="chapter" data-level="4.3" data-path="nonnegative-matrix-factorization.html"><a href="nonnegative-matrix-factorization.html"><i class="fa fa-check"></i><b>4.3</b> Nonnegative Matrix Factorization</a></li>
 <li class="chapter" data-level="4.4" data-path="sec-mds.html"><a href="sec-mds.html"><i class="fa fa-check"></i><b>4.4</b> Multidimensional Scaling</a>
 <ul>
@@ -236,7 +241,13 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="6.1.1" data-path="background.html"><a href="background.html#data-on-a-manifold"><i class="fa fa-check"></i><b>6.1.1</b> Data on a manifold</a></li>
 </ul></li>
-<li class="chapter" data-level="6.2" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html"><i class="fa fa-check"></i><b>6.2</b> Isometric Feature Map (ISOMAP)</a></li>
+<li class="chapter" data-level="6.2" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html"><i class="fa fa-check"></i><b>6.2</b> Isometric Feature Map (ISOMAP)</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#introduction"><i class="fa fa-check"></i><b>6.2.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.2.2" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#key-definitions"><i class="fa fa-check"></i><b>6.2.2</b> Key Definitions</a></li>
+<li class="chapter" data-level="6.2.3" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#algorithm"><i class="fa fa-check"></i><b>6.2.3</b> Algorithm</a></li>
+<li class="chapter" data-level="6.2.4" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#limitations-of-isomap"><i class="fa fa-check"></i><b>6.2.4</b> Limitations of ISOMAP</a></li>
+</ul></li>
 <li class="chapter" data-level="6.3" data-path="local-linear-embeddings-lles.html"><a href="local-linear-embeddings-lles.html"><i class="fa fa-check"></i><b>6.3</b> Local Linear Embeddings (LLEs)</a></li>
 <li class="chapter" data-level="6.4" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html"><i class="fa fa-check"></i><b>6.4</b> Autoencoders (AEs)</a></li>
 <li class="chapter" data-level="6.5" data-path="additional-methods.html"><a href="additional-methods.html"><i class="fa fa-check"></i><b>6.5</b> Additional methods</a></li>
@@ -275,8 +286,59 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="sec-svd" class="section level2 hasAnchor" number="4.2">
 <h2><span class="header-section-number">4.2</span> Singular Value Decomposition<a href="sec-svd.html#sec-svd" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>yay</p>
+<div id="low-rank-approximations" class="section level3 hasAnchor" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Low-rank approximations<a href="sec-svd.html#low-rank-approximations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In the next two subsections, we are going to focus on <em>low-rank</em> matrix approximation methods in which we try to approximate our data matrix <span class="math inline">\({\bf X}\)</span> using a low-rank alternative. In the language of dimension reduction, the idea is to approximate each data with a linear combonation of a small number (<span class="math inline">\(k&lt; d\)</span> of latent feature vectors. Briefly, let’s discuss how this idea works in the case of PCA.</p>
+<p>In PCA, the loadings provide a data-driven orthonormal basis <span class="math inline">\(\vec{w}_1,\dots,\vec{w}_d\)</span> which allow us to compute the PCA scores from the centered data. In matrix notation, this scores are given by <span class="math display">\[\underbrace{{\bf Y}}_{\text{PCA scores}} = \underbrace{({\bf HX})}_{\text{centered data matrix}} \times \underbrace{{\bf W}}_{\text{loadings}}.\]</span></p>
+<p>The matrix <span class="math inline">\({\bf W}\)</span> is orthonormal allowing us to write <span class="math display">\[{\bf HX} = {\bf YW }^T.\]</span> The <span class="math inline">\(ith\)</span> row of the preceding matrix equality reads
+<span class="math display">\[(\vec{x}_i - \bar{x})^T = \sum_{j=1}^d {\bf Y}_{ij} \vec{w}_j^T.\]</span> From the PCA notes, an approximation using the first <span class="math inline">\(k\)</span> loadings
+<span class="math display">\[(\vec{x}_i - \bar{x})^T \approx \sum_{j=1}^k {\bf Y}_{ij} \vec{w}_j^T\]</span>
+minimizes the average squared Euclidean distance over all vectors. In matrix notation, the approximation over all vectors decomposes as the product of an <span class="math inline">\(N\times k\)</span> matrix and a <span class="math inline">\(k\times d\)</span> matrix as follows.
+<span class="math display">\[{\bf HX} \approx \underbrace{\begin{bmatrix}{\bf Y}_{11} &amp; \dots &amp; {\bf Y}_{1k} \\
+\vdots &amp; &amp; \vdots \\
+\vdots &amp; &amp; \vdots \\
+{\bf Y}_{N1} &amp; \dots &amp; {\bf Y}_{Nk}\end{bmatrix}}_{N\times k} \underbrace{\begin{bmatrix}\vec{w}_1^T \\ \vdots \\ \vec{w}_k^T \vphantom{\vdots} \end{bmatrix}\\}_{k\times d}.\]</span></p>
+<p>Due to the properties of the scores and loadings, the approximation is a rank <span class="math inline">\(k\)</span> matrix. In the following sections, we’ll seek similar decompositions of our data matrix.</p>
+</div>
+<div id="svd-and-low-rank-approximations" class="section level3 hasAnchor" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> SVD and Low Rank Approximations<a href="sec-svd.html#svd-and-low-rank-approximations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The standard problem for low rank matrix approximations is to solve the following problem. Given a matrix <span class="math inline">\({\bf X}\in\mathbb{R}^{N\times d}\)</span> and a chosen rank <span class="math inline">\(k\)</span>, we want:
+<span class="math display">\[\begin{equation}
+\mathop{\mathrm{arg\,min}}_{{\bf Z}\in\mathbb{R}^{N\times d} \\ \text{rank}({\bf Z}) = k} \|{\bf X} - {\bf Z}\|_F^2 = \mathop{\mathrm{arg\,min}}_{{\bf Z}\in\mathbb{R}^{N\times d} \\ \text{rank}({\bf Z}) = k} \left(\sum_{ij}({\bf X}_{ij} - {\bf Z}_{ij})^2 \right) = \mathop{\mathrm{arg\,min}}_{{\bf Z}\in\mathbb{R}^{N\times d} \\ \text{rank}({\bf Z}) = k} \left(\sum_i \|\vec{x}_i-\vec{z}_i\|^2\right)
+\end{equation}\]</span>
+where <span class="math inline">\(\vec{z}_1^T, \dots,\vec{z}_N^T\)</span> denote the rows of <span class="math inline">\({\bf Z}\)</span>.</p>
+<p>Solving this constrained minimization problem may appear difficult, but the answer is obtainable directly from the SVD of <span class="math inline">\({\bf X}\)</span> due to the following theorem.</p>
+<div class="theorem">
+<p><span id="thm:svd-frob" class="theorem"><strong>Theorem 4.2  (Best Rank $k$ Approximation) </strong></span>Suppose matrix <span class="math inline">\({\bf X}\in\mathbb{R}^{N\times d}\)</span> has singular value decomposition <span class="math display">\[{\bf X} = {\bf US V}^T\]</span> with singular values <span class="math display">\[\sigma_1\ge\dots \ge \sigma_{\min\{N,d\}}\]</span>. Then
+1) For any rank <span class="math inline">\(k\)</span> matrix <span class="math inline">\({\bf Z}\in\mathbb{R}^{N\times d}\)</span>, <span class="math display">\[\|{\bf X}-{\bf Z}\|_F \ge \sigma_{k+1}^2 + \dots + \sigma_{\min\{N,d\}}^2\]</span>
+2) The rank <span class="math inline">\(k\)</span> matrix attained by keeping the first <span class="math inline">\(k\)</span> left singular vectors, right singular vectors, and singular values of the SVD of <span class="math inline">\({\bf X}\)</span> attains this minimum. Specifically, if <span class="math inline">\(\vec{u}_1,\dots,\vec{u}_k\)</span> are the first <span class="math inline">\(k\)</span> left singular vectors and <span class="math inline">\(\vec{v}_1,\dots,\vec{v}_k\)</span> are the first <span class="math inline">\(k\)</span> right singular vectors then
+<span class="math display">\[\begin{equation}
+\mathop{\mathrm{arg\,min}}_{{\bf Z}\in\mathbb{R}^{N\times d} \\ \text{rank}({\bf Z}) = k} \|{\bf X} - {\bf Z}\|_F^2 =
+\begin{bmatrix}&amp;&amp; \\ \vec{u}_1 &amp; \dots &amp; \vec{u}_k \\ &amp;&amp; \end{bmatrix}
+\begin{bmatrix}\sigma_1 &amp; &amp;  \\
+&amp; \ddots &amp;  \\
+&amp;  &amp; \sigma_k \end{bmatrix}
+\begin{bmatrix}
+&amp;\vec{v}_1^T &amp; \\ &amp; \vdots&amp; \\ &amp;\vec{v}_k^T&amp; \end{bmatrix}
+\end{equation}\]</span></p>
+</div>
+<p>There are several important implications of this theorem. First, the direct result indicates that computing the SVD of <span class="math inline">\({\bf X}\)</span> immediately allows us to compute the best approximation under Frobenius loss for a specified rank <span class="math inline">\(k\)</span>. In practice, the full SVD is not required since we will typically consider the case where <span class="math inline">\(k &lt;\min\{N,d\}\)</span>. There is a another implication as well. In cases where a specific choice of <span class="math inline">\(k\)</span> is not clear, the singular values of <span class="math inline">\({\bf X}\)</span> provide a method to comparing different choices of <span class="math inline">\(k\)</span>. Akin to the scree plot, we can plot the (squared) singular values to look for clear separation or alternatively, plot the ratio <span class="math inline">\(\sum_{j=1}^k \sigma_j^2/\sum_{j=1}^{\min\{N,d\}}^2\)</span> as a function of <span class="math inline">\(k\)</span> to understand the relative error for a specific choice of <span class="math inline">\(k\)</span>.</p>
+</div>
+<div id="connections-with-pca" class="section level3 hasAnchor" number="4.2.3">
+<h3><span class="header-section-number">4.2.3</span> Connections with PCA<a href="sec-svd.html#connections-with-pca" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Suppose that we were to compute the full SVD of the centered data matrix <span class="math display">\[{\bf HX}= {\bf USV}^T.\]</span> We can express the sample covariance matrix of the original data using the SVD
+<span class="math display">\[\begin{equation}
+\hat{\Sigma}_X = \frac{1}{N} ({\bf HX})^T ({\bf HX}) = \frac{1}{N} {\bf VS}^T{\bf U}^T{\bf U S} V^T = {\bf V}\left(\frac{1}{N} {\bf S^T S}) {\bf V}^T.
+\end{equation}\]</span>
+The matrix <span class="math inline">\(\frac{1}{N}{\bf S}^T {\bf S} \in \mathbb{R}^{d\times d}\)</span> with entries <span class="math inline">\(\sigma_1^2/N \ge \dots \ge \sigma_d^2/N.\)</span> Furthermore, the matrix <span class="math inline">\({\bf V}\)</span> is orthonormal. Thus, from the SVD of <span class="math inline">\({\bf HX}\)</span> we can immediately compute the spectral decomposition of <span class="math inline">\(\hat{\Sigma}_X\)</span> to attain the principal component variances and loadings. In summary, the principal component loadings are the right singular vectors of <span class="math inline">\({\bf HX}\)</span> whereas the principal component variances are the squared singular values divided by <span class="math inline">\(N\)</span>, e.g. <span class="math inline">\(\lambda_j = \sigma_j^2/N\)</span>. Using this observation,
+<span class="math display">\[{\bf HX} = {\bf USV}^T \rightarrow {\bf HXV} = {\bf US}\]</span>
+from which we may conclude the principal component scores are equal to <span class="math inline">\({\bf US}.\)</span> This connection is the basis for most numerical implementation of PCA since it is more both faster and more numerically stable to compute the SVD of <span class="math inline">\({\bf HX}\)</span> than to compute both <span class="math inline">\(\hat{\Sigma}_X\)</span> and its eigendecomposition!</p>
+<p>Thus, computing the best rank <span class="math inline">\(k\)</span> approximation to a centered data matrix is equivalent to the best approximation of the centered data using the first <span class="math inline">\(k\)</span> PC scores. As such, SVD has similar weaknesses to PCA including a sensitivity to scaling and outliers and an inability to detect nonlinear structure.</p>
+</div>
+<div id="recommender-systems" class="section level3 hasAnchor" number="4.2.4">
+<h3><span class="header-section-number">4.2.4</span> Recommender Systems<a href="sec-svd.html#recommender-systems" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <!-- NMF -->
+</div>
 </div>
             </section>
 
