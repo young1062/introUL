@@ -318,5 +318,3 @@ We have begun with an $N\times d$ data matrix ${\bf X}$ and now we have an $N\ti
 
 
 
-
-### Derivation 2: Optimal Linear Subspace

@@ -215,9 +215,14 @@ div.csl-indent {
 <li class="chapter" data-level="4.1" data-path="sec-pca.html"><a href="sec-pca.html"><i class="fa fa-check"></i><b>4.1</b> Principal Component Analysis</a>
 <ul>
 <li class="chapter" data-level="4.1.1" data-path="sec-pca.html"><a href="sec-pca.html#derivation-1-iterative-projections"><i class="fa fa-check"></i><b>4.1.1</b> Derivation 1: Iterative Projections</a></li>
-<li class="chapter" data-level="4.1.2" data-path="sec-pca.html"><a href="sec-pca.html#derivation-2-optimal-linear-subspace"><i class="fa fa-check"></i><b>4.1.2</b> Derivation 2: Optimal Linear Subspace</a></li>
 </ul></li>
-<li class="chapter" data-level="4.2" data-path="sec-svd.html"><a href="sec-svd.html"><i class="fa fa-check"></i><b>4.2</b> Singular Value Decomposition</a></li>
+<li class="chapter" data-level="4.2" data-path="sec-svd.html"><a href="sec-svd.html"><i class="fa fa-check"></i><b>4.2</b> Singular Value Decomposition</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="sec-svd.html"><a href="sec-svd.html#low-rank-approximations"><i class="fa fa-check"></i><b>4.2.1</b> Low-rank approximations</a></li>
+<li class="chapter" data-level="4.2.2" data-path="sec-svd.html"><a href="sec-svd.html#svd-and-low-rank-approximations"><i class="fa fa-check"></i><b>4.2.2</b> SVD and Low Rank Approximations</a></li>
+<li class="chapter" data-level="4.2.3" data-path="sec-svd.html"><a href="sec-svd.html#connections-with-pca"><i class="fa fa-check"></i><b>4.2.3</b> Connections with PCA</a></li>
+<li class="chapter" data-level="4.2.4" data-path="sec-svd.html"><a href="sec-svd.html#recommender-systems"><i class="fa fa-check"></i><b>4.2.4</b> Recommender Systems</a></li>
+</ul></li>
 <li class="chapter" data-level="4.3" data-path="nonnegative-matrix-factorization.html"><a href="nonnegative-matrix-factorization.html"><i class="fa fa-check"></i><b>4.3</b> Nonnegative Matrix Factorization</a></li>
 <li class="chapter" data-level="4.4" data-path="sec-mds.html"><a href="sec-mds.html"><i class="fa fa-check"></i><b>4.4</b> Multidimensional Scaling</a>
 <ul>
@@ -236,7 +241,13 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="6.1.1" data-path="background.html"><a href="background.html#data-on-a-manifold"><i class="fa fa-check"></i><b>6.1.1</b> Data on a manifold</a></li>
 </ul></li>
-<li class="chapter" data-level="6.2" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html"><i class="fa fa-check"></i><b>6.2</b> Isometric Feature Map (ISOMAP)</a></li>
+<li class="chapter" data-level="6.2" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html"><i class="fa fa-check"></i><b>6.2</b> Isometric Feature Map (ISOMAP)</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#introduction"><i class="fa fa-check"></i><b>6.2.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.2.2" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#key-definitions"><i class="fa fa-check"></i><b>6.2.2</b> Key Definitions</a></li>
+<li class="chapter" data-level="6.2.3" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#algorithm"><i class="fa fa-check"></i><b>6.2.3</b> Algorithm</a></li>
+<li class="chapter" data-level="6.2.4" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#limitations-of-isomap"><i class="fa fa-check"></i><b>6.2.4</b> Limitations of ISOMAP</a></li>
+</ul></li>
 <li class="chapter" data-level="6.3" data-path="local-linear-embeddings-lles.html"><a href="local-linear-embeddings-lles.html"><i class="fa fa-check"></i><b>6.3</b> Local Linear Embeddings (LLEs)</a></li>
 <li class="chapter" data-level="6.4" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html"><i class="fa fa-check"></i><b>6.4</b> Autoencoders (AEs)</a></li>
 <li class="chapter" data-level="6.5" data-path="additional-methods.html"><a href="additional-methods.html"><i class="fa fa-check"></i><b>6.5</b> Additional methods</a></li>
@@ -275,8 +286,1279 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="sec-mds" class="section level2 hasAnchor" number="4.4">
 <h2><span class="header-section-number">4.4</span> Multidimensional Scaling<a href="sec-mds.html#sec-mds" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li>Introduction and Settings</li>
+</ol>
+<p>Imagine there are <span class="math inline">\(N\)</span> objects (geographical locations, characteristics of people, etc.) In some cases, it is hard to depict each of these <span class="math inline">\(N\)</span> objects explicitly with a vector <span class="math inline">\(\vec{y} \in \mathbb{R}^{N}\)</span>, however, we can measure the degree of “closeness” (proximity) between these <span class="math inline">\(N\)</span> objects. In other words, we can obtain a <span class="math inline">\(N \times N\)</span> matrix <span class="math inline">\(\Delta\)</span>, with <span class="math inline">\(\Delta_{rs}\)</span> representing the distance/dissimilarity between objects <span class="math inline">\(r\)</span> and <span class="math inline">\(s\)</span>. Assume <span class="math inline">\(\Delta_{rr}=0\)</span> and <span class="math inline">\(\Delta_{sr} = \Delta_{rs}\)</span>. <span class="math inline">\(\Delta\)</span> is often called a Proximity/Distance/Dissimilarity Matrix.</p>
+<p>Given the Proximity Matrix <span class="math inline">\(\Delta\)</span>, MDS (Multi-dimensional Scaling) comes to place when it comes to recovering the original/latent individual configuration <span class="math inline">\(\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N \in \mathbb{R}^{t}\)</span>.</p>
+<p>The primary goal of MDS is to reconstruct the original configuration as close as possible, say, find points <span class="math inline">\(\tilde{y}_1, \tilde{y}_2, \dots, \tilde{y}_N \in \mathbb{R}^{t^{\prime}}\)</span> s.t. the distance between <span class="math inline">\(\tilde{y}_r\)</span> and <span class="math inline">\(\tilde{y}_s\)</span> is close to <span class="math inline">\(\Delta_{rs}\)</span>. Sometimes, the true dimension <span class="math inline">\(t\)</span> is unknown, so determining the number of dimensions is also a major problem to be solved.</p>
+<p>MDS can also serve as a data visualization method. Usually, <span class="math inline">\(t^{\prime}\)</span> is set to be either two or three, and the <span class="math inline">\(N\)</span> points in the two-dimensional (or three-dimensional) plot can show an obvious sign of clustering, where points in a particular cluster are viewed as being “closer” to the other points in that cluster than to points in other clusters.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Example</li>
+</ol>
+<p>Here we use the sphere distances of multiple large cities as an example to illustrate the power of MDS in recovering the original expressions and visualizing them.</p>
+<p>The <em>eurodist</em> R package provides road distance between 21 cities in Europe and 9 cities in the US. For the moment, we will focus on the 10 US cities with names and distances given in the following tables</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Atlanta</th>
+<th align="right">Chicago</th>
+<th align="right">Denver</th>
+<th align="right">Houston</th>
+<th align="right">LosAngeles</th>
+<th align="right">Miami</th>
+<th align="right">NewYork</th>
+<th align="right">SanFrancisco</th>
+<th align="right">Seattle</th>
+<th align="right">Washington.DC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Atlanta</td>
+<td align="right">0</td>
+<td align="right">587</td>
+<td align="right">1212</td>
+<td align="right">701</td>
+<td align="right">1936</td>
+<td align="right">604</td>
+<td align="right">748</td>
+<td align="right">2139</td>
+<td align="right">2182</td>
+<td align="right">543</td>
+</tr>
+<tr class="even">
+<td>Chicago</td>
+<td align="right">587</td>
+<td align="right">0</td>
+<td align="right">920</td>
+<td align="right">940</td>
+<td align="right">1745</td>
+<td align="right">1188</td>
+<td align="right">713</td>
+<td align="right">1858</td>
+<td align="right">1737</td>
+<td align="right">597</td>
+</tr>
+<tr class="odd">
+<td>Denver</td>
+<td align="right">1212</td>
+<td align="right">920</td>
+<td align="right">0</td>
+<td align="right">879</td>
+<td align="right">831</td>
+<td align="right">1726</td>
+<td align="right">1631</td>
+<td align="right">949</td>
+<td align="right">1021</td>
+<td align="right">1494</td>
+</tr>
+<tr class="even">
+<td>Houston</td>
+<td align="right">701</td>
+<td align="right">940</td>
+<td align="right">879</td>
+<td align="right">0</td>
+<td align="right">1374</td>
+<td align="right">968</td>
+<td align="right">1420</td>
+<td align="right">1645</td>
+<td align="right">1891</td>
+<td align="right">1220</td>
+</tr>
+<tr class="odd">
+<td>LosAngeles</td>
+<td align="right">1936</td>
+<td align="right">1745</td>
+<td align="right">831</td>
+<td align="right">1374</td>
+<td align="right">0</td>
+<td align="right">2339</td>
+<td align="right">2451</td>
+<td align="right">347</td>
+<td align="right">959</td>
+<td align="right">2300</td>
+</tr>
+<tr class="even">
+<td>Miami</td>
+<td align="right">604</td>
+<td align="right">1188</td>
+<td align="right">1726</td>
+<td align="right">968</td>
+<td align="right">2339</td>
+<td align="right">0</td>
+<td align="right">1092</td>
+<td align="right">2594</td>
+<td align="right">2734</td>
+<td align="right">923</td>
+</tr>
+<tr class="odd">
+<td>NewYork</td>
+<td align="right">748</td>
+<td align="right">713</td>
+<td align="right">1631</td>
+<td align="right">1420</td>
+<td align="right">2451</td>
+<td align="right">1092</td>
+<td align="right">0</td>
+<td align="right">2571</td>
+<td align="right">2408</td>
+<td align="right">205</td>
+</tr>
+<tr class="even">
+<td>SanFrancisco</td>
+<td align="right">2139</td>
+<td align="right">1858</td>
+<td align="right">949</td>
+<td align="right">1645</td>
+<td align="right">347</td>
+<td align="right">2594</td>
+<td align="right">2571</td>
+<td align="right">0</td>
+<td align="right">678</td>
+<td align="right">2442</td>
+</tr>
+<tr class="odd">
+<td>Seattle</td>
+<td align="right">2182</td>
+<td align="right">1737</td>
+<td align="right">1021</td>
+<td align="right">1891</td>
+<td align="right">959</td>
+<td align="right">2734</td>
+<td align="right">2408</td>
+<td align="right">678</td>
+<td align="right">0</td>
+<td align="right">2329</td>
+</tr>
+<tr class="even">
+<td>Washington.DC</td>
+<td align="right">543</td>
+<td align="right">597</td>
+<td align="right">1494</td>
+<td align="right">1220</td>
+<td align="right">2300</td>
+<td align="right">923</td>
+<td align="right">205</td>
+<td align="right">2442</td>
+<td align="right">2329</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p>After conducting classical MDS (a method of MDS, details will be discussed in proceeding parts), we acquire the plot below. The plot complies to our geographical knowledge. Miami and Seattle are the farthest from our plot, and these two cities are actually thousands of miles away (Seattle in the north-west end of US mainland and Miami in the south-east corner). NY and D.C. are quite close on the plot, same for LA and San Francisco.</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-23-1.png" width="672" />
+Actually, if we rotate the above plot 180 degrees, a US map appears. It is amazing!</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-24-1.png" width="672" />
+Again, let’s try MDS on the 21 European cities. We make some flipping on the map to make it comply to the true European map.</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Athens</th>
+<th align="right">Barcelona</th>
+<th align="right">Brussels</th>
+<th align="right">Calais</th>
+<th align="right">Cherbourg</th>
+<th align="right">Cologne</th>
+<th align="right">Copenhagen</th>
+<th align="right">Geneva</th>
+<th align="right">Gibraltar</th>
+<th align="right">Hamburg</th>
+<th align="right">Hook of Holland</th>
+<th align="right">Lisbon</th>
+<th align="right">Lyons</th>
+<th align="right">Madrid</th>
+<th align="right">Marseilles</th>
+<th align="right">Milan</th>
+<th align="right">Munich</th>
+<th align="right">Paris</th>
+<th align="right">Rome</th>
+<th align="right">Stockholm</th>
+<th align="right">Vienna</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Athens</td>
+<td align="right">0</td>
+<td align="right">3313</td>
+<td align="right">2963</td>
+<td align="right">3175</td>
+<td align="right">3339</td>
+<td align="right">2762</td>
+<td align="right">3276</td>
+<td align="right">2610</td>
+<td align="right">4485</td>
+<td align="right">2977</td>
+<td align="right">3030</td>
+<td align="right">4532</td>
+<td align="right">2753</td>
+<td align="right">3949</td>
+<td align="right">2865</td>
+<td align="right">2282</td>
+<td align="right">2179</td>
+<td align="right">3000</td>
+<td align="right">817</td>
+<td align="right">3927</td>
+<td align="right">1991</td>
+</tr>
+<tr class="even">
+<td>Barcelona</td>
+<td align="right">3313</td>
+<td align="right">0</td>
+<td align="right">1318</td>
+<td align="right">1326</td>
+<td align="right">1294</td>
+<td align="right">1498</td>
+<td align="right">2218</td>
+<td align="right">803</td>
+<td align="right">1172</td>
+<td align="right">2018</td>
+<td align="right">1490</td>
+<td align="right">1305</td>
+<td align="right">645</td>
+<td align="right">636</td>
+<td align="right">521</td>
+<td align="right">1014</td>
+<td align="right">1365</td>
+<td align="right">1033</td>
+<td align="right">1460</td>
+<td align="right">2868</td>
+<td align="right">1802</td>
+</tr>
+<tr class="odd">
+<td>Brussels</td>
+<td align="right">2963</td>
+<td align="right">1318</td>
+<td align="right">0</td>
+<td align="right">204</td>
+<td align="right">583</td>
+<td align="right">206</td>
+<td align="right">966</td>
+<td align="right">677</td>
+<td align="right">2256</td>
+<td align="right">597</td>
+<td align="right">172</td>
+<td align="right">2084</td>
+<td align="right">690</td>
+<td align="right">1558</td>
+<td align="right">1011</td>
+<td align="right">925</td>
+<td align="right">747</td>
+<td align="right">285</td>
+<td align="right">1511</td>
+<td align="right">1616</td>
+<td align="right">1175</td>
+</tr>
+<tr class="even">
+<td>Calais</td>
+<td align="right">3175</td>
+<td align="right">1326</td>
+<td align="right">204</td>
+<td align="right">0</td>
+<td align="right">460</td>
+<td align="right">409</td>
+<td align="right">1136</td>
+<td align="right">747</td>
+<td align="right">2224</td>
+<td align="right">714</td>
+<td align="right">330</td>
+<td align="right">2052</td>
+<td align="right">739</td>
+<td align="right">1550</td>
+<td align="right">1059</td>
+<td align="right">1077</td>
+<td align="right">977</td>
+<td align="right">280</td>
+<td align="right">1662</td>
+<td align="right">1786</td>
+<td align="right">1381</td>
+</tr>
+<tr class="odd">
+<td>Cherbourg</td>
+<td align="right">3339</td>
+<td align="right">1294</td>
+<td align="right">583</td>
+<td align="right">460</td>
+<td align="right">0</td>
+<td align="right">785</td>
+<td align="right">1545</td>
+<td align="right">853</td>
+<td align="right">2047</td>
+<td align="right">1115</td>
+<td align="right">731</td>
+<td align="right">1827</td>
+<td align="right">789</td>
+<td align="right">1347</td>
+<td align="right">1101</td>
+<td align="right">1209</td>
+<td align="right">1160</td>
+<td align="right">340</td>
+<td align="right">1794</td>
+<td align="right">2196</td>
+<td align="right">1588</td>
+</tr>
+<tr class="even">
+<td>Cologne</td>
+<td align="right">2762</td>
+<td align="right">1498</td>
+<td align="right">206</td>
+<td align="right">409</td>
+<td align="right">785</td>
+<td align="right">0</td>
+<td align="right">760</td>
+<td align="right">1662</td>
+<td align="right">2436</td>
+<td align="right">460</td>
+<td align="right">269</td>
+<td align="right">2290</td>
+<td align="right">714</td>
+<td align="right">1764</td>
+<td align="right">1035</td>
+<td align="right">911</td>
+<td align="right">583</td>
+<td align="right">465</td>
+<td align="right">1497</td>
+<td align="right">1403</td>
+<td align="right">937</td>
+</tr>
+<tr class="odd">
+<td>Copenhagen</td>
+<td align="right">3276</td>
+<td align="right">2218</td>
+<td align="right">966</td>
+<td align="right">1136</td>
+<td align="right">1545</td>
+<td align="right">760</td>
+<td align="right">0</td>
+<td align="right">1418</td>
+<td align="right">3196</td>
+<td align="right">460</td>
+<td align="right">269</td>
+<td align="right">2971</td>
+<td align="right">1458</td>
+<td align="right">2498</td>
+<td align="right">1778</td>
+<td align="right">1537</td>
+<td align="right">1104</td>
+<td align="right">1176</td>
+<td align="right">2050</td>
+<td align="right">650</td>
+<td align="right">1455</td>
+</tr>
+<tr class="even">
+<td>Geneva</td>
+<td align="right">2610</td>
+<td align="right">803</td>
+<td align="right">677</td>
+<td align="right">747</td>
+<td align="right">853</td>
+<td align="right">1662</td>
+<td align="right">1418</td>
+<td align="right">0</td>
+<td align="right">1975</td>
+<td align="right">1118</td>
+<td align="right">895</td>
+<td align="right">1936</td>
+<td align="right">158</td>
+<td align="right">1439</td>
+<td align="right">425</td>
+<td align="right">328</td>
+<td align="right">591</td>
+<td align="right">513</td>
+<td align="right">995</td>
+<td align="right">2068</td>
+<td align="right">1019</td>
+</tr>
+<tr class="odd">
+<td>Gibraltar</td>
+<td align="right">4485</td>
+<td align="right">1172</td>
+<td align="right">2256</td>
+<td align="right">2224</td>
+<td align="right">2047</td>
+<td align="right">2436</td>
+<td align="right">3196</td>
+<td align="right">1975</td>
+<td align="right">0</td>
+<td align="right">2897</td>
+<td align="right">2428</td>
+<td align="right">676</td>
+<td align="right">1817</td>
+<td align="right">698</td>
+<td align="right">1693</td>
+<td align="right">2185</td>
+<td align="right">2565</td>
+<td align="right">1971</td>
+<td align="right">2631</td>
+<td align="right">3886</td>
+<td align="right">2974</td>
+</tr>
+<tr class="even">
+<td>Hamburg</td>
+<td align="right">2977</td>
+<td align="right">2018</td>
+<td align="right">597</td>
+<td align="right">714</td>
+<td align="right">1115</td>
+<td align="right">460</td>
+<td align="right">460</td>
+<td align="right">1118</td>
+<td align="right">2897</td>
+<td align="right">0</td>
+<td align="right">550</td>
+<td align="right">2671</td>
+<td align="right">1159</td>
+<td align="right">2198</td>
+<td align="right">1479</td>
+<td align="right">1238</td>
+<td align="right">805</td>
+<td align="right">877</td>
+<td align="right">1751</td>
+<td align="right">949</td>
+<td align="right">1155</td>
+</tr>
+<tr class="odd">
+<td>Hook of Holland</td>
+<td align="right">3030</td>
+<td align="right">1490</td>
+<td align="right">172</td>
+<td align="right">330</td>
+<td align="right">731</td>
+<td align="right">269</td>
+<td align="right">269</td>
+<td align="right">895</td>
+<td align="right">2428</td>
+<td align="right">550</td>
+<td align="right">0</td>
+<td align="right">2280</td>
+<td align="right">863</td>
+<td align="right">1730</td>
+<td align="right">1183</td>
+<td align="right">1098</td>
+<td align="right">851</td>
+<td align="right">457</td>
+<td align="right">1683</td>
+<td align="right">1500</td>
+<td align="right">1205</td>
+</tr>
+<tr class="even">
+<td>Lisbon</td>
+<td align="right">4532</td>
+<td align="right">1305</td>
+<td align="right">2084</td>
+<td align="right">2052</td>
+<td align="right">1827</td>
+<td align="right">2290</td>
+<td align="right">2971</td>
+<td align="right">1936</td>
+<td align="right">676</td>
+<td align="right">2671</td>
+<td align="right">2280</td>
+<td align="right">0</td>
+<td align="right">1178</td>
+<td align="right">668</td>
+<td align="right">1762</td>
+<td align="right">2250</td>
+<td align="right">2507</td>
+<td align="right">1799</td>
+<td align="right">2700</td>
+<td align="right">3231</td>
+<td align="right">2937</td>
+</tr>
+<tr class="odd">
+<td>Lyons</td>
+<td align="right">2753</td>
+<td align="right">645</td>
+<td align="right">690</td>
+<td align="right">739</td>
+<td align="right">789</td>
+<td align="right">714</td>
+<td align="right">1458</td>
+<td align="right">158</td>
+<td align="right">1817</td>
+<td align="right">1159</td>
+<td align="right">863</td>
+<td align="right">1178</td>
+<td align="right">0</td>
+<td align="right">1281</td>
+<td align="right">320</td>
+<td align="right">328</td>
+<td align="right">724</td>
+<td align="right">471</td>
+<td align="right">1048</td>
+<td align="right">2108</td>
+<td align="right">1157</td>
+</tr>
+<tr class="even">
+<td>Madrid</td>
+<td align="right">3949</td>
+<td align="right">636</td>
+<td align="right">1558</td>
+<td align="right">1550</td>
+<td align="right">1347</td>
+<td align="right">1764</td>
+<td align="right">2498</td>
+<td align="right">1439</td>
+<td align="right">698</td>
+<td align="right">2198</td>
+<td align="right">1730</td>
+<td align="right">668</td>
+<td align="right">1281</td>
+<td align="right">0</td>
+<td align="right">1157</td>
+<td align="right">1724</td>
+<td align="right">2010</td>
+<td align="right">1273</td>
+<td align="right">2097</td>
+<td align="right">3188</td>
+<td align="right">2409</td>
+</tr>
+<tr class="odd">
+<td>Marseilles</td>
+<td align="right">2865</td>
+<td align="right">521</td>
+<td align="right">1011</td>
+<td align="right">1059</td>
+<td align="right">1101</td>
+<td align="right">1035</td>
+<td align="right">1778</td>
+<td align="right">425</td>
+<td align="right">1693</td>
+<td align="right">1479</td>
+<td align="right">1183</td>
+<td align="right">1762</td>
+<td align="right">320</td>
+<td align="right">1157</td>
+<td align="right">0</td>
+<td align="right">618</td>
+<td align="right">1109</td>
+<td align="right">792</td>
+<td align="right">1011</td>
+<td align="right">2428</td>
+<td align="right">1363</td>
+</tr>
+<tr class="even">
+<td>Milan</td>
+<td align="right">2282</td>
+<td align="right">1014</td>
+<td align="right">925</td>
+<td align="right">1077</td>
+<td align="right">1209</td>
+<td align="right">911</td>
+<td align="right">1537</td>
+<td align="right">328</td>
+<td align="right">2185</td>
+<td align="right">1238</td>
+<td align="right">1098</td>
+<td align="right">2250</td>
+<td align="right">328</td>
+<td align="right">1724</td>
+<td align="right">618</td>
+<td align="right">0</td>
+<td align="right">331</td>
+<td align="right">856</td>
+<td align="right">586</td>
+<td align="right">2187</td>
+<td align="right">898</td>
+</tr>
+<tr class="odd">
+<td>Munich</td>
+<td align="right">2179</td>
+<td align="right">1365</td>
+<td align="right">747</td>
+<td align="right">977</td>
+<td align="right">1160</td>
+<td align="right">583</td>
+<td align="right">1104</td>
+<td align="right">591</td>
+<td align="right">2565</td>
+<td align="right">805</td>
+<td align="right">851</td>
+<td align="right">2507</td>
+<td align="right">724</td>
+<td align="right">2010</td>
+<td align="right">1109</td>
+<td align="right">331</td>
+<td align="right">0</td>
+<td align="right">821</td>
+<td align="right">946</td>
+<td align="right">1754</td>
+<td align="right">428</td>
+</tr>
+<tr class="even">
+<td>Paris</td>
+<td align="right">3000</td>
+<td align="right">1033</td>
+<td align="right">285</td>
+<td align="right">280</td>
+<td align="right">340</td>
+<td align="right">465</td>
+<td align="right">1176</td>
+<td align="right">513</td>
+<td align="right">1971</td>
+<td align="right">877</td>
+<td align="right">457</td>
+<td align="right">1799</td>
+<td align="right">471</td>
+<td align="right">1273</td>
+<td align="right">792</td>
+<td align="right">856</td>
+<td align="right">821</td>
+<td align="right">0</td>
+<td align="right">1476</td>
+<td align="right">1827</td>
+<td align="right">1249</td>
+</tr>
+<tr class="odd">
+<td>Rome</td>
+<td align="right">817</td>
+<td align="right">1460</td>
+<td align="right">1511</td>
+<td align="right">1662</td>
+<td align="right">1794</td>
+<td align="right">1497</td>
+<td align="right">2050</td>
+<td align="right">995</td>
+<td align="right">2631</td>
+<td align="right">1751</td>
+<td align="right">1683</td>
+<td align="right">2700</td>
+<td align="right">1048</td>
+<td align="right">2097</td>
+<td align="right">1011</td>
+<td align="right">586</td>
+<td align="right">946</td>
+<td align="right">1476</td>
+<td align="right">0</td>
+<td align="right">2707</td>
+<td align="right">1209</td>
+</tr>
+<tr class="even">
+<td>Stockholm</td>
+<td align="right">3927</td>
+<td align="right">2868</td>
+<td align="right">1616</td>
+<td align="right">1786</td>
+<td align="right">2196</td>
+<td align="right">1403</td>
+<td align="right">650</td>
+<td align="right">2068</td>
+<td align="right">3886</td>
+<td align="right">949</td>
+<td align="right">1500</td>
+<td align="right">3231</td>
+<td align="right">2108</td>
+<td align="right">3188</td>
+<td align="right">2428</td>
+<td align="right">2187</td>
+<td align="right">1754</td>
+<td align="right">1827</td>
+<td align="right">2707</td>
+<td align="right">0</td>
+<td align="right">2105</td>
+</tr>
+<tr class="odd">
+<td>Vienna</td>
+<td align="right">1991</td>
+<td align="right">1802</td>
+<td align="right">1175</td>
+<td align="right">1381</td>
+<td align="right">1588</td>
+<td align="right">937</td>
+<td align="right">1455</td>
+<td align="right">1019</td>
+<td align="right">2974</td>
+<td align="right">1155</td>
+<td align="right">1205</td>
+<td align="right">2937</td>
+<td align="right">1157</td>
+<td align="right">2409</td>
+<td align="right">1363</td>
+<td align="right">898</td>
+<td align="right">428</td>
+<td align="right">1249</td>
+<td align="right">1209</td>
+<td align="right">2105</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><img src="_main_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p>The above plot reconstructs the European map quite well. Gibraltar, Lisbon and Madrid are in the south-west corner, the two North European cities Stockholm and Copenhagen are in the north end, and Athens is in the south-west corner.</p>
+<p>Finally, let’s consider the 18 representative global cities. Their pairwise flight lengths (geodesic distance) are shown in the table below. As we can see, the geodesic distances between the three Southern-Hemisphere cities: Rio, Cape Town, Melbourne and other Northern-Hemisphere cities are generally large (almost all over 10,000 kilometers)</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Beijing</th>
+<th align="right">Cape Town</th>
+<th align="right">Hong Kong</th>
+<th align="right">Honolulu</th>
+<th align="right">London</th>
+<th align="right">Melbourne</th>
+<th align="right">Mexico City</th>
+<th align="right">Montreal</th>
+<th align="right">Moscow</th>
+<th align="right">New Delhi</th>
+<th align="right">New York</th>
+<th align="right">Paris</th>
+<th align="right">Rio</th>
+<th align="right">Rome</th>
+<th align="right">S.F.</th>
+<th align="right">Singapore</th>
+<th align="right">Stockholm</th>
+<th align="right">Tokyo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Beijing</td>
+<td align="right">0</td>
+<td align="right">12947</td>
+<td align="right">1972</td>
+<td align="right">8171</td>
+<td align="right">8160</td>
+<td align="right">9093</td>
+<td align="right">12478</td>
+<td align="right">10490</td>
+<td align="right">5809</td>
+<td align="right">2788</td>
+<td align="right">11012</td>
+<td align="right">8236</td>
+<td align="right">17325</td>
+<td align="right">8144</td>
+<td align="right">9524</td>
+<td align="right">4465</td>
+<td align="right">6725</td>
+<td align="right">2104</td>
+</tr>
+<tr class="even">
+<td>Cape Town</td>
+<td align="right">12947</td>
+<td align="right">0</td>
+<td align="right">11867</td>
+<td align="right">18562</td>
+<td align="right">9635</td>
+<td align="right">10388</td>
+<td align="right">13703</td>
+<td align="right">12744</td>
+<td align="right">10101</td>
+<td align="right">9284</td>
+<td align="right">12551</td>
+<td align="right">9307</td>
+<td align="right">6075</td>
+<td align="right">8417</td>
+<td align="right">16487</td>
+<td align="right">9671</td>
+<td align="right">10334</td>
+<td align="right">14737</td>
+</tr>
+<tr class="odd">
+<td>Hong Kong</td>
+<td align="right">1972</td>
+<td align="right">11867</td>
+<td align="right">0</td>
+<td align="right">8945</td>
+<td align="right">9646</td>
+<td align="right">7392</td>
+<td align="right">14155</td>
+<td align="right">12462</td>
+<td align="right">7158</td>
+<td align="right">3770</td>
+<td align="right">12984</td>
+<td align="right">9650</td>
+<td align="right">17710</td>
+<td align="right">9300</td>
+<td align="right">11121</td>
+<td align="right">2575</td>
+<td align="right">8243</td>
+<td align="right">2893</td>
+</tr>
+<tr class="even">
+<td>Honolulu</td>
+<td align="right">8171</td>
+<td align="right">18562</td>
+<td align="right">8945</td>
+<td align="right">0</td>
+<td align="right">11653</td>
+<td align="right">8862</td>
+<td align="right">6098</td>
+<td align="right">7915</td>
+<td align="right">11342</td>
+<td align="right">11930</td>
+<td align="right">7996</td>
+<td align="right">11988</td>
+<td align="right">13343</td>
+<td align="right">12936</td>
+<td align="right">3857</td>
+<td align="right">10824</td>
+<td align="right">11059</td>
+<td align="right">6208</td>
+</tr>
+<tr class="odd">
+<td>London</td>
+<td align="right">8160</td>
+<td align="right">9635</td>
+<td align="right">9646</td>
+<td align="right">11653</td>
+<td align="right">0</td>
+<td align="right">16902</td>
+<td align="right">8947</td>
+<td align="right">5240</td>
+<td align="right">2506</td>
+<td align="right">6724</td>
+<td align="right">5586</td>
+<td align="right">341</td>
+<td align="right">9254</td>
+<td align="right">1434</td>
+<td align="right">8640</td>
+<td align="right">10860</td>
+<td align="right">1436</td>
+<td align="right">9585</td>
+</tr>
+<tr class="even">
+<td>Melbourne</td>
+<td align="right">9093</td>
+<td align="right">10388</td>
+<td align="right">7392</td>
+<td align="right">8862</td>
+<td align="right">16902</td>
+<td align="right">0</td>
+<td align="right">13557</td>
+<td align="right">16730</td>
+<td align="right">14418</td>
+<td align="right">10192</td>
+<td align="right">16671</td>
+<td align="right">16793</td>
+<td align="right">13227</td>
+<td align="right">15987</td>
+<td align="right">12644</td>
+<td align="right">6050</td>
+<td align="right">15593</td>
+<td align="right">8159</td>
+</tr>
+<tr class="odd">
+<td>Mexico City</td>
+<td align="right">12478</td>
+<td align="right">13703</td>
+<td align="right">14155</td>
+<td align="right">6098</td>
+<td align="right">8947</td>
+<td align="right">13557</td>
+<td align="right">0</td>
+<td align="right">3728</td>
+<td align="right">10740</td>
+<td align="right">14679</td>
+<td align="right">3362</td>
+<td align="right">9213</td>
+<td align="right">7669</td>
+<td align="right">10260</td>
+<td align="right">3038</td>
+<td align="right">16623</td>
+<td align="right">9603</td>
+<td align="right">11319</td>
+</tr>
+<tr class="even">
+<td>Montreal</td>
+<td align="right">10490</td>
+<td align="right">12744</td>
+<td align="right">12462</td>
+<td align="right">7915</td>
+<td align="right">5240</td>
+<td align="right">16730</td>
+<td align="right">3728</td>
+<td align="right">0</td>
+<td align="right">7077</td>
+<td align="right">11286</td>
+<td align="right">533</td>
+<td align="right">5522</td>
+<td align="right">8175</td>
+<td align="right">6601</td>
+<td align="right">4092</td>
+<td align="right">14816</td>
+<td align="right">5900</td>
+<td align="right">10409</td>
+</tr>
+<tr class="odd">
+<td>Moscow</td>
+<td align="right">5809</td>
+<td align="right">10101</td>
+<td align="right">7158</td>
+<td align="right">11342</td>
+<td align="right">2506</td>
+<td align="right">14418</td>
+<td align="right">10740</td>
+<td align="right">7077</td>
+<td align="right">0</td>
+<td align="right">4349</td>
+<td align="right">7530</td>
+<td align="right">2492</td>
+<td align="right">11529</td>
+<td align="right">2378</td>
+<td align="right">9469</td>
+<td align="right">8426</td>
+<td align="right">1231</td>
+<td align="right">7502</td>
+</tr>
+<tr class="even">
+<td>New Delhi</td>
+<td align="right">2788</td>
+<td align="right">9284</td>
+<td align="right">3770</td>
+<td align="right">11930</td>
+<td align="right">6724</td>
+<td align="right">10192</td>
+<td align="right">14679</td>
+<td align="right">11286</td>
+<td align="right">4349</td>
+<td align="right">0</td>
+<td align="right">11779</td>
+<td align="right">6601</td>
+<td align="right">14080</td>
+<td align="right">5929</td>
+<td align="right">12380</td>
+<td align="right">4142</td>
+<td align="right">5579</td>
+<td align="right">5857</td>
+</tr>
+<tr class="odd">
+<td>New York</td>
+<td align="right">11012</td>
+<td align="right">12551</td>
+<td align="right">12984</td>
+<td align="right">7996</td>
+<td align="right">5586</td>
+<td align="right">16671</td>
+<td align="right">3362</td>
+<td align="right">533</td>
+<td align="right">7530</td>
+<td align="right">11779</td>
+<td align="right">0</td>
+<td align="right">5851</td>
+<td align="right">7729</td>
+<td align="right">6907</td>
+<td align="right">4140</td>
+<td align="right">15349</td>
+<td align="right">6336</td>
+<td align="right">10870</td>
+</tr>
+<tr class="even">
+<td>Paris</td>
+<td align="right">8236</td>
+<td align="right">9307</td>
+<td align="right">9650</td>
+<td align="right">11988</td>
+<td align="right">341</td>
+<td align="right">16793</td>
+<td align="right">9213</td>
+<td align="right">5522</td>
+<td align="right">2492</td>
+<td align="right">6601</td>
+<td align="right">5851</td>
+<td align="right">0</td>
+<td align="right">9146</td>
+<td align="right">1108</td>
+<td align="right">8975</td>
+<td align="right">10743</td>
+<td align="right">1546</td>
+<td align="right">9738</td>
+</tr>
+<tr class="odd">
+<td>Rio</td>
+<td align="right">17325</td>
+<td align="right">6075</td>
+<td align="right">17710</td>
+<td align="right">13343</td>
+<td align="right">9254</td>
+<td align="right">13227</td>
+<td align="right">7669</td>
+<td align="right">8175</td>
+<td align="right">11529</td>
+<td align="right">14080</td>
+<td align="right">7729</td>
+<td align="right">9146</td>
+<td align="right">0</td>
+<td align="right">9181</td>
+<td align="right">10647</td>
+<td align="right">15740</td>
+<td align="right">10682</td>
+<td align="right">18557</td>
+</tr>
+<tr class="even">
+<td>Rome</td>
+<td align="right">8144</td>
+<td align="right">8417</td>
+<td align="right">9300</td>
+<td align="right">12936</td>
+<td align="right">1434</td>
+<td align="right">15987</td>
+<td align="right">10260</td>
+<td align="right">6601</td>
+<td align="right">2378</td>
+<td align="right">5929</td>
+<td align="right">6907</td>
+<td align="right">1108</td>
+<td align="right">9181</td>
+<td align="right">0</td>
+<td align="right">10071</td>
+<td align="right">10030</td>
+<td align="right">1977</td>
+<td align="right">9881</td>
+</tr>
+<tr class="odd">
+<td>S.F.</td>
+<td align="right">9524</td>
+<td align="right">16487</td>
+<td align="right">11121</td>
+<td align="right">3857</td>
+<td align="right">8640</td>
+<td align="right">12644</td>
+<td align="right">3038</td>
+<td align="right">4092</td>
+<td align="right">9469</td>
+<td align="right">12380</td>
+<td align="right">4140</td>
+<td align="right">8975</td>
+<td align="right">10647</td>
+<td align="right">10071</td>
+<td align="right">0</td>
+<td align="right">13598</td>
+<td align="right">8644</td>
+<td align="right">8284</td>
+</tr>
+<tr class="even">
+<td>Singapore</td>
+<td align="right">4465</td>
+<td align="right">9671</td>
+<td align="right">2575</td>
+<td align="right">10824</td>
+<td align="right">10860</td>
+<td align="right">6050</td>
+<td align="right">16623</td>
+<td align="right">14816</td>
+<td align="right">8426</td>
+<td align="right">4142</td>
+<td align="right">15349</td>
+<td align="right">10743</td>
+<td align="right">15740</td>
+<td align="right">10030</td>
+<td align="right">13598</td>
+<td align="right">0</td>
+<td align="right">9646</td>
+<td align="right">5317</td>
+</tr>
+<tr class="odd">
+<td>Stockholm</td>
+<td align="right">6725</td>
+<td align="right">10334</td>
+<td align="right">8243</td>
+<td align="right">11059</td>
+<td align="right">1436</td>
+<td align="right">15593</td>
+<td align="right">9603</td>
+<td align="right">5900</td>
+<td align="right">1231</td>
+<td align="right">5579</td>
+<td align="right">6336</td>
+<td align="right">1546</td>
+<td align="right">10682</td>
+<td align="right">1977</td>
+<td align="right">8644</td>
+<td align="right">9646</td>
+<td align="right">0</td>
+<td align="right">8193</td>
+</tr>
+<tr class="even">
+<td>Tokyo</td>
+<td align="right">2104</td>
+<td align="right">14737</td>
+<td align="right">2893</td>
+<td align="right">6208</td>
+<td align="right">9585</td>
+<td align="right">8159</td>
+<td align="right">11319</td>
+<td align="right">10409</td>
+<td align="right">7502</td>
+<td align="right">5857</td>
+<td align="right">10870</td>
+<td align="right">9738</td>
+<td align="right">18557</td>
+<td align="right">9881</td>
+<td align="right">8284</td>
+<td align="right">5317</td>
+<td align="right">8193</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-d8a6981575f8b0739c4e" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-d8a6981575f8b0739c4e">{"x":{"visdat":{"f7e61513068c":["function () ","plotlyVisDat"]},"cur_data":"f7e61513068c","attrs":{"f7e61513068c":{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":{},"y":{},"z":{},"marker":{"size":5,"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"]},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","inherit":true},"f7e61513068c.1":{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":{},"y":{},"z":{},"marker":{"size":5,"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"]},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"text","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"","zeroline":false,"showline":false,"showticklabels":false,"showgrid":true},"yaxis":{"title":"","zeroline":false,"showline":false,"showticklabels":false,"showgrid":true},"zaxis":{"title":"","zeroline":false,"showline":false,"showticklabels":false,"showgrid":true}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":[5343.9877289020233,41.140863824298336,7005.9310679057635,957.96677970857229,-3156.0709693998551,7934.2357737096027,-6113.9443366480236,-5912.3299842780689,-220.65980656084307,4562.9046904158258,-6341.1960811477611,-3056.9920394165256,-7913.8549402285762,-2261.6901911745376,-3044.6660038081181,8131.6917077783037,-1609.4274814758753,5652.973221893807],"y":[-1230.200982493398,8921.1810193426445,-303.63229523740449,-8682.775955652045,2568.5362904738859,-2325.5876252753369,-4904.7132522663906,-2034.497770624947,2386.7704037260823,3465.5886580926508,-2075.0155180250599,2920.1754766403678,3041.9874515509109,3924.7383619940251,-6342.4234776081357,2466.5855740698066,2008.1293377260868,-3804.8456964337433],"z":[-2934.5840202010972,5544.9733301782771,-1629.6243019835349,1245.0767135166777,-3259.5433910247648,9061.0043511824679,2754.1499571706909,-1509.9751051745079,-3207.836821273494,-1762.8011381620981,-987.39657250125333,-3108.8208436851914,7541.4732083967556,-2580.2445646129659,118.99226663268468,897.51180217772207,-3420.3758431654628,-2761.9790274709017],"marker":{"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"],"size":5,"line":{"color":"rgba(31,119,180,1)"}},"type":"scatter3d","mode":"markers","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":[5343.9877289020233,41.140863824298336,7005.9310679057635,957.96677970857229,-3156.0709693998551,7934.2357737096027,-6113.9443366480236,-5912.3299842780689,-220.65980656084307,4562.9046904158258,-6341.1960811477611,-3056.9920394165256,-7913.8549402285762,-2261.6901911745376,-3044.6660038081181,8131.6917077783037,-1609.4274814758753,5652.973221893807],"y":[-1230.200982493398,8921.1810193426445,-303.63229523740449,-8682.775955652045,2568.5362904738859,-2325.5876252753369,-4904.7132522663906,-2034.497770624947,2386.7704037260823,3465.5886580926508,-2075.0155180250599,2920.1754766403678,3041.9874515509109,3924.7383619940251,-6342.4234776081357,2466.5855740698066,2008.1293377260868,-3804.8456964337433],"z":[-2934.5840202010972,5544.9733301782771,-1629.6243019835349,1245.0767135166777,-3259.5433910247648,9061.0043511824679,2754.1499571706909,-1509.9751051745079,-3207.836821273494,-1762.8011381620981,-987.39657250125333,-3108.8208436851914,7541.4732083967556,-2580.2445646129659,118.99226663268468,897.51180217772207,-3420.3758431654628,-2761.9790274709017],"marker":{"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"],"size":5,"line":{"color":"rgba(255,127,14,1)"}},"type":"scatter3d","mode":"text+markers","error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>The three-dimensional visualization result of MDS is shown above. You can rotate and magnify it on your laptop. The blue points represent Asian cities, the black points represent European cities, and the red points represent North American cities. They are clustered together within the group. If you try to rotate the plot and make these three clusters in the bottom, you will find the three separate cities: Rio, Melbourne and Cape Town on the top of the plot. This actually represents that they are the only cities in Southern-Hemisphere. If you inspect the plot clearly, you will find that these cities actually locate on a sphere, which complies to the true scenario. MDS is quite successful in recovering their relative locations!</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Key features of MDS</li>
+</ol>
+<p>Besides showing the capacity of MDS in recovering original expressions and visualization, we also gain two by-products from the examples above.</p>
+<p>(i) The pairwise distances/proximity between two objects don’t have to be Euclidean distance. In the above example, they are actually geodesic distance. Actually, based on the type of distance metric and the specific recovery method of the Proximity Matrix, MDS can be divided into three major types: Classical Scaling; Metric MDS; and Non-Metric MDS.</p>
+<p>Classical Scaling and Metric MDS generally require that the input data is a true distance metric, while Non-metric MDS is usually used when the input data doesn’t satisfy the properties of a true distance metric or when the relationships are ordinal (i.e., we only know which distances are larger, but not by how much).</p>
+<p>To add, Classical MDS operates by applying an eigen-decomposition to the “double-centered” dissimilarity matrix, while Metric MDS and Non-Metric MDS may employ iterative optimization methods to better accommodate non-linear relationships in data structure.</p>
+<ol start="2" style="list-style-type: lower-roman">
+<li>As we can tell from the recovery of US map and European map, the configurations of <span class="math inline">\(\tilde{y}_1, \tilde{y}_2, \dots, \tilde{y}_N\)</span> are not unique, as we can rotate or flip the map. Actually, if <span class="math inline">\(\tilde{y}_1, \tilde{y}_2, \dots, \tilde{y}_N \in \mathbb{R}^{t^{\prime}}\)</span> is considered as the optimal solution, given any vector <span class="math inline">\(\vec{b} \in \mathbb{R}^{t^{\prime}}\)</span> and orthogonal matrix <span class="math inline">\(A \in \mathbb{R}^{t^{\prime} \times t^{\prime}}\)</span>, <span class="math inline">\(||(A \tilde{y}_r + \vec{b} - (A \tilde{y}_s + \vec{b})|| = ||\tilde{y}_r - \tilde{y}_s||\)</span>. Rotation, Reflection or Translation don’t alter the pairwise distances. So <span class="math inline">\(A \tilde{y}_1 + \vec{b}, A \tilde{y}_2 + \vec{b}, \dots, A \tilde{y}_N + \vec{b}\)</span> is also an optimal solution.</li>
+</ol>
 <div id="classical-scaling" class="section level3 hasAnchor" number="4.4.1">
 <h3><span class="header-section-number">4.4.1</span> Classical Scaling<a href="sec-mds.html#classical-scaling" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Before going deep into Classical Scaling, we first need to introduce some important definitions.</p>
+<div id="definitions" class="section level4 hasAnchor" number="4.4.1.1">
+<h4><span class="header-section-number">4.4.1.1</span> Definitions:<a href="sec-mds.html#definitions" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ol style="list-style-type: lower-roman">
+<li>A matrix <span class="math inline">\(\Delta \in \mathbb{R}^{N \times N}\)</span> is called a distance matrix if it possesses the following properties:</li>
+</ol>
+<ol style="list-style-type: lower-alpha">
+<li>Symmetry</li>
+</ol>
+<p><span class="math inline">\(\Delta\)</span> is symmetric, meaning that:</p>
+<p><span class="math display">\[\Delta_{rs} = \Delta_{sr} \quad \text{for all } r \text{ and } s\]</span></p>
+<p>This implies that the distance between points <span class="math inline">\(r\)</span> and <span class="math inline">\(s\)</span> is the same as the distance between points <span class="math inline">\(s\)</span> and <span class="math inline">\(r\)</span>.</p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Zero Diagonal</li>
+</ol>
+<p>The diagonal entries of the matrix represent the distance of a point to itself, and are thus all zeros:</p>
+<p><span class="math display">\[\Delta_{rr} \equiv 0 \quad \text{for all } 1 \leq r \leq N\]</span></p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Non-negativity</li>
+</ol>
+<p>All distances are non-negative:</p>
+<p><span class="math display">\[\Delta_{rs} \geq 0\]</span></p>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>Triangle Inequality</li>
+</ol>
+<p>The matrix respects the triangle inequality:</p>
+<p><span class="math display">\[\Delta_{rs} \leq \Delta_{rt} + \Delta_{ts}\]</span></p>
+<p>This property ensures that the direct distance between two points <span class="math inline">\(r\)</span> and <span class="math inline">\(s\)</span> is never greater than the sum of the distances from <span class="math inline">\(r\)</span> to a third point <span class="math inline">\(t\)</span> and from <span class="math inline">\(t\)</span> to <span class="math inline">\(s\)</span>.</p>
+<ol start="2" style="list-style-type: lower-roman">
+<li>Further, the distance matrix <span class="math inline">\(\Delta \in \mathbb{R}^{N \times N}\)</span> is a Euclidean distance matrix if there exists a configuration <span class="math inline">\(\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N\)</span> s.t. <span class="math inline">\(\Delta_{rs}\)</span> represents the Euclidean distance between points <span class="math inline">\(r\)</span> and <span class="math inline">\(s\)</span>, i.e., <span class="math inline">\(||\vec{y}_r-\vec{y}_s||=\Delta_{rs} \forall r,s\)</span>.</li>
+</ol>
+<p>For configuration <span class="math inline">\(\vec{y}_i, \vec{y}_j \in \mathbb{R}^t\)</span>, the Euclidean distance between point <span class="math inline">\(r\)</span> and point <span class="math inline">\(s\)</span> is defined as <span class="math inline">\(\delta_{ij}=||\vec{y}_i - \vec{y}_j||= \left\{\sum_{k=1}^t \left(y_{i k}-x_{j k}\right)^2\right\}^{1/2}\)</span>. <strong>Remember to take the square root</strong></p>
+<ol start="3" style="list-style-type: decimal">
+<li>Prerequisite for Classical Scaling:</li>
+</ol>
+<ol style="list-style-type: lower-roman">
+<li><p>Strictly speaking, we require that the Proximity Matrix <span class="math inline">\(\Delta\)</span> is an Euclidean distance matrix.</p></li>
+<li><p>Furthermore, it is assumed that the configurations <span class="math inline">\(\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N\)</span> are centered. In other words, <span class="math inline">\(\sum_{i=1}^N \vec{y}_i = \vec{0}\)</span>. This step eliminates the influence of location.</p></li>
+</ol>
+</div>
+<div id="recover-coordinates" class="section level4 hasAnchor" number="4.4.1.2">
+<h4><span class="header-section-number">4.4.1.2</span> Recover Coordinates<a href="sec-mds.html#recover-coordinates" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>It may sound difficult to recover the configuration <span class="math inline">\(\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N\)</span> from merely the Euclidean distance matrix <span class="math inline">\(\Delta\)</span> at the first glance. However, the situation becomes clearer after some analysis.</p>
+<p><span class="math inline">\(\Delta^2_{rs}\)</span> can be expressed as <span class="math inline">\(\Delta^2_{rs} = ||\vec{y}_r||^2 + ||\vec{y}_s||^2 - 2 \vec{y}_r^T \vec{y}_s\)</span>. It’s not difficult to observe that both terms are both very easy to be expressed with the original configuration: <span class="math inline">\(Y = \left(\begin{array}{c} \vec{y}_1^{\top} \\ \vec{y}_2^{\top} \\ \vdots \\ \dot{y}_N^{\top} \end{array}\right)\)</span>.</p>
+<p>The entries of the inner product matrix, i.e. <span class="math inline">\(B = YY^T \in \mathbb{R}^{N \times N}\)</span> are able to express the Euclidean distance matrix <span class="math inline">\(\Delta\)</span>.</p>
+<p><strong>(1) Computing the inner product matrix <span class="math inline">\(B\)</span></strong></p>
+<p>The inner product term can be represented as: <span class="math inline">\(B_{ij} = \vec{y}_r^T \vec{y}_s\)</span>, while the norms of <span class="math inline">\(\vec{y}_r\)</span> and <span class="math inline">\(\vec{y}_s\)</span> can be represented by the entry of <span class="math inline">\(B\)</span>, i.e. <span class="math inline">\(B_{ii}} = ||\vec{y}_i||^2\)</span>. As a result, <span class="math inline">\(\Delta^2_{ij} = B_{ii} + B_{jj} - 2 B_{ij}\)</span>.</p>
+<p><strong>Key Observation</strong> Here, we successfully express the entries of <span class="math inline">\(\Delta\)</span> (known) with entries of <span class="math inline">\(B\)</span> (unknown). However, our goal is to find a way to express entries of <span class="math inline">\(B\)</span> (unknown) with entries of <span class="math inline">\(\Delta\)</span>. Intuitively, we want to cancel out <span class="math inline">\(B_{ij}\)</span> terms in the expression. Considering that <span class="math inline">\(\sum_{i=1}^N \vec{y}_i = \vec{0}\)</span>, we sum both sides of the equation over the index <span class="math inline">\(i\)</span>. We can get the following expression: (Because <span class="math inline">\(\sum_{i=1}^N B_{ij} = \vec{y}_j^T (\sum_{i=1}^N \vec{y}_i) = 0\)</span>)
+<span class="math display">\[\sum_{i=1}^N \Delta_{ij}^2=\operatorname{tr}(B) + N B_{ii}\]</span></p>
+<p>Similarly, we can also sum both sides of the equation over index <span class="math inline">\(j\)</span>, and get the expression:
+<span class="math display">\[\sum_{j=1}^N \Delta_{ij}^2=\operatorname{tr}(B) + N B_{jj}\]</span></p>
+<p>We successfully eliminate all the off-diagonal terms of <span class="math inline">\(B\)</span> through the above steps. Now, we want to take a step further. Sum both sides of the equations over both indexes <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>. We acquire the following expression:
+<span class="math display">\[\sum_{i=1}^N \sum_{j=1}^N \Delta_{ij}^2 = 2N \operatorname{tr}(B)\]</span></p>
+<p>Now we can solve the entries of <span class="math inline">\(\Delta\)</span> using the entries of <span class="math inline">\(B\)</span> through a backward calculation. From the last equation, we get
+<span class="math display">\[\operatorname{tr}(B) = \frac{1}{2N} \sum_{i=1}^N \sum_{j=1}^N \Delta_{ij}^2\]</span></p>
+<p>Then substitute the above expression into above formulas, we get the expression of the diagonal entries of <span class="math inline">\(B\)</span>:</p>
+<p><span class="math display">\[B_{ii} = \frac{1}{N} (\sum_{j=1}^{N} \Delta_{ij}^2 - \operatorname{tr} (B))\]</span></p>
+<p>After that, we can finally get the off-diagonal entries of <span class="math inline">\(B\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+B_{ij} &amp; = \frac{1}{2} (B_{ii} + B_{jj} - \Delta_{ij}^2) \\
+&amp; = -\frac{1}{2} \Delta_{ij}^2 + \frac{1}{N} \sum_{i=1}^N \Delta_{ij}^2 + \frac{1}{N} \sum_{j=1}^N \Delta_{ij}^2-\frac{1}{2 N^2} \sum_{i=1}^N \sum_{j=1}^N \Delta_{ij}^2
+\end{aligned}\]</span>
+<p>Actually, we may also express the inner product matrix <span class="math inline">\(B\)</span> in a matrix form, which is what we do in real data computation. Here <span class="math inline">\(A \in \mathbb{R}^{N \times N}, A_{ij} = \Delta^2_{ij} \forall 1 \leq i,j \leq N\)</span>, <span class="math inline">\(H = \mathbb{I}_N - \frac{1}{N} \mathbb{1}_N \mathbb{1}_N^T\)</span>.</p>
+<p><span class="math display">\[B = H A H\]</span></p>
+<p><strong>(2) Recover the coordinates using inner product matrix <span class="math inline">\(B\)</span></strong></p>
+<p>Both diagonal and off-diagonal entries of the inner product matrix <span class="math inline">\(B\)</span> has been shown. We assumed that <span class="math inline">\(B\)</span> = <span class="math inline">\(YY^T\)</span>, so <span class="math inline">\(B\)</span> is symmetric and positive semi-definite (all eigenvalues are non-negative), with <span class="math inline">\(t\)</span> positive eigenvalues and <span class="math inline">\(N-t\)</span> ‘zero’ eigenvalues.</p>
+<p>Our intuition is to apply SVD to <span class="math inline">\(B\)</span> in order to recover the configuration <span class="math inline">\(\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N \in \mathbb{R}^t\)</span>.</p>
+<p><span class="math display">\[\begin{align}
+B &amp; = \left(\vec{u}_1\left|\vec{u}_2\right| \ldots \mid \vec{u}_t\right) \begin{pmatrix}
+\lambda_1 &amp; \cdots &amp; 0 \\
+\vdots &amp; \ddots &amp; \vdots \\
+0 &amp; \cdots &amp; \lambda_t
+\end{pmatrix} \left(\begin{array}{c}
+\vec{u}_1^{\top} \\
+\vec{u}_2^{\top} \\
+\vdots \\
+\vec{u}_t^{\top}
+\end{array}\right) \\
+&amp; = \tilde{u} \begin{pmatrix}
+\lambda^{1/2}_1 &amp; \cdots &amp; 0 \\
+\vdots &amp; \ddots &amp; \vdots \\
+0 &amp; \cdots &amp; \lambda^{1/2}_t \end{pmatrix}
+\begin{pmatrix}
+\lambda^{1/2}_1 &amp; \cdots &amp; 0 \\
+\vdots &amp; \ddots &amp; \vdots \\
+0 &amp; \cdots &amp; \lambda^{1/2}_t \end{pmatrix}
+\tilde{u}^T \\
+&amp; = (\tilde{u} \Lambda^{1/2}) (\tilde{u} \Lambda^{1/2})^T
+\end{align}\]</span></p>
+<p>Let <span class="math inline">\(Y=\tilde{u} \Lambda^{1/2}\)</span>, use rows of <span class="math inline">\(\tilde{u} \Lambda^{1/2}\)</span> as <span class="math inline">\(\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N\)</span>. It satisfies every entry of the inner product matrix <span class="math inline">\(B\)</span>, as well as all pairwise distances <span class="math inline">\(\Delta_{ij}\)</span>.</p>
+<p><strong>Dealing with real data case</strong></p>
+<p>In real data case, sometimes the Euclidean condition is not met. As in the previous globe map example, the distance matrix actually computes the geodesic distance instead of the Euclidean distance. Under this circumstance, the “inner product” matrix <span class="math inline">\(B = HAH\)</span> (we put a quotation mark here because <span class="math inline">\(B\)</span> is no longer the inner product matrix) is not necssarily positive semi-definite.</p>
+<p>Let’s put a numeric example here to illustrate this point.</p>
+<p>Suppose we have a proximity matrix <span class="math inline">\(\Delta\)</span>:</p>
+<p>Given the matrix:
+<span class="math display">\[
+\Delta = \begin{pmatrix} 0 &amp; 1 &amp; 3 \\ 1 &amp; 0 &amp; 1 \\ 3 &amp; 1 &amp; 0 \end{pmatrix}
+\]</span></p>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    0    1    3
+## [2,]    1    0    1
+## [3,]    3    1    0</code></pre>
+<p>Obviously, matrix <span class="math inline">\(\Delta\)</span> does not satisfy Triangle Inequality, so it’s not an Euclidean distance matrix (even not a distance matrix actually)</p>
+<ol style="list-style-type: decimal">
+<li>Compute matrix <span class="math inline">\(A\)</span> as:
+<span class="math display">\[
+A = -\frac{1}{2} \Delta^2
+\]</span></li>
+</ol>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]  0.0 -0.5 -4.5
+## [2,] -0.5  0.0 -0.5
+## [3,] -4.5 -0.5  0.0</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Compute matrix <span class="math inline">\(B\)</span> using:
+<span class="math display">\[
+H = I - \frac{1}{n} \mathbf{11}^T
+\]</span>
+Where <span class="math inline">\(I\)</span> is the identity matrix and <span class="math inline">\(n\)</span> is the number of rows (or columns) in <span class="math inline">\(\Delta\)</span>. Then:
+<span class="math display">\[
+B = H A H
+\]</span></li>
+</ol>
+<pre><code>##            [,1]       [,2]       [,3]
+## [1,]  2.1111111  0.2777778 -2.3888889
+## [2,]  0.2777778 -0.5555556  0.2777778
+## [3,] -2.3888889  0.2777778  2.1111111</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Finally, perform an eigen-decomposition on matrix <span class="math inline">\(B\)</span>.</li>
+</ol>
+<pre><code>## [1]  4.500000e+00 -1.221245e-15 -8.333333e-01</code></pre>
+<pre><code>##               [,1]      [,2]       [,3]
+## [1,]  7.071068e-01 0.5773503  0.4082483
+## [2,]  2.220446e-16 0.5773503 -0.8164966
+## [3,] -7.071068e-01 0.5773503  0.4082483</code></pre>
+<p>Here, we have a negative eigenvalue <span class="math inline">\(-\frac{5}{6}\)</span>. This is because the original proximity matrix <span class="math inline">\(\Delta\)</span> is not a distance matrix.</p>
+<p><strong>Handle Negative Eigenvalues</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li><p><strong>non-symetric issue:</strong> There are cases where the proximity matrix <span class="math inline">\(\Delta\)</span> is not symmetric (though it rarely happens in classical scaling scenario). Usually we set <span class="math inline">\(\Delta \leftarrow \Delta + \Delta^T\)</span>. In that way, we manually make <span class="math inline">\(\Delta\)</span> symmetric.</p></li>
+<li><p>When there exist some negative eigenvalues in the inner product matrix <span class="math inline">\(B\)</span>, we usually have two options to deal with it.</p></li>
+<li><p>Inflate the original proximity matrix <span class="math inline">\(\Delta\)</span> by a small constant factor <span class="math inline">\(c\)</span>, i.e., <span class="math inline">\(\Delta_{ij} \leftarrow \Delta_{ij} + c, \text{if} \quad i \neq j\)</span>. In this way, we can deal with the violence of <strong>Triangular Inequality</strong>.</p></li>
+</ol>
+<ol start="2" style="list-style-type: lower-roman">
+<li>If there exist several negative eigenvalues with small absolute value (compared to the largest several positive eigenvalues), and there are more positive eigenvalues than our prior estimation (the dimension of the original configuration), we may just pick the largest <span class="math inline">\(t\)</span> eigenvalues and eliminate the rest.</li>
+</ol>
+<p><strong>Global City Distance case revisit</strong></p>
+<p>We can also consider the previous global city distance matrix example. Plot the scree plot of the inner product matrix.</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<p>We find that the first three eigenvalues are much larger than the rest, so we assume that the dimension of the original configuration is 3, which also complies to our knowledge about global map.</p>
+</div>
 </div>
 <div id="metric-mds" class="section level3 hasAnchor" number="4.4.2">
 <h3><span class="header-section-number">4.4.2</span> Metric MDS<a href="sec-mds.html#metric-mds" class="anchor-section" aria-label="Anchor link to header"></a></h3>

@@ -1,6 +1,32 @@
+```{r isomap-setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, cache = TRUE)
+set.seed(1)
+require("dimRed")
+require("energy")
+require("scatterplot3d")
+require("rgl")
+require("plotly")
+library("Rdimtools")
+require("princurve")
+
+myColorRamp <- function(colors, values) {
+    v <- (values - min(values))/diff(range(values))
+    x <- colorRamp(colors)(v)
+    rgb(x[,1], x[,2], x[,3], maxColorValue = 255)
+}
+```
+
 ## Isometric Feature Map (ISOMAP)
 
-The first method we cover is the Isometric Feature Map (ISOMAP), originally published by Tenenbaum, de Silva, and Langford in 2000 [@isomap]. As suggested by the name, we will see that an assumption of isometry is central to this method.  Prior to discussing the ISOMAP algorithm, let's briefly discuss the notion of isometry through an example which motivates different notions of distance between two points.
+### Introduction
+
+The first manifold learning method we are going to cover is the Isometric Feature Map (ISOMAP), originally published by Tenenbaum, de Silva, and Langford in 2000 [@isomap]. As suggested by the name, we will see that the assumption of isometry is central to this method. ISOMAP combines the major algorithmic features of PCA and MDS --- computational efficiency, global optimality, and asymptotic convergence guarantees. Thanks to these extraordinary features, ISOMAP is capable of learning a broad class of nonlinear manifolds. 
+
+### Key Definitions
+
+**Different notions of pointwise distance**
+
+Prior to discussing the ISOMAP algorithm, let's briefly discuss the notion of isometry through an example which motivates different notions of distance between two points.
 
 ::: {.example #ex-helix-distance name="Distance between points on a Helix"}
 Consider the helix map $\Psi:\mathbb{R}\to\mathbb{R}^3$ given by the formula
@@ -27,26 +53,35 @@ for (n in 1:length(t)){
 #      main = "Low-Dimensional Samples",
 #      cex = 0.1)
 # points(c(2*pi,4*pi),rep(0,2), col = "red",cex = 1)
-scatterplot3js(helix, color = myColorRamp(c("red","purple","blue","green","yellow"), t),
+black_points <- data.frame(
+  x = 2^-0.5*c(1,1),  
+  y = 2^-0.5*c(0,0),  # Replace with your desired y coordinates
+  z = 2^-0.5*pi*c(2,4)  # Replace with your desired z coordinates
+)
+
+black_points <- as.matrix(black_points)
+
+s <- scatterplot3js(helix, color = geoelectrics::myColorRamp(c("red","purple","blue","green","yellow"), t),
               xlab = expression(x[1]), ylab = expression(x[2]), zlab = expression(x[3]),
               angle = 90,
               main = "The Helix Map",
               pch = '.',
-              size = 0.1) %>%
-  points3d(x = 2^-0.5*c(1,1), y = 2^-0.5*c(0,0), z = 2^-0.5*c(2*pi,4*pi), color = "black",
-           pch = "o")
+              size = 0.1) 
 
+threejs::points3d(s, x = black_points,  color = "black", pch = '.', size = 0.15)
 ```
 
-There are a few different ways we could measure the distance between the two black points.  The first approach would be to ignore the helix (manifold) structure viewing them as vectors in $\mathbb{R}^3$ and directly measure their Euclidean distance which gives $$\|\vec{x}_1 - \vec{x}_2\| = \sqrt{2}\pi.$$  However, we also know that these points are images of the one-dimensional coordinate $z_1 = 2\pi$ and $z_2 = 4\pi$ respectively.  Thus, we could also consider the  Euclidean distance of the lower-dimemsional coordiates which is $|2\pi - 4\pi| = 2\pi$ which notably differs from the Euclidean distance.  
 
-A third option is to return to the three-dimensional representation but to also account for the manifold structure when considering distance.   Recall Euclidean distance gives the length of the shortest, **straightline** path connecting the two points.  Instead, let's restrict ourselves to only those paths which stay on the helix (manifold).  You may correctly conclude that the curve starting at $\Psi(2\pi)$, rotating up the helix one rotation, and ending at $\Psi(4\pi)$ is the shortest such path. Fortunately, computing arclength is relatively friendly in this example since $\Psi$ already parameterizes the path connecting these two points. The arclength is then 
+There are a few different ways we could measure the distance between the two black points.  The first approach would be to ignore the helix (manifold) structure viewing them as vectors in $\mathbb{R}^3$ and directly measure their **Euclidean distance** which gives $$\|\vec{x}_1 - \vec{x}_2\| = \sqrt{2}\pi.$$  However, we also know that these points are images of the one-dimensional coordinate $z_1 = 2\pi$ and $z_2 = 4\pi$ respectively.  Thus, we could also consider the Euclidean distance of the lower-dimemsional coordinates which is $|2\pi - 4\pi| = 2\pi$, which notably differs from the Euclidean distance.  
+
+A third option is to return to the three-dimensional representation but to also account for the manifold structure when considering distance. Recall Euclidean distance gives the length of the shortest, **straightline** path connecting the two points. Instead, let's restrict ourselves to only those paths which stay on the helix (manifold).  You may correctly conclude that the curve starting at $\Psi(2\pi)$, rotating up the helix one rotation, and ending at $\Psi(4\pi)$ is the shortest such path. Fortunately, computing arc-length is relatively friendly in this example since $\Psi$ already parameterizes the path connecting these two points. The arc-length is then 
 $$\int_{2\pi}^{4\pi} \left\|\frac{d\Psi}{dt}\right\| dt = \int_{2\pi}^{4\pi} dt = 2\pi.$$
 Jumping slightly ahead, we then say the manifold distance between $\Psi(2\pi)$ and $\Psi(4\pi)$ is $2\pi$.  Importantly, the manifold distance coincides exactly with the Euclidean distance between the **lower-dimensional** coordinates.  In fact, for any two points, $s$ and $t$, on the real line their Euclidean distance, $|s-t|$ will be the same as the manifold distance between $\Psi(s)$ and $\Psi(t)$. Thus, the helix map $\Psi$ above serves as our first example of an isometric (distance preserving) map.
 :::
 
 We may generalize this idea to any smooth manifold to define a new notion of distance.  Given a manifold $\mathcal{M}$, we define the manifold distance function $d_\mathcal{M} : \mathcal{M} \times \mathcal{M} \to [0,\infty)$ as follows 
 
+**Definition of Manifold Distance**
 ::: {.definition #def-manifold-dist name="Manifold Distance Function"}
 Given two points $\vec{x}$ and $\vec{y}$ on a smooth manifold, $\mathcal{M}$, let $\Gamma(\vec{x},\vec{y})$ be the set of all piecewise smooth curves connecting $\vec{x}$ and $\vec{y}$ constrained to stay on $\mathcal{M}$.  Then, we define the manifold distance to be
 \begin{equation}
@@ -63,26 +98,266 @@ As we reviewed above, the helix example with the arclength formula is one exampl
 
 We may now define the notion of isometry which is a central assumption of ISOMAP.
 
+**Definition of Isometry**
 ::: {.definition #def-isometry name="Isometry"}
 Let $\mathcal{M}_1$ be a manifold with distance function $d_{\mathcal{M}_1}$ and let $\mathcal{M}_2$ be a second manifold with distance function $d_{\mathcal{M}_2}$.  The mapping $\Psi:\mathcal{M}_1 \mapsto \mathcal{M}_2$ is an isometry if $$d_{\mathcal{M}_1}(x,y) = d_{\mathcal{M}_2}\left(\Psi(x),\Psi(y)\right) \qquad \text{ for all } x,y\in \mathcal{M}_1.$$
 :::
 
 For the purposes of ISOMAP, we will think of $\mathcal{M}_1$ as some subset of a $\mathbb{R}^k$ for $k$ small where we measure distances using the Euclidean norm.  Then $\mathcal{M}_2$ will be a $k$-dimensional manifold in $\mathbb{R}^d$ containing our data. Our first assumption is that the manifold mapping $\Psi$ is an isometry. Unfortunately, in practice we do not know the manifold nor will we have a method for parameterizing curves on the manifold to compute distances. 
 
-Instead, ISOMAP makes use of a data-driven approach to estimate the manifold distance between points following a three step procedure.  
+### Algorithm
+Instead, ISOMAP makes use of a data-driven approach to estimate the manifold distance between points following a three-step procedure.  
 
-1) \underline{Construct Weighted Neighborhood Graph:} Fix tuning parameters $k >0$ or $\epsilon >0$.  Calculate all pairwise Euclidean distance $d_{ij} = \|\vec{x}_i - \vec{x}_j \|.$ Define a (directed) neighborhood graph $G$ by connecting nodes $i$ and $j$ 
+**1) Construct Weighted Neighborhood Graph:** 
 
-    i) {\bf Using $k$}, connect $\vec{x}_i$ to $\vec{x}_j$ if $\vec{x}_j$ is one of the $k$ nearest points to $\vec{x}_i$ as measured by $d_{ij}$. 
-    
-    ii) {\bf Using $\epsilon$}, connect $\vec{x}_i$ and \vec{x}_j$ if $d_ij < \epsilon.$
-    
-2) \underline{Compute graph distances}
+MDS uses Euclidean distance to measure pairwise distance between points $\vec{x}_i$ and $\vec{x}_j$ (data points in space $\mathcal{M}_2$), while ISOMAP uses the geodesic distance in order to reveal the underlying manifold structure. However, when the data points in the high dimensional space $\mathcal{M}_2$ have a manifold structure, usually the Euclidean pairwise distance is quite different from their pairwise geodesic distance. Fortunately, for small distances on a smoothly embedded manifold, the geodesic path between two close-by points lies nearly flat in the ambient space. So, the length of this path will be very close to the straight line (Euclidean) distance between those points in the ambient space.
 
-3) \underline{Embedding via MDS:}  The distances found in step 2 provide a distance matrix in which each entry approximates the manifold distance.  Under the assumption that the unknown manifold map is an isometry, we can seek a lower-dimensinoal collection of points which have these pairwise distance.  By default, we use classical scaling to find such a configuration.  As discussed in Chapter \@ref(sec-mds), we have a f
+The key intuition is that as the density of data points on the manifold increases (i.e., points get closer and closer), the straight line segment in the ambient space connecting two neighboring points becomes a better and better approximation of the shortest path between those points on the manifold. In the limit of the density going to infinity, these distances converge. 
 
-    - For visualization, we may typically choose a dimension (usually one, two, or three) and find the corresponding classical MDS solution.
+Two intuitive example may help you understand this point. First, consider a two-dimensional manifold --- Swiss Roll(a real one!) in a three-dimensional space. For an ant crawling on that, since it is too tiny in size compared to that Swiss Roll, from its' view, the area it is standing on is flat. The length between its two adjacent footsteps is almost the same from a human being's perspective (the Euclidean distance) and the ant's perspective (the geodesic distance). Another example is in a much larger scale, say, the Earth. Imagine some aliens have the technology to pass through the crust and mantle, and they travel in a straight line to have the shortest possible distance (Euclidean distance). Then they may save themselves several hundred miles if they travel from LA to New York compared to their human friends, however, they have few advantage when they travel from Science Center to Smith Center. 
+
+As a result, when it comes to the measurement of geodesic distance, it is reasonable to only look at those data points that are close to each other. First, calculate all the pairwise Euclidean distance $d_{ij}=||\vec{x}_i - \vec{x}_j||_2$, then determine which points are neighbors on the manifold by connecting each point to Either (i) All points that lie within a ball of radius $\epsilon$ of that point; OR (ii) all points which are K-nearest neighbors with it. (Two different criteria, $K$ and $\epsilon$ are tuning parameters)
+
+According to this rule, a weighted neighborhood graph $G = G(V,E)$ can be built. The set of vertices (data points in space $\mathcal{M}_2$): $V = \{\vec{x}_1, \dots , \vec{x}_N\}$ are the input data points, and the set of edges $E = \{e_{ij}\}$ indicate neighborhood relationships between the points. $e_{ij} = d_{ij}$ if (i) $||\vec{x}_i - \vec{x}_j||_2 \leq \epsilon$; OR (ii) $\vec{x}_j$ is one of the K-nearest neighbors of $\vec{x}_i$, otherwise $e_{ij} = \infty$. Sometimes, the tuning of $\epsilon$ (or $K$) is quite decisive in the output of ISOMAP, we will explain this later with a simulation example.
+
+
+<!-- Fix tuning parameters $k >0$ or $\epsilon >0$.  Calculate all pairwise Euclidean distance $d_{ij} = \|\vec{x}_i - \vec{x}_j \|.$ Define a (directed) neighborhood graph $G$ by connecting nodes $i$ and $j$  -->
+
+<!--     i) {\bf Using $k$}, connect $\vec{x}_i$ to $\vec{x}_j$ if $\vec{x}_j$ is one of the $k$ nearest points to $\vec{x}_i$ as measured by $d_{ij}$.  -->
+
+<!--     ii) {\bf Using $\epsilon$}, connect $\vec{x}_i$ and \vec{x}_j$ if $d_ij < \epsilon.$ -->
     
-    - Alternatively, we use the eigenvalues of the inner product matrix based on the graph distances to choose a suitable cutoff for the appropriate 
+    
+**2) Compute graph distances**
+
+In this step, we want to estimate the unknown true geodesic distances $\{d^{\mathcal{M}}_{ij}\}$ between all pairs of points with the help of the neighborhood graph $G$ we have just built. We use the graph distances $\{d^{\mathcal{G}}_{ij}\}$--- the shortest distances between all pairs of points in the graph $G$ to estimate $\{d^{\mathcal{M}}_{ij}\}$. For $\vec{x}_i$ and $\vec{x}_j$ that are not connected to each other, we try to find the shortest path that goes along the connected points on the graph. Following this particular sequence of neighbor-to-neighbor links, the sum of all the link weights along the path is defined as $\{d^{\mathcal{G}}_{ij}\}$. In other words, we use a number of short Euclidean distances (representing the local structure of the manifold) to approximate the geodesic distance $\{d^{\mathcal{M}}_{ij}\}$. 
+
+This path finding step is usually done by Floyd-Warshall algorithm, which iteratively tries all transit points $k$ and find those that $\tilde{d}_{ik} + \tilde{d}_{kj} < \tilde{d}_{ij}$, and updates $\tilde{d}_{ij} = \tilde{d}_{ik} + \tilde{d}_{kj}$ for all possible combination of $i,j$. The algorithm works best in dense neighboring graph scenario, with a computational complexity of $O(n^3)$. 
+
+The theoretical guarantee of this graph distance computation method is given by Bernstein et, al. one year after they first proposed ISOMAP in their previous paper. They show that asymptotically (as $n \rightarrow \infty$), the estimate $d^{\mathbb{G}}$ converges to $d^{\mathbb{M}}$ as long as the data points are sampled from a probability distribution that is supported by the entire manifold, and the manifold itself is flat.
+
+The distance matrix $\Delta$ can be expressed as:
+$$\Delta_{ij} = d^{\mathcal{G}}_{ij}$$
+
+**Simulation Example**
+
+Here we provide a randomly generated Neighborhood Graph for six data points, it uses the K-nearest neighbor criteria (can easily tell this since the matrix is not symmetric, $K=2$)
+
+```{r}
+# Define the matrix
+matrix <- matrix(c(
+  0,   3,  4,   Inf, Inf, Inf,
+  7,   0,  Inf, 2,   Inf, Inf,
+  6,   Inf,0,   Inf, 7,   Inf,
+  Inf, 5,  Inf, 0,   Inf, 10,
+  Inf, Inf,8,   Inf, 0,   13,
+  Inf, Inf,Inf, 9,   14,  0
+), byrow = TRUE, nrow = 6)
+print(matrix)
+```
+
+Shown below is the implementation of Floyd-Warshall algorithm in R. As you can see from the three for loops, its computation complexity is $O(n^3)$.
+```{r}
+# Adjusting the matrix to set d_ij and d_ji to the smaller value
+n <- dim(matrix)[1]
+
+for (i in 1:n) {
+  for (j in 1:n) {
+    if (i != j && is.finite(matrix[i, j]) && is.finite(matrix[j, i])) {
+      min_val <- min(matrix[i, j], matrix[j, i])
+      matrix[i, j] <- min_val
+      matrix[j, i] <- min_val
+    }
+  }
+}
+
+# Floyd-Warshall Algorithm
+floyd_warshall <- function(mat) {
+  n <- dim(mat)[1]
+  dist <- mat
+  
+  for (k in 1:n) {
+    for (i in 1:n) {
+      for (j in 1:n) {
+        dist[i, j] <- min(dist[i, j], dist[i, k] + dist[k, j])
+      }
+    }
+  }
+  
+  return(dist)
+}
+
+# Get the result
+result <- floyd_warshall(matrix)
+
+# Print the result
+print(result)
+```
+
+**3) Applying MDS to $\Delta$**
+
+As mentioned before, ISOMAP can be viewed as the application of classical MDS in non-linear case. As a result, the reconstruction of $\{\vec{z}_i\}$ in the $k$ dimensional feature space $\mathcal{M}_1$ follows similar steps as that of classical MDS. The main goal is to preserve the geodesic distance of the manifold in $\mathcal{M}_2$ as much as possible. 
+
+Without any additional information, there are infinite $\{\vec{z}_i\}$ that can be viewed as the optimal solution. For some invertible function $\Phi:\mathbb{R}^k\to\mathbb{R}^k$, a new manifold mapping $\Psi \circ \Phi^{-1}$ can be constructed. $\vec{x}_i = \Psi \circ \Phi^{-1} (\Phi(\vec{z}_i))$, which proofs that $\{\Phi(\vec{z}_i)\}$ is equivalent to $\{\vec{z}_i\}$ when it comes to the reconstruction of the lower dimensional feature space.
+
+Without loss of generality, we assume that $\{\vec{z}_i\}$ are actually centered. So the distance matrix of $\{\vec{z}_i\}$ can be expressed as $B=Z^T Z$, so that $B_{ii}=||z_i||^2_2$ and $B_{ij}={z_i}^T z_j$.
+
+The embedding vectors $\{\hat{z}_{i}\}$ (estimate of points in lower dimensional feature space $\mathcal{M}_1$) are chosen in order to minimize the objective function:
+
+$$(\sum ||\vec{z}_i - \vec{z}_j||_2 - \Delta_{ij})^2$$
+
+Following the same procedure explained in classical MDS chapter, we can compute each entry of $B$:
+$$B_{ij}= -\frac{1}{2} \Delta^2_{ij} + \frac{1}{d} \sum^{d}_{i=1} \Delta^2_{ij} + \frac{1}{d} \sum^{d}_{j=1} \Delta^2_{ij} - \frac{1}{2d^2} \sum^{d}_{i=1} \sum^{d}_{j=1} \Delta^2_{ij}$$
+
+To express it in matrix form, it is actually, $B = - \frac{1}{2} H \Delta H$, where $H = I_n - \frac{1}{n} \mathbb{1} \mathbb{1}^T$.
+
+The next step is just a PCA problem. Implement eigen decomposition on matrix B, $B=U \Lambda U^T= (\Lambda^{1/2} U)^T (\Lambda^{1/2} U)$, then arrange the singular value in descending order, find the first $k^{\prime}$ ones. We acquire $\Lambda_{k^{\prime}}$ and $U_{k^{\prime}}$. 
+$$\{\hat{z}_1, \hat{z}_2, \dots, \hat{z}_N\} = \Lambda_{k^{\prime}} U_{k^{\prime}}$$
+
+Since we don't know the dimension of the underlying feature space, here $k^{\prime}$ is a tuning parameter. Usually, we use a scree plot ($k^{\prime}$ against the sum of the omitted eigenvalues ) and find the elbow point.
+
+
+### Limitations of ISOMAP
+
+Though ISOMAP is a powerful manifold learning method that works well under most circumstances. It still has some limitations in certain scenarios.
+
+1) If the noises $\{\epsilon_i\}$ is not negligible, then ISOMAP may fail to identify the manifold. Also, ISOMAP is quite sensitive to the tuning parameters. To alleviate the negative impact, it's highly suggested to start with a relatively small $\epsilon$ or $K$, and increase them gradually. Here we use the Swiss Roll Example to help explain this point. 
+
+```{r}
+# generate Swiss roll-shaped data
+S <- rep(0,2000)
+Swiss <- matrix(NA, nrow = 2000, ncol = 3)
+for( n in 1:2000){
+    s <- runif(1, min = 3*pi/2, max = 9*pi/2)
+    t <- runif(1, min = 0,      max = 15)
+    S[n] <- s
+    Swiss[n, ] <- c( s*cos(s), t, s*sin(s) )
+}
+
+par(mfrow = c(2,2))
+# K = 20
+scatterplot3d(Swiss, color = myColorRamp(c("red","purple","blue","green","yellow"), S ),
+               xlab = expression(x[1]), ylab = expression(x[2]), zlab = expression(x[3]))
+plot(embed(Swiss, "Isomap", .mute = c("message", "output"), ndim =2, knn = 20)@data@data,
+     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K = 20",
+     col = myColorRamp(c("red","purple","blue","green","yellow"), S)  
+     )
+# K = 50
+scatterplot3d(Swiss, color = myColorRamp(c("red","purple","blue","green","yellow"), S ),
+               xlab = expression(x[1]), ylab = expression(x[2]), zlab = expression(x[3]))
+plot(embed(Swiss, "Isomap", .mute = c("message", "output"), ndim =2, knn = 50)@data@data,
+     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K = 50",
+     col = myColorRamp(c("red","purple","blue","green","yellow"), S)  
+     )
+```
+
+Obviously, ISOMAP performs well when $K$ is small. However, as $K$ increases, the algorithm no longer recovers the lower dimensional feature space. Because the distance between nearby arms is not large, some points from different arms are considered as "close". The pairwise geodesic distances between these points is approximated by their Euclidean distance, which is not correct, of course. 
+
+2) If the data points in some parts of the manifold is sparse, chances are that the learnt manifold structure will be ruined. The example below best illustrates this point.
+
+We manually create a sparse region for the Swiss Roll, as shown below. From our observation, this sparse region does not affect the whole manifold that much. We suppose it is still a Swiss Roll.
+
+```{r}
+S <- rep(0,2000)
+Swiss <- matrix(NA, nrow = 2000, ncol = 3)
+for( n in 1:2000){
+    s <- runif(1, min = 3*pi/2, max = 9*pi/2)
+    t <- runif(1, min = 0,      max = 8)
+    S[n] <- s
+    Swiss[n, ] <- c( s*cos(s), t, s*sin(s) )
+}
+
+# Manually create a sparse region
+mask <- Swiss[,1] > 5 & Swiss[,1] < 10 & Swiss[,2] > 5 & Swiss[,2] < 10
+Swiss_sparse <- Swiss[!mask, ]
+S <- S[!mask]
+
+scatterplot3d(Swiss_sparse, color = myColorRamp(c("red","purple","blue","green","yellow"), S), main = "Swiss Roll with Sparse Region",
+               xlab = expression(x[1]), ylab = expression(x[2]), zlab = expression(x[3]))
+```
+
+However, for ISOMAP, it gets into trouble recovering the lower dimensional feature space, despite using different tunning parameters.
+
+```{r}
+par(mfrow = c(2,2))
+# K = 10
+plot(embed(Swiss_sparse, "Isomap", .mute = c("message", "output"), ndim =2, knn = 10)@data@data,
+     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K = 10",
+    col = myColorRamp(c("red","purple","blue","green","yellow"), S))
+# k = 20
+plot(embed(Swiss_sparse, "Isomap", .mute = c("message", "output"), ndim =2, knn = 20)@data@data,
+     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K = 20",
+    col = myColorRamp(c("red","purple","blue","green","yellow"), S))
+# K = 50
+plot(embed(Swiss_sparse, "Isomap", .mute = c("message", "output"), ndim =2, knn = 50)@data@data,
+     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K = 50",
+    col = myColorRamp(c("red","purple","blue","green","yellow"), S))
+# K = 100
+plot(embed(Swiss_sparse, "Isomap", .mute = c("message", "output"), ndim =2, knn = 100)@data@data,
+     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K = 100",
+    col = myColorRamp(c("red","purple","blue","green","yellow"), S))
+```
+
+
+3) One of the two major assumptions of ISOMAP is the convexity of the manifold, that is to say, if the manifold contains many holes and concave margins, then the result of ISOMAP will probably be not ideal. 
+
+Here we use the example of a folded washer manifold to illustrate this point. It is obvious that the folded washer is concave in its four ends. No matter how we tune the parameter $K$, ISOMAP always fails to recover the lower dimensional feature.
+
+```{r}
+
+# generate washer in 2d 
+N <- 1e5
+washer <- matrix(NA, nrow =N, ncol = 2)
+for (n in 1:N){
+  r <- runif(1,min=5,max = 10); 
+  a = runif(1,min = 0, max = 2*pi); 
+  washer[n,] <- r*c(cos(a),sin(a)) + c(20,0)
+  }
+
+# generate folded washer in 3D
+washer3 <- cbind(washer, washer[,2]^2)
+
+# generate rolled washer in 3D
+washer.swiss <- washer3
+for (n in 1:dim(washer3)[1] ){
+  washer.swiss[n,] <- c( washer[n,1]*cos(washer[n,1]), washer[n,2], washer[n,1]*sin(washer[n,1] )) 
+}
+```
+
+```{r}
+N <- 2000
+par(mfrow = c(2,2))
+# K = 10
+scatterplot3d(washer3[1:N,], color = myColorRamp(c("red","purple","blue","green","yellow"), washer[1:N,1] ),
+               xlab = expression(x[1]), ylab = expression(x[2]), zlab = expression(x[3]))
+plot(embed(washer3[1:N,], "Isomap", .mute = c("message", "output"), ndim =2, knn = 10)@data@data %*% matrix(c(0,1,1,0),nrow = 2),
+     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=10",
+     col = myColorRamp(c("red","purple","blue","green","yellow"), washer[,1])  )
+
+# K = 20
+plot(embed(washer3[1:N,], "Isomap", .mute = c("message", "output"), ndim =2, knn = 20)@data@data %*% matrix(c(0,1,1,0),nrow = 2),
+     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=20",
+     col = myColorRamp(c("red","purple","blue","green","yellow"), washer[,1])  )
+
+# K = 50
+plot(embed(washer3[1:N,], "Isomap", .mute = c("message", "output"), ndim =2, knn = 50)@data@data %*% matrix(c(0,1,1,0),nrow = 2),
+     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=50",
+     col = myColorRamp(c("red","purple","blue","green","yellow"), washer[,1])  )
+```
+
+
+
+
+<!-- 3) \underline{Embedding via MDS:}  The distances found in step 2 provide a distance matrix in which each entry approximates the manifold distance.  Under the assumption that the unknown manifold map is an isometry, we can seek a lower-dimensioal collection of points which have these pairwise distance.  By default, we use classical scaling to find such a configuration.  As discussed in Chapter \@ref(sec-mds), we have a f -->
+
+<!--     - For visualization, we may typically choose a dimension (usually one, two, or three) and find the corresponding classical MDS solution. -->
+
+<!--     - Alternatively, we use the eigenvalues of the inner product matrix based on the graph distances to choose a suitable cutoff for the appropriate  -->
+
     
     
+    
+    
+
+
+
