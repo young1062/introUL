@@ -80,68 +80,72 @@ which is the sum-squared error over all observations.  Using this definition of 
 
 In summary, after initialization, we are continually overwriting the entries of our matrix of imputed values corresponding to observations then applyin a low-rank approximation.  We stop the algorithm when the error stops decreasing or when the relative decrease in error is less than a specified threshhold $\epsilon.$ In addition to the rank $k$ and the stopping threshhold $\epsilon$ there is one other important `tuning' parameter, the initialization.  In the brief description above, we used a standard of 0, but one could also use the average of all entries in the corresponding column (average item rating) or row (average rating given by a user) or some other specification.  Many more complicated recommendation systems include user and item specific initializations and adjustments but still imploy a low rank approximation somewhere in their deployment.
 
-Below, we should an application of this algorithm to the (https://grouplens.org/datasets/movielens/10m/)[Movielens 10m dataset] containing 10 million ratings from 72,000 viewers for 10,000 movies. In this implementation, we use the Fast Truncated Singular Value Decompositio
+In later updates, we show an application of this algorithm to the [Movielens 10m dataset](https://grouplens.org/datasets/movielens/10m/) containing 10 million ratings from 72,000 viewers for 10,000 movies. To handle the size of this dataset, we use the Fast Truncated Singular Value Decomposition.
 
 ```{r pull_movielens, echo = FALSE, message=FALSE}
-library("tidyverse")
-library("data.table")
-dl <- tempfile()
-download.file("http://files.grouplens.org/datasets/movielens/ml-10m.zip", dl)
-ratings <- fread(text = gsub("::", "\t",
-                             readLines(unzip(dl, "ml-10M100K/ratings.dat"))),
-                 col.names = c("userId", "movieId", "rating", "timestamp"))
-movies <- str_split_fixed(readLines(unzip(dl, "ml-10M100K/movies.dat")), "\\::", 3)
-colnames(movies) <- c("movieId", "title", "genres")
-movies <- as.data.frame(movies) %>%
-  mutate(movieId = as.numeric(movieId),
-         title = as.character(title),
-         genres = as.character(genres))
-movielens <- left_join(ratings, movies, by = "movieId")
-rm(movies,ratings,dl)
-ratings <- as.matrix(pivot_wider(movielens, 
-                             id_cols = "userId", 
-                             names_from = "movieId", 
-                             values_from = "rating"))
+# library("tidyverse")
+# library("data.table")
+# # dl <- tempfile()
+# # download.file("http://files.grouplens.org/datasets/movielens/ml-10m.zip", dl)
+# ratings <- fread(text = gsub("::", "\t",readLines(con = "data/ml-10M100K/ratings.dat")),
+#                  col.names = c("userId", "movieId", "rating", "timestamp"))
+# movies <- str_split_fixed(readLines("data/ml-10M100K/movies.dat"), "\\::", 3)
+# colnames(movies) <- c("movieId", "title", "genres")
+# movies <- as.data.frame(movies) %>%
+#   mutate(movieId = as.numeric(movieId),
+#          title = as.character(title),
+#          genres = as.character(genres))
+# movielens <- left_join(ratings, movies, by = "movieId")
+# rm(movies,ratings,dl)
+# ratings <- as.matrix(pivot_wider(movielens, 
+#                              id_cols = "userId", 
+#                              names_from = "movieId", 
+#                              values_from = "rating"))
 ```
 
 ```{r movielens_impute}
-library("irlba")
-initialize <- function(mat){
-# get column means ignoring NAs
-ave.rat <- colMeans(mat,na.rm = TRUE)
-# fill NAs by average movie rating
-for(j in 1:ncol(mat)){
-  mat[is.na(mat[,j]),j] <- ave.rat[j]
-}
-return(mat)
-}
-
-maxim <- function(mat,k){
-# temp <- svd(mat)
-temp<- irlba(mat, nv = k)
-return(list(U = temp$u[,1:k],
-            D = temp$d[1:k],
-            V = temp$v[,1:k],
-            mat.hat = temp$u[,1:k] %*% diag(temp$d[1:k]) %*% t(temp$v[,1:k])))
-}
-
-recommender <- function(mat, num_steps, k){
-# initialize loss function tracking
-loss <- rep(NA,num_steps)
-# run EM algorithm and save loss
-ind.known <- !is.na(mat)
-mat2 <- initialize(mat)
-for (j in 1:num_steps){
-  mat2 <- maxim(mat2,k)$mat.hat
-  loss[j] <- sum((mat2[ind.known] - mat[ind.known])^2)
-  mat2[ind.known] <- mat[ind.known]
-}
-return(list(loss= loss, fit = mat2))
-}
-
-k <- 3
-temp <- recommender(ratings,num_steps = 200, k = k)
-plot(temp$loss, xlab = "Step", ylab = expression(ell))
+# library("irlba")
+# initialize <- function(mat){
+# # get column means ignoring NAs
+# ave.rat <- colMeans(mat,na.rm = TRUE)
+# # fill NAs by average movie rating
+# for(j in 1:ncol(mat)){
+#   mat[is.na(mat[,j]),j] <- ave.rat[j]
+# }
+# return(mat)
+# }
+# 
+# maxim <- function(mat,k){
+# # temp <- svd(mat)
+# temp<- irlba(mat, nv = k)
+# return(list(U = temp$u[,1:k],
+#             D = temp$d[1:k],
+#             V = temp$v[,1:k],
+#             mat.hat = temp$u[,1:k] %*% diag(temp$d[1:k]) %*% t(temp$v[,1:k])))
+# }
+# 
+# recommender <- function(mat, num_steps, k){
+# # initialize loss function tracking
+# loss <- rep(NA,num_steps)
+# # run EM algorithm and save loss
+# ind.known <- !is.na(mat)
+# mat2 <- initialize(mat)
+# for (j in 1:num_steps){
+#   mat2 <- maxim(mat2,k)$mat.hat
+#   loss[j] <- sum((mat2[ind.known] - mat[ind.known])^2)
+#   mat2[ind.known] <- mat[ind.known]
+# }
+# return(list(loss= loss, fit = mat2))
+# }
+# 
+# k <- 3
+# temp <- recommender(ratings,num_steps = 200, k = k)
+# plot(temp$loss, xlab = "Step", ylab = expression(ell))
 ```
 
 #### Recommendation
+
+Suppose now that we have a matrix, $\tilde{\bf X}\in\mathbb{R}^{N\times d}$ of movie ratings (real or imputed) and its SVD $$\tilde{\bf X} = \tilde{\bf U}\tilde{\bf S}\tilde{\bf V}^T$$ where $\tilde{\bf U} \in \mathbb{R}^{N\times k}$, $\tilde{\bf S}\in\mathbb{R}^{k\times k}$ and $\tilde{\bf V}\in\mathbb{R}^{d\times k}.$ Then for user $i$ the rating they give to movie $j$ is a linear combination of the elements in the $j$ column of $\tilde{\bf V}^T$. Specifically, $$\tilde{\bf X} \approx \sum_{\ell = 1}^k \sigma_\ell \tilde{\bf U}_{i\ell} (\tilde{\bf V})^T_{\ell j} = \sum_{\ell = 1}^k \sigma_\ell \tilde{\bf U}_{i\ell} \tilde{\bf V}_{j\ell}.$$
+
+For any movie, its rating will always be a linear combination of the elements in the corresponding column of $\tilde{V}^T$.  As such, we may view the $k$-dimensional vectors in each column of $\tilde{\bf V}$ as a representation of that movie.  We may then use these vectors to identify similar movies; one common approach is the cosine similarity, which for vectors $\vec{x}, \vec{y}\in\mathbb{R}^k$ is the cosine of the angle between them, i.e. $$\cos\theta = \frac{\vec{x}^T\vec{y}}{\|\vec{x}\| \|\vec{y}\|}.$$
+The cosine similarity is bounded between -1 and 1 and two vectors are considered more similar if the cosine of the angle between them is closer to 1.  Using this representation, we can take any movie (a column of $\tilde{\bf V}^T$) and choose the most similar movie (choosing the other columns of $\tilde{\bf V}^T$ with the largest cosine similarity).  Thus, if a user gave a high rating to movie $b$, we now have a method for recommending one or more similar movies they might enjoy.
