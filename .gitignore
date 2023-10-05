@@ -4,3 +4,8 @@
 .RData
 */.Rhistory
 */.RData
+*/.Rdata
+*/.rdb
+*/.rdx
+.rdx
+.rdb
