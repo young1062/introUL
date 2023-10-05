@@ -1,4 +1,6 @@
-# Probability Review {#ch-prob}
+# Mathematical Background and Notation {#ch-prob}
+
+This text assumes a familiarity with probability theory, multivariable calculus, and linear algebra consistent with what one would see in an undergraduate course.  In this chapter, we will identify common notation and review the most important prerequisite material.
 
 ## Important notation
 
@@ -152,7 +154,7 @@ Similarly, we define the sample covariance matrix to be
 (\#eq:def-sample-covariance)
 \end{equation}
 In \@ref(eq:def-sample-covariance), dividing by $N$ rather than $N-1$ yields biased estimates of the terms of the sample covariance matrix.  However, the final formula in \@ref(eq:def-sample-covariance) more directly matches the corresponding term in the definition of the covariance matrix.  Had we used a factor of $1/(N-1)$ instead, we would have 
-$$\frac{1}{N-1}\sum_{i=1}^N (\vec{x}_i - \bar{X})(\vec{x}_i - \bar{X})^T = \left(\frac{1}{N}\sum_{i=1}^N \vec{x}_i\vec{x}_i^T\right) - \frac{N}{N-1}\bar{x}\bar{x}^T$$ which is slightly more cumbersome.  In the examples we will consider, $N$ will typically be large enough so that the numerical difference is small. As such, we will opt for algebraically convenient definition form of @\ref(eq:def-sample-covariance) as our definition of the sample covariance matrix.  
+$$\frac{1}{N-1}\sum_{i=1}^N (\vec{x}_i - \bar{X})(\vec{x}_i - \bar{X})^T = \left(\frac{1}{N}\sum_{i=1}^N \vec{x}_i\vec{x}_i^T\right) - \frac{N}{N-1}\bar{x}\bar{x}^T$$ which is slightly more cumbersome.  In the examples we will consider, $N$ will typically be large enough so that the numerical difference is small. As such, we will opt for algebraically convenient definition form of \@ref(eq:def-sample-covariance) as our definition of the sample covariance matrix.  
 
 Alternatively, we can view the sample mean and sample covariance as the mean and covariance (using expectation rather than averages) of the empirical distribution from a collection of samples $\vec{x}_1,\dots,\vec{x}_N$ defined below.
 
@@ -203,7 +205,7 @@ $$\bar{x} = \begin{bmatrix}
 `r round(S[3,1],3)` & `r round(S[3,2],3)` & `r round(S[3,3],3)`   
 \end{bmatrix}$$
 
-which are closer to the true values.  If we increase the sample size to $N=10^4$ samples, we get estimates which are closer to the true values (shown below).
+which are close to the true values.  If we increase the sample size to $N=10^4$ samples, we get estimates which are closer to the true values (shown below).
 ```{r, echo = FALSE}
 N <- 1e4
 X <- mvrnorm(n=N, mu = rep(0,3), Sigma = c(1,4,9)*diag(3))
@@ -230,7 +232,7 @@ $$\bar{x} = \begin{bmatrix}
 
 ### Assumed Background
 
-This text assumes familiarity with definitions from a standard undergraduate course in linear algebra including but not limited to linear spaces, subspaces, spans and bases, and matrix multiplication.  However, we have elected to provide review of some of the most commonly used ideas in the methods we'll cover in the following subsections.  For a more thorough treatment of linear algebra, please see REFERENCES
+This text assumes familiarity with definitions from a standard undergraduate course in linear algebra including but not limited to linear spaces, subspaces, spans and bases, and matrix multiplication.  However, we have elected to provide review of some of the most commonly used ideas in the methods we'll cover in the following subsections.  For a more thorough treatment of linear algebra, please see [@trefethen97,@strang]
 
 ### Interpretations of Matrix Multiplication
 Throughout this text, comfort with common calculations in linear algebra will be very important.  Herein, we assume the reader has some exposure to these materials at an undergraduate level including the summation of vectors or matrices.  The familiarity with matrix-vector and matrix-matrix multiplication will play a central role as we have already seen in the case of the data matrix formulation of the sample mean and sample covariance.  However, rote familiarity with computation will not be sufficient to build intuition for the methods we'll discuss.  As such, we'll begin with a review of a few important ways one can view matrix-vector (and matrix-matrix) multiplication which will be helpful later. Those who feel comfortable with the myriad interpretations of matrix multiplication in terms of linear combinations of the rows and columns may skip to the next section.
@@ -253,30 +255,26 @@ $$\|\vec{x}\| = \left(\sum_{j=1}^d x_j^2 \right)^{1/2}.$$
 We may then define the Euclidean distance between two $d$-dimension vectors $\vec{x}$ and $\vec{y}$ to be $$\|\vec{x}-\vec{y}\| = \left(\sum_{j=1}^d (x_j - y_j)^2\right)^{1/2}.$$
 Euclidean distance is the most commonly used notion of distance (or norm or metric) between two vectors, but it is far from the only option.  We can consider the general $\ell_p$ norm $$\|\vec{x}\|_p = \left(\sum_{j=1}^d x_j^p\right)^{1/p}$$ which coincides with the Euclidean norm for $p=2$. Two other special cases include $p=1$ also known as the Manhattan distance and $p = \infty$ also known as the sup-norm $$\|\vec{x}\|_\infty = \max_{j=1,\dots, d} |x_j|.$$
 
-We can also extend this notions of vector norms to a measure of the norm of a matrix. Two important cases are the $\ell_2$ norm of a matrix and the Frobenius norm. For matrix ${\bf A}\in\mathbb{R}^{m\times n}$, this norm is 
+We can also extend this notions of vector norms to a measure of the norm of a matrix. Two important cases are the $\ell_2$ norm of a matrix and the Frobenius norm. For matrix ${\bf A}\in\mathbb{R}^{m\times n}$, the $\ell_2$ norm is 
 \begin{equation}
 \|{\bf A}\| = \sup_{\vec{x}\in\mathbb{R}^n \text{ s.t. } \vec{x}\ne \vec{0}} \frac{\|{\bf A}\vec{x}\|}{\|\vec{x}\|} = \sup_{\vec{x}\in\mathbb{R}^n \text{ s.t. }\|\vec{x}\|=1} \|{\bf A}\vec{x}\|.
 \end{equation}
-You can interpret $\|{\bf A}\|$ as the largest relative change in the Euclidean length of a vector after it is multiplied by ${\bf A}$.  The Frobenius extends the algebraic definition of a matrix to a matrix. For ${\bf A}\in\mathbb{R}^{m\times n}$, its Frobenius norm is
+You can interpret $\|{\bf A}\|$ as the largest relative change in the Euclidean length of a vector after it is multiplied by ${\bf A}$.  The Frobenius norm extends the algebraic definition notion of Euclidean length to a matrix. For ${\bf A}\in\mathbb{R}^{m\times n}$, its Frobenius norm is
 \begin{equation}
 \|{\bf A}\|_F = \left(\sum_{i=1}^m\sum_{j=1}^n {\bf A}_{ij}^2\right)^{1/2}.
 \end{equation}
-The $\ell_2$ distance between two matrices is then $\|{\bf A}-{\bf B}\|$ and the Frobenius distance between two matrices is $\|{\bf A} - {\bf B}\|$ where both ${\bf A}$ and ${\bf B}$ have the same number of rows and columns.
+The $\ell_2$ distance between two matrices is then $\|{\bf A}-{\bf B}\|$ and the Frobenius distance between two matrices is $\|{\bf A} - {\bf B}\|_F$ (where both ${\bf A}$ and ${\bf B}$ have the same number of rows and columns).
 
 ### Important properties
 
 A few additional definitions that we will use throughout the text are provided below without examples.
 
 ::: {.definition #def-symm name="Symmetric Matric"}
-A matrix ${\bf A}\in \mathbb{R}^{d\times d}$ is symmetric if ${\bf A} = {\bf A}^T.$
+Matrix ${\bf A}\in \mathbb{R}^{d\times d}$ is symmetric if ${\bf A} = {\bf A}^T.$
 :::
 
-::: {.definition #def-eigen name = "Eigenvectors and Eigenvalues"}
+::: {.definition #def-eigen name="Eigenvectors and Eigenvalues"}
 Let ${\bf A}\in\mathbb{R}^{d\times d}$. If there is a scalar $\lambda$ and vector $\vec{x}\ne \vec{0}$ such that ${\bf A}\vec{x} = \lambda \vec{x}$ then we say $\lambda$ is an eigenvalue of ${\bf A}$ with associated eigenvector $\vec{x}.$
-:::
-
-::: {.definition #def-psd name="Positive definite"}
-Let ${\bf A}\in\mathbb{R}^{d\times d}$. If $\vec{x}^T{\bf A}\vec{x} >0$ for all $\vec{x}\ne \vec{0}$ then we say ${\bf A}$ is positive definite.  If instead, $\vec{x}^T{\bf A}\vec{x} \ge 0$ for all $\vec{x}\ne \vec{0}$ we say that ${\bf A}$ is positive semi-definite.
 :::
 
 ### Matrix Factorizations
@@ -295,27 +293,98 @@ Any symmetric matrix ${\bf A}\in\mathbb{R}^{d\times d}$ can be written as $${\bf
 0&0 &\lambda_d\end{bmatrix}$$ where the scalars $\lambda_1,\dots,\lambda_d \in \mathbb{R}$ are the eigenvalues of ${\bf A}$ and the corresponding columns of ${\bf U}$ are their associated eigenvectors.
 :::
 
-By convention, we will always assume the eigenvalues are in decreasing order so that $\lambda_1\ge \lambda_2 \ge \dots \ge \lambda_d$.  The most common types of symmetric matrices that we will encounter are covariance matrices.  In those cases, the spectral decomposition of the covariance can provide some helpful insight about the shape of the associated probability density.  We demonstrate this idea graphically in the following examples using the MVN.
+By convention, we will always assume the eigenvalues are in decreasing order so that $\lambda_1\ge \lambda_2 \ge \dots \ge \lambda_d$.  The most common types of symmetric matrices that we will encounter are covariance matrices.  In those cases, the spectral decomposition of the covariance can provide some helpful insight about the shape generated by many *iid* samples from a distribution.  We demonstrate this idea graphically in the following examples using the MVN.
 
 ::: {.example #mvn-level-curves name="Level curves of MVN in"}
-Consider 
-
-NOTES: Add example of Gaussian densities in $\mathbb{R}^2$ with level curves and eigenvectors/values.
+NOTES: Add example of Gaussian densities in $\mathbb{R}^2$ with level curves, eigenvectors/values, and iid samples.
 :::
 
 #### Singular Value Decomposition
 
 The spectral theorem is limited in that it requires a matrix to be both square and symmetric.  When focusing on data matrices ${\bf X}\in\mathbb{R}^{N\times d}$ both assumptions are extremely unlikely to be satisfied, and we will need a more flexible class of methods.  This idea is explored in much greater detail in Chapter 4. For now, we briefly introduce the Singular Value Decomposition and how this factorization provides some insight on the geometric structure of matrix-vector multiplication.
 
+For a matrix ${\bf A}\in\mathbb{R}^{m\times n}$ the mapping $T_{\bf A}: \mathbb{R}^n \mapsto \mathbb{R}^m$ defined as $T_{\bf A}(\vec{x}) = {\bf A}\vec{x}$ for $\vec{x}\in\mathbb{R}^n$.  Since this mapping is linear, we can understand its geometric nature by investigating how the unit sphere in $\mathbb{R}^n$ is transformed by the mapping $T_{\bf A}$.  More directly, let's suppose we took every vector on the unit sphere $\mathcal{S} = \{\vec{x}\in\mathbb{R}^n \, : \|\vec{x}\| = 1\}$ and computed the vector ${\bf A}\vec{x}$. The result is a hyperellipse in $\mathbb{R}^m$.  The specifics on the orientation and shape of the hyperellipse depend on the matrix ${\bf A}$ which we demonstrate through a brief example.
+
+::: {.example #svd-23}
+In Figure \@ref(fig:svd-ex), we show the unit sphere in $\mathbb{R}^2$ and the resulting hyperellipse in $\mathbb{R}^3$ after multiplication by the matrix
+$${\bf A} = \begin{bmatrix} 3 & 2 \\ 2&1 \\ 1& 0 \end{bmatrix}.$$
+```{r svd-ex, echo = F, fig.cap="(Left) Unit sphere in 2D, (Right) Hyperellipse that results after multiplication by A", fig.width=10}
+A <- matrix(c(3,2,2,1,1,0), nrow = 3, byrow = T)
+svd.A <- svd(A)
+t <- 2*pi*(0:1000)/1000
+S <- cbind(cos(t),sin(t))
+AS <- S %*% t(A)
+par(mfrow = c(1,2))
+plot(S[,1],S[,2], cex = 0.1, type = 'l',
+     xlab = expression(x[1]),
+     ylab = expression(x[2]))
+lines(x=c(0,svd.A$v[1,1]),y = c(0,svd.A$v[2,1]), col = "red")
+lines(x=c(0,svd.A$v[1,2]),y = c(0,svd.A$v[2,2]), col = "blue")
+s3 <- scatterplot3d::scatterplot3d(x = AS[,1], y = AS[,2],z = AS[,3],  type = 'l',
+                                   xlab = expression(x[1]),
+                                   ylab = expression(x[2]),
+                                   zlab = expression(x[3]),
+                                   angle = 45,)
+s3$points3d(x = svd.A$d[1]*c(0,svd.A$u[1,1]), 
+            y = svd.A$d[1]*c(0,svd.A$u[2,1]), 
+            z = svd.A$d[1]*c(0,svd.A$u[3,1]),
+            col = "red", type = 'l')
+s3$points3d(x = svd.A$d[2]*c(0,svd.A$u[1,2]), 
+            y = svd.A$d[2]*c(0,svd.A$u[2,2]), 
+            z = svd.A$d[2]*c(0,svd.A$u[3,2]),
+            col = "blue", type = 'l')
+```
+
+
+
+We have also added two vectors.  On the hyperellipse, the red vector is the longest semi-axis of the ellipse; the blue vector is the shortest semi-axis.  The red and blue vectors on the left are the preimages of the semi-axes of the ellipse (those vectors which get mapped to the semi-axes after multiplication with ${\bf A}$).  It may not be clear from the static images above, but the semi-major axes on the right are orthogonal. We provide an interactive plot of hyperellipse below so that you can better see this result.  Interestingly, the preimages on the left are also perpendicular. Since they are on the unit sphere, they are also orthonormal.
+
+
+```{r, echo = FALSE}
+plot_ly(data.frame(x = AS[,1], y = AS[,2], z = AS[,3]),
+        x=~x, y=~y, z=~z,
+        name = "Hyperellipse") %>% 
+  add_markers(marker = (list(size = 2)), 
+              color = I("black")) %>%
+  add_lines(data = data.frame( x = svd.A$d[1]*c(0,svd.A$u[1,1]),
+                        y = svd.A$d[1]*c(0,svd.A$u[2,1]),
+                        z = svd.A$d[1]*c(0,svd.A$u[3,1])),
+            x = ~x, y= ~y, z= ~z,
+            color = I("red"),
+            name = "First semiaxis") %>% 
+  add_lines(data = data.frame( x = svd.A$d[2]*c(0,svd.A$u[1,2]),
+                        y = svd.A$d[2]*c(0,svd.A$u[2,2]),
+                        z = svd.A$d[2]*c(0,svd.A$u[3,2])),
+            x = ~x, y= ~y, z= ~z,
+            color = I("blue"),
+            name = "2nd semiaxis")
+
+```
+:::
+
+In the preciding example, we have made a few important observations which generalize to any multiplication by a matrix, ${\bf A}\in\mathbb{R}^{m\times n}$. For now, assume that $m> n$ and ${\bf A}$ is full rank. In this case, the hyperellipse  ${\bf A} \mathcal{S} = \{{\bf A}\vec{x}\, : \vec{x} \in \mathcal{S}\}$ has orthogonal semi-axes $\sigma_1\vec{u}_1,\dots,\sigma_n\vec{u}_n$ with corresponding orthonormal preimages $\vec{v}_1,\dots,\vec{v}_n$. We use the assumption that the lengths of the axes are listed in decreasing order so that $\sigma_1\ge \dots\ge \sigma_n$. We may express these mappings in the following manner
+
+\begin{equation}
+{\bf A}\underbrace{ \begin{bmatrix}\\ \vec{v}_1 |& \dots & |\vec{v}_n \\ &&\end{bmatrix}}_{\tilde{\bf V}} = \begin{bmatrix} \\ \sigma_1 \vec{u}_1 & \dots & \sigma_n\vec{u}_n \\&& \end{bmatrix}
+= \underbrace{\begin{bmatrix}&&  \\ \vec{u}_1 & \dots & \vec{u}_n \\ &&\end{bmatrix}}_{\tilde{\bf U}}\underbrace{ \begin{bmatrix} \sigma_1 & 0& 0\\ 0& \ddots &0 \\ 0&0& \sigma_n \end{bmatrix}}_{\tilde{\bf S}}
+\end{equation}
+
+Since $\tilde{\bf V} \in \mathbb{R}^{n\times n}$ has orthonormal columns so that $\tilde{\bf V} ^{-1} = \tilde{\bf V}^T$, we arrive at the following decomposition for ${\bf A}.$
+
+
+
+
+
+
 ::: {.definition #svd name="The Singular Value Decomposition (SVD)"}
-Let ${\bf A} \in \mathbb{R}^{m\times n}$ be a rank $k$ matrix.  Then ${\bf A}$ may be factored as 
+Let ${\bf A} \in \mathbb{R}^{m\times n}$.  Then ${\bf A}$ may be factored as 
 \begin{equation}
 {\bf A} = \tilde{\bf U}\tilde{\bf S}\tilde{\bf V}^T
 (\#eq:def-reduced-svd)
 \end{equation}
-where $\tilde{\bf U}\in\mathbb{R}^{m\times k}$ and $\tilde{\bf V}\in\mathbb{R}^{k\times n}$ have orthonormal columns and $\tilde{\bf S}\in\mathbb{R}^{k\times k}$ is a diagonal matrix with real entries $\sigma_1 \ge \dots \sigma_k \ge 0$ along the diagonal. We refer to \@ref(eq:def-reduced-svd) as the reduced singular value decomposition of ${\bf A}.$  The columns of $\tilde{\bf U}$ ($\tilde{\bf V}$) are called the left (right) singular vectors of ${\bf A}$ and the scalars $\sigma_1\ge \dots\ge \sigma_k$ are referred to as the singular values of ${\bf A}.$
+where $\tilde{\bf U}\in\mathbb{R}^{m\times n}$ and $\tilde{\bf V}\in\mathbb{R}^{n\times n}$ have orthonormal columns and $\tilde{\bf S}\in\mathbb{R}^{n\times n}$ is a diagonal matrix with real entries $\sigma_1 \ge \dots \sigma_n \ge 0$ along the diagonal. We refer to \@ref(eq:def-reduced-svd) as the reduced singular value decomposition of ${\bf A}.$  The columns of $\tilde{\bf U}$ ($\tilde{\bf V}$) are called the left (right) singular vectors of ${\bf A}$ and the scalars $\sigma_1\ge \dots\ge \sigma_n$ are referred to as the singular values of ${\bf A}.$
 
-Let $\vec{u}_1,\dots,\vec{u}_k\in\mathbb{R}^m$ be the columns of $\tilde{\bf U}$.  When $m >k$, we may find additional vectors $\vec{u}_{k+1},\dots,\vec{u}_m$ such that $\{\vec{u}_1,\dots,\vec{u}_m\}$ are an orthonormal basis for $\mathbb{R}^m$. Similarly, we can  apply the same reasoning to $\tilde{\bf V}$ to find an orthonormal basis of $\mathbb{R}^n$ with the first $k$ such vectors corresponding to the right singular vectors of ${\bf A}$.  The (full) singular value decomposition of ${\bf A}$ is 
+Let $\vec{u}_1,\dots,\vec{u}_n\in\mathbb{R}^m$ be the columns of $\tilde{\bf U}$.  When $m > n$, we may find additional vectors $\vec{u}_{n+1},\dots,\vec{u}_m$ such that $\{\vec{u}_1,\dots,\vec{u}_m\}$ are an orthonormal basis for $\mathbb{R}^m$. This gives the (full) singular value decomposition of ${\bf A}$ is 
 \begin{equation}
 {\bf A} = {\bf US\bf V}^T
 (\#eq:def-svd)
@@ -324,11 +393,33 @@ where $${\bf U} = \begin{bmatrix} \vec{u}_1 & \dots & \vec{u}_m\end{bmatrix}\in\
 are orthonormal matrices.  The matrix ${\bf S}\in\mathbb{R}^{m\times n}$ is formed by taking $\tilde{S}$ and padding it with zero along the bottom and right so that it is $m\times n$.
 :::
 
-When considering matrix muliplication ${\bf A}\vec{x}$, the full SVD of ${\bf A}$ is helpful for decomposition this matrix multiplication into three more interpretable steps.  
+We may drop the preceding assumptions that $m > n$ or the ${\bf A}$ is full rank.  In fact, **every** matrix has a singular value decomposition.  A proof of this fact using induction may be found in [@trefethen97]. Furthermore, a few important matrix properties are directly related to the SVD.
+
+1) The rank of a matrix is equal to its number of positive singular values
+2) The column space of a matrix is the span of its first $rank({\bf A})$ left singular vectors
+3) The kernel of a matrix is the span of its last $n-rank({\bf A})$ right singular vectors.
+
+When considering matrix muliplication ${\bf A}\vec{x}$, the full SVD of ${\bf A}$ is helpful for decomposition this matrix multiplication into three more interpretable steps: a rotation/reflection, a stretch/compression, and a final rotation/reflection.
+
+\begin{equation}
+{\bf A}\vec{x} =\underbrace{ {\bf U} \underbrace{[{\bf D} \underbrace{({\bf V}^T \vec{x} )}_{rot/ref}]}_{str/com}}_{rot/ref}
+\end{equation}
 
 
 
-### Symmetry, Positive Definiteness, and Matrix Powers
+### Positive Definiteness and Matrix Powers
+
+Finally, we review a few brief properties for square matrices.
+
+::: {.definition name="Positive Definite Matrices"}
+A matrix, ${\bf A}\in\mathbb{R}^{n\times n}$ is positive definite if $\vec{x}^T{\bf A}\vec{x} >0$ for all $\vec{x}\ne 0.$  Equivalently, ${\bf A}$ is positive definite if all of its eigenvalues are positive.
+
+A matrix is positive semidefinite if $\vec{x}^T{\bf A}\vec{x} \ge 0$ for all $\vec{x}\ne 0.$  Equivalently, ${\bf A}$ is positive semidefinite if all of its eigenvalues are non-negative.
+:::
+
+One may interpret the powers of a matrix as repeated multiplication of a square matrix.  More specifically, for any $m\in \{1,2,\dots\}$, let ${\bf A}^m = \underbrace{{\bf A} \dots {\bf A}}_{m \text{ times}}$.  For diagonalizable positive definite matrices, we may extend this interpretation to negative and fractional power using the eigenvalue decomposition.  If the eigenvalue decomposition of the ${\bf A}$ is ${\bf A} = {\bf W \Lambda W}^{-1}$ for some diagonal matrix ${\Lambda}$ with positive entries, $\lambda_1,\dots,\lambda_n$ along its diagonal. For any $s\in\mathbb{R}$, we define ${\bf A}^s = {\bf W \Lambda}^s {\bf W}^{-1}$ where $$\Lambda^s = \begin{bmatrix} \lambda_1^s & 0 & 0 \\ 0 & \ddots & 0 \\0&0&\lambda_n^s\end{bmatrix}.$$
+
+
 
 ## Exercises
 

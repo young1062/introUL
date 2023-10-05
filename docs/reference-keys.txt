@@ -11,12 +11,24 @@ eq:def-sample-mean-data-matrix
 eq:def-sample-covariance-data-matrix
 exm:mvn-draws
 def:def-symm
+<<<<<<< HEAD
 def:def-psd
 thm:spectral
 exm:mvn-level-curves
 def:svd
 eq:def-reduced-svd
 eq:def-svd
+=======
+def:def-eigen
+thm:spectral
+exm:mvn-level-curves
+exm:svd-23
+fig:svd-ex
+def:svd
+eq:def-reduced-svd
+eq:def-svd
+def:unlabeled-div-1
+>>>>>>> main
 hyp:manifold-hypothesis
 hyp:clustering-hypothesis
 exm:hyperplane
@@ -26,7 +38,11 @@ fig:ribbon
 fig:ex-clusters
 def:first-pca
 exm:pca-demo-1
+<<<<<<< HEAD
 fig:unnamed-chunk-18
+=======
+fig:unnamed-chunk-19
+>>>>>>> main
 fig:pca1
 fig:pca2
 thm:pca-eig
@@ -55,7 +71,11 @@ important-properties
 matrix-factorizations
 eigenvalue-decomposition
 singular-value-decomposition
+<<<<<<< HEAD
 symmetry-positive-definiteness-and-matrix-powers
+=======
+positive-definiteness-and-matrix-powers
+>>>>>>> main
 exercises
 central-goals-and-assumptions
 dimension-reduction-and-manifold-learning
@@ -75,8 +95,11 @@ low-rank-approximations
 svd-and-low-rank-approximations
 connections-with-pca
 recommender-systems
+<<<<<<< HEAD
 imputation
 recommendation
+=======
+>>>>>>> main
 nonnegative-matrix-factorization
 sec-mds
 classical-scaling

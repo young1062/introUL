@@ -20,7 +20,7 @@
   <meta name="twitter:description" content="An introductory text on the goals and methods of unsupervised learning" />
   
 
-<meta name="author" content="Alex Young" />
+<meta name="author" content="Alex Young and Cenhao Zhu" />
 
 
 
@@ -179,7 +179,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="1.1" data-path="prerequisites.html"><a href="prerequisites.html"><i class="fa fa-check"></i><b>1.1</b> Prerequisites</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="ch-prob.html"><a href="ch-prob.html"><i class="fa fa-check"></i><b>2</b> Probability Review</a>
+<li class="chapter" data-level="2" data-path="ch-prob.html"><a href="ch-prob.html"><i class="fa fa-check"></i><b>2</b> Mathematical Background and Notation</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="important-notation.html"><a href="important-notation.html"><i class="fa fa-check"></i><b>2.1</b> Important notation</a></li>
 <li class="chapter" data-level="2.2" data-path="random-vectors-in-mathbbrd.html"><a href="random-vectors-in-mathbbrd.html"><i class="fa fa-check"></i><b>2.2</b> Random vectors in <span class="math inline">\(\mathbb{R}^d\)</span></a></li>
@@ -195,7 +195,7 @@ div.csl-indent {
 <li class="chapter" data-level="2.4.3" data-path="linear-algebra.html"><a href="linear-algebra.html#norms-and-distances"><i class="fa fa-check"></i><b>2.4.3</b> Norms and Distances</a></li>
 <li class="chapter" data-level="2.4.4" data-path="linear-algebra.html"><a href="linear-algebra.html#important-properties"><i class="fa fa-check"></i><b>2.4.4</b> Important properties</a></li>
 <li class="chapter" data-level="2.4.5" data-path="linear-algebra.html"><a href="linear-algebra.html#matrix-factorizations"><i class="fa fa-check"></i><b>2.4.5</b> Matrix Factorizations</a></li>
-<li class="chapter" data-level="2.4.6" data-path="linear-algebra.html"><a href="linear-algebra.html#symmetry-positive-definiteness-and-matrix-powers"><i class="fa fa-check"></i><b>2.4.6</b> Symmetry, Positive Definiteness, and Matrix Powers</a></li>
+<li class="chapter" data-level="2.4.6" data-path="linear-algebra.html"><a href="linear-algebra.html#positive-definiteness-and-matrix-powers"><i class="fa fa-check"></i><b>2.4.6</b> Positive Definiteness and Matrix Powers</a></li>
 </ul></li>
 <li class="chapter" data-level="2.5" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i><b>2.5</b> Exercises</a></li>
 </ul></li>
@@ -329,7 +329,11 @@ where <span class="math inline">\(\vec{z}_1^T, \dots,\vec{z}_N^T\)</span> denote
 <h3><span class="header-section-number">4.2.3</span> Connections with PCA<a href="sec-svd.html#connections-with-pca" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Suppose that we were to compute the full SVD of the centered data matrix <span class="math display">\[{\bf HX}= {\bf USV}^T.\]</span> We can express the sample covariance matrix of the original data using the SVD as
 <span class="math display">\[\begin{equation}
+<<<<<<< HEAD
 \hat{\Sigma}_X = \frac{1}{N} ({\bf HX})^T ({\bf HX}) = \frac{1}{N} {\bf VS}^T{\bf U}^T{\bf U SV} ^T = {\bf V}\left(\frac{1}{N} {\bf S}^T{\bf S}\right) {\bf V}^T.
+=======
+\hat{\Sigma}_X = \frac{1}{N} ({\bf HX})^T ({\bf HX}) = \frac{1}{N} {\bf VS}^T{\bf U}^T{\bf U S} V^T = {\bf V}\left(\frac{1}{N} {\bf S^T S}\right) {\bf V}^T.
+>>>>>>> main
 \end{equation}\]</span>
 The matrix <span class="math inline">\(\frac{1}{N}{\bf S}^T {\bf S} \in \mathbb{R}^{d\times d}\)</span> is diagonal with entries <span class="math inline">\(\sigma_1^2/N \ge \dots \ge \sigma_d^2/N.\)</span> Furthermore, the matrix <span class="math inline">\({\bf V}\)</span> is orthonormal. Thus, from the SVD of <span class="math inline">\({\bf HX}\)</span> we can immediately compute the spectral decomposition of <span class="math inline">\(\hat{\Sigma}_X\)</span> to attain the principal component variances and loadings. In fact, the principal component loadings are the right singular vectors of <span class="math inline">\({\bf HX}\)</span> whereas the principal component variances are the squared singular values divided by <span class="math inline">\(N\)</span>, e.g. <span class="math inline">\(\lambda_j = \sigma_j^2/N\)</span>. Using this observation,
 <span class="math display">\[{\bf HX} = {\bf USV}^T \rightarrow {\bf HXV} = {\bf US}\]</span>
@@ -339,6 +343,7 @@ from which we may conclude the principal component scores are equal to <span cla
 </div>
 <div id="recommender-systems" class="section level3 hasAnchor" number="4.2.4">
 <h3><span class="header-section-number">4.2.4</span> Recommender Systems<a href="sec-svd.html#recommender-systems" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<<<<<<< HEAD
 <p>SVD may also be applied to association rule learning which can identify similar items in a datasets based on partial observations. As a motivating example, consider the case where we have a dataset of user provided ratings of products, which could be items purchased, songs listed to, or movies watched. In this case, <span class="math inline">\({\bf X}_{ij}\)</span> indicates user <span class="math inline">\(i\)</span>s rating of item <span class="math inline">\(j\)</span>. Typically, most of the entries of <span class="math inline">\({\bf X}\)</span> will be NA since users have likely interacted with a small number of items. Using a variant of SVD, a simple recommendation system proceeds in two steps. First, we can impute the missing ratings. We can then use this result to infer similar movies which can be used for recommendation.</p>
 <div id="imputation" class="section level4 hasAnchor" number="4.2.4.1">
 <h4><span class="header-section-number">4.2.4.1</span> Imputation<a href="sec-svd.html#imputation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -394,6 +399,9 @@ which is the sum-squared error over all observations. Using this definition of l
 <p>Suppose now that we have a matrix, <span class="math inline">\(\tilde{\bf X}\in\mathbb{R}^{N\times d}\)</span> of movie ratings (real or imputed) and its SVD <span class="math display">\[\tilde{\bf X} = \tilde{\bf U}\tilde{\bf S}\tilde{\bf V}^T\]</span> where <span class="math inline">\(\tilde{\bf U} \in \mathbb{R}^{N\times k}\)</span>, <span class="math inline">\(\tilde{\bf S}\in\mathbb{R}^{k\times k}\)</span> and <span class="math inline">\(\tilde{\bf V}\in\mathbb{R}^{d\times k}.\)</span> Then for user <span class="math inline">\(i\)</span> the rating they give to movie <span class="math inline">\(j\)</span> is a linear combination of the elements in the <span class="math inline">\(j\)</span> column of <span class="math inline">\(\tilde{\bf V}^T\)</span>. Specifically, <span class="math display">\[\tilde{\bf X} \approx \sum_{\ell = 1}^k \sigma_\ell \tilde{\bf U}_{i\ell} (\tilde{\bf V})^T_{\ell j} = \sum_{\ell = 1}^k \sigma_\ell \tilde{\bf U}_{i\ell} \tilde{\bf V}_{j\ell}.\]</span></p>
 <p>For any movie, its rating will always be a linear combination of the elements in the corresponding column of <span class="math inline">\(\tilde{V}^T\)</span>. As such, we may view the <span class="math inline">\(k\)</span>-dimensional vectors in each column of <span class="math inline">\(\tilde{\bf V}\)</span> as a representation of that movie. We may then use these vectors to identify similar movies; one common approach is the cosine similarity, which for vectors <span class="math inline">\(\vec{x}, \vec{y}\in\mathbb{R}^k\)</span> is the cosine of the angle between them, i.e. <span class="math display">\[\cos\theta = \frac{\vec{x}^T\vec{y}}{\|\vec{x}\| \|\vec{y}\|}.\]</span>
 The cosine similarity is bounded between -1 and 1 and two vectors are considered more similar if the cosine of the angle between them is closer to 1. Using this representation, we can take any movie (a column of <span class="math inline">\(\tilde{\bf V}^T\)</span>) and choose the most similar movie (choosing the other columns of <span class="math inline">\(\tilde{\bf V}^T\)</span> with the largest cosine similarity). Thus, if a user gave a high rating to movie <span class="math inline">\(b\)</span>, we now have a method for recommending one or more similar movies they might enjoy.</p>
+=======
+<p>SVD may also be learned for association rule learning which can identify similar items in a datasets based on partial observations. As a brief example, consider the case where we have a dataset of user provided ratings of products, which could be items purchased, songs listed to, or movies watched. In this case, <span class="math inline">\({\bf X}_{ij}\)</span> indicates user <span class="math inline">\(i\)</span>s rating of item <span class="math inline">\(j\)</span>. Typically, most of the entries of <span class="math inline">\({\bf X}\)</span> will be NA since users have likely interacted with a small number of items. Using a variant of SVD, we can impute the missing ratings allowing us to infer similar movies which can be used for recommendation.</p>
+>>>>>>> main
 <!-- NMF -->
 </div>
 </div>

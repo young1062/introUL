@@ -20,7 +20,7 @@
   <meta name="twitter:description" content="An introductory text on the goals and methods of unsupervised learning" />
   
 
-<meta name="author" content="Alex Young" />
+<meta name="author" content="Alex Young and Cenhao Zhu" />
 
 
 
@@ -179,7 +179,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="1.1" data-path="prerequisites.html"><a href="prerequisites.html"><i class="fa fa-check"></i><b>1.1</b> Prerequisites</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="ch-prob.html"><a href="ch-prob.html"><i class="fa fa-check"></i><b>2</b> Probability Review</a>
+<li class="chapter" data-level="2" data-path="ch-prob.html"><a href="ch-prob.html"><i class="fa fa-check"></i><b>2</b> Mathematical Background and Notation</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="important-notation.html"><a href="important-notation.html"><i class="fa fa-check"></i><b>2.1</b> Important notation</a></li>
 <li class="chapter" data-level="2.2" data-path="random-vectors-in-mathbbrd.html"><a href="random-vectors-in-mathbbrd.html"><i class="fa fa-check"></i><b>2.2</b> Random vectors in <span class="math inline">\(\mathbb{R}^d\)</span></a></li>
@@ -195,7 +195,7 @@ div.csl-indent {
 <li class="chapter" data-level="2.4.3" data-path="linear-algebra.html"><a href="linear-algebra.html#norms-and-distances"><i class="fa fa-check"></i><b>2.4.3</b> Norms and Distances</a></li>
 <li class="chapter" data-level="2.4.4" data-path="linear-algebra.html"><a href="linear-algebra.html#important-properties"><i class="fa fa-check"></i><b>2.4.4</b> Important properties</a></li>
 <li class="chapter" data-level="2.4.5" data-path="linear-algebra.html"><a href="linear-algebra.html#matrix-factorizations"><i class="fa fa-check"></i><b>2.4.5</b> Matrix Factorizations</a></li>
-<li class="chapter" data-level="2.4.6" data-path="linear-algebra.html"><a href="linear-algebra.html#symmetry-positive-definiteness-and-matrix-powers"><i class="fa fa-check"></i><b>2.4.6</b> Symmetry, Positive Definiteness, and Matrix Powers</a></li>
+<li class="chapter" data-level="2.4.6" data-path="linear-algebra.html"><a href="linear-algebra.html#positive-definiteness-and-matrix-powers"><i class="fa fa-check"></i><b>2.4.6</b> Positive Definiteness and Matrix Powers</a></li>
 </ul></li>
 <li class="chapter" data-level="2.5" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i><b>2.5</b> Exercises</a></li>
 </ul></li>
@@ -324,7 +324,7 @@ where we interpret the expectation operation as applying to each entry of the ma
 \tag{2.4}
 \end{equation}\]</span>
 In <a href="expectation-mean-and-covariance.html#eq:def-sample-covariance">(2.4)</a>, dividing by <span class="math inline">\(N\)</span> rather than <span class="math inline">\(N-1\)</span> yields biased estimates of the terms of the sample covariance matrix. However, the final formula in <a href="expectation-mean-and-covariance.html#eq:def-sample-covariance">(2.4)</a> more directly matches the corresponding term in the definition of the covariance matrix. Had we used a factor of <span class="math inline">\(1/(N-1)\)</span> instead, we would have
-<span class="math display">\[\frac{1}{N-1}\sum_{i=1}^N (\vec{x}_i - \bar{X})(\vec{x}_i - \bar{X})^T = \left(\frac{1}{N}\sum_{i=1}^N \vec{x}_i\vec{x}_i^T\right) - \frac{N}{N-1}\bar{x}\bar{x}^T\]</span> which is slightly more cumbersome. In the examples we will consider, <span class="math inline">\(N\)</span> will typically be large enough so that the numerical difference is small. As such, we will opt for algebraically convenient definition form of @(eq:def-sample-covariance) as our definition of the sample covariance matrix.</p>
+<span class="math display">\[\frac{1}{N-1}\sum_{i=1}^N (\vec{x}_i - \bar{X})(\vec{x}_i - \bar{X})^T = \left(\frac{1}{N}\sum_{i=1}^N \vec{x}_i\vec{x}_i^T\right) - \frac{N}{N-1}\bar{x}\bar{x}^T\]</span> which is slightly more cumbersome. In the examples we will consider, <span class="math inline">\(N\)</span> will typically be large enough so that the numerical difference is small. As such, we will opt for algebraically convenient definition form of <a href="expectation-mean-and-covariance.html#eq:def-sample-covariance">(2.4)</a> as our definition of the sample covariance matrix.</p>
 <p>Alternatively, we can view the sample mean and sample covariance as the mean and covariance (using expectation rather than averages) of the empirical distribution from a collection of samples <span class="math inline">\(\vec{x}_1,\dots,\vec{x}_N\)</span> defined below.</p>
 <div class="definition">
 <p><span id="def:emp" class="definition"><strong>Definition 2.3  (Empirical Distribution) </strong></span>Given a finite set of points <span class="math inline">\(\mathcal{X}=\{\vec{x}_1,\dots,\vec{x}_N\} \subset \mathbb{R}^d\)</span>, we say that random vector <span class="math inline">\(\vec{z}\)</span> follows the empirical distribution from data <span class="math inline">\(\mathcal{X}\)</span> if <span class="math display">\[P(\vec{z} = \vec{x}_i) = \frac{1}{N}, \quad i = 1,\dots, N\]</span>
@@ -366,7 +366,7 @@ where <span class="math inline">\({\bf H} = {\bf I} - \frac{1}{N} \vec{1} \vec{1
 0.216 &amp; 4.181 &amp; 0.087  \\
 0.121 &amp; 0.087 &amp; 9.366   
 \end{bmatrix}\]</span></p>
-<p>which are closer to the true values. If we increase the sample size to <span class="math inline">\(N=10^4\)</span> samples, we get estimates which are closer to the true values (shown below).</p>
+<p>which are close to the true values. If we increase the sample size to <span class="math inline">\(N=10^4\)</span> samples, we get estimates which are closer to the true values (shown below).</p>
 <p><span class="math display">\[\bar{x} = \begin{bmatrix}
 0.001 \\ 0.02 \\ 0.051
 \end{bmatrix}
