@@ -16,3 +16,14 @@ energy
 rgl
 Rdimtools
 princurve
+tidyverse
+tibble
+tidyr
+readr
+purrr
+dplyr
+stringr
+forcats
+lubridate
+data.table
+irlba
