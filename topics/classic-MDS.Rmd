@@ -374,14 +374,25 @@ plot(cmdscale(D, eig = TRUE)$eig, xlab = 'k', ylab = expression(lambda[k]))
 
 We find that the first three eigenvalues are much larger than the rest, so we assume that the dimension of the original configuration is 3, which also complies to our knowledge about global map.
 
+#### Duality of PCA and Classical Scaling
 
+You may have already observed that Classical Scaling is actually equivalent to PCA to some extent. Cox states that "there is a duality between a principals components analysis and classical MDS where dissimilarities are given by Euclidean distance"[@Cox_MDS].
 
+Given the matrix expression of the original configuration $\mathbf{X} \in \mathbb{R}^{N \times k}$. Recall that PCA is attained by finding the eigen-vectors of the covariance matrix $\frac{1}{N-1} (HX)^T (HX)$, where $H$ is the centering matrix. Suppose the $k$ eigen-vectors are $\vec{w}_1, \vec{w}_2, \dots, \vec{w}_k$, and the corresponding eigenvalues are $\mu_1, \mu_2, \dots,\mu_k$. Then $HX=YW^T$, where $W=(\vec{w}_1 | \vec{w}_2 | \dots | \vec{w}_N)$ represents PC Loadings, and $Y$ represents PC Scores. 
 
+While MDS is attained by first converting $X$ into distance matrix, here, Euclidean distance. In classical MDS algorithm, we convert the Euclidean distance matrix into the inner product matrix $B=(HX)(HX)^T$. then we find the eigen-vectors of $B$ -- call the eigen-vectors $\vec{\nu}_1, \vec{\nu}_2, \dots, \vec{\nu}_N$, and eigenvalues $\lambda_1, \lambda_2, \dots, \lambda_N$. 
 
+Recall what you have learnt in Linear Algebra. The eigenvalues of $XX^T$ are the same as those for $X^TX$, together with an extra n-p zero eigenvalues. So, for $i < p$, $\mu_i = \lambda_i$. So the first $t$ PC scores give the t-dimensional configuration for Classical Scaling. **Choosing the number of dimensionality $t$ of the original configuration is equivalent to choosing the number of principal components to keep**
+
+Furthermore, we have shown that $HX=YW^T$, then $B=(HX)(HX)^T=YW^TWY^T=YY^T$, this means **PC scores are the exact solutions for Classical Scaling!**
+
+As a result, classical MDS has the same strengths and weaknesses of PCA.
 
 
 
 ### Metric MDS
+
+
 
 
 

@@ -660,7 +660,7 @@ which has the result:
 \vec{w}_i^{\star} = \frac{\tilde{G}^{-}_i \mathbf{1}_k}{\mathbf{1}^T_k \tilde{G}^{-}_i \mathbf{1}_k}
 \]</span></p>
 <p><strong>Complement:</strong></p>
-<p>As discussed before, we can only proof that <span class="math inline">\(\tilde{G}_i\)</span> is positive semi-definite, however, we cannot ensure that it is positive definite, which means <span class="math inline">\(\tilde{G}_i\)</span> is not necessarily invertible. That is why we use the generalize inverse sign here. In practice, it can be done through performing SVD on <span class="math inline">\(\tilde{G}_i\)</span> and select the first few large singular values and eliminate the rest. Then when computing <span class="math inline">\(\tilde{G}^{-}_i\)</span>, just do the reciperal of these retained singular values.</p>
+<p>As discussed before, we can only proof that <span class="math inline">\(\tilde{G}_i\)</span> is positive semi-definite, however, we cannot ensure that it is positive definite, which means <span class="math inline">\(\tilde{G}_i\)</span> is not necessarily invertible. That is why we use the generalize inverse sign here. In practice, it can be done through performing SVD on <span class="math inline">\(\tilde{G}_i\)</span> and select the first few large singular values and eliminate the rest. Then when computing <span class="math inline">\(\tilde{G}^{-}_i\)</span>, just do the reciprocal of these retained singular values.</p>
 <p>Actually <span class="math inline">\(\tilde{G}_i\)</span> only has <span class="math inline">\(d\)</span> (the intrinsic original dimension if you forget) relatively large eigenvalues. The rest are either very small or zeros. So it is very likely that <span class="math inline">\(\tilde{G}_i\)</span> is singular, making the computation result highly unstable. In {<span class="citation">[<a href="#ref-think_globally">4</a>]</span>}, the authors proposed to address this issue through regularizing <span class="math inline">\(\tilde{G}_i\)</span>.</p>
 <p><span class="math display">\[
 \tilde{G}_i \leftarrow \tilde{G}_i+ \left(\frac{\Delta^2}{k}\right) \operatorname{Tr}\left(\tilde{G}_i\right) \mathbf{I}
@@ -709,11 +709,12 @@ From constraint (b), we know that columns of <span class="math inline">\(\mathbf
 <p>Compute eigen-vectors with the smallest <span class="math inline">\(d+1\)</span> eigenvalues <span class="math inline">\(0=\lambda_1 \leq \lambda_2 &lt; \dots &lt; \lambda_{d+1}\)</span>, eliminate <span class="math inline">\(\mathbf{1}_N\)</span> (the first one). The remaining <span class="math inline">\(d\)</span> vectors are respectively <span class="math inline">\(\vec{v}_2, \vec{v}_3, \dots \vec{v}_{d+1} \in \mathbb{R}^N\)</span>. So <span class="math inline">\(\mathbf{Y} = (\vec{v}_2 | \vec{v}_2 | \dots | \vec{v}_{d+1})\)</span>, we successfully recover the corresponding <span class="math inline">\(\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N \in \mathbb{R}^d\)</span>.</p>
 <p><strong>An illustration of the algorithm</strong></p>
 <p>In the original paper <span class="citation">[<a href="#ref-lle">2</a>]</span>, the authors provide a very intuitive plot that summarizes the above three steps.</p>
-<center>
+<p style="text-align:center;">
 <div class="float">
 <img src="picture/Screenshot%202023-09-27%20at%2000.47.49.png" style="width:30.0%;height:30.0%" alt="LLE_illustration" />
 <div class="figcaption">LLE_illustration</div>
 </div>
+</p>
 <p><strong>Parameter Tuning</strong></p>
 <p>There are two parameters to tune in LLE, i.e. (the number of neighbors: <span class="math inline">\(k\)</span>; the dimension of the recovered configuration: <span class="math inline">\(d\)</span>).</p>
 <ol style="list-style-type: decimal">

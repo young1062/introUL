@@ -98,7 +98,7 @@ $$
 
 **Complement:**
 
-As discussed before, we can only proof that $\tilde{G}_i$ is positive semi-definite, however, we cannot ensure that it is positive definite, which means $\tilde{G}_i$ is not necessarily invertible. That is why we use the generalize inverse sign here. In practice, it can be done through performing SVD on $\tilde{G}_i$ and select the first few large singular values and eliminate the rest. Then when computing $\tilde{G}^{-}_i$, just do the reciperal of these retained singular values. 
+As discussed before, we can only proof that $\tilde{G}_i$ is positive semi-definite, however, we cannot ensure that it is positive definite, which means $\tilde{G}_i$ is not necessarily invertible. That is why we use the generalize inverse sign here. In practice, it can be done through performing SVD on $\tilde{G}_i$ and select the first few large singular values and eliminate the rest. Then when computing $\tilde{G}^{-}_i$, just do the reciprocal of these retained singular values. 
 
 Actually $\tilde{G}_i$ only has $d$ (the intrinsic original dimension if you forget) relatively large eigenvalues. The rest are either very small or zeros. So it is very likely that $\tilde{G}_i$ is singular, making the computation result highly unstable. In {@think_globally}, the authors proposed to address this issue through regularizing $\tilde{G}_i$.
 
