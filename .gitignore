@@ -4,4 +4,15 @@
 .RData
 */.Rhistory
 */.RData
+*/.Rdata
+*/*/.rdb
+*/*/.rdx
+.rdx
+.rdb
+*/.rdb
+*/.rdx
+.rdx
+.rdb
+data
+*cache*
 .Rproj.user
