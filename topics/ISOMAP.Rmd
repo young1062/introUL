@@ -16,6 +16,7 @@ myColorRamp <- function(colors, values) {
 }
 ```
 
+
 ## Isometric Feature Map (ISOMAP)
 
 ### Introduction

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2.3 Expectation, Mean, and Covariance | An Introduction to Unsupervised Learning</title>
+  <meta name="description" content="An introductory text on the goals and methods of unsupervised learning" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2.3 Expectation, Mean, and Covariance | An Introduction to Unsupervised Learning" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="An introductory text on the goals and methods of unsupervised learning" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2.3 Expectation, Mean, and Covariance | An Introduction to Unsupervised Learning" />
+  
+  <meta name="twitter:description" content="An introductory text on the goals and methods of unsupervised learning" />
+  
+
+<meta name="author" content="Alex Young" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="random-vectors-in-mathbbrd.html"/>
+<link rel="next" href="linear-algebra.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.2/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<script src="libs/threejs-111/three.min.js"></script>
+<script src="libs/threejs-111/Detector.js"></script>
+<script src="libs/threejs-111/Projector.js"></script>
+<script src="libs/threejs-111/CanvasRenderer.js"></script>
+<script src="libs/threejs-111/TrackballControls.js"></script>
+<script src="libs/threejs-111/StateOrbitControls.js"></script>
+<script src="libs/scatterplotThree-binding-0.3.3/scatterplotThree.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Unsupervised Learning</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="prerequisites.html"><a href="prerequisites.html"><i class="fa fa-check"></i><b>1.1</b> Prerequisites</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="probability-review.html"><a href="probability-review.html"><i class="fa fa-check"></i><b>2</b> Probability Review</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="important-notation.html"><a href="important-notation.html"><i class="fa fa-check"></i><b>2.1</b> Important notation</a></li>
+<li class="chapter" data-level="2.2" data-path="random-vectors-in-mathbbrd.html"><a href="random-vectors-in-mathbbrd.html"><i class="fa fa-check"></i><b>2.2</b> Random vectors in <span class="math inline">\(\mathbb{R}^d\)</span></a></li>
+<li class="chapter" data-level="2.3" data-path="expectation-mean-and-covariance.html"><a href="expectation-mean-and-covariance.html"><i class="fa fa-check"></i><b>2.3</b> Expectation, Mean, and Covariance</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="expectation-mean-and-covariance.html"><a href="expectation-mean-and-covariance.html#sample-mean-and-sample-covariance"><i class="fa fa-check"></i><b>2.3.1</b> Sample Mean and Sample Covariance</a></li>
+<li class="chapter" data-level="2.3.2" data-path="expectation-mean-and-covariance.html"><a href="expectation-mean-and-covariance.html#the-data-matrix"><i class="fa fa-check"></i><b>2.3.2</b> The Data Matrix</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="linear-algebra.html"><a href="linear-algebra.html"><i class="fa fa-check"></i><b>2.4</b> Linear Algebra</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="linear-algebra.html"><a href="linear-algebra.html#assumed-background"><i class="fa fa-check"></i><b>2.4.1</b> Assumed Background</a></li>
+<li class="chapter" data-level="2.4.2" data-path="linear-algebra.html"><a href="linear-algebra.html#interpretations-of-matrix-multiplication"><i class="fa fa-check"></i><b>2.4.2</b> Interpretations of Matrix Multiplication</a></li>
+<li class="chapter" data-level="2.4.3" data-path="linear-algebra.html"><a href="linear-algebra.html#norms-and-distances"><i class="fa fa-check"></i><b>2.4.3</b> Norms and Distances</a></li>
+<li class="chapter" data-level="2.4.4" data-path="linear-algebra.html"><a href="linear-algebra.html#important-properties"><i class="fa fa-check"></i><b>2.4.4</b> Important properties</a></li>
+<li class="chapter" data-level="2.4.5" data-path="linear-algebra.html"><a href="linear-algebra.html#matrix-factorizations"><i class="fa fa-check"></i><b>2.4.5</b> Matrix Factorizations</a></li>
+<li class="chapter" data-level="2.4.6" data-path="linear-algebra.html"><a href="linear-algebra.html#symmetry-positive-definiteness-and-matrix-powers"><i class="fa fa-check"></i><b>2.4.6</b> Symmetry, Positive Definiteness, and Matrix Powers</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i><b>2.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="central-goals-and-assumptions.html"><a href="central-goals-and-assumptions.html"><i class="fa fa-check"></i><b>3</b> Central goals and assumptions</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="dimension-reduction-and-manifold-learning.html"><a href="dimension-reduction-and-manifold-learning.html"><i class="fa fa-check"></i><b>3.1</b> Dimension reduction and manifold learning</a></li>
+<li class="chapter" data-level="3.2" data-path="clustering.html"><a href="clustering.html"><i class="fa fa-check"></i><b>3.2</b> Clustering</a></li>
+<li class="chapter" data-level="3.3" data-path="generating-synthetic-data.html"><a href="generating-synthetic-data.html"><i class="fa fa-check"></i><b>3.3</b> Generating synthetic data</a></li>
+<li class="chapter" data-level="3.4" data-path="exercises-1.html"><a href="exercises-1.html"><i class="fa fa-check"></i><b>3.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="linear-methods.html"><a href="linear-methods.html"><i class="fa fa-check"></i><b>4</b> Linear Methods</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="sec-pca.html"><a href="sec-pca.html"><i class="fa fa-check"></i><b>4.1</b> Principal Component Analysis</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="sec-pca.html"><a href="sec-pca.html#derivation-1-iterative-projections"><i class="fa fa-check"></i><b>4.1.1</b> Derivation 1: Iterative Projections</a></li>
+<li class="chapter" data-level="4.1.2" data-path="sec-pca.html"><a href="sec-pca.html#derivation-2-optimal-linear-subspace"><i class="fa fa-check"></i><b>4.1.2</b> Derivation 2: Optimal Linear Subspace</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="singular-value-decomposition-1.html"><a href="singular-value-decomposition-1.html"><i class="fa fa-check"></i><b>4.2</b> Singular Value Decomposition</a></li>
+<li class="chapter" data-level="4.3" data-path="nonnegative-matrix-factorization.html"><a href="nonnegative-matrix-factorization.html"><i class="fa fa-check"></i><b>4.3</b> Nonnegative Matrix Factorization</a></li>
+<li class="chapter" data-level="4.4" data-path="sec-mds.html"><a href="sec-mds.html"><i class="fa fa-check"></i><b>4.4</b> Multidimensional Scaling</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="sec-mds.html"><a href="sec-mds.html#key-features-of-mds"><i class="fa fa-check"></i><b>4.4.1</b> Key features of MDS</a></li>
+<li class="chapter" data-level="4.4.2" data-path="sec-mds.html"><a href="sec-mds.html#classical-scaling"><i class="fa fa-check"></i><b>4.4.2</b> Classical Scaling</a></li>
+<li class="chapter" data-level="4.4.3" data-path="sec-mds.html"><a href="sec-mds.html#metric-mds"><i class="fa fa-check"></i><b>4.4.3</b> Metric MDS</a></li>
+<li class="chapter" data-level="4.4.4" data-path="sec-mds.html"><a href="sec-mds.html#nonmetric-mds"><i class="fa fa-check"></i><b>4.4.4</b> Nonmetric MDS</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="kernels-and-nonlinearity.html"><a href="kernels-and-nonlinearity.html"><i class="fa fa-check"></i><b>5</b> Kernels and Nonlinearity</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="exercises-2.html"><a href="exercises-2.html"><i class="fa fa-check"></i><b>5.1</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="manifold-learning.html"><a href="manifold-learning.html"><i class="fa fa-check"></i><b>6</b> Manifold Learning</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>6.1</b> Background</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="background.html"><a href="background.html#data-on-a-manifold"><i class="fa fa-check"></i><b>6.1.1</b> Data on a manifold</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html"><i class="fa fa-check"></i><b>6.2</b> Isometric Feature Map (ISOMAP)</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#introduction-1"><i class="fa fa-check"></i><b>6.2.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.2.2" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#key-definitions"><i class="fa fa-check"></i><b>6.2.2</b> Key Definitions</a></li>
+<li class="chapter" data-level="6.2.3" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#algorithm"><i class="fa fa-check"></i><b>6.2.3</b> Algorithm</a></li>
+<li class="chapter" data-level="6.2.4" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#limitations-of-isomap"><i class="fa fa-check"></i><b>6.2.4</b> Limitations of ISOMAP</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html"><i class="fa fa-check"></i><b>6.3</b> Locally Linear Embeddings (LLEs)</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#introduction-2"><i class="fa fa-check"></i><b>6.3.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.3.2" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#algorithm-1"><i class="fa fa-check"></i><b>6.3.2</b> Algorithm</a></li>
+<li class="chapter" data-level="6.3.3" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#strengths-and-weaknesses-of-lle"><i class="fa fa-check"></i><b>6.3.3</b> Strengths and Weaknesses of LLE</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html"><i class="fa fa-check"></i><b>6.4</b> Autoencoders (AEs)</a></li>
+<li class="chapter" data-level="6.5" data-path="additional-methods.html"><a href="additional-methods.html"><i class="fa fa-check"></i><b>6.5</b> Additional methods</a></li>
+<li class="chapter" data-level="6.6" data-path="exercises-3.html"><a href="exercises-3.html"><i class="fa fa-check"></i><b>6.6</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="clustering-1.html"><a href="clustering-1.html"><i class="fa fa-check"></i><b>7</b> Clustering</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="hierarchical.html"><a href="hierarchical.html"><i class="fa fa-check"></i><b>7.1</b> Hierarchical</a></li>
+<li class="chapter" data-level="7.2" data-path="center-based.html"><a href="center-based.html"><i class="fa fa-check"></i><b>7.2</b> Center-based</a></li>
+<li class="chapter" data-level="7.3" data-path="model-based.html"><a href="model-based.html"><i class="fa fa-check"></i><b>7.3</b> Model-based</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="model-based.html"><a href="model-based.html#k-means"><i class="fa fa-check"></i><b>7.3.1</b> k-means</a></li>
+<li class="chapter" data-level="7.3.2" data-path="model-based.html"><a href="model-based.html#k-mediods"><i class="fa fa-check"></i><b>7.3.2</b> k-mediods</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="spectral.html"><a href="spectral.html"><i class="fa fa-check"></i><b>7.4</b> Spectral</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">An Introduction to Unsupervised Learning</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="expectation-mean-and-covariance" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Expectation, Mean, and Covariance<a href="expectation-mean-and-covariance.html#expectation-mean-and-covariance" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>As in the one-dimensional case, the cumulative distribution function determines the distribution of the random vector, and using the density we may establish a few important quantities which will appear often throughout this text.</p>
+<p>The first is the mean or expected value of the random vector which is the vector of expected values of each entry so that
+<span class="math display" id="eq:def-expectation">\[\begin{equation}
+E[\vec{x}] = \int_{\mathbb{R}^d}\vec{x} f(\vec{x})d\vec{x} = \begin{bmatrix} E[x_1] \\ \vdots \\ E[x_d] \end{bmatrix} = \begin{bmatrix} \int_{\mathbb{R}^d} x_1 f(\vec{x})d\vec{x} \\ \vdots \\ \int_{\mathbb{R}^d} x_d f(\vec{x})d\vec{x} \end{bmatrix}
+\tag{2.1}
+\end{equation}\]</span>
+where <span class="math display">\[\int_{\mathbb{R}^d} x_i f(\vec{x})d\vec{x} = \int_{-\infty}^\infty \dots \int_{-\infty}^\infty x_i f(x_1,\dots,x_d)dx_1 \dots dx_d.\]</span> Note, we are assuming each of the integrals in <a href="expectation-mean-and-covariance.html#eq:def-expectation">(2.1)</a> is well defined, which is a convention we adhere to throughout this text. Often, we’ll often use <span class="math inline">\(\vec{\mu}\)</span> to denote the mean vector. When we are considering more than multiple random vectors <span class="math inline">\(\vec{x}\)</span> and <span class="math inline">\(\vec{y}\)</span> we will add a corresponding subscript <span class="math inline">\(\vec{\mu}_\vec{x}\)</span> to denote the corresponding mean of <span class="math inline">\(\vec{x}\)</span>.</p>
+<p>The linearity of expectation for univariate random vectors holds here as well. If <span class="math inline">\(\vec{x}\in\mathbb{R}^d\)</span> is a random vector, <span class="math inline">\({\bf A}\in\mathbb{R}^{k\times d}\)</span> is a matrix of constant entries, and <span class="math inline">\(\vec{b}\in\mathbb{R}^k\)</span> is a vector of constant entries then <span class="math display">\[E[{\bf A}\vec{x} + \vec{b}] = {\bf A}\vec{\mu} + \vec{b}.\]</span> Importantly, for non-squared matrices <span class="math inline">\({\bf A}\)</span> then mean of <span class="math inline">\({\bf A}\vec{x}\)</span> will be of a different dimension than <span class="math inline">\(\vec{x}.\)</span></p>
+<p>In general, the coordinates of a random vector will not be independent. To quantify the pairwise dependence, we could consider the covariance <span class="math display">\[Cov(x_i,x_j) = E[(x_i - \mu_i)(x_j -\mu_j)] = \int_\mathbb{R}^d (x_i-\mu_i)(x_j-\mu_j) f(\vec{x})d\vec{x}\]</span> for <span class="math inline">\(1\le i,j \le d\)</span>. In the case <span class="math inline">\(i=j\)</span>, this simplifies to <span class="math inline">\(Cov(x_i,x_i) = Var(x_i)\)</span>.</p>
+<p>Importantly, we do not want to consider each all of the pairwise covariance separately. Instead, we can organize them as a <span class="math inline">\(d\times d\)</span> matrix <span class="math inline">\({\bf \Sigma}\)</span> with entries <span class="math inline">\({\bf \Sigma}_{ij} = Cov(x_i,x_j)\)</span>. Hereafter, we will refer to <span class="math inline">\({\bf \Sigma}\)</span> as the covariance matrix of <span class="math inline">\(\vec{x}.\)</span> When we are considering multiple random vectors we will use subscripts so that <span class="math inline">\({\bf \Sigma}_{\vec{x}}\)</span> and <span class="math inline">\({\bf \Sigma}_{\vec{y}}\)</span> denote the covariance matrices or random vectors <span class="math inline">\({\vec{x}}\)</span> and <span class="math inline">\({\vec{y}}\)</span> respectively. Following the notational conventions, it follows that <span class="math inline">\(\vec{x} - E[\vec{x}] = \vec{x} - \vec{\mu} \in \mathbb{R}^d\)</span> so that the outer product of <span class="math inline">\(\vec{x} - \vec{\mu}\)</span> with itself is the <span class="math inline">\(d\times d\)</span> matrix with entries
+<span class="math display">\[[(\vec{x} - \vec{\mu})(\vec{x} - \vec{\mu})^T]_{ij} = (x_i-\mu_i)(x_j-\mu_j)\]</span> so that we may more compactly write
+<span class="math display" id="eq:def-covariance">\[\begin{equation}
+\text{Var}(\vec{x}) = E\left[(\vec{x} - \vec{\mu})(\vec{x} - \vec{\mu})^T\right]
+\tag{2.2}
+\end{equation}\]</span>
+where we interpret the expectation operation as applying to each entry of the matrix <span class="math inline">\((\vec{x} - \vec{\mu})(\vec{x} - \vec{\mu})^T\)</span>. This looks very similar to the univariate case save that we must be mindful of the multidimensional nature of our random vector. In fact with some algebra, we have the following alternative formula for the covariance matrix <span class="math display">\[{\bf \Sigma} = E[\vec{x}\,\vec{x}^T] -\vec{\mu}\vec{\mu}^T\]</span> which is again reminiscent of the univariate case. Showing this result is left as a short exercise. One brief note to avoid confusion. Other texts refer to <span class="math inline">\(\text{Var}(\vec{x})\)</span> as the variance matrix or variance-covariance matrix. Herein, we use the term covariance matrix for <span class="math inline">\(\text{Var}(\vec{x}).\)</span></p>
+<p>Recall the univariate case, <span class="math display">\[\text{Var}(aX+b) = a^2\text{Var}(X)\]</span> for constants <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> and (one-dimensional) random variable <span class="math inline">\(X\)</span>. Similar to the univariate case, there is a formula for the covariance of an affine mapping of a random vector, but the specific form requires us to be mindful of the matrix structure of the covariance matrix. For random vector <span class="math inline">\(\vec{x}\in\mathbb{R}^d\)</span>, constant matrix <span class="math inline">\({\bf A}\in\mathbb{R}^{k\times d}\)</span> and constant vector <span class="math inline">\(\vec{b}\in\mathbb{R}^k\)</span>, it follows (see exercises) that
+<span class="math display">\[{\bf \Sigma}_{{\bf A}\vec{x}+\vec{b}} = {\bf A \Sigma A}^T.\]</span> Importantly, note that <span class="math inline">\({\bf A \Sigma A}^T\)</span> is a <span class="math inline">\(k\times k\)</span> matrix which is consistent with the fact that <span class="math inline">\({\bf A}\vec{y}+\vec{b}\)</span> is a <span class="math inline">\(k\)</span>-dimensional vector.</p>
+<div class="example">
+<p><span id="exm:mvn-moments" class="example"><strong>Example 2.1  (Mean and Covariance of MVN) </strong></span>If <span class="math inline">\(\vec{x} \sim \mathcal{N}(\vec{\mu}, {\bf \Sigma})\)</span> then <span class="math inline">\(E[\vec{x}] = \vec{\mu}\)</span> and <span class="math inline">\(\text{Var}(\vec{x}) = {\bf \Sigma}\)</span></p>
+</div>
+<div class="example">
+<p><span id="exm:t-moments" class="example"><strong>Example 2.2  (Mean and Covariance of Multivariate t-distribution) </strong></span>Let <span class="math inline">\(\vec{x} \sim t_\nu(\vec{\mu}, {\bf \Sigma})\)</span>. If <span class="math inline">\(\nu &gt; 1\)</span> then <span class="math inline">\(E[\vec{x}] = \vec{\mu}\)</span>; otherwise the mean does not exist. If <span class="math inline">\(\nu &gt; 2\)</span>, then <span class="math inline">\(\text{Var}(\vec{x}) = \frac{\nu}{\nu-2}{\bf \Sigma}\)</span>; otherwise, the covariance matrix does not exist.</p>
+</div>
+<p>Verifying these examples is left to the exercises and rely on multivariate change of variables which are not covered here.</p>
+<div id="sample-mean-and-sample-covariance" class="section level3 hasAnchor" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> Sample Mean and Sample Covariance<a href="expectation-mean-and-covariance.html#sample-mean-and-sample-covariance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In many cases, we’ll consider a collection of <span class="math inline">\(N\)</span> <span class="math inline">\(iid\)</span> vectors <span class="math inline">\(\vec{x}_1,\dots,\vec{x}_N \in \mathbb{R}\)</span>. Again, subscripts are used here, but importantly when accompanied by the <span class="math inline">\(\vec{\cdot}\)</span> sign a subscript does not refer to a specific coordinate of a vector but rather one vector in a set. Given <em>iid</em> observations <span class="math inline">\(\vec{x}_1,\dots,\vec{x}_N\)</span>, we will use sample averages to estimate the expectation and covariance of the data generating distribution. We’ll use bars to denote sample averages so that <span class="math inline">\(\bar{x}\)</span> denotes the sample mean and <span class="math inline">\(\bar{\bf \Sigma}\)</span> the sample covariance. In this case, we have
+<span class="math display" id="eq:def-sample-mean">\[\begin{equation}
+\bar{x} = \frac{1}{N}\sum_{i=1}^N \vec{x}_i.
+\tag{2.3}
+\end{equation}\]</span></p>
+<p>Similarly, we define the sample covariance matrix to be
+<span class="math display" id="eq:def-sample-covariance">\[\begin{equation}
+{\bf \bar{\Sigma}} = \frac{1}{N} \sum_{i=1}^N (\vec{x}_i - \bar{x})(\vec{x}_i - \bar{X})^T = \left(\frac{1}{N}\sum_{i=1}^N \vec{x}_i\vec{x}_i^T\right) - \bar{x}\bar{x}^T
+\tag{2.4}
+\end{equation}\]</span>
+In <a href="expectation-mean-and-covariance.html#eq:def-sample-covariance">(2.4)</a>, dividing by <span class="math inline">\(N\)</span> rather than <span class="math inline">\(N-1\)</span> yields biased estimates of the terms of the sample covariance matrix. However, the final formula in <a href="expectation-mean-and-covariance.html#eq:def-sample-covariance">(2.4)</a> more directly matches the corresponding term in the definition of the covariance matrix. Had we used a factor of <span class="math inline">\(1/(N-1)\)</span> instead, we would have
+<span class="math display">\[\frac{1}{N-1}\sum_{i=1}^N (\vec{x}_i - \bar{X})(\vec{x}_i - \bar{X})^T = \left(\frac{1}{N}\sum_{i=1}^N \vec{x}_i\vec{x}_i^T\right) - \frac{N}{N-1}\bar{x}\bar{x}^T\]</span> which is slightly more cumbersome. In the examples we will consider, <span class="math inline">\(N\)</span> will typically be large enough so that the numerical difference is small. As such, we will opt for algebraically convenient definition form of @(eq:def-sample-covariance) as our definition of the sample covariance matrix.</p>
+<p>Alternatively, we can view the sample mean and sample covariance as the mean and covariance (using expectation rather than averages) of the empirical distribution from a collection of samples <span class="math inline">\(\vec{x}_1,\dots,\vec{x}_N\)</span> defined below.</p>
+<div class="definition">
+<p><span id="def:emp" class="definition"><strong>Definition 2.3  (Empirical Distribution) </strong></span>Given a finite set of points <span class="math inline">\(\mathcal{X}=\{\vec{x}_1,\dots,\vec{x}_N\} \subset \mathbb{R}^d\)</span>, we say that random vector <span class="math inline">\(\vec{z}\)</span> follows the empirical distribution from data <span class="math inline">\(\mathcal{X}\)</span> if <span class="math display">\[P(\vec{z} = \vec{x}_i) = \frac{1}{N}, \quad i = 1,\dots, N\]</span>
+and is zero otherwise.</p>
+</div>
+<p>If <span class="math inline">\(\vec{z}\)</span> follows the empirical distribution on a set of <span class="math inline">\(N\)</span> points <span class="math inline">\(\mathcal{X}= \{\vec{x}_1,\dots,\vec{x}_N\}\)</span>, then the expectation and covariance matrix of <span class="math inline">\(\vec{z}\)</span> are equivalent to the sample mean and sample covariance for data <span class="math inline">\(\vec{x}_1,\dots,\vec{x}_N.\)</span></p>
+</div>
+<div id="the-data-matrix" class="section level3 hasAnchor" number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> The Data Matrix<a href="expectation-mean-and-covariance.html#the-data-matrix" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Both <a href="expectation-mean-and-covariance.html#eq:def-sample-mean">(2.3)</a> and <a href="expectation-mean-and-covariance.html#eq:def-sample-covariance">(2.4)</a> involve summations. Working with sums will prove cumbersome, so briefly let us introduce a more compact method for representing these expressions. Hereafter, we will organize the vectors <span class="math inline">\(\vec{x}_1,\dots, \vec{x}_N\)</span> into a <strong>data matrix</strong>
+<span class="math display">\[{\bf X} = \begin{bmatrix} \vec{x}_1^T \\ \vdots \\ \vec{x}_N^T\end{bmatrix} \in \mathbb{R}^{N\times d}.\]</span>
+In this setup, <span class="math inline">\({\bf X}_{ij}\)</span> is the <span class="math inline">\(j\)</span>th coordinate of <span class="math inline">\(\vec{x}_i\)</span>, or equivalently, the <span class="math inline">\(j\)</span>th measurement taken from the <span class="math inline">\(i\)</span>th subject. Thus, rows of <span class="math inline">\({\bf X}\)</span> index subjects (realizations of the random vector) whereas columns index common measurements across all subjects. Using the data matrix, we can forgo the summation notation giving the following formulas for the sample mean
+<span class="math display" id="eq:def-sample-mean-data-matrix">\[\begin{equation}
+\bar{x} = \frac{1}{N} {\bf X}^T \vec{1}
+\tag{2.5}
+\end{equation}\]</span>
+and the sample covariace matrix
+<span class="math display" id="eq:def-sample-covariance-data-matrix">\[\begin{equation}
+{\bf \bar{\Sigma}} = \frac{1}{N} ({\bf HX})^T {\bf HX} = \frac{1}{N} {\bf X}^T {\bf H X}
+\tag{2.6}
+\end{equation}\]</span>
+where <span class="math inline">\({\bf H} = {\bf I} - \frac{1}{N} \vec{1} \vec{1}^T \in \mathbb{R}^{N\times N}\)</span> is known as the centering matrix. We have used the fact that <span class="math inline">\({\bf H}\)</span> is symmetric and idempotent, e.g. <span class="math inline">\({\bf H}^2 = {\bf H}\)</span> which is left as a exercise. The vector <span class="math inline">\(\vec{1}\)</span> is the <span class="math inline">\(N\)</span>-dimensional vector with 1 in each entry and <span class="math inline">\({\bf I}\)</span> is the <span class="math inline">\(N\times N\)</span> identity matrix. One can show (see exercises) that the matrix-vector and matrix-matrix multiplication implicitly handles the summations in <a href="expectation-mean-and-covariance.html#eq:def-sample-mean">(2.3)</a> and <a href="expectation-mean-and-covariance.html#eq:def-sample-covariance">(2.4)</a>.</p>
+<p>To conclude this section, we compare the sample mean and covariance matrix computed from random draws from the <span class="math inline">\(MVN\)</span> distribution.</p>
+<div class="example">
+<p><span id="exm:mvn-draws" class="example"><strong>Example 2.3  (Draws from the MVN) </strong></span>We draw <span class="math inline">\(N=100\)</span> samples from the <span class="math inline">\(\mathcal{N}(\vec{0}, {\bf \Sigma})\)</span> distribution where <span class="math display">\[{\bf \Sigma}=\begin{bmatrix}1 &amp; 0 &amp; 0 \\ 0 &amp;4 &amp; 0 \\ 0&amp;0&amp;9\end{bmatrix}\]</span>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="expectation-mean-and-covariance.html#cb1-1" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb1-2"><a href="expectation-mean-and-covariance.html#cb1-2" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(<span class="at">n=</span>N, <span class="at">mu =</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">3</span>), <span class="at">Sigma =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">9</span>)<span class="sc">*</span><span class="fu">diag</span>(<span class="dv">3</span>))</span></code></pre></div>
+<p>To compute the sample mean and sample covariance, we implement <a href="expectation-mean-and-covariance.html#eq:def-sample-mean">(2.3)</a> and <a href="expectation-mean-and-covariance.html#eq:def-sample-covariance">(2.4)</a>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="expectation-mean-and-covariance.html#cb2-1" tabindex="-1"></a>xbar <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">/</span>N) <span class="sc">*</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> <span class="fu">rep</span>(<span class="dv">1</span>,N)</span>
+<span id="cb2-2"><a href="expectation-mean-and-covariance.html#cb2-2" tabindex="-1"></a>H <span class="ot">&lt;-</span> <span class="fu">diag</span>(N) <span class="sc">-</span> (<span class="dv">1</span><span class="sc">/</span>N)<span class="sc">*</span><span class="fu">matrix</span>(<span class="dv">1</span>,<span class="at">nrow =</span> N, <span class="at">ncol =</span> N)</span>
+<span id="cb2-3"><a href="expectation-mean-and-covariance.html#cb2-3" tabindex="-1"></a>S <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">/</span>N) <span class="sc">*</span>  <span class="fu">t</span>(H <span class="sc">%*%</span> X) <span class="sc">%*%</span> (H <span class="sc">%*%</span> X) </span></code></pre></div>
+<p>The results are shown below (rounded to three decimal places)
+<span class="math display">\[\bar{x} = \begin{bmatrix}
+0.008 \\ 0.078 \\ -0.239
+\end{bmatrix}
+\qquad \text{and} \qquad
+\bar{\bf \Sigma} = \begin{bmatrix}
+1.148 &amp; 0.216 &amp; 0.121  \\
+0.216 &amp; 4.181 &amp; 0.087  \\
+0.121 &amp; 0.087 &amp; 9.366   
+\end{bmatrix}\]</span></p>
+<p>which are closer to the true values. If we increase the sample size to <span class="math inline">\(N=10^4\)</span> samples, we get estimates which are closer to the true values (shown below).</p>
+<p><span class="math display">\[\bar{x} = \begin{bmatrix}
+0.001 \\ 0.02 \\ 0.051
+\end{bmatrix}
+\qquad \text{and} \qquad
+\bar{\bf \Sigma} = \begin{bmatrix}
+0.991 &amp; -0.02 &amp; -0.04  \\
+-0.02 &amp; 3.997 &amp; 0.095  \\
+-0.04 &amp; 0.095 &amp; 8.992   
+\end{bmatrix}\]</span></p>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="random-vectors-in-mathbbrd.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="linear-algebra.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/01-probability_review.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

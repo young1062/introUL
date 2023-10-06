@@ -161,11 +161,13 @@ Beyond demonstrating the capacity of MDS to recover meaningful visualization, we
 
 i) The pairwise distance between two objects need not be Euclidean. In the above example, they are actually [great circle distance](https://en.wikipedia.org/wiki/Great-circle_distance). Actually, based on the type of distance metric and the specific recovery method of the Proximity Matrix, MDS can be divided into three major types: Classical Scaling; Metric MDS; and Non-Metric MDS. 
 
+
 Classical Scaling and Metric MDS generally require that the input data is a true distance metric, while Non-metric MDS is usually used when the input data doesn't satisfy the properties of a true distance metric or when the relationships are ordinal (i.e., we only know which distances are larger, but not by how much). 
 
 To add, Classical MDS operates by applying an eigen-decomposition to the "double-centered" dissimilarity matrix, while Metric MDS and Non-Metric MDS may employ iterative optimization methods to better accommodate non-linear relationships in data structure.
 
-(ii) As we can tell from the recovery of US map and European map, the configurations of $\vec{y}_1,  \dots, \vec{y}_N$ are not unique, as we can rotate or flip the map. Actually, if $\vec{y}_1, \dots, \tilde{y}_N \in \mathbb{R}^{t^{\prime}}$ is considered as the optimal solution, given any vector $\vec{b} \in \mathbb{R}^{t^{\prime}}$ and orthogonal matrix $A \in \mathbb{R}^{t^{\prime} \times t^{\prime}}$, $||(A \tilde{y}_r + \vec{b} - (A \tilde{y}_s + \vec{b})|| = ||\tilde{y}_r - \tilde{y}_s||$. Rotation, Reflection or Translation don't alter the pairwise distances. So $A \tilde{y}_1 + \vec{b}, A \tilde{y}_2 + \vec{b}, \dots, A \tilde{y}_N + \vec{b}$ is also an optimal solution.
+ii) As we can tell from the recovery of US map and European map, the configurations of $\tilde{y}_1, \tilde{y}_2, \dots, \tilde{y}_N$ are not unique, as we can rotate or flip the map. Actually, if $\tilde{y}_1, \tilde{y}_2, \dots, \tilde{y}_N \in \mathbb{R}^{t^{\prime}}$ is considered as the optimal solution, given any vector $\vec{b} \in \mathbb{R}^{t^{\prime}}$ and orthogonal matrix $A \in \mathbb{R}^{t^{\prime} \times t^{\prime}}$, $||(A \tilde{y}_r + \vec{b} - (A \tilde{y}_s + \vec{b})|| = ||\tilde{y}_r - \tilde{y}_s||$. Rotation, Reflection or Translation don't alter the pairwise distances. So $A \tilde{y}_1 + \vec{b}, A \tilde{y}_2 + \vec{b}, \dots, A \tilde{y}_N + \vec{b}$ is also an optimal solution.
+
 
 
 
@@ -175,9 +177,9 @@ Before going deep into Classical Scaling, we first need to introduce some import
 
 #### Definitions:
 
-(i) A matrix $\Delta \in \mathbb{R}^{N \times N}$ is called a distance matrix if it possesses the following properties:
+i) A matrix $\Delta \in \mathbb{R}^{N \times N}$ is called a distance matrix if it possesses the following properties:
 
-a) Symmetry
+  a) Symmetry
 
 $\Delta$ is symmetric, meaning that:
 
@@ -185,19 +187,19 @@ $$\Delta_{rs} = \Delta_{sr} \quad \text{for all } r \text{ and } s$$
 
 This implies that the distance between points $r$ and $s$ is the same as the distance between points $s$ and $r$.
 
-b) Zero Diagonal
+  b) Zero Diagonal
 
 The diagonal entries of the matrix represent the distance of a point to itself, and are thus all zeros:
 
 $$\Delta_{rr} \equiv 0 \quad \text{for all } 1 \leq r \leq N$$
 
-c) Non-negativity
+  c) Non-negativity
 
 All distances are non-negative:
 
 $$\Delta_{rs} \geq 0$$
 
-d) Triangle Inequality
+  d) Triangle Inequality
 
 The matrix respects the triangle inequality:
 
@@ -206,15 +208,15 @@ $$\Delta_{rs} \leq \Delta_{rt} + \Delta_{ts}$$
 This property ensures that the direct distance between two points $r$ and $s$ is never greater than the sum of the distances from $r$ to a third point $t$ and from $t$ to $s$.
 
 
-(ii) Further, the distance matrix $\Delta \in \mathbb{R}^{N \times N}$ is a Euclidean distance matrix if there exists a configuration $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N$ s.t. $\Delta_{rs}$ represents the Euclidean distance between points $r$ and $s$, i.e., $||\vec{y}_r-\vec{y}_s||=\Delta_{rs} \forall r,s$. 
+ii) Further, the distance matrix $\Delta \in \mathbb{R}^{N \times N}$ is a Euclidean distance matrix if there exists a configuration $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N$ s.t. $\Delta_{rs}$ represents the Euclidean distance between points $r$ and $s$, i.e., $||\vec{y}_r-\vec{y}_s||=\Delta_{rs} \forall r,s$. 
 
 For configuration $\vec{y}_i, \vec{y}_j \in \mathbb{R}^t$, the Euclidean distance between point $r$ and point $s$ is defined as $\delta_{ij}=||\vec{y}_i - \vec{y}_j||= \left\{\sum_{k=1}^t \left(y_{i k}-x_{j k}\right)^2\right\}^{1/2}$. **Remember to take the square root**
 
-3) Prerequisite for Classical Scaling: 
+iii) Prerequisite for Classical Scaling: 
 
-(i) Strictly speaking, we require that the Proximity Matrix $\Delta$ is an Euclidean distance matrix. 
+  a) Strictly speaking, we require that the Proximity Matrix $\Delta$ is an Euclidean distance matrix. 
 
-(ii) Furthermore, it is assumed that the configurations $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N$ are centered. In other words, $\sum_{i=1}^N \vec{y}_i = \vec{0}$. This step eliminates the influence of location.
+  b) Furthermore, it is assumed that the configurations $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N$ are centered. In other words, $\sum_{i=1}^N \vec{y}_i = \vec{0}$. This step eliminates the influence of location.
 
 #### Recover Coordinates
 
@@ -224,9 +226,9 @@ $\Delta^2_{rs}$ can be expressed as $\Delta^2_{rs} = ||\vec{y}_r||^2 + ||\vec{y}
 
 The entries of the inner product matrix, i.e. $B = YY^T \in \mathbb{R}^{N \times N}$ are able to express the Euclidean distance matrix $\Delta$. 
 
-**(1) Computing the inner product matrix $B$**
+**1) Computing the inner product matrix $B$**
 
-The inner product term can be represented as: $B_{ij} = \vec{y}_r^T \vec{y}_s$, while the norms of $\vec{y}_r$ and $\vec{y}_s$ can be represented by the entry of $B$, i.e. $B_{ii}} = ||\vec{y}_i||^2$. As a result, $\Delta^2_{ij} = B_{ii} + B_{jj} - 2 B_{ij}$. 
+The inner product term can be represented as: $B_{ij} = \vec{y}_r^T \vec{y}_s$, while the norms of $\vec{y}_r$ and $\vec{y}_s$ can be represented by the entry of $B$, i.e. $B_{ii} = ||\vec{y}_i||^2$. As a result, $\Delta^2_{ij} = B_{ii} + B_{jj} - 2 B_{ij}$. 
 
 **Key Observation** Here, we successfully express the entries of $\Delta$ (known) with entries of $B$ (unknown). However, our goal is to find a way to express entries of $B$ (unknown) with entries of $\Delta$. Intuitively, we want to cancel out $B_{ij}$ terms in the expression. Considering that $\sum_{i=1}^N \vec{y}_i = \vec{0}$, we sum both sides of the equation over the index $i$. We can get the following expression: (Because $\sum_{i=1}^N B_{ij} = \vec{y}_j^T (\sum_{i=1}^N \vec{y}_i) = 0$)
 $$\sum_{i=1}^N \Delta_{ij}^2=\operatorname{tr}(B) + N B_{ii}$$
@@ -257,7 +259,7 @@ $$B = H A H$$
 
 
 
-**(2) Recover the coordinates using inner product matrix $B$**
+**2) Recover the coordinates using inner product matrix $B$**
 
 Both diagonal and off-diagonal entries of the inner product matrix $B$ has been shown. We assumed that $B$ = $YY^T$, so $B$ is symmetric and positive semi-definite (all eigenvalues are non-negative), with $t$ positive eigenvalues and $N-t$ 'zero' eigenvalues. 
 
@@ -309,7 +311,7 @@ Delta
 
 Obviously, matrix $\Delta$ does not satisfy Triangle Inequality, so it's not an Euclidean distance matrix (even not a distance matrix actually)
 
-1. Compute matrix \( A \) as:
+  i) Compute matrix \( A \) as:
 \[ 
 A = -\frac{1}{2} \Delta^2 
 \]
@@ -319,7 +321,7 @@ A <- -0.5 * Delta^2
 A
 ```
 
-2. Compute matrix \( B \) using:
+  ii) Compute matrix \( B \) using:
 \[ 
 H = I - \frac{1}{n} \mathbf{11}^T 
 \]
@@ -340,7 +342,7 @@ B <- H %*% A %*% H
 B
 ```
 
-3. Finally, perform an eigen-decomposition on matrix \( B \).
+  iii) Finally, perform an eigen-decomposition on matrix \( B \).
 
 ```{r}
 eigen_decomp_B <- eigen(B)
@@ -357,13 +359,13 @@ Here, we have a negative eigenvalue $-\frac{5}{6}$. This is because the original
 
 **Handle Negative Eigenvalues**
 
-a) **non-symetric issue:** There are cases where the proximity matrix $\Delta$ is not symmetric (though it rarely happens in classical scaling scenario). Usually we set $\Delta \leftarrow \Delta + \Delta^T$. In that way, we manually make $\Delta$ symmetric.
+i) **non-symetric issue:** There are cases where the proximity matrix $\Delta$ is not symmetric (though it rarely happens in classical scaling scenario). Usually we set $\Delta \leftarrow \Delta + \Delta^T$. In that way, we manually make $\Delta$ symmetric.
 
-b) When there exist some negative eigenvalues in the inner product matrix $B$, we usually have two options to deal with it. 
+ii) When there exist some negative eigenvalues in the inner product matrix $B$, we usually have two options to deal with it. 
 
-i) Inflate the original proximity matrix $\Delta$ by a small constant factor $c$, i.e., $\Delta_{ij} \leftarrow \Delta_{ij} + c, \text{if} \quad i \neq j$. In this way, we can deal with the violence of **Triangular Inequality**.
+  a) Inflate the original proximity matrix $\Delta$ by a small constant factor $c$, i.e., $\Delta_{ij} \leftarrow \Delta_{ij} + c, \text{if} \quad i \neq j$. In this way, we can deal with the violence of **Triangular Inequality**.
 
-ii) If there exist several negative eigenvalues with small absolute value (compared to the largest several positive eigenvalues), and there are more positive eigenvalues than our prior estimation (the dimension of the original configuration), we may just pick the largest $t$ eigenvalues and eliminate the rest.
+  b) If there exist several negative eigenvalues with small absolute value (compared to the largest several positive eigenvalues), and there are more positive eigenvalues than our prior estimation (the dimension of the original configuration), we may just pick the largest $t$ eigenvalues and eliminate the rest.
 
 
 **Global City Distance case revisit**
@@ -376,14 +378,25 @@ plot(cmdscale(D, eig = TRUE)$eig, xlab = 'k', ylab = expression(lambda[k]))
 
 We find that the first three eigenvalues are much larger than the rest, so we assume that the dimension of the original configuration is 3, which also complies to our knowledge about global map.
 
+#### Duality of PCA and Classical Scaling
 
+You may have already observed that Classical Scaling is actually equivalent to PCA to some extent. Cox states that "there is a duality between a principals components analysis and classical MDS where dissimilarities are given by Euclidean distance"[@Cox_MDS].
 
+Given the matrix expression of the original configuration $\mathbf{X} \in \mathbb{R}^{N \times k}$. Recall that PCA is attained by finding the eigen-vectors of the covariance matrix $\frac{1}{N-1} (HX)^T (HX)$, where $H$ is the centering matrix. Suppose the $k$ eigen-vectors are $\vec{w}_1, \vec{w}_2, \dots, \vec{w}_k$, and the corresponding eigenvalues are $\mu_1, \mu_2, \dots,\mu_k$. Then $HX=YW^T$, where $W=(\vec{w}_1 | \vec{w}_2 | \dots | \vec{w}_N)$ represents PC Loadings, and $Y$ represents PC Scores. 
 
+While MDS is attained by first converting $X$ into distance matrix, here, Euclidean distance. In classical MDS algorithm, we convert the Euclidean distance matrix into the inner product matrix $B=(HX)(HX)^T$. then we find the eigen-vectors of $B$ -- call the eigen-vectors $\vec{\nu}_1, \vec{\nu}_2, \dots, \vec{\nu}_N$, and eigenvalues $\lambda_1, \lambda_2, \dots, \lambda_N$. 
 
+Recall what you have learnt in Linear Algebra. The eigenvalues of $XX^T$ are the same as those for $X^TX$, together with an extra n-p zero eigenvalues. So, for $i < p$, $\mu_i = \lambda_i$. So the first $t$ PC scores give the t-dimensional configuration for Classical Scaling. **Choosing the number of dimensionality $t$ of the original configuration is equivalent to choosing the number of principal components to keep**
+
+Furthermore, we have shown that $HX=YW^T$, then $B=(HX)(HX)^T=YW^TWY^T=YY^T$, this means **PC scores are the exact solutions for Classical Scaling!**
+
+As a result, classical MDS has the same strengths and weaknesses of PCA.
 
 
 
 ### Metric MDS
+
+
 
 
 

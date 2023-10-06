@@ -65,6 +65,7 @@ key-features-of-mds
 classical-scaling
 definitions
 recover-coordinates
+duality-of-pca-and-classical-scaling
 metric-mds
 nonmetric-mds
 kernels-and-nonlinearity
@@ -77,7 +78,14 @@ introduction-1
 key-definitions
 algorithm
 limitations-of-isomap
-local-linear-embeddings-lles
+locally-linear-embeddings-lles
+introduction-2
+algorithm-1
+construct-neighborhood-graph
+reconsruct-with-linear-weights
+embedding
+strengths-and-weaknesses-of-lle
+strengths
 autoencoders-aes
 additional-methods
 exercises-3
