@@ -1,13 +1,11 @@
 ## Nonnegative Matrix Factorization
 
-We will continue with the usual setting focusing on an $N\times d$ data matrix ${\bf X}$. However, we will consider the additional assumption that each entry of the data matrix is non-negative which is a natural feature of many experimental data sets.
+We will continue with the usual setting focusing on an $N\times d$ data matrix ${\bf X}$ with the added condition that the entries of ${\bf X}$ are nonnegative, which is a natural constraint for many experimental data sets.  As before, our goal is to find a low-rank matrix $\hat{\bf X}$ which is as close to possible to ${\bf X}$.  How do we measure closness?  Here are a few common choices.
 
-As before, our goal is to find a low-rank matrix $\hat{\bf X}$ which is as close to possible to ${\bf X}$ as possible.  How do we measure closness?  Here are a few common choices.
+- Frobenius norm: $\|{\bf X}-\hat{\bf X}\|_F.$
 
-- Frobenius norm $\|{\bf X}-\hat{\bf X}\|_F.$
+- Divergence: $D({\bf X} \| \hat{\bf X}) = \sum_{i=1}^N\sum_{j=1}^d \left[{\bf X}_{ij} \log \frac{{\bf X}_{ij}}{\hat{\bf X}_{ij}} + \hat{\bf X}_{ij} - {\bf X}_{ij}\right]$
 
-- Divergence $D({\bf X} \| \hat{\bf X}) = \sum_{i=1}^N\sum_{j=1}^d \left[{\bf X}_{ij} \log \frac{{\bf X}_{ij}}{\hat{\bf X}_{ij}} + \hat{\bf X}_{ij} - {\bf X}_{ij}\right]$
-
-- IS Divergence
+- Itakura-Saito Divergence: $$D_{IS}({\bf X}, {\bf WH}) = \sum_{i=1}^N\sum_{j=1}^d \left[\frac{{\bf X}_{ij}}{({\bf WH})_{ij}} - \log\frac{{\bf X}_{ij}}{({\bf WH})_{ij}} -1  \right]$$
 
 Without any restrictions on $\hat{\bf X}$ our previous analysis using SVD provides the answer when we consider the Frobenius norm of the $ell_2$ norm of the difference between ${\bf X}$ and $\hat{\bf X}.$
