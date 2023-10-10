@@ -2,9 +2,9 @@
 
 1) Introduction and Settings
  
-Imagine there are $N$ objects (geographical locations, characteristics of people, etc.) In some cases, it is hard to depict each of these $N$ objects explicitly with a vector $\vec{y} \in \mathbb{R}^{N}$, however, we can measure the degree of "closeness" (proximity) between these $N$ objects. In other words, we can obtain a $N \times N$ matrix $\Delta$, with $\Delta_{rs}$ representing the distance/dissimilarity between objects $r$ and $s$. Assume $\Delta_{rr}=0$ and $\Delta_{sr} = \Delta_{rs}$. $\Delta$ is often called a Proximity/Distance/Dissimilarity Matrix. 
+Imagine there are $N$ objects (geographical locations, characteristics of people, etc.) In some cases, it is hard to depict each of these $N$ objects explicitly with a vector $\vec{y} \in \mathbb{R}^{N}$, however, we are able to measure the degree of "closeness" (proximity) between these $N$ objects. In other words, we can obtain a $N \times N$ matrix $\Delta$, with $\Delta_{rs}$ representing the distance/dissimilarity between objects $r$ and $s$. Assume $\Delta_{rr}=0$ and $\Delta_{sr} = \Delta_{rs}$. $\Delta$ is often called a Proximity/Distance/Dissimilarity Matrix. 
 
-Given the Proximity Matrix $\Delta$, MDS (Multi-dimensional Scaling) comes to place when it comes to recovering the original/latent individual configuration $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N \in \mathbb{R}^{t}$. 
+Given the Proximity Matrix $\Delta$, MDS (Multi-dimensional Scaling) comes to place when it comes to recovering the original/underlying configuration $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N \in \mathbb{R}^{t}$. 
 
 The primary goal of MDS is to reconstruct the original configuration as close as possible, say, find points $\tilde{y}_1, \tilde{y}_2, \dots, \tilde{y}_N \in \mathbb{R}^{t^{\prime}}$ s.t. the distance between $\tilde{y}_r$ and $\tilde{y}_s$ is close to $\Delta_{rs}$. Sometimes, the true dimension $t$ is unknown, so determining the number of dimensions is also a major problem to be solved.
 
@@ -30,7 +30,7 @@ The *eurodist* R package provides road distance between 21 cities in Europe and 
 knitr::kable(as.matrix(UScitiesD), "simple")
 ```
 
-After conducting classical MDS (a method of MDS, details will be discussed in proceeding parts), we acquire the plot below. The plot complies to our geographical knowledge. Miami and Seattle are the farthest from our plot, and these two cities are actually thousands of miles away (Seattle in the north-west end of US mainland and Miami in the south-east corner). NY and D.C. are quite close on the plot, same for LA and San Francisco.
+After conducting classical MDS (a method of MDS, details will be discussed in proceeding parts), we acquire the plot below. The plot complies to our geographical knowledge. Miami and Seattle are the farthest according to our plot, and these two cities are actually thousands of miles away (Seattle in the north-west end of U.S. and Miami in the south-east corner). NY and D.C. are quite close on the plot, same for LA and San Francisco.
 
 
 ```{r, echo = FALSE}
@@ -41,7 +41,8 @@ plot(city.loc, type = 'n',
 text(city.loc, labels = attr(UScitiesD, "Labels"),
      cex = 0.75)
 ```
-Actually, if we rotate the above plot 180 degrees, a US map appears. It is amazing!
+
+Actually, if we rotate the above plot 180 degrees, a U.S. map appears. It is amazing!
 
 ```{r, echo = FALSE}
 city.loc.rot <- -city.loc
@@ -51,7 +52,8 @@ plot(city.loc.rot, type = 'n',
 text(city.loc.rot, labels = attr(UScitiesD, "Labels"),
      cex = 0.75)
 ```
-Again, let's try MDS on the 21 European cities. We make some flipping on the map to make it comply to the true European map.
+
+Again, let's try MDS on the 21 European cities. We make some flippings on the map to make it comply to the true Europe map.
 
 ```{r}
 knitr::kable(as.matrix(eurodist),"simple")
@@ -150,7 +152,7 @@ plot_ly(data.frame( x = MDS3$points[,1], y= MDS3$points[,2], z = MDS3$points[,3]
 # text(fig$xyz.convert(MDS3$points[,1:3]),labels= rownames(MDS3$points), pos=1) 
 ```
 
-The three-dimensional visualization result of MDS is shown above. You can rotate and magnify it on your laptop. The blue points represent Asian cities, the black points represent European cities, and the red points represent North American cities. They are clustered together within the group. If you try to rotate the plot and make these three clusters in the bottom, you will find the three separate cities: Rio, Melbourne and Cape Town on the top of the plot. This actually represents that they are the only cities in Southern-Hemisphere. If you inspect the plot clearly, you will find that these cities actually locate on a sphere, which complies to the true scenario. MDS is quite successful in recovering their relative locations!
+The three-dimensional visualization result of MDS is shown above. You can rotate and magnify it on your laptop. The blue points represent Asian cities, the black points represent European cities, and the red points represent North American cities. They are clustered together within the group. If you try to rotate the plot and make these three clusters in the bottom, you will find the three separate cities: Rio, Melbourne and Cape Town on the top of the plot. This actually represents that they are the only cities in Southern-Hemisphere. If you inspect the plot carefully, you will find that these cities actually locate on a sphere, which complies to the true scenario. MDS is quite successful in recovering their relative locations!
 
 
 3) Key features of MDS
@@ -210,7 +212,7 @@ For configuration $\vec{y}_i, \vec{y}_j \in \mathbb{R}^t$, the Euclidean distanc
 
 iii) Prerequisite for Classical Scaling: 
 
-  a) Strictly speaking, we require that the Proximity Matrix $\Delta$ is an Euclidean distance matrix. 
+  a) Strictly speaking, we require that the Proximity Matrix $\Delta$ is a Euclidean distance matrix. 
 
   b) Furthermore, it is assumed that the configurations $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N$ are centered. In other words, $\sum_{i=1}^N \vec{y}_i = \vec{0}$. This step eliminates the influence of location.
 
@@ -218,7 +220,7 @@ iii) Prerequisite for Classical Scaling:
 
 It may sound difficult to recover the configuration $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N$ from merely the Euclidean distance matrix $\Delta$ at the first glance. However, the situation becomes clearer after some analysis.
 
-$\Delta^2_{rs}$ can be expressed as $\Delta^2_{rs} = ||\vec{y}_r||^2 + ||\vec{y}_s||^2 - 2 \vec{y}_r^T \vec{y}_s$. It's not difficult to observe that both terms are both very easy to be expressed with the original configuration: $Y = \left(\begin{array}{c} \vec{y}_1^{\top} \\ \vec{y}_2^{\top} \\ \vdots \\ \dot{y}_N^{\top} \end{array}\right)$.
+$\Delta^2_{rs}$ can be expressed as $\Delta^2_{rs} = ||\vec{y}_r||^2 + ||\vec{y}_s||^2 - 2 \vec{y}_r^T \vec{y}_s$. It's not difficult to observe that both terms are very easy to be expressed with the original configuration: $Y = \left(\begin{array}{c} \vec{y}_1^{\top} \\ \vec{y}_2^{\top} \\ \vdots \\ \dot{y}_N^{\top} \end{array}\right)$.
 
 The entries of the inner product matrix, i.e. $B = YY^T \in \mathbb{R}^{N \times N}$ are able to express the Euclidean distance matrix $\Delta$. 
 
@@ -249,7 +251,7 @@ B_{ij} & = \frac{1}{2} (B_{ii} + B_{jj} - \Delta_{ij}^2) \\
 & = -\frac{1}{2} \Delta_{ij}^2 + \frac{1}{N} \sum_{i=1}^N \Delta_{ij}^2 + \frac{1}{N} \sum_{j=1}^N \Delta_{ij}^2-\frac{1}{2 N^2} \sum_{i=1}^N \sum_{j=1}^N \Delta_{ij}^2
 \end{aligned}
 
-Actually, we may also express the inner product matrix $B$ in a matrix form, which is what we do in real data computation. Here $A \in \mathbb{R}^{N \times N}, A_{ij} = \Delta^2_{ij} \forall 1 \leq i,j \leq N$, $H = \mathbb{I}_N - \frac{1}{N} \mathbb{1}_N \mathbb{1}_N^T$. 
+Actually, we may also express the inner product matrix $B$ in a matrix form, which is what we do in real data computation. Here $A \in \mathbb{R}^{N \times N}, A_{ij} = \Delta^2_{ij} \quad \text{for} \; \forall \; 1 \leq i,j \leq N$, $H = \mathbb{I}_N - \frac{1}{N} \mathbb{1}_N \mathbb{1}_N^T$. 
 
 $$B = H A H$$
 
@@ -288,7 +290,7 @@ Let $Y=\tilde{u} \Lambda^{1/2}$, use rows of $\tilde{u} \Lambda^{1/2}$ as $\vec{
 
 **Dealing with real data case**
 
-In real data case, sometimes the Euclidean condition is not met. As in the previous globe map example, the distance matrix actually computes the geodesic distance instead of the Euclidean distance. Under this circumstance, the "inner product" matrix $B = HAH$ (we put a quotation mark here because $B$ is no longer the inner product matrix) is not necssarily positive semi-definite.
+In real data case, sometimes the Euclidean condition is not met. As in the previous globe map example, the distance matrix actually computes the geodesic distance instead of the Euclidean distance. Under this circumstance, the "inner product" matrix $B = HAH$ (we put a quotation mark here because $B$ is no longer the inner product matrix) is not necessarily positive semi-definite.
 
 Let's put a numeric example here to illustrate this point. 
 
@@ -305,7 +307,7 @@ Delta <- matrix(c(0,1,3,1,0,1,3,1,0), nrow=3, byrow=TRUE)
 Delta
 ```
 
-Obviously, matrix $\Delta$ does not satisfy Triangle Inequality, so it's not an Euclidean distance matrix (even not a distance matrix actually)
+Obviously, matrix $\Delta$ does not satisfy Triangle Inequality, so it's not a Euclidean distance matrix (even not a distance matrix actually)
 
   i) Compute matrix \( A \) as:
 \[ 
@@ -359,7 +361,7 @@ i) **non-symetric issue:** There are cases where the proximity matrix $\Delta$ i
 
 ii) When there exist some negative eigenvalues in the inner product matrix $B$, we usually have two options to deal with it. 
 
-  a) Inflate the original proximity matrix $\Delta$ by a small constant factor $c$, i.e., $\Delta_{ij} \leftarrow \Delta_{ij} + c, \text{if} \quad i \neq j$. In this way, we can deal with the violence of **Triangular Inequality**.
+  a) Inflate the original proximity matrix $\Delta$ by a small constant factor $c$, i.e., $\Delta_{ij} \leftarrow \Delta_{ij} + c, \; \text{if} \; i \neq j$. In this way, we can deal with the violence of **Triangular Inequality**.
 
   b) If there exist several negative eigenvalues with small absolute value (compared to the largest several positive eigenvalues), and there are more positive eigenvalues than our prior estimation (the dimension of the original configuration), we may just pick the largest $t$ eigenvalues and eliminate the rest.
 
@@ -380,7 +382,7 @@ You may have already observed that Classical Scaling is actually equivalent to P
 
 Given the matrix expression of the original configuration $\mathbf{X} \in \mathbb{R}^{N \times k}$. Recall that PCA is attained by finding the eigen-vectors of the covariance matrix $\frac{1}{N-1} (HX)^T (HX)$, where $H$ is the centering matrix. Suppose the $k$ eigen-vectors are $\vec{w}_1, \vec{w}_2, \dots, \vec{w}_k$, and the corresponding eigenvalues are $\mu_1, \mu_2, \dots,\mu_k$. Then $HX=YW^T$, where $W=(\vec{w}_1 | \vec{w}_2 | \dots | \vec{w}_N)$ represents PC Loadings, and $Y$ represents PC Scores. 
 
-While MDS is attained by first converting $X$ into distance matrix, here, Euclidean distance. In classical MDS algorithm, we convert the Euclidean distance matrix into the inner product matrix $B=(HX)(HX)^T$. then we find the eigen-vectors of $B$ -- call the eigen-vectors $\vec{\nu}_1, \vec{\nu}_2, \dots, \vec{\nu}_N$, and eigenvalues $\lambda_1, \lambda_2, \dots, \lambda_N$. 
+While MDS is attained by first converting $X$ into distance matrix, here, Euclidean distance. In classical MDS algorithm, we convert the Euclidean distance matrix into the inner product matrix $B=(HX)(HX)^T$. then we find the eigen-vectors of $B$ --- call the eigen-vectors $\vec{\nu}_1, \vec{\nu}_2, \dots, \vec{\nu}_N$, and eigenvalues $\lambda_1, \lambda_2, \dots, \lambda_N$. 
 
 Recall what you have learnt in Linear Algebra. The eigenvalues of $XX^T$ are the same as those for $X^TX$, together with an extra n-p zero eigenvalues. So, for $i < p$, $\mu_i = \lambda_i$. So the first $t$ PC scores give the t-dimensional configuration for Classical Scaling. **Choosing the number of dimensionality $t$ of the original configuration is equivalent to choosing the number of principal components to keep**
 

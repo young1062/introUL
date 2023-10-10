@@ -101,7 +101,7 @@ We may now define the notion of isometry which is a central assumption of ISOMAP
 
 **Definition of Isometry**
 ::: {.definition #def-isometry name="Isometry"}
-Let $\mathcal{M}_1$ be a manifold with distance function $d_{\mathcal{M}_1}$ and let $\mathcal{M}_2$ be a second manifold with distance function $d_{\mathcal{M}_2}$.  The mapping $\Psi:\mathcal{M}_1 \mapsto \mathcal{M}_2$ is an isometry if $$d_{\mathcal{M}_1}(x,y) = d_{\mathcal{M}_2}\left(\Psi(x),\Psi(y)\right) \qquad \text{ for all } x,y\in \mathcal{M}_1.$$
+Let $\mathcal{M}_1$ be a manifold with distance function $d_{\mathcal{M}_1}$ and let $\mathcal{M}_2$ be a second manifold with distance function $d_{\mathcal{M}_2}$.  The mapping $\Psi:\mathcal{M}_1 \mapsto \mathcal{M}_2$ is an isometry if $$d_{\mathcal{M}_1}(x,y) = d_{\mathcal{M}_2}\left(\Psi(\vec{x}),\Psi(\vec{y})\right) \qquad \text{ for all } \vec{x},\vec{y}\in \mathcal{M}_1.$$
 :::
 
 For the purposes of ISOMAP, we will think of $\mathcal{M}_1$ as some subset of a $\mathbb{R}^k$ for $k$ small where we measure distances using the Euclidean norm.  Then $\mathcal{M}_2$ will be a $k$-dimensional manifold in $\mathbb{R}^d$ containing our data. Our first assumption is that the manifold mapping $\Psi$ is an isometry. Unfortunately, in practice we do not know the manifold nor will we have a method for parameterizing curves on the manifold to compute distances. 
@@ -115,7 +115,7 @@ MDS uses Euclidean distance to measure pairwise distance between points $\vec{x}
 
 The key intuition is that as the density of data points on the manifold increases (i.e., points get closer and closer), the straight line segment in the ambient space connecting two neighboring points becomes a better and better approximation of the shortest path between those points on the manifold. In the limit of the density going to infinity, these distances converge. 
 
-Two intuitive example may help you understand this point. First, consider a two-dimensional manifold --- Swiss Roll(a real one!) in a three-dimensional space. For an ant crawling on that, since it is too tiny in size compared to that Swiss Roll, from its' view, the area it is standing on is flat. The length between its two adjacent footsteps is almost the same from a human being's perspective (the Euclidean distance) and the ant's perspective (the geodesic distance). Another example is in a much larger scale, say, the Earth. Imagine some aliens have the technology to pass through the crust and mantle, and they travel in a straight line to have the shortest possible distance (Euclidean distance). Then they may save themselves several hundred miles if they travel from LA to New York compared to their human friends, however, they have few advantage when they travel from Science Center to Smith Center. 
+Let's elucidate this concept with two illustrative examples. Firstly, imagine a two-dimensional surface, like a Swiss Roll, situated within a three-dimensional space. For an ant journeying across the Swiss Roll, the vast size difference means its immediate surroundings appear flat. From its perspective, the distance between its consecutive steps closely mirrors the distance a human might measure (Euclidean distance) – both virtually equating to the roll's geodesic distance. For a larger-scale analogy, think of Earth. Suppose extraterrestrial beings possessed technology allowing them to traverse straight through Earth's crust and mantle, thus following the shortest Euclidean path. Their journey from Los Angeles to New York might save them hundreds of miles compared to humans. However, when moving between closer landmarks, such as the Science Center to the Smith Center, their advantage diminishes.
 
 As a result, when it comes to the measurement of geodesic distance, it is reasonable to only look at those data points that are close to each other. First, calculate all the pairwise Euclidean distance $d_{ij}=||\vec{x}_i - \vec{x}_j||_2$, then determine which points are neighbors on the manifold by connecting each point to Either (i) All points that lie within a ball of radius $\epsilon$ of that point; OR (ii) all points which are K-nearest neighbors with it. (Two different criteria, $K$ and $\epsilon$ are tuning parameters)
 
@@ -135,7 +135,7 @@ In this step, we want to estimate the unknown true geodesic distances $\{d^{\mat
 
 This path finding step is usually done by Floyd-Warshall algorithm, which iteratively tries all transit points $k$ and find those that $\tilde{d}_{ik} + \tilde{d}_{kj} < \tilde{d}_{ij}$, and updates $\tilde{d}_{ij} = \tilde{d}_{ik} + \tilde{d}_{kj}$ for all possible combination of $i,j$. The algorithm works best in dense neighboring graph scenario, with a computational complexity of $O(n^3)$. 
 
-The theoretical guarantee of this graph distance computation method is given by Bernstein et, al. one year after they first proposed ISOMAP in their previous paper. They show that asymptotically (as $n \rightarrow \infty$), the estimate $d^{\mathbb{G}}$ converges to $d^{\mathbb{M}}$ as long as the data points are sampled from a probability distribution that is supported by the entire manifold, and the manifold itself is flat.
+The theoretical guarantee of this graph distance computation method is given by Bernstein et, al.[@Bernstein] one year after they first proposed ISOMAP in their previous paper. They show that asymptotically (as $n \rightarrow \infty$), the estimate $d^{\mathcal{G}}$ converges to $d^{\mathcal{M}}$ as long as the data points are sampled from a probability distribution that is supported by the entire manifold, and the manifold itself is flat.
 
 The distance matrix $\Delta$ can be expressed as:
 $$\Delta_{ij} = d^{\mathcal{G}}_{ij}$$
@@ -197,9 +197,10 @@ print(result)
 
 **3) Applying MDS to $\Delta$**
 
-As mentioned before, ISOMAP can be viewed as the application of classical MDS in non-linear case. As a result, the reconstruction of $\{\vec{z}_i\}$ in the $k$ dimensional feature space $\mathcal{M}_1$ follows similar steps as that of classical MDS. The main goal is to preserve the geodesic distance of the manifold in $\mathcal{M}_2$ as much as possible. 
+As mentioned before, ISOMAP can be viewed as the application of classical MDS in non-linear case. As a result, the reconstruction of $\{\vec{z}_i\}$ in the $k$ dimensional 
+$\mathcal{M}_1$ follows similar steps as that of classical MDS. The main goal is to preserve the geodesic distance of the manifold in $\mathcal{M}_2$ as much as possible. 
 
-Without any additional information, there are infinite $\{\vec{z}_i\}$ that can be viewed as the optimal solution. For some invertible function $\Phi:\mathbb{R}^k\to\mathbb{R}^k$, a new manifold mapping $\Psi \circ \Phi^{-1}$ can be constructed. $\vec{x}_i = \Psi \circ \Phi^{-1} (\Phi(\vec{z}_i))$, which proofs that $\{\Phi(\vec{z}_i)\}$ is equivalent to $\{\vec{z}_i\}$ when it comes to the reconstruction of the lower dimensional feature space.
+Without any additional information, there are infinite $\{\vec{z}_i\}$ that can be viewed as the optimal solution. For some invertible function $\Phi:\mathbb{R}^k\to\mathbb{R}^k$, a new manifold mapping $\Psi \circ \Phi^{-1}$ can be constructed. $\vec{x}_i = \Psi \circ \Phi^{-1} (\Phi(\vec{z}_i))$, which proofs that $\{\Phi(\vec{z}_i)\}$ is equivalent to $\{\vec{z}_i\}$ when it comes to the reconstruction of the lower dimensional configuration.
 
 Without loss of generality, we assume that $\{\vec{z}_i\}$ are actually centered. So the distance matrix of $\{\vec{z}_i\}$ can be expressed as $B=Z^T Z$, so that $B_{ii}=||z_i||^2_2$ and $B_{ij}={z_i}^T z_j$.
 
@@ -213,7 +214,7 @@ $$B_{ij}= -\frac{1}{2} \Delta^2_{ij} + \frac{1}{d} \sum^{d}_{i=1} \Delta^2_{ij} 
 To express it in matrix form, it is actually, $B = - \frac{1}{2} H \Delta H$, where $H = I_n - \frac{1}{n} \mathbb{1} \mathbb{1}^T$.
 
 The next step is just a PCA problem. Implement eigen decomposition on matrix B, $B=U \Lambda U^T= (\Lambda^{1/2} U)^T (\Lambda^{1/2} U)$, then arrange the singular value in descending order, find the first $k^{\prime}$ ones. We acquire $\Lambda_{k^{\prime}}$ and $U_{k^{\prime}}$. 
-$$\{\hat{z}_1, \hat{z}_2, \dots, \hat{z}_N\} = \Lambda_{k^{\prime}} U_{k^{\prime}}$$
+$$(\hat{z}_1 | \hat{z}_2 | \dots | \hat{z}_N) = \Lambda_{k^{\prime}} U_{k^{\prime}}$$
 
 Since we don't know the dimension of the underlying feature space, here $k^{\prime}$ is a tuning parameter. Usually, we use a scree plot ($k^{\prime}$ against the sum of the omitted eigenvalues ) and find the elbow point.
 
@@ -254,32 +255,34 @@ plot(embed(Swiss, "Isomap", .mute = c("message", "output"), ndim =2, knn = 50)@d
 
 Obviously, ISOMAP performs well when $K$ is small. However, as $K$ increases, the algorithm no longer recovers the lower dimensional feature space. Because the distance between nearby arms is not large, some points from different arms are considered as "close". The pairwise geodesic distances between these points is approximated by their Euclidean distance, which is not correct, of course. 
 
-2) If the data points in some parts of the manifold is sparse, chances are that the learnt manifold structure will be ruined. The example below best illustrates this point.
+2) When data points are sparse in certain areas or directions of the manifold, the integrity of the learned manifold structure can be compromised. The following example will clarify this notion:
 
-We manually create a sparse region for the Swiss Roll, as shown below. From our observation, this sparse region does not affect the whole manifold that much. We suppose it is still a Swiss Roll.
+Consider the Swiss Roll as an illustration. This time, however, the Swiss Roll is made sparse along its horizontal direction. To the naked eye, this sparse region seems to have minimal impact on the overall manifold. Naturally, we still perceive it as a Swiss Roll.
 
 ```{r}
+set.seed(42)
 S <- rep(0,2000)
-Swiss <- matrix(NA, nrow = 2000, ncol = 3)
+Swiss_sparse <- matrix(NA, nrow = 2000, ncol = 3)
 for( n in 1:2000){
     s <- runif(1, min = 3*pi/2, max = 9*pi/2)
-    t <- runif(1, min = 0,      max = 8)
+    t <- runif(1, min = 0,      max = 60)
     S[n] <- s
-    Swiss[n, ] <- c( s*cos(s), t, s*sin(s) )
+    Swiss_sparse[n, ] <- c( s*cos(s), t, s*sin(s) )
 }
-
-# Manually create a sparse region
-mask <- Swiss[,1] > 5 & Swiss[,1] < 10 & Swiss[,2] > 5 & Swiss[,2] < 10
-Swiss_sparse <- Swiss[!mask, ]
-S <- S[!mask]
+# 
+# # Manually create a sparse region
+# mask <- Swiss[,1] > 2 & Swiss[,1] < 8 & Swiss[,2] > 10 & Swiss[,2] < 15
+# Swiss_sparse <- Swiss[!mask, ]
+# S <- S[!mask]
 
 scatterplot3d(Swiss_sparse, color = myColorRamp(c("red","purple","blue","green","yellow"), S), main = "Swiss Roll with Sparse Region",
                xlab = expression(x[1]), ylab = expression(x[2]), zlab = expression(x[3]))
 ```
 
-However, for ISOMAP, it gets into trouble recovering the lower dimensional feature space, despite using different tunning parameters.
+ However, when using ISOMAP to recover the lower-dimensional feature space, complications arise, even when adjusting various tuning parameters.
 
 ```{r}
+set.seed(77)
 par(mfrow = c(2,2))
 # K = 10
 plot(embed(Swiss_sparse, "Isomap", .mute = c("message", "output"), ndim =2, knn = 10)@data@data,
@@ -305,7 +308,6 @@ plot(embed(Swiss_sparse, "Isomap", .mute = c("message", "output"), ndim =2, knn 
 Here we use the example of a folded washer manifold to illustrate this point. It is obvious that the folded washer is concave in its four ends. No matter how we tune the parameter $K$, ISOMAP always fails to recover the lower dimensional feature.
 
 ```{r}
-
 # generate washer in 2d 
 N <- 1e5
 washer <- matrix(NA, nrow =N, ncol = 2)

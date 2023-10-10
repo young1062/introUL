@@ -1,4 +1,12 @@
 
+```{r, include=FALSE}
+myColorRamp <- function(colors, values) {
+    v <- (values - min(values))/diff(range(values))
+    x <- colorRamp(colors)(v)
+    rgb(x[,1], x[,2], x[,3], maxColorValue = 255)
+}
+```
+
 ## Locally Linear Embeddings (LLEs)
 
 ### Introduction
@@ -27,11 +35,11 @@ As we can tell from these, LLE works well only if data points are dense and hope
 
 #### Reconsruct with Linear Weights
 
-As put before, we try to reconstruct each $\vec{x}_i$ using an almost convex weighted combination of its neighbors. The respective weights of all its neighbors $\vec{x}_j, \quad j \neq i$ for each $\vec{x}_i$ is quite essential in the later reconstruction of the underlying intrinsic configuration, as we consider these weights to remain invariant before and after mapping. 
+As put before, we try to reconstruct each $\vec{x}_i$ using an almost convex weighted combination of its neighbors. The respective weights of all its neighbors $\vec{x}_j, \; j \neq i$ for each $\vec{x}_i$ is quite essential in the later reconstruction of the underlying intrinsic configuration, as we consider these weights to remain invariant before and after mapping. 
 
-To explain it in mathematical formulas, we the approximate of $\vec{x}_i$ --- $\tilde{x}_i$ is defined as $\tilde{x}_i = \sum_{j=1}^N w_{ij} \vec{x}_j$. There are two constraints for this formula: First, $w_{ij} \equiv 0$, if $j \notin N_i^k$ (consistent with the assumption of $k$ nearest neighbors); Second, the sum of weights for each $\vec{x}_i$ is always zero, i.e., $\sum_{j=1}^N w_{ij}=1$. 
+To explain it in mathematical formulas, the approximate of $\vec{x}_i$: $\tilde{x}_i$ is defined as $\tilde{x}_i = \sum_{j=1}^N w_{ij} \vec{x}_j$. There are two constraints for this formula: First, $w_{ij} \equiv 0$, if $j \notin N_i^k$ (consistent with the assumption of $k$ nearest neighbors); Second, the sum of weights for each $\vec{x}_i$ is always zero, i.e., $\sum_{j=1}^N w_{ij}=1$. 
 
-Then, the problem of finding the optimal $w_{ij} 1 \leq i,j \leq N$ is equivalent to solving the following constrained Least Squares problem for $\forall 1 \leq i \leq N$:
+Then, the problem of finding the optimal $w_{ij}, \; 1 \leq i,j \leq N$ is equivalent to solving the following constrained Least Squares problem for $\forall 1 \leq i \leq N$:
 
 <span id="eq:opt_prob"> (1) </span>
 $$
@@ -66,7 +74,7 @@ From the expressions, we develop a strategy that optimizes one row of matrix $w$
 & = \vec{w}_i^T G_i \vec{w}_i
 \end{align}
 
-$\vec{w}_i^T = (w_{i1}, w_{i2}, \dots w_{iN})$ is the $i^{th}$ row of W. Here $G_i \in \mathbb{R}^{N \times N}$, where entry $G_{i}(j.l), \quad 1 \leq j,l \leq N$ can be represented as:
+$\vec{w}_i^T = (w_{i1}, w_{i2}, \dots w_{iN})$ is the $i^{th}$ row of W. Here $G_i \in \mathbb{R}^{N \times N}$, where entry $G_{i}(j.l), \; 1 \leq j,l \leq N$ can be represented as:
 
 $$
 G_{i}(j,l) = 
@@ -165,18 +173,18 @@ Compute eigen-vectors with the smallest $d+1$ eigenvalues $0=\lambda_1 \leq \lam
 In the original paper [@lle], the authors provide a very intuitive plot that summarizes the above three steps. 
 
 <p style="text-align:center;">
-![LLE_illustration](/Users/zhucenhao/introUL/picture/Screenshot 2023-09-27 at 00.47.49.png){width=30% height=30%} </p>
+![LLE_illustration](/Users/zhucenhao/introUL/picture/Screenshot 2023-09-27 at 00.47.49.png){width=40% height=40%} </p>
 
 
 **Parameter Tuning**
 
-There are two parameters to tune in LLE, i.e. (the number of neighbors: $k$; the dimension of the recovered configuration: $d$). 
+There are two parameters to tune in LLE, i.e. (the number of neighbors: $k \,$; the dimension of the recovered configuration: $d \,$). 
 
-1) For selection of $d$, we usually use a reverse scree plot and find the elbow point. It is worth noting that we are choosing the smallest $d+1$ eigenvalues and compute their corresponding eigen-vectors here. Since the eigen-vectors and eigenvalues of a particular matrix is super sensitive to any sort of noises or perturbations, especially for those small eigenvalues, it is hard to accurately derive the corresponding eigen-vectors $\vec{v}_2, \dots, \vec{v}_{d+1}$. This is called ill-conditioned eigenproblem.
+1) For selection of $d$, we usually use a reverse scree plot and find the elbow point. It is worth noting that we are choosing the smallest $d+1$ eigenvalues and compute their corresponding eigen-vectors here. Since the eigen-vectors and eigenvalues of a particular matrix is super sensitive to any sort of noises or perturbations, especially for those small eigenvalues, it is hard to accurately derive the corresponding eigen-vectors $\vec{v}_2, \dots, \vec{v}_{d+1}$. This is called ill-conditioned eigen-problem.
 
 2) Choose the optimal $k$
 
-LLE seeks to preserve local structure through nearest neighbor connections. This is the key point to LLE. As a result, we may use the neighbor set of the original $\vec{x}_1, \vec{x}_2, \dots, \vec{x}_N \in \mathbb{R}^D$ and $\vec{y}_1, \dots, \vec{y}_N \mathbb{R}^d$ as a criteria.
+LLE seeks to preserve local structure through nearest neighbor connections. This is the key point to LLE. As a result, we may use the neighbor set of the original $\vec{x}_1, \vec{x}_2, \dots, \vec{x}_N \in \mathbb{R}^D$ and $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N \in \mathbb{R}^d$ as a criteria.
 
 As explained before, we use $N_i^k$ to denote the indices of k-nearest neighbors to $\vec{x}_i$. Similarly, we can also use $V_i^k$ to denote the indices of k-nearest neighbors to $\vec{y}_i$. They should be as close as possible.
 
@@ -190,12 +198,139 @@ Plot $Q(k)$ against $k$, select $k^{\star}$ where the increase of $Q(k)$ becomes
 
 #### Strengths
 
+1) **High Computation Efficiency**
 
-
-
-
+The low computation cost of LLE algorithm may be its most shinning advantage over other manifold learning methods, and it is actually one of its biggest selling point when it was first introduced. The LLE algorithm Involves solving a sparse eigen problem, with computational complexity of roughly $O(N^2 d^2 + N d^3)$ where $N$ is the number of data points and $d$ is the dimension of the recovered configuration.
  
+In comparison, ISOMAP requires computing shortest paths between all pairs of points, which is typically done using Dijkstra's or Floyd-Warshall algorithm, leading to a complexity of $O(N^2 log N)$ or $O(N^3)$ respectively. Then, it involves eigen decomposition similar to classical MDS which is $O(N^3)$. 
 
+In practice, $d \ll N$, hence the computation cost of LLE is lower than that of ISOMAP in most cases.
+
+2) **Few parameters to tune**
+
+There are only two parameters to tune, respectively the number of neighbors included in the map:  $k$, and the dimensional of the original configuration: $d$. In addition, there exist clear methods to find the optimal $k$ and $d$, as stated in the previous part. This makes LLE algorithm easy to find the optimal parameters.
+
+
+#### Weaknesses
+
+1) **Sensitivity to tuning parameters** 
+
+The result of LLE is quite sensitive to its two control parameters: the number of neighbors $k \,$ and the dimensional of the original configuration: $d$.
+
+Here we use the Swiss Roll example to illustrate this. LLE is optimal at $k=45$. However, when $k=40$, the recovered lower-dimensional configuration is wrong (Green points and yellow points overlap, which is not the case in Swiss Roll); and when we slightly increase $k$ to 50, the recovered two-dimensional expression is not necessarily a rectangle.
+
+```{r}
+set.seed(42)
+# Install and load necessary packages
+# install.packages("dimRed")
+# install.packages("rgl")
+library(dimRed)
+library(rgl)
+library(Rdimtools)
+library(scatterplot3d)
+
+# Generate Swiss roll-shaped data
+S <- rep(0, 2000)
+Swiss <- matrix(NA, nrow = 2000, ncol = 3)
+for (n in 1:2000) {
+  s <- runif(1, min = 3 * pi / 2, max = 9 * pi / 2)
+  t <- runif(1, min = 0, max = 20)
+  S[n] <- s
+  Swiss[n, ] <- c(s * cos(s), t, s * sin(s))
+}
+
+par(mfrow = c(2,2))
+scatterplot3d(Swiss, color = myColorRamp(c("red","purple","blue","green","yellow"), S),
+               xlab = expression(x[1]), ylab = expression(x[2]), zlab = expression(x[3]))
+
+plot(do.lle(Swiss, ndim = 2, type = c("knn",40))$Y,
+     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=40",
+     col = myColorRamp(c("red","purple","blue","green","yellow"), S))
+
+plot(do.lle(Swiss, ndim = 2, type = c("knn",45))$Y,
+     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=45",
+     col = myColorRamp(c("red","purple","blue","green","yellow"), S))
+
+plot(do.lle(Swiss, ndim = 2, type = c("knn",50))$Y,
+     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=50",
+     col = myColorRamp(c("red","purple","blue","green","yellow"), S))
+```
+
+2) **Vulnerable to sparse or unevenly-distributed samples**
+
+The vulnerability towards sparsity and uneven distribution exists in almost all manifold learning methods, including ISOMAP, as we have illustrated in the previous section. LLE is not immune to this either. When a data set is unevenly distributed, since LLE relies on the original Euclidean distance metric, it tends to select neighbors from a singular direction where these neighbors are densely clustered. Clearly, using these selected neighbors to reconstruct the reference point results in significant redundancy in that specific direction. Concurrently, essential information from other directions or regions is not retained for the reconstruction of the reference point. As a result, these selected neighbors are inadequate for accurately representing and reconstructing the reference point. Consequently, much of the intrinsic structure and internal features will be lost after dimension reduction using LLE.
+
+We borrow the "stretched" Swiss Roll example from ISOMAP section and try LLE this time. LLE also cracks in this scenario, regardless of the chosen parameter $k$.
+
+```{r}
+set.seed(42)
+S <- rep(0,2000)
+Swiss_sparse <- matrix(NA, nrow = 2000, ncol = 3)
+for( n in 1:2000){
+    s <- runif(1, min = 3*pi/2, max = 9*pi/2)
+    t <- runif(1, min = 0,      max = 60)
+    S[n] <- s
+    Swiss_sparse[n, ] <- c( s*cos(s), t, s*sin(s) )
+}
+
+par(mfrow = c(2,2))
+scatterplot3d(Swiss_sparse, color = myColorRamp(c("red","purple","blue","green","yellow"), S), main = "Swiss Roll with Sparse Region",
+               xlab = expression(x[1]), ylab = expression(x[2]), zlab = expression(x[3]))
+
+plot(do.lle(Swiss_sparse, ndim = 2, type = c("knn",35))$Y,
+     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=35",
+     col = myColorRamp(c("red","purple","blue","green","yellow"), S))
+
+plot(do.lle(Swiss_sparse, ndim = 2, type = c("knn",40))$Y,
+     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=40",
+     col = myColorRamp(c("red","purple","blue","green","yellow"), S))
+
+plot(do.lle(Swiss_sparse, ndim = 2, type = c("knn",45))$Y,
+     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=45",
+     col = myColorRamp(c("red","purple","blue","green","yellow"), S))
+
+```
+
+In addition, we manually create a Swiss Roll with some sparse regions and try LLE on it. From naked eye, these sparse regions won't affect the overall manifold look. However, since LLE utilizes the local structure, it is greatly affected.
+
+```{r}
+library(scatterplot3d)
+library(Rdimtools)
+set.seed(42)
+S <- rep(0,2000)
+Swiss <- matrix(NA, nrow = 2000, ncol = 3)
+for(n in 1:2000){
+    s <- runif(1, min = 3*pi/2, max = 9*pi/2)
+    t <- runif(1, min = 0,      max = 15)
+    S[n] <- s
+    Swiss[n, ] <- c( s*cos(s), t, s*sin(s) )
+}
+
+# Manually create a sparse region
+mask <- Swiss[,2] > 5 & Swiss[,2] < 10 & Swiss[,3] > -5 & Swiss[,3] < 5
+Swiss_masked <- Swiss[!mask, ]
+S <- S[!mask]
+
+par(mfrow = c(2,2))
+scatterplot3d(Swiss_masked, color = myColorRamp(c("red","purple","blue","green","yellow"), S), main = "Swiss Roll with Sparse Region",
+               xlab = expression(x[1]), ylab = expression(x[2]), zlab = expression(x[3]))
+
+plot(do.lle(Swiss_masked, ndim = 2, type = c("knn",20))$Y,
+     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=20",
+     col = myColorRamp(c("red","purple","blue","green","yellow"), S))
+
+plot(do.lle(Swiss_masked, ndim = 2, type = c("knn",30))$Y,
+     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=30",
+     col = myColorRamp(c("red","purple","blue","green","yellow"), S))
+
+plot(do.lle(Swiss_masked, ndim = 2, type = c("knn",50))$Y,
+     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=50",
+     col = myColorRamp(c("red","purple","blue","green","yellow"), S))
+```
+
+3) **Sensitivity to noise**
+
+LLE is super sensitive to noise. Even a small noise would cause failure in deriving low dimensional configurations. Justin Wang, et.al utilize various visualization examples to illustrate this drawback in their paper [@llenoise], you may take a look if you are interested. Various algorithms have been developed to address this issue, i.e., Robustly Locally Linear Embedding (RLLE) [@RobustLLE], and Locally Linear Embedding with Additive Noise (LLEAN) [@llenoise]. The former works well when outliers exist, while the latter has a satisfactory performance when the original points are distorted with noises.
 
 
 
