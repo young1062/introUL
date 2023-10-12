@@ -1,1 +1,130 @@
 ## Autoencoders (AEs)
+
+### Introduction
+
+Autoencoders, emanating from the domain of neural network research, represent a class of unsupervised deep learning models. At its core, autoencoders seek to learn a compressed, efficient representation of input data by leveraging a network structure that encodes the data into a reduced dimensionality and subsequently decodes it to reconstruct the original data.
+
+The typical architecture of an autoencoder comprises three main components: 
+
+1) **Encoder**: A function $f(\vec{x})$ that compresses the input $\vec{x}$s into a latent representation.
+
+2) **Latent Space**: The reduced dimensionality representation, often denoted as $\vec{z}$, where $\vec{z} = f(\vec{x})$.
+
+3) **Decoder**: A function $g(\vec{z})$ that aims to reconstruct the original input from the latent representation.
+
+The primary objective during the training phase of an autoencoder is to minimize the reconstruction error, often quantified using metrics such as Mean Squared Error (MSE) between the input data and its reconstructed counterpart. The minimization forces the model to capture salient features of the data in the latent space, thereby enabling efficient data compression, noise reduction, and feature extraction.
+
+The utility of Autoencoders has been demonstrated in a wide array of applications, from dimensionality reduction, anomaly detection, denoising, to more complex tasks such as generating new data instances. Variations and extensions of the basic Autoencoder model, including Variational Autoencoders (VAEs) and Denoising Autoencoders, have further broadened their applicability by introducing probabilistic interpretations and noise robustness, respectively.
+
+In the broader context of machine learning and artificial intelligence, Autoencoders exemplify the power of unsupervised learning paradigms, emphasizing the capability of neural networks to derive meaningful representations from data without explicit labeling.
+
+### Algorithm
+
+#### Notations:
+**Input**
+- Dataset $\mathbf{X} = \{\vec{x}_1, \vec{x}_2, \dots, \vec{x}_n\}$ where $\vec{x}_i$ represents each data sample.
+- Encoder function with parameters $\theta_e$: $f_{\theta_e}(x)$
+- Decoder function with parameters $\theta_d$: $g_{\theta_d}(z)$
+- Objective function to measure reconstruction error, e.g., Mean Squared Error (MSE).
+
+**Output**: 
+- Trained parameters $\theta_e^{\star}$ and $\theta_d^{\star}$ that minimize the reconstruction error.
+
+#### Steps Breakdown:
+
+1) **Initialization**:
+   - Initialize network weights (parameters $\theta_e$ for encoder and $\theta_d$ for decoder) using a method such as Xavier initialization or random initialization.
+
+2) **Forward Pass**:
+   For each data sample $\vec{x}_i$:
+   - Encode input data sample to get the latent representation:
+     \[ \vec{z}_i = f_{\theta_e}(\vec{x}_i) \]
+   - Decode the latent representation to get the reconstructed data:
+     \[ \vec{x}'_i = g_{\theta_d}(\vec{z}_i) \]
+
+3) **Compute Loss**:
+   Calculate the reconstruction loss for the sample. For example, if using MSE:
+   \[ L(\vec{x}_i, \vec{x}'_i) = ||\vec{x}_i - \vec{x}'_i||^2 \]
+   Accumulate the loss for all samples to get the total loss.
+
+4) **Backward Pass**:
+   Using a method like gradient descent or one of its variants (e.g., Adam, RMSProp):
+   - Compute the gradients of the loss with respect to the network parameters ($\theta_e$ and $\theta_d$).
+   - Update the weights in the direction that minimizes the loss.
+
+5) **Iterate**:
+   - Repeat steps 2-4 for a predefined number of epochs or until the change in reconstruction error between epochs falls below a specified threshold.
+
+6) **Model Retrieval**:
+   - After training, retrieve the encoder $f_{\theta_e^{\star}}$ and decoder $g_{\theta_d^{\star}}$ with the optimal parameters $\theta_e^{\star}$ and $\theta_d^{\star}$.
+
+
+### Example
+
+```{r}
+# # keras provides an interface to the Keras deep learning library in Python
+# library(keras)
+# 
+# # load the Minst dataset
+# mnist <- dslabs::read_mnist(
+#   path = NULL,
+#   download = FALSE,
+#   destdir = tempdir(),
+#   url = "https://www2.harvardx.harvard.edu/courses/IDS_08_v2_03/",
+#   keep.files = TRUE
+# )
+# 
+# x_train <- mnist$train$images
+# x_test <- mnist$test$images
+```
+
+```{r}
+# # Reshape the data and normalize
+# gc()
+# library(reticulate)
+# x_train <- array_reshape(x_train, c(nrow(x_train), 784))
+# x_test <- array_reshape(x_test, c(nrow(x_test), 784))
+# x_train <- x_train / 255
+# x_test <- x_test / 255
+```
+```{r}
+# encoding_dim <- 32  # for compression
+# 
+# input_img <- layer_input(shape = c(784))
+# 
+# # Encoder layers
+# encoded <- layer_dense(input_img, encoding_dim, activation = 'relu')
+# 
+# # Decoder layers
+# decoded <- layer_dense(encoded, 784, activation = 'sigmoid')
+# 
+# # Create the autoencoder model
+# autoencoder <- keras_model(input_img, decoded)
+```
+
+```{r}
+# autoencoder %>% fit(
+#   x_train, x_train,
+#   epochs = 50,
+#   batch_size = 256,
+#   shuffle = TRUE,
+#   validation_data = list(x_test, x_test)
+# )
+```
+
+```{r}
+# # Get the reconstructed images
+# decoded_imgs <- autoencoder %>% predict(x_test)
+# 
+# # Display the original and reconstructed images
+# par(mfrow=c(2,10), mai=c(0.2, 0.2, 0.2, 0.2))
+# for (i in 1:10) {
+#   # Original
+#   img <- array_reshape(x_test[i,], c(28, 28))
+#   image(1:28, 1:28, img, col = gray((0:255)/255), xaxt = 'n', yaxt = 'n', main = "Original")
+#   # Reconstruction
+#   img <- array_reshape(decoded_imgs[i,], c(28, 28))
+#   image(1:28, 1:28, img, col = gray((0:255)/255), xaxt = 'n', yaxt = 'n', main = "Reconstructed")
+# }
+```
+

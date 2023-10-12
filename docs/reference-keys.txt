@@ -42,7 +42,11 @@ exm:ex-swiss-roll
 exm:ex-swiss-w-noise
 exm:ex-helix-distance
 eq:def-manifold-dist
+<<<<<<< HEAD
 intro
+=======
+introduction
+>>>>>>> aa6a19348ad3d5375107e4902caecb69dfb07196
 prerequisites
 ch-prob
 important-notation
@@ -85,6 +89,10 @@ sec-mds
 classical-scaling
 definitions
 recover-coordinates
+<<<<<<< HEAD
+=======
+duality-of-pca-and-classical-scaling
+>>>>>>> aa6a19348ad3d5375107e4902caecb69dfb07196
 metric-mds
 nonmetric-mds
 kernels-and-nonlinearity
@@ -93,12 +101,33 @@ ch-nonlinear
 background
 data-on-a-manifold
 isometric-feature-map-isomap
+<<<<<<< HEAD
 introduction
 key-definitions
 algorithm
 limitations-of-isomap
 local-linear-embeddings-lles
+=======
+introduction-1
+key-definitions
+algorithm
+limitations-of-isomap
+locally-linear-embeddings-lles
+introduction-2
+algorithm-1
+construct-neighborhood-graph
+reconsruct-with-linear-weights
+embedding
+strengths-and-weaknesses-of-lle
+strengths
+weaknesses
+>>>>>>> aa6a19348ad3d5375107e4902caecb69dfb07196
 autoencoders-aes
+introduction-3
+algorithm-2
+notations
+steps-breakdown
+example
 additional-methods
 exercises-3
 ch-clustering
