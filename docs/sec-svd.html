@@ -329,11 +329,7 @@ where <span class="math inline">\(\vec{z}_1^T, \dots,\vec{z}_N^T\)</span> denote
 <h3><span class="header-section-number">4.2.3</span> Connections with PCA<a href="sec-svd.html#connections-with-pca" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Suppose that we were to compute the full SVD of the centered data matrix <span class="math display">\[{\bf HX}= {\bf USV}^T.\]</span> We can express the sample covariance matrix of the original data using the SVD as
 <span class="math display">\[\begin{equation}
-<<<<<<< HEAD
 \hat{\Sigma}_X = \frac{1}{N} ({\bf HX})^T ({\bf HX}) = \frac{1}{N} {\bf VS}^T{\bf U}^T{\bf U SV} ^T = {\bf V}\left(\frac{1}{N} {\bf S}^T{\bf S}\right) {\bf V}^T.
-=======
-\hat{\Sigma}_X = \frac{1}{N} ({\bf HX})^T ({\bf HX}) = \frac{1}{N} {\bf VS}^T{\bf U}^T{\bf U S} V^T = {\bf V}\left(\frac{1}{N} {\bf S^T S}\right) {\bf V}^T.
->>>>>>> main
 \end{equation}\]</span>
 The matrix <span class="math inline">\(\frac{1}{N}{\bf S}^T {\bf S} \in \mathbb{R}^{d\times d}\)</span> is diagonal with entries <span class="math inline">\(\sigma_1^2/N \ge \dots \ge \sigma_d^2/N.\)</span> Furthermore, the matrix <span class="math inline">\({\bf V}\)</span> is orthonormal. Thus, from the SVD of <span class="math inline">\({\bf HX}\)</span> we can immediately compute the spectral decomposition of <span class="math inline">\(\hat{\Sigma}_X\)</span> to attain the principal component variances and loadings. In fact, the principal component loadings are the right singular vectors of <span class="math inline">\({\bf HX}\)</span> whereas the principal component variances are the squared singular values divided by <span class="math inline">\(N\)</span>, e.g. <span class="math inline">\(\lambda_j = \sigma_j^2/N\)</span>. Using this observation,
 <span class="math display">\[{\bf HX} = {\bf USV}^T \rightarrow {\bf HXV} = {\bf US}\]</span>
@@ -343,7 +339,6 @@ from which we may conclude the principal component scores are equal to <span cla
 </div>
 <div id="recommender-systems" class="section level3 hasAnchor" number="4.2.4">
 <h3><span class="header-section-number">4.2.4</span> Recommender Systems<a href="sec-svd.html#recommender-systems" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<<<<<<< HEAD
 <p>SVD may also be applied to association rule learning which can identify similar items in a datasets based on partial observations. As a motivating example, consider the case where we have a dataset of user provided ratings of products, which could be items purchased, songs listed to, or movies watched. In this case, <span class="math inline">\({\bf X}_{ij}\)</span> indicates user <span class="math inline">\(i\)</span>s rating of item <span class="math inline">\(j\)</span>. Typically, most of the entries of <span class="math inline">\({\bf X}\)</span> will be NA since users have likely interacted with a small number of items. Using a variant of SVD, a simple recommendation system proceeds in two steps. First, we can impute the missing ratings. We can then use this result to infer similar movies which can be used for recommendation.</p>
 <div id="imputation" class="section level4 hasAnchor" number="4.2.4.1">
 <h4><span class="header-section-number">4.2.4.1</span> Imputation<a href="sec-svd.html#imputation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -356,52 +351,49 @@ which is the sum-squared error over all observations. Using this definition of l
 </ol>
 <p>In summary, after initialization, we are continually overwriting the entries of our matrix of imputed values corresponding to observations then applyin a low-rank approximation. We stop the algorithm when the error stops decreasing or when the relative decrease in error is less than a specified threshhold <span class="math inline">\(\epsilon.\)</span> In addition to the rank <span class="math inline">\(k\)</span> and the stopping threshhold <span class="math inline">\(\epsilon\)</span> there is one other important `tuning’ parameter, the initialization. In the brief description above, we used a standard of 0, but one could also use the average of all entries in the corresponding column (average item rating) or row (average rating given by a user) or some other specification. Many more complicated recommendation systems include user and item specific initializations and adjustments but still imploy a low rank approximation somewhere in their deployment.</p>
 <p>In later updates, we show an application of this algorithm to the <a href="https://grouplens.org/datasets/movielens/10m/">Movielens 10m dataset</a> containing 10 million ratings from 72,000 viewers for 10,000 movies. To handle the size of this dataset, we use the Fast Truncated Singular Value Decomposition.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="sec-svd.html#cb11-1" tabindex="-1"></a><span class="co"># library(&quot;irlba&quot;)</span></span>
-<span id="cb11-2"><a href="sec-svd.html#cb11-2" tabindex="-1"></a><span class="co"># initialize &lt;- function(mat){</span></span>
-<span id="cb11-3"><a href="sec-svd.html#cb11-3" tabindex="-1"></a><span class="co"># # get column means ignoring NAs</span></span>
-<span id="cb11-4"><a href="sec-svd.html#cb11-4" tabindex="-1"></a><span class="co"># ave.rat &lt;- colMeans(mat,na.rm = TRUE)</span></span>
-<span id="cb11-5"><a href="sec-svd.html#cb11-5" tabindex="-1"></a><span class="co"># # fill NAs by average movie rating</span></span>
-<span id="cb11-6"><a href="sec-svd.html#cb11-6" tabindex="-1"></a><span class="co"># for(j in 1:ncol(mat)){</span></span>
-<span id="cb11-7"><a href="sec-svd.html#cb11-7" tabindex="-1"></a><span class="co">#   mat[is.na(mat[,j]),j] &lt;- ave.rat[j]</span></span>
-<span id="cb11-8"><a href="sec-svd.html#cb11-8" tabindex="-1"></a><span class="co"># }</span></span>
-<span id="cb11-9"><a href="sec-svd.html#cb11-9" tabindex="-1"></a><span class="co"># return(mat)</span></span>
-<span id="cb11-10"><a href="sec-svd.html#cb11-10" tabindex="-1"></a><span class="co"># }</span></span>
-<span id="cb11-11"><a href="sec-svd.html#cb11-11" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb11-12"><a href="sec-svd.html#cb11-12" tabindex="-1"></a><span class="co"># maxim &lt;- function(mat,k){</span></span>
-<span id="cb11-13"><a href="sec-svd.html#cb11-13" tabindex="-1"></a><span class="co"># # temp &lt;- svd(mat)</span></span>
-<span id="cb11-14"><a href="sec-svd.html#cb11-14" tabindex="-1"></a><span class="co"># temp&lt;- irlba(mat, nv = k)</span></span>
-<span id="cb11-15"><a href="sec-svd.html#cb11-15" tabindex="-1"></a><span class="co"># return(list(U = temp$u[,1:k],</span></span>
-<span id="cb11-16"><a href="sec-svd.html#cb11-16" tabindex="-1"></a><span class="co">#             D = temp$d[1:k],</span></span>
-<span id="cb11-17"><a href="sec-svd.html#cb11-17" tabindex="-1"></a><span class="co">#             V = temp$v[,1:k],</span></span>
-<span id="cb11-18"><a href="sec-svd.html#cb11-18" tabindex="-1"></a><span class="co">#             mat.hat = temp$u[,1:k] %*% diag(temp$d[1:k]) %*% t(temp$v[,1:k])))</span></span>
-<span id="cb11-19"><a href="sec-svd.html#cb11-19" tabindex="-1"></a><span class="co"># }</span></span>
-<span id="cb11-20"><a href="sec-svd.html#cb11-20" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb11-21"><a href="sec-svd.html#cb11-21" tabindex="-1"></a><span class="co"># recommender &lt;- function(mat, num_steps, k){</span></span>
-<span id="cb11-22"><a href="sec-svd.html#cb11-22" tabindex="-1"></a><span class="co"># # initialize loss function tracking</span></span>
-<span id="cb11-23"><a href="sec-svd.html#cb11-23" tabindex="-1"></a><span class="co"># loss &lt;- rep(NA,num_steps)</span></span>
-<span id="cb11-24"><a href="sec-svd.html#cb11-24" tabindex="-1"></a><span class="co"># # run EM algorithm and save loss</span></span>
-<span id="cb11-25"><a href="sec-svd.html#cb11-25" tabindex="-1"></a><span class="co"># ind.known &lt;- !is.na(mat)</span></span>
-<span id="cb11-26"><a href="sec-svd.html#cb11-26" tabindex="-1"></a><span class="co"># mat2 &lt;- initialize(mat)</span></span>
-<span id="cb11-27"><a href="sec-svd.html#cb11-27" tabindex="-1"></a><span class="co"># for (j in 1:num_steps){</span></span>
-<span id="cb11-28"><a href="sec-svd.html#cb11-28" tabindex="-1"></a><span class="co">#   mat2 &lt;- maxim(mat2,k)$mat.hat</span></span>
-<span id="cb11-29"><a href="sec-svd.html#cb11-29" tabindex="-1"></a><span class="co">#   loss[j] &lt;- sum((mat2[ind.known] - mat[ind.known])^2)</span></span>
-<span id="cb11-30"><a href="sec-svd.html#cb11-30" tabindex="-1"></a><span class="co">#   mat2[ind.known] &lt;- mat[ind.known]</span></span>
-<span id="cb11-31"><a href="sec-svd.html#cb11-31" tabindex="-1"></a><span class="co"># }</span></span>
-<span id="cb11-32"><a href="sec-svd.html#cb11-32" tabindex="-1"></a><span class="co"># return(list(loss= loss, fit = mat2))</span></span>
-<span id="cb11-33"><a href="sec-svd.html#cb11-33" tabindex="-1"></a><span class="co"># }</span></span>
-<span id="cb11-34"><a href="sec-svd.html#cb11-34" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb11-35"><a href="sec-svd.html#cb11-35" tabindex="-1"></a><span class="co"># k &lt;- 3</span></span>
-<span id="cb11-36"><a href="sec-svd.html#cb11-36" tabindex="-1"></a><span class="co"># temp &lt;- recommender(ratings,num_steps = 200, k = k)</span></span>
-<span id="cb11-37"><a href="sec-svd.html#cb11-37" tabindex="-1"></a><span class="co"># plot(temp$loss, xlab = &quot;Step&quot;, ylab = expression(ell))</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="sec-svd.html#cb2-1" tabindex="-1"></a><span class="co"># library(&quot;irlba&quot;)</span></span>
+<span id="cb2-2"><a href="sec-svd.html#cb2-2" tabindex="-1"></a><span class="co"># initialize &lt;- function(mat){</span></span>
+<span id="cb2-3"><a href="sec-svd.html#cb2-3" tabindex="-1"></a><span class="co"># # get column means ignoring NAs</span></span>
+<span id="cb2-4"><a href="sec-svd.html#cb2-4" tabindex="-1"></a><span class="co"># ave.rat &lt;- colMeans(mat,na.rm = TRUE)</span></span>
+<span id="cb2-5"><a href="sec-svd.html#cb2-5" tabindex="-1"></a><span class="co"># # fill NAs by average movie rating</span></span>
+<span id="cb2-6"><a href="sec-svd.html#cb2-6" tabindex="-1"></a><span class="co"># for(j in 1:ncol(mat)){</span></span>
+<span id="cb2-7"><a href="sec-svd.html#cb2-7" tabindex="-1"></a><span class="co">#   mat[is.na(mat[,j]),j] &lt;- ave.rat[j]</span></span>
+<span id="cb2-8"><a href="sec-svd.html#cb2-8" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb2-9"><a href="sec-svd.html#cb2-9" tabindex="-1"></a><span class="co"># return(mat)</span></span>
+<span id="cb2-10"><a href="sec-svd.html#cb2-10" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb2-11"><a href="sec-svd.html#cb2-11" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb2-12"><a href="sec-svd.html#cb2-12" tabindex="-1"></a><span class="co"># maxim &lt;- function(mat,k){</span></span>
+<span id="cb2-13"><a href="sec-svd.html#cb2-13" tabindex="-1"></a><span class="co"># # temp &lt;- svd(mat)</span></span>
+<span id="cb2-14"><a href="sec-svd.html#cb2-14" tabindex="-1"></a><span class="co"># temp&lt;- irlba(mat, nv = k)</span></span>
+<span id="cb2-15"><a href="sec-svd.html#cb2-15" tabindex="-1"></a><span class="co"># return(list(U = temp$u[,1:k],</span></span>
+<span id="cb2-16"><a href="sec-svd.html#cb2-16" tabindex="-1"></a><span class="co">#             D = temp$d[1:k],</span></span>
+<span id="cb2-17"><a href="sec-svd.html#cb2-17" tabindex="-1"></a><span class="co">#             V = temp$v[,1:k],</span></span>
+<span id="cb2-18"><a href="sec-svd.html#cb2-18" tabindex="-1"></a><span class="co">#             mat.hat = temp$u[,1:k] %*% diag(temp$d[1:k]) %*% t(temp$v[,1:k])))</span></span>
+<span id="cb2-19"><a href="sec-svd.html#cb2-19" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb2-20"><a href="sec-svd.html#cb2-20" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb2-21"><a href="sec-svd.html#cb2-21" tabindex="-1"></a><span class="co"># recommender &lt;- function(mat, num_steps, k){</span></span>
+<span id="cb2-22"><a href="sec-svd.html#cb2-22" tabindex="-1"></a><span class="co"># # initialize loss function tracking</span></span>
+<span id="cb2-23"><a href="sec-svd.html#cb2-23" tabindex="-1"></a><span class="co"># loss &lt;- rep(NA,num_steps)</span></span>
+<span id="cb2-24"><a href="sec-svd.html#cb2-24" tabindex="-1"></a><span class="co"># # run EM algorithm and save loss</span></span>
+<span id="cb2-25"><a href="sec-svd.html#cb2-25" tabindex="-1"></a><span class="co"># ind.known &lt;- !is.na(mat)</span></span>
+<span id="cb2-26"><a href="sec-svd.html#cb2-26" tabindex="-1"></a><span class="co"># mat2 &lt;- initialize(mat)</span></span>
+<span id="cb2-27"><a href="sec-svd.html#cb2-27" tabindex="-1"></a><span class="co"># for (j in 1:num_steps){</span></span>
+<span id="cb2-28"><a href="sec-svd.html#cb2-28" tabindex="-1"></a><span class="co">#   mat2 &lt;- maxim(mat2,k)$mat.hat</span></span>
+<span id="cb2-29"><a href="sec-svd.html#cb2-29" tabindex="-1"></a><span class="co">#   loss[j] &lt;- sum((mat2[ind.known] - mat[ind.known])^2)</span></span>
+<span id="cb2-30"><a href="sec-svd.html#cb2-30" tabindex="-1"></a><span class="co">#   mat2[ind.known] &lt;- mat[ind.known]</span></span>
+<span id="cb2-31"><a href="sec-svd.html#cb2-31" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb2-32"><a href="sec-svd.html#cb2-32" tabindex="-1"></a><span class="co"># return(list(loss= loss, fit = mat2))</span></span>
+<span id="cb2-33"><a href="sec-svd.html#cb2-33" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb2-34"><a href="sec-svd.html#cb2-34" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb2-35"><a href="sec-svd.html#cb2-35" tabindex="-1"></a><span class="co"># k &lt;- 3</span></span>
+<span id="cb2-36"><a href="sec-svd.html#cb2-36" tabindex="-1"></a><span class="co"># temp &lt;- recommender(ratings,num_steps = 200, k = k)</span></span>
+<span id="cb2-37"><a href="sec-svd.html#cb2-37" tabindex="-1"></a><span class="co"># plot(temp$loss, xlab = &quot;Step&quot;, ylab = expression(ell))</span></span></code></pre></div>
 </div>
 <div id="recommendation" class="section level4 hasAnchor" number="4.2.4.2">
 <h4><span class="header-section-number">4.2.4.2</span> Recommendation<a href="sec-svd.html#recommendation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Suppose now that we have a matrix, <span class="math inline">\(\tilde{\bf X}\in\mathbb{R}^{N\times d}\)</span> of movie ratings (real or imputed) and its SVD <span class="math display">\[\tilde{\bf X} = \tilde{\bf U}\tilde{\bf S}\tilde{\bf V}^T\]</span> where <span class="math inline">\(\tilde{\bf U} \in \mathbb{R}^{N\times k}\)</span>, <span class="math inline">\(\tilde{\bf S}\in\mathbb{R}^{k\times k}\)</span> and <span class="math inline">\(\tilde{\bf V}\in\mathbb{R}^{d\times k}.\)</span> Then for user <span class="math inline">\(i\)</span> the rating they give to movie <span class="math inline">\(j\)</span> is a linear combination of the elements in the <span class="math inline">\(j\)</span> column of <span class="math inline">\(\tilde{\bf V}^T\)</span>. Specifically, <span class="math display">\[\tilde{\bf X} \approx \sum_{\ell = 1}^k \sigma_\ell \tilde{\bf U}_{i\ell} (\tilde{\bf V})^T_{\ell j} = \sum_{\ell = 1}^k \sigma_\ell \tilde{\bf U}_{i\ell} \tilde{\bf V}_{j\ell}.\]</span></p>
 <p>For any movie, its rating will always be a linear combination of the elements in the corresponding column of <span class="math inline">\(\tilde{V}^T\)</span>. As such, we may view the <span class="math inline">\(k\)</span>-dimensional vectors in each column of <span class="math inline">\(\tilde{\bf V}\)</span> as a representation of that movie. We may then use these vectors to identify similar movies; one common approach is the cosine similarity, which for vectors <span class="math inline">\(\vec{x}, \vec{y}\in\mathbb{R}^k\)</span> is the cosine of the angle between them, i.e. <span class="math display">\[\cos\theta = \frac{\vec{x}^T\vec{y}}{\|\vec{x}\| \|\vec{y}\|}.\]</span>
 The cosine similarity is bounded between -1 and 1 and two vectors are considered more similar if the cosine of the angle between them is closer to 1. Using this representation, we can take any movie (a column of <span class="math inline">\(\tilde{\bf V}^T\)</span>) and choose the most similar movie (choosing the other columns of <span class="math inline">\(\tilde{\bf V}^T\)</span> with the largest cosine similarity). Thus, if a user gave a high rating to movie <span class="math inline">\(b\)</span>, we now have a method for recommending one or more similar movies they might enjoy.</p>
-=======
-<p>SVD may also be learned for association rule learning which can identify similar items in a datasets based on partial observations. As a brief example, consider the case where we have a dataset of user provided ratings of products, which could be items purchased, songs listed to, or movies watched. In this case, <span class="math inline">\({\bf X}_{ij}\)</span> indicates user <span class="math inline">\(i\)</span>s rating of item <span class="math inline">\(j\)</span>. Typically, most of the entries of <span class="math inline">\({\bf X}\)</span> will be NA since users have likely interacted with a small number of items. Using a variant of SVD, we can impute the missing ratings allowing us to infer similar movies which can be used for recommendation.</p>
->>>>>>> main
 <!-- NMF -->
 </div>
 </div>

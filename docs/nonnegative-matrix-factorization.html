@@ -286,14 +286,13 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="nonnegative-matrix-factorization" class="section level2 hasAnchor" number="4.3">
 <h2><span class="header-section-number">4.3</span> Nonnegative Matrix Factorization<a href="nonnegative-matrix-factorization.html#nonnegative-matrix-factorization" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>We will continue with the usual setting focusing on an <span class="math inline">\(N\times d\)</span> data matrix <span class="math inline">\({\bf X}\)</span>. However, we will consider the additional assumption that each entry of the data matrix is non-negative which is a natural feature of many experimental data sets.</p>
-<p>As before, our goal is to find a low-rank matrix <span class="math inline">\(\hat{\bf X}\)</span> which is as close to possible to <span class="math inline">\({\bf X}\)</span> as possible. How do we measure closness? Here are a few common choices.</p>
+<p>In both PCA and SVD, we learn data-drive orthonormal feature vectors which decompose our data in an orderly fashion. Nonnegative matrix factorization (NMF) is again focused on learning a set latent vectors which can be used to approximate our data, but with a few restrictions motivated by experimental data and a desire to increase interpretability of the results. In this setting, we focus on cases where <span class="math inline">\({\bf X}\)</span> is an <span class="math inline">\(N\times d\)</span> data matrix with the added condition that its entries are nonnegative. Notationally, we write <span class="math inline">\({\bf X}\in\mathbb{R}_{\ge 0}^{N\times d}\)</span> to indicate it is composed of nonnegative real values.</p>
+<p>The nonnegativity condition is a natural constraint for many experimental data sets, but we are also going to impose a similar constraint on our feature vectors and coefficients. More specifically, for a specific rank <span class="math inline">\(k\)</span>, we seek a coefficient matrix <span class="math inline">\({\bf W}\in\mathbb{R}_{\ge 0}^{N\times k}\)</span> and feature matrix <span class="math inline">\({\bf H}\in \mathbb{R}^{k\times d}_{\ge 0}\)</span> such that <span class="math inline">\({\bf WH}\)</span> is as close to <span class="math inline">\({\bf X}\)</span> as possible. In this setting, there are different choices one can use to define closeness. Here are a few common measures of closeness which are nonnegative and zero if and only if <span class="math inline">\({\bf X}= {\bf WH}.\)</span></p>
 <ul>
-<li><p>Frobenius norm <span class="math inline">\(\|{\bf X}-\hat{\bf X}\|_F.\)</span></p></li>
-<li><p>Divergence <span class="math inline">\(D({\bf X} \| \hat{\bf X}) = \sum_{i=1}^N\sum_{j=1}^d \left[{\bf X}_{ij} \log \frac{{\bf X}_{ij}}{\hat{\bf X}_{ij}} + \hat{\bf X}_{ij} - {\bf X}_{ij}\right]\)</span></p></li>
-<li><p>IS Divergence</p></li>
+<li><p>Frobenius norm: <span class="math inline">\(\|{\bf X}-\hat{\bf X}\|_F.\)</span></p></li>
+<li><p>Divergence: <span class="math inline">\(D({\bf X} \| \hat{\bf X}) = \sum_{i=1}^N\sum_{j=1}^d \left[{\bf X}_{ij} \log \frac{{\bf X}_{ij}}{\hat{\bf X}_{ij}} + \hat{\bf X}_{ij} - {\bf X}_{ij}\right]\)</span></p></li>
+<li><p>Itakura-Saito Divergence: <span class="math display">\[D_{IS}({\bf X}, {\bf WH}) = \sum_{i=1}^N\sum_{j=1}^d \left[\frac{{\bf X}_{ij}}{({\bf WH})_{ij}} - \log\frac{{\bf X}_{ij}}{({\bf WH})_{ij}} -1  \right]\]</span></p></li>
 </ul>
-<p>Without any restrictions on <span class="math inline">\(\hat{\bf X}\)</span> our previous analysis using SVD provides the answer when we consider the Frobenius norm of the <span class="math inline">\(ell_2\)</span> norm of the difference between <span class="math inline">\({\bf X}\)</span> and <span class="math inline">\(\hat{\bf X}.\)</span></p>
 <!-- MDS -->
 </div>
             </section>

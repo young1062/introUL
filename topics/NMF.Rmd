@@ -1,6 +1,8 @@
 ## Nonnegative Matrix Factorization
 
-We will continue with the usual setting focusing on an $N\times d$ data matrix ${\bf X}$ with the added condition that the entries of ${\bf X}$ are nonnegative, which is a natural constraint for many experimental data sets.  As before, our goal is to find a low-rank matrix $\hat{\bf X}$ which is as close to possible to ${\bf X}$.  How do we measure closness?  Here are a few common choices.
+In both PCA and SVD, we learn data-drive orthonormal feature vectors which decompose our data in an orderly fashion.  Nonnegative matrix factorization (NMF) is again focused on learning a set latent vectors which can be used to approximate our data, but with a few restrictions motivated by experimental data and a desire to increase interpretability of the results.  In this setting, we focus on cases where ${\bf X}$ is an $N\times d$ data matrix with the added condition that its entries are nonnegative. Notationally, we write ${\bf X}\in\mathbb{R}_{\ge 0}^{N\times d}$ to indicate it is composed of nonnegative real values. 
+
+The nonnegativity condition is a natural constraint for many experimental data sets, but we are also going to impose a similar constraint on our feature vectors and coefficients.  More specifically, for a specific rank $k$, we seek a coefficient matrix ${\bf W}\in\mathbb{R}_{\ge 0}^{N\times k}$ and feature matrix ${\bf H}\in \mathbb{R}^{k\times d}_{\ge 0}$ such that ${\bf WH}$ is as close to ${\bf X}$ as possible. In this setting, there are different choices one can use to define closeness. Here are a few common measures of closeness which are nonnegative and zero if and only if ${\bf X}= {\bf WH}.$
 
 - Frobenius norm: $\|{\bf X}-\hat{\bf X}\|_F.$
 
@@ -8,4 +10,3 @@ We will continue with the usual setting focusing on an $N\times d$ data matrix $
 
 - Itakura-Saito Divergence: $$D_{IS}({\bf X}, {\bf WH}) = \sum_{i=1}^N\sum_{j=1}^d \left[\frac{{\bf X}_{ij}}{({\bf WH})_{ij}} - \log\frac{{\bf X}_{ij}}{({\bf WH})_{ij}} -1  \right]$$
 
-Without any restrictions on $\hat{\bf X}$ our previous analysis using SVD provides the answer when we consider the Frobenius norm of the $ell_2$ norm of the difference between ${\bf X}$ and $\hat{\bf X}.$
