@@ -115,7 +115,7 @@ input_img <- layer_input(shape = c(28*28))
 encoded <- input_img %>% 
   layer_dense(units = 128, activation = "relu") %>% 
   layer_dropout(rate=0.8) %>%
-  layer_dense(units = 3, activation = "tanh")
+  layer_dense(units = 2, activation = "tanh")
 ```
 
 The Encoder starts with the input image and passes it through a dense layer with 128 neurons and ReLU activation. A dropout layer is added for regularization, reducing the risk of over-fitting. The last layer of the Encoder further compresses the data into a 2D representation. 
@@ -221,41 +221,43 @@ labels_train <- mnist$train$y
 labels_train <- as.factor(labels_train)
 
 # Plotting the data
-# ae <- ggplot(encoded_df, aes(x = V1, y = V2, color = labels_train)) + 
-#   geom_point(alpha = 0.6, size = 1) + 
-#   labs(title = "Autoencoder projection", 
-#        x = "DF1", 
-#        y = "DF2", 
-#        color = "Response") + 
-#   theme_minimal()
+ae <- ggplot(encoded_df, aes(x = V1, y = V2, color = labels_train)) +
+  geom_point(alpha = 0.6, size = 1) +
+  labs(title = "Autoencoder projection",
+       x = "DF1",
+       y = "DF2",
+       color = "Response") +
+  theme_minimal()
 # plotting 3d results
-ae3 <- plot_ly(encoded_df, x=~V1, y=~V2, z =~V3, 
-                color = labels_train,
-                size = 0.1)
+# ae3 <- plot_ly(encoded_df, x=~V1, y=~V2, z =~V3, 
+#                 color = labels_train,
+#                 size = 0.1)
 
 ```
 
 
-```{R}
+```{r}
 pca_result <- prcomp(train_images)
 
 # Extract the scores of the first two principal components
-scores <- as.data.frame(pca_result$x[, 1:3])
-colnames(scores) <- c("PC1", "PC2", "PC3")
-
-# p <- ggplot(scores, aes(x = PC1, y = PC2, color = labels_train)) + 
-#   geom_point(alpha = 0.6) + 
-#   labs(title = "PCA", x = "PC1", y = "PC2", color="response") + 
-#   theme_minimal()
-p3 <- plot_ly(scores, x = ~PC1, y =~PC2, z=~PC3, 
-              color = labels_train,
-              size = 0.1)
+scores <- as.data.frame(pca_result$x[, 1:2])
+colnames(scores) <- c("PC1", "PC2")
+p <- ggplot(scores, aes(x = PC1, y = PC2, color = labels_train)) +
+  geom_point(alpha = 0.6) +
+  labs(title = "PCA", x = "PC1", y = "PC2", color="response") +
+  theme_minimal()
+# # 3D 
+# scores <- as.data.frame(pca_result$x[, 1:3])
+# colnames(scores) <- c("PC1", "PC2", "PC3")
+# p3 <- plot_ly(scores, x = ~PC1, y =~PC2, z=~PC3, 
+#               color = labels_train,
+#               size = 0.1)
 ```
 
 ```{r}
 par(mfrow = c(2,1))
-p3
-ae3
+p
+ae
 ```
 
 
