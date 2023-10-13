@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4.2 Singular Value Decomposition | An Introduction to Unsupervised Learning</title>
+  <meta name="description" content="An introductory text on the goals and methods of unsupervised learning" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4.2 Singular Value Decomposition | An Introduction to Unsupervised Learning" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="An introductory text on the goals and methods of unsupervised learning" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4.2 Singular Value Decomposition | An Introduction to Unsupervised Learning" />
+  
+  <meta name="twitter:description" content="An introductory text on the goals and methods of unsupervised learning" />
+  
+
+<meta name="author" content="Alex Young and Cenhao Zhu" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="sec-pca.html"/>
+<link rel="next" href="nonnegative-matrix-factorization.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.2/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<script src="libs/threejs-111/three.min.js"></script>
+<script src="libs/threejs-111/Detector.js"></script>
+<script src="libs/threejs-111/Projector.js"></script>
+<script src="libs/threejs-111/CanvasRenderer.js"></script>
+<script src="libs/threejs-111/TrackballControls.js"></script>
+<script src="libs/threejs-111/StateOrbitControls.js"></script>
+<script src="libs/scatterplotThree-binding-0.3.3/scatterplotThree.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Unsupervised Learning</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="prerequisites.html"><a href="prerequisites.html"><i class="fa fa-check"></i><b>1.1</b> Prerequisites</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="ch-prob.html"><a href="ch-prob.html"><i class="fa fa-check"></i><b>2</b> Mathematical Background and Notation</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="important-notation.html"><a href="important-notation.html"><i class="fa fa-check"></i><b>2.1</b> Important notation</a></li>
+<li class="chapter" data-level="2.2" data-path="random-vectors-in-mathbbrd.html"><a href="random-vectors-in-mathbbrd.html"><i class="fa fa-check"></i><b>2.2</b> Random vectors in <span class="math inline">\(\mathbb{R}^d\)</span></a></li>
+<li class="chapter" data-level="2.3" data-path="expectation-mean-and-covariance.html"><a href="expectation-mean-and-covariance.html"><i class="fa fa-check"></i><b>2.3</b> Expectation, Mean, and Covariance</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="expectation-mean-and-covariance.html"><a href="expectation-mean-and-covariance.html#sample-mean-and-sample-covariance"><i class="fa fa-check"></i><b>2.3.1</b> Sample Mean and Sample Covariance</a></li>
+<li class="chapter" data-level="2.3.2" data-path="expectation-mean-and-covariance.html"><a href="expectation-mean-and-covariance.html#the-data-matrix"><i class="fa fa-check"></i><b>2.3.2</b> The Data Matrix</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="linear-algebra.html"><a href="linear-algebra.html"><i class="fa fa-check"></i><b>2.4</b> Linear Algebra</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="linear-algebra.html"><a href="linear-algebra.html#assumed-background"><i class="fa fa-check"></i><b>2.4.1</b> Assumed Background</a></li>
+<li class="chapter" data-level="2.4.2" data-path="linear-algebra.html"><a href="linear-algebra.html#interpretations-of-matrix-multiplication"><i class="fa fa-check"></i><b>2.4.2</b> Interpretations of Matrix Multiplication</a></li>
+<li class="chapter" data-level="2.4.3" data-path="linear-algebra.html"><a href="linear-algebra.html#norms-and-distances"><i class="fa fa-check"></i><b>2.4.3</b> Norms and Distances</a></li>
+<li class="chapter" data-level="2.4.4" data-path="linear-algebra.html"><a href="linear-algebra.html#important-properties"><i class="fa fa-check"></i><b>2.4.4</b> Important properties</a></li>
+<li class="chapter" data-level="2.4.5" data-path="linear-algebra.html"><a href="linear-algebra.html#matrix-factorizations"><i class="fa fa-check"></i><b>2.4.5</b> Matrix Factorizations</a></li>
+<li class="chapter" data-level="2.4.6" data-path="linear-algebra.html"><a href="linear-algebra.html#positive-definiteness-and-matrix-powers"><i class="fa fa-check"></i><b>2.4.6</b> Positive Definiteness and Matrix Powers</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i><b>2.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="central-goals-and-assumptions.html"><a href="central-goals-and-assumptions.html"><i class="fa fa-check"></i><b>3</b> Central goals and assumptions</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="dimension-reduction-and-manifold-learning.html"><a href="dimension-reduction-and-manifold-learning.html"><i class="fa fa-check"></i><b>3.1</b> Dimension reduction and manifold learning</a></li>
+<li class="chapter" data-level="3.2" data-path="clustering.html"><a href="clustering.html"><i class="fa fa-check"></i><b>3.2</b> Clustering</a></li>
+<li class="chapter" data-level="3.3" data-path="generating-synthetic-data.html"><a href="generating-synthetic-data.html"><i class="fa fa-check"></i><b>3.3</b> Generating synthetic data</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="generating-synthetic-data.html"><a href="generating-synthetic-data.html#data-on-manifolds"><i class="fa fa-check"></i><b>3.3.1</b> Data on manifolds</a></li>
+<li class="chapter" data-level="3.3.2" data-path="generating-synthetic-data.html"><a href="generating-synthetic-data.html#clustered-data"><i class="fa fa-check"></i><b>3.3.2</b> Clustered data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="exercises-1.html"><a href="exercises-1.html"><i class="fa fa-check"></i><b>3.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="ch-linear.html"><a href="ch-linear.html"><i class="fa fa-check"></i><b>4</b> Linear Methods</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="sec-pca.html"><a href="sec-pca.html"><i class="fa fa-check"></i><b>4.1</b> Principal Component Analysis</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="sec-pca.html"><a href="sec-pca.html#derivation-1-iterative-projections"><i class="fa fa-check"></i><b>4.1.1</b> Derivation 1: Iterative Projections</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="sec-svd.html"><a href="sec-svd.html"><i class="fa fa-check"></i><b>4.2</b> Singular Value Decomposition</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="sec-svd.html"><a href="sec-svd.html#low-rank-approximations"><i class="fa fa-check"></i><b>4.2.1</b> Low-rank approximations</a></li>
+<li class="chapter" data-level="4.2.2" data-path="sec-svd.html"><a href="sec-svd.html#svd-and-low-rank-approximations"><i class="fa fa-check"></i><b>4.2.2</b> SVD and Low Rank Approximations</a></li>
+<li class="chapter" data-level="4.2.3" data-path="sec-svd.html"><a href="sec-svd.html#connections-with-pca"><i class="fa fa-check"></i><b>4.2.3</b> Connections with PCA</a></li>
+<li class="chapter" data-level="4.2.4" data-path="sec-svd.html"><a href="sec-svd.html#recommender-systems"><i class="fa fa-check"></i><b>4.2.4</b> Recommender Systems</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="nonnegative-matrix-factorization.html"><a href="nonnegative-matrix-factorization.html"><i class="fa fa-check"></i><b>4.3</b> Nonnegative Matrix Factorization</a></li>
+<li class="chapter" data-level="4.4" data-path="sec-mds.html"><a href="sec-mds.html"><i class="fa fa-check"></i><b>4.4</b> Multidimensional Scaling</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="sec-mds.html"><a href="sec-mds.html#key-features-of-mds"><i class="fa fa-check"></i><b>4.4.1</b> Key features of MDS</a></li>
+<li class="chapter" data-level="4.4.2" data-path="sec-mds.html"><a href="sec-mds.html#classical-scaling"><i class="fa fa-check"></i><b>4.4.2</b> Classical Scaling</a></li>
+<li class="chapter" data-level="4.4.3" data-path="sec-mds.html"><a href="sec-mds.html#metric-mds"><i class="fa fa-check"></i><b>4.4.3</b> Metric MDS</a></li>
+<li class="chapter" data-level="4.4.4" data-path="sec-mds.html"><a href="sec-mds.html#nonmetric-mds"><i class="fa fa-check"></i><b>4.4.4</b> Nonmetric MDS</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="kernels-and-nonlinearity.html"><a href="kernels-and-nonlinearity.html"><i class="fa fa-check"></i><b>5</b> Kernels and Nonlinearity</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="exercises-2.html"><a href="exercises-2.html"><i class="fa fa-check"></i><b>5.1</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html"><i class="fa fa-check"></i><b>6</b> Manifold Learning</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>6.1</b> Background</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="background.html"><a href="background.html#data-on-a-manifold"><i class="fa fa-check"></i><b>6.1.1</b> Data on a manifold</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html"><i class="fa fa-check"></i><b>6.2</b> Isometric Feature Map (ISOMAP)</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#introduction"><i class="fa fa-check"></i><b>6.2.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.2.2" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#key-definitions"><i class="fa fa-check"></i><b>6.2.2</b> Key Definitions</a></li>
+<li class="chapter" data-level="6.2.3" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#algorithm"><i class="fa fa-check"></i><b>6.2.3</b> Algorithm</a></li>
+<li class="chapter" data-level="6.2.4" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#limitations-of-isomap"><i class="fa fa-check"></i><b>6.2.4</b> Limitations of ISOMAP</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html"><i class="fa fa-check"></i><b>6.3</b> Locally Linear Embeddings (LLEs)</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#introduction-1"><i class="fa fa-check"></i><b>6.3.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.3.2" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#algorithm-1"><i class="fa fa-check"></i><b>6.3.2</b> Algorithm</a></li>
+<li class="chapter" data-level="6.3.3" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#strengths-and-weaknesses-of-lle"><i class="fa fa-check"></i><b>6.3.3</b> Strengths and Weaknesses of LLE</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html"><i class="fa fa-check"></i><b>6.4</b> Autoencoders (AEs)</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#introduction-2"><i class="fa fa-check"></i><b>6.4.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.4.2" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#algorithm-2"><i class="fa fa-check"></i><b>6.4.2</b> Algorithm</a></li>
+<li class="chapter" data-level="6.4.3" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#example"><i class="fa fa-check"></i><b>6.4.3</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="additional-methods.html"><a href="additional-methods.html"><i class="fa fa-check"></i><b>6.5</b> Additional methods</a></li>
+<li class="chapter" data-level="6.6" data-path="exercises-3.html"><a href="exercises-3.html"><i class="fa fa-check"></i><b>6.6</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ch-clustering.html"><a href="ch-clustering.html"><i class="fa fa-check"></i><b>7</b> Clustering</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="hierarchical.html"><a href="hierarchical.html"><i class="fa fa-check"></i><b>7.1</b> Hierarchical</a></li>
+<li class="chapter" data-level="7.2" data-path="center-based.html"><a href="center-based.html"><i class="fa fa-check"></i><b>7.2</b> Center-based</a></li>
+<li class="chapter" data-level="7.3" data-path="model-based.html"><a href="model-based.html"><i class="fa fa-check"></i><b>7.3</b> Model-based</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="model-based.html"><a href="model-based.html#k-means"><i class="fa fa-check"></i><b>7.3.1</b> k-means</a></li>
+<li class="chapter" data-level="7.3.2" data-path="model-based.html"><a href="model-based.html#k-mediods"><i class="fa fa-check"></i><b>7.3.2</b> k-mediods</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="spectral.html"><a href="spectral.html"><i class="fa fa-check"></i><b>7.4</b> Spectral</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">An Introduction to Unsupervised Learning</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="sec-svd" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Singular Value Decomposition<a href="sec-svd.html#sec-svd" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="low-rank-approximations" class="section level3 hasAnchor" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Low-rank approximations<a href="sec-svd.html#low-rank-approximations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In the next two subsections, we are going to focus on <em>low-rank</em> matrix approximation methods in which we try to approximate our data matrix <span class="math inline">\({\bf X}\)</span> using a low-rank alternative. In the language of dimension reduction, the idea is to approximate each data with a linear combonation of a small number (<span class="math inline">\(k&lt; d\)</span> of latent feature vectors. Briefly, let’s discuss how this idea works in the case of PCA.</p>
+<p>In PCA, the loadings provide a data-driven orthonormal basis <span class="math inline">\(\vec{w}_1,\dots,\vec{w}_d\)</span> which allow us to compute the PCA scores from the centered data. In matrix notation, this scores are given by <span class="math display">\[\underbrace{{\bf Y}}_{\text{PCA scores}} = \underbrace{({\bf HX})}_{\text{centered data matrix}} \times \underbrace{{\bf W}}_{\text{loadings}}.\]</span></p>
+<p>The matrix <span class="math inline">\({\bf W}\)</span> is orthonormal allowing us to write <span class="math display">\[{\bf HX} = {\bf YW }^T.\]</span> The <span class="math inline">\(ith\)</span> row of the preceding matrix equality reads
+<span class="math display">\[(\vec{x}_i - \bar{x})^T = \sum_{j=1}^d {\bf Y}_{ij} \vec{w}_j^T.\]</span> From the PCA notes, an approximation using the first <span class="math inline">\(k\)</span> loadings
+<span class="math display">\[(\vec{x}_i - \bar{x})^T \approx \sum_{j=1}^k {\bf Y}_{ij} \vec{w}_j^T\]</span>
+minimizes the average squared Euclidean distance over all vectors. In matrix notation, the approximation over all vectors decomposes as the product of an <span class="math inline">\(N\times k\)</span> matrix and a <span class="math inline">\(k\times d\)</span> matrix as follows.
+<span class="math display">\[{\bf HX} \approx \underbrace{\begin{bmatrix}{\bf Y}_{11} &amp; \dots &amp; {\bf Y}_{1k} \\
+\vdots &amp; &amp; \vdots \\
+\vdots &amp; &amp; \vdots \\
+{\bf Y}_{N1} &amp; \dots &amp; {\bf Y}_{Nk}\end{bmatrix}}_{N\times k} \underbrace{\begin{bmatrix}\vec{w}_1^T \\ \vdots \\ \vec{w}_k^T \vphantom{\vdots} \end{bmatrix}\\}_{k\times d}.\]</span></p>
+<p>Due to the properties of the scores and loadings, the approximation is a rank <span class="math inline">\(k\)</span> matrix. In the following sections, we’ll seek similar decompositions of our data matrix.</p>
+</div>
+<div id="svd-and-low-rank-approximations" class="section level3 hasAnchor" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> SVD and Low Rank Approximations<a href="sec-svd.html#svd-and-low-rank-approximations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The standard problem for low rank matrix approximations is to solve the following problem. Given a matrix <span class="math inline">\({\bf X}\in\mathbb{R}^{N\times d}\)</span> and a chosen rank <span class="math inline">\(k\)</span>, we want:
+<span class="math display">\[\begin{equation}
+\mathop{\mathrm{arg\,min}}_{{\bf Z}\in\mathbb{R}^{N\times d} \\ \text{rank}({\bf Z}) = k} \|{\bf X} - {\bf Z}\|_F^2 = \mathop{\mathrm{arg\,min}}_{{\bf Z}\in\mathbb{R}^{N\times d} \\ \text{rank}({\bf Z}) = k} \left(\sum_{ij}({\bf X}_{ij} - {\bf Z}_{ij})^2 \right) = \mathop{\mathrm{arg\,min}}_{{\bf Z}\in\mathbb{R}^{N\times d} \\ \text{rank}({\bf Z}) = k} \left(\sum_i \|\vec{x}_i-\vec{z}_i\|^2\right)
+\end{equation}\]</span>
+where <span class="math inline">\(\vec{z}_1^T, \dots,\vec{z}_N^T\)</span> denote the rows of <span class="math inline">\({\bf Z}\)</span>.</p>
+<p>Solving this constrained minimization problem may appear difficult, but the answer is obtainable directly from the SVD of <span class="math inline">\({\bf X}\)</span> due to the following theorem.</p>
+<div class="theorem">
+<p><span id="thm:svd-frob" class="theorem"><strong>Theorem 4.2  (Best Rank $k$ Approximation) </strong></span>Suppose matrix <span class="math inline">\({\bf X}\in\mathbb{R}^{N\times d}\)</span> has singular value decomposition <span class="math display">\[{\bf X} = {\bf US V}^T\]</span> with singular values <span class="math display">\[\sigma_1\ge\dots \ge \sigma_{\min\{N,d\}}.\]</span> Then
+1) For any rank <span class="math inline">\(k\)</span> matrix <span class="math inline">\({\bf Z}\in\mathbb{R}^{N\times d}\)</span>, <span class="math display">\[\|{\bf X}-{\bf Z}\|_F \ge \sigma_{k+1}^2 + \dots + \sigma_{\min\{N,d\}}^2\]</span>
+2) The rank <span class="math inline">\(k\)</span> matrix attained by keeping the first <span class="math inline">\(k\)</span> left singular vectors, right singular vectors, and singular values of the SVD of <span class="math inline">\({\bf X}\)</span> attains this minimum. Specifically, if <span class="math inline">\(\vec{u}_1,\dots,\vec{u}_k\)</span> are the first <span class="math inline">\(k\)</span> left singular vectors and <span class="math inline">\(\vec{v}_1,\dots,\vec{v}_k\)</span> are the first <span class="math inline">\(k\)</span> right singular vectors then
+<span class="math display">\[\begin{equation}
+\mathop{\mathrm{arg\,min}}_{{\bf Z}\in\mathbb{R}^{N\times d} \\ \text{rank}({\bf Z}) = k} \|{\bf X} - {\bf Z}\|_F^2 =
+\begin{bmatrix}&amp;&amp; \\ \vec{u}_1 &amp; \dots &amp; \vec{u}_k \\ &amp;&amp; \end{bmatrix}
+\begin{bmatrix}\sigma_1 &amp; &amp;  \\
+&amp; \ddots &amp;  \\
+&amp;  &amp; \sigma_k \end{bmatrix}
+\begin{bmatrix}
+&amp;\vec{v}_1^T &amp; \\ &amp; \vdots&amp; \\ &amp;\vec{v}_k^T&amp; \end{bmatrix}
+\end{equation}\]</span></p>
+</div>
+<p>There are several important implications of this theorem. First, the direct result indicates that computing the SVD of <span class="math inline">\({\bf X}\)</span> immediately allows us to compute the best approximation under Frobenius loss for a specified rank <span class="math inline">\(k\)</span>. In practice, the full SVD is not required since we will typically consider the case where <span class="math inline">\(k &lt;\min\{N,d\}\)</span>. There is a another implication as well. In cases where a specific choice of <span class="math inline">\(k\)</span> is not clear, the singular values of <span class="math inline">\({\bf X}\)</span> provide a method to comparing different choices of <span class="math inline">\(k\)</span>. Akin to the scree plot, we can plot the (squared) singular values to look for clear separation or alternatively, plot the ratio <span class="math display">\[\frac{\sum_{j=1}^k\sigma_j^2}{\sum_{j=1}^{\min\{N,d\}}\sigma_j^2}\]</span> as a function of <span class="math inline">\(k\)</span> to understand the relative error for a specific choice of <span class="math inline">\(k\)</span>.</p>
+<p>For a given choice of <span class="math inline">\(k\)</span>, we now approximate our original data by linear combination of the right singular vectors <span class="math inline">\(\vec{v}_1,\dots,\vec{v}_k\)</span>. The approximations are <span class="math display">\[\vec{x}_i \approx \vec{z}_i = \sum_{j=1}^k \sigma_j{\bf U}_{ij} \vec{v}_j\]</span>.</p>
+</div>
+<div id="connections-with-pca" class="section level3 hasAnchor" number="4.2.3">
+<h3><span class="header-section-number">4.2.3</span> Connections with PCA<a href="sec-svd.html#connections-with-pca" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Suppose that we were to compute the full SVD of the centered data matrix <span class="math display">\[{\bf HX}= {\bf USV}^T.\]</span> We can express the sample covariance matrix of the original data using the SVD as
+<span class="math display">\[\begin{equation}
+\hat{\Sigma}_X = \frac{1}{N} ({\bf HX})^T ({\bf HX}) = \frac{1}{N} {\bf VS}^T{\bf U}^T{\bf U SV} ^T = {\bf V}\left(\frac{1}{N} {\bf S}^T{\bf S}\right) {\bf V}^T.
+\end{equation}\]</span>
+The matrix <span class="math inline">\(\frac{1}{N}{\bf S}^T {\bf S} \in \mathbb{R}^{d\times d}\)</span> is diagonal with entries <span class="math inline">\(\sigma_1^2/N \ge \dots \ge \sigma_d^2/N.\)</span> Furthermore, the matrix <span class="math inline">\({\bf V}\)</span> is orthonormal. Thus, from the SVD of <span class="math inline">\({\bf HX}\)</span> we can immediately compute the spectral decomposition of <span class="math inline">\(\hat{\Sigma}_X\)</span> to attain the principal component variances and loadings. In fact, the principal component loadings are the right singular vectors of <span class="math inline">\({\bf HX}\)</span> whereas the principal component variances are the squared singular values divided by <span class="math inline">\(N\)</span>, e.g. <span class="math inline">\(\lambda_j = \sigma_j^2/N\)</span>. Using this observation,
+<span class="math display">\[{\bf HX} = {\bf USV}^T \rightarrow {\bf HXV} = {\bf US}\]</span>
+from which we may conclude the principal component scores are equal to <span class="math inline">\({\bf US}.\)</span> This connection is the basis for most numerical implementation of PCA since it is more both faster and more numerically stable to compute the SVD of <span class="math inline">\({\bf HX}\)</span> than to compute both <span class="math inline">\(\hat{\Sigma}_X\)</span> and its eigendecomposition! Thus, computing the best rank <span class="math inline">\(k\)</span> approximation to a centered data matrix is equivalent to the best approximation of the centered data using the first <span class="math inline">\(k\)</span> PC scores.</p>
+<p>However, using the SVD to compute a low rank approximation to a <em>non-centered</em> data matrix will give a different result than PCA since the SVD of <span class="math inline">\({\bf HX}\)</span> will be different than the SVD of <span class="math inline">\({\bf X}\)</span>. Unlike PCA, which decomposes variability in directions relative to the center of the data, SVD learns an orthonormal basis which decomposes variability relative to the origin. Only when the data is centered (so its mean is the origin) do SVD and PCA coincide. Nonetheless, SVD has similar weaknesses to PCA including a sensitivity to scaling and outliers and an inability to detect nonlinear structure.</p>
+<p>SVD can provide one final note of insight regarding PCA. Suppose that <span class="math inline">\(N &lt; d\)</span>, which is to say that we have fewer samples than the dimensionality of our data. After centering, the matrix <span class="math inline">\({\bf HX}\)</span> will have rank most <span class="math inline">\(N-1\)</span>. (Centering reduces the maximum possible rank from <span class="math inline">\(N\)</span> to <span class="math inline">\(N-1\)</span>). The SVD of <span class="math inline">\({\bf HX}\)</span> will have at most <span class="math inline">\(d-1\)</span> non-zero singular values. Thus, <span class="math inline">\(\hat{\Sigma}_X\)</span> will have at most <span class="math inline">\(N-1\)</span> non-zero PC variances and we can conclude that our data reside on a hyperplane of dimension <span class="math inline">\(N-1\)</span> (possibly lower if <span class="math inline">\({\bf HX}\)</span> has rank less than <span class="math inline">\(N-1\)</span>). Since <span class="math inline">\(N-1 &lt; d\)</span>, we are guaranteed to find a lower-dimensional representation of our data! However, this conclusion should be viewed cautiously. Should additional samples be drawn, can we conclude that they would also be constrained to the same hyperplane learned using the first <span class="math inline">\(N\)</span> samples?</p>
+</div>
+<div id="recommender-systems" class="section level3 hasAnchor" number="4.2.4">
+<h3><span class="header-section-number">4.2.4</span> Recommender Systems<a href="sec-svd.html#recommender-systems" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>SVD may also be applied to association rule learning which can identify similar items in a datasets based on partial observations. As a motivating example, consider the case where we have a dataset of user provided ratings of products, which could be items purchased, songs listed to, or movies watched. In this case, <span class="math inline">\({\bf X}_{ij}\)</span> indicates user <span class="math inline">\(i\)</span>s rating of item <span class="math inline">\(j\)</span>. Typically, most of the entries of <span class="math inline">\({\bf X}\)</span> will be NA since users have likely interacted with a small number of items. Using a variant of SVD, a simple recommendation system proceeds in two steps. First, we can impute the missing ratings. We can then use this result to infer similar movies which can be used for recommendation.</p>
+<div id="imputation" class="section level4 hasAnchor" number="4.2.4.1">
+<h4><span class="header-section-number">4.2.4.1</span> Imputation<a href="sec-svd.html#imputation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Let <span class="math inline">\({\bf X}\in\mathbb{R}^{N\times d}\)</span> be the data matrix of user ratings with rows corresponding to user and columns to items and <span class="math display">\[\mathcal{I} =\{ij \, \text{ s.t. } {\bf X}_{ij} \ne NA\}\]</span> be the set of all indices of <span class="math inline">\({\bf X}\)</span> for which we have observed ratings. For any approximating matrix <span class="math inline">\(\tilde{\bf X}\in\mathbb{R}^{N\times d}\)</span>, we may define a `Frobenius’-like error as <span class="math display">\[\mathbb{L}({\bf X},\tilde{\bf X}) = \sum_{ij \in \mathcal{I}} ({\bf X}_{ij}-\tilde{\bf X}_{ij})^2\]</span>
+which is the sum-squared error over all observations. Using this definition of loss, here’s a simple algorithm for imputing the missing entries of <span class="math inline">\({\bf X}\)</span> using low rank approximations of a pre-specified rank <span class="math inline">\(k\)</span>.</p>
+<ol start="0" style="list-style-type: decimal">
+<li><p>We initialize the matrix <span class="math inline">\(\tilde{\bf X}\)</span> of imputed entries by taking <span class="math display">\[\tilde{X}_{ij}= \begin{cases} X_{ij} &amp; ij \in \mathcal{I} \\ 0 &amp; ij \ne \mathcal{I} \end{cases}.\]</span> Now let’s use the SVD of <span class="math inline">\(\tilde{\bf X}\)</span> to compute a rank <span class="math inline">\(k\)</span> approximation, <span class="math inline">\({\bf X}^{(k)}\)</span>. Update our imputed matrix <span class="math inline">\(\tilde{\bf X}= \tilde{\bf X}^{(k)}\)</span> and compute the error <span class="math display">\[\ell = \mathbb{L}({\bf X},\tilde{\bf X})\]</span>. The low-rank approximation will distort all entries of <span class="math inline">\(\tilde{\bf X}\)</span> so that <span class="math inline">\(\ell &gt; 0\)</span>. We now repeat the following two steps.</p></li>
+<li><p>Overwrite the entries of <span class="math inline">\(\tilde{\bf X}\)</span> corresponding to observations in <span class="math inline">\({\bf X}\)</span>, e.g. for all <span class="math inline">\(ij \in \mathcal{I}\)</span>, set <span class="math inline">\(\tilde{\bf X}_{ij} = {\bf X}_{ij}\)</span>. The entries corresponding to missing observations generated by the low-rank approximation are kept unchanged. Now recompute the SVD of <span class="math inline">\(\tilde{\bf X}\)</span> to find the rank <span class="math inline">\(k\)</span> approximating matrix <span class="math inline">\(\tilde{\bf X}^{(k)}\)</span>. Update our imputed matrix using the low-rank approximation so that <span class="math inline">\(\tilde{\bf X} = {\bf X}^{(k)}\)</span> and recompute the error <span class="math inline">\(\ell^* = \mathbb{L}({\bf X},\tilde{\bf X}).\)</span></p></li>
+<li><p>If <span class="math inline">\(\ell^* &lt; \ell\)</span> and <span class="math inline">\(|\ell - \ell^*|/\ell &gt; \epsilon\)</span> then set <span class="math inline">\(\ell = \ell^*\)</span> and return to step (1). Else stop the algorithm and we use matrix <span class="math inline">\(\tilde{\bf X}\)</span> as our matrix of imputed values.</p></li>
+</ol>
+<p>In summary, after initialization, we are continually overwriting the entries of our matrix of imputed values corresponding to observations then applyin a low-rank approximation. We stop the algorithm when the error stops decreasing or when the relative decrease in error is less than a specified threshhold <span class="math inline">\(\epsilon.\)</span> In addition to the rank <span class="math inline">\(k\)</span> and the stopping threshhold <span class="math inline">\(\epsilon\)</span> there is one other important `tuning’ parameter, the initialization. In the brief description above, we used a standard of 0, but one could also use the average of all entries in the corresponding column (average item rating) or row (average rating given by a user) or some other specification. Many more complicated recommendation systems include user and item specific initializations and adjustments but still imploy a low rank approximation somewhere in their deployment.</p>
+<p>In later updates, we show an application of this algorithm to the <a href="https://grouplens.org/datasets/movielens/10m/">Movielens 10m dataset</a> containing 10 million ratings from 72,000 viewers for 10,000 movies. To handle the size of this dataset, we use the Fast Truncated Singular Value Decomposition.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="sec-svd.html#cb11-1" tabindex="-1"></a><span class="co"># library(&quot;irlba&quot;)</span></span>
+<span id="cb11-2"><a href="sec-svd.html#cb11-2" tabindex="-1"></a><span class="co"># initialize &lt;- function(mat){</span></span>
+<span id="cb11-3"><a href="sec-svd.html#cb11-3" tabindex="-1"></a><span class="co"># # get column means ignoring NAs</span></span>
+<span id="cb11-4"><a href="sec-svd.html#cb11-4" tabindex="-1"></a><span class="co"># ave.rat &lt;- colMeans(mat,na.rm = TRUE)</span></span>
+<span id="cb11-5"><a href="sec-svd.html#cb11-5" tabindex="-1"></a><span class="co"># # fill NAs by average movie rating</span></span>
+<span id="cb11-6"><a href="sec-svd.html#cb11-6" tabindex="-1"></a><span class="co"># for(j in 1:ncol(mat)){</span></span>
+<span id="cb11-7"><a href="sec-svd.html#cb11-7" tabindex="-1"></a><span class="co">#   mat[is.na(mat[,j]),j] &lt;- ave.rat[j]</span></span>
+<span id="cb11-8"><a href="sec-svd.html#cb11-8" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb11-9"><a href="sec-svd.html#cb11-9" tabindex="-1"></a><span class="co"># return(mat)</span></span>
+<span id="cb11-10"><a href="sec-svd.html#cb11-10" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb11-11"><a href="sec-svd.html#cb11-11" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb11-12"><a href="sec-svd.html#cb11-12" tabindex="-1"></a><span class="co"># maxim &lt;- function(mat,k){</span></span>
+<span id="cb11-13"><a href="sec-svd.html#cb11-13" tabindex="-1"></a><span class="co"># # temp &lt;- svd(mat)</span></span>
+<span id="cb11-14"><a href="sec-svd.html#cb11-14" tabindex="-1"></a><span class="co"># temp&lt;- irlba(mat, nv = k)</span></span>
+<span id="cb11-15"><a href="sec-svd.html#cb11-15" tabindex="-1"></a><span class="co"># return(list(U = temp$u[,1:k],</span></span>
+<span id="cb11-16"><a href="sec-svd.html#cb11-16" tabindex="-1"></a><span class="co">#             D = temp$d[1:k],</span></span>
+<span id="cb11-17"><a href="sec-svd.html#cb11-17" tabindex="-1"></a><span class="co">#             V = temp$v[,1:k],</span></span>
+<span id="cb11-18"><a href="sec-svd.html#cb11-18" tabindex="-1"></a><span class="co">#             mat.hat = temp$u[,1:k] %*% diag(temp$d[1:k]) %*% t(temp$v[,1:k])))</span></span>
+<span id="cb11-19"><a href="sec-svd.html#cb11-19" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb11-20"><a href="sec-svd.html#cb11-20" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb11-21"><a href="sec-svd.html#cb11-21" tabindex="-1"></a><span class="co"># recommender &lt;- function(mat, num_steps, k){</span></span>
+<span id="cb11-22"><a href="sec-svd.html#cb11-22" tabindex="-1"></a><span class="co"># # initialize loss function tracking</span></span>
+<span id="cb11-23"><a href="sec-svd.html#cb11-23" tabindex="-1"></a><span class="co"># loss &lt;- rep(NA,num_steps)</span></span>
+<span id="cb11-24"><a href="sec-svd.html#cb11-24" tabindex="-1"></a><span class="co"># # run EM algorithm and save loss</span></span>
+<span id="cb11-25"><a href="sec-svd.html#cb11-25" tabindex="-1"></a><span class="co"># ind.known &lt;- !is.na(mat)</span></span>
+<span id="cb11-26"><a href="sec-svd.html#cb11-26" tabindex="-1"></a><span class="co"># mat2 &lt;- initialize(mat)</span></span>
+<span id="cb11-27"><a href="sec-svd.html#cb11-27" tabindex="-1"></a><span class="co"># for (j in 1:num_steps){</span></span>
+<span id="cb11-28"><a href="sec-svd.html#cb11-28" tabindex="-1"></a><span class="co">#   mat2 &lt;- maxim(mat2,k)$mat.hat</span></span>
+<span id="cb11-29"><a href="sec-svd.html#cb11-29" tabindex="-1"></a><span class="co">#   loss[j] &lt;- sum((mat2[ind.known] - mat[ind.known])^2)</span></span>
+<span id="cb11-30"><a href="sec-svd.html#cb11-30" tabindex="-1"></a><span class="co">#   mat2[ind.known] &lt;- mat[ind.known]</span></span>
+<span id="cb11-31"><a href="sec-svd.html#cb11-31" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb11-32"><a href="sec-svd.html#cb11-32" tabindex="-1"></a><span class="co"># return(list(loss= loss, fit = mat2))</span></span>
+<span id="cb11-33"><a href="sec-svd.html#cb11-33" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb11-34"><a href="sec-svd.html#cb11-34" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb11-35"><a href="sec-svd.html#cb11-35" tabindex="-1"></a><span class="co"># k &lt;- 3</span></span>
+<span id="cb11-36"><a href="sec-svd.html#cb11-36" tabindex="-1"></a><span class="co"># temp &lt;- recommender(ratings,num_steps = 200, k = k)</span></span>
+<span id="cb11-37"><a href="sec-svd.html#cb11-37" tabindex="-1"></a><span class="co"># plot(temp$loss, xlab = &quot;Step&quot;, ylab = expression(ell))</span></span></code></pre></div>
+</div>
+<div id="recommendation" class="section level4 hasAnchor" number="4.2.4.2">
+<h4><span class="header-section-number">4.2.4.2</span> Recommendation<a href="sec-svd.html#recommendation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Suppose now that we have a matrix, <span class="math inline">\(\tilde{\bf X}\in\mathbb{R}^{N\times d}\)</span> of movie ratings (real or imputed) and its SVD <span class="math display">\[\tilde{\bf X} = \tilde{\bf U}\tilde{\bf S}\tilde{\bf V}^T\]</span> where <span class="math inline">\(\tilde{\bf U} \in \mathbb{R}^{N\times k}\)</span>, <span class="math inline">\(\tilde{\bf S}\in\mathbb{R}^{k\times k}\)</span> and <span class="math inline">\(\tilde{\bf V}\in\mathbb{R}^{d\times k}.\)</span> Then for user <span class="math inline">\(i\)</span> the rating they give to movie <span class="math inline">\(j\)</span> is a linear combination of the elements in the <span class="math inline">\(j\)</span> column of <span class="math inline">\(\tilde{\bf V}^T\)</span>. Specifically, <span class="math display">\[\tilde{\bf X} \approx \sum_{\ell = 1}^k \sigma_\ell \tilde{\bf U}_{i\ell} (\tilde{\bf V})^T_{\ell j} = \sum_{\ell = 1}^k \sigma_\ell \tilde{\bf U}_{i\ell} \tilde{\bf V}_{j\ell}.\]</span></p>
+<p>For any movie, its rating will always be a linear combination of the elements in the corresponding column of <span class="math inline">\(\tilde{V}^T\)</span>. As such, we may view the <span class="math inline">\(k\)</span>-dimensional vectors in each column of <span class="math inline">\(\tilde{\bf V}\)</span> as a representation of that movie. We may then use these vectors to identify similar movies; one common approach is the cosine similarity, which for vectors <span class="math inline">\(\vec{x}, \vec{y}\in\mathbb{R}^k\)</span> is the cosine of the angle between them, i.e. <span class="math display">\[\cos\theta = \frac{\vec{x}^T\vec{y}}{\|\vec{x}\| \|\vec{y}\|}.\]</span>
+The cosine similarity is bounded between -1 and 1 and two vectors are considered more similar if the cosine of the angle between them is closer to 1. Using this representation, we can take any movie (a column of <span class="math inline">\(\tilde{\bf V}^T\)</span>) and choose the most similar movie (choosing the other columns of <span class="math inline">\(\tilde{\bf V}^T\)</span> with the largest cosine similarity). Thus, if a user gave a high rating to movie <span class="math inline">\(b\)</span>, we now have a method for recommending one or more similar movies they might enjoy.</p>
+<!-- NMF -->
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="sec-pca.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="nonnegative-matrix-factorization.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/03-linear_methods.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -20,7 +20,7 @@
   <meta name="twitter:description" content="An introductory text on the goals and methods of unsupervised learning" />
   
 
-<meta name="author" content="Alex Young" />
+<meta name="author" content="Alex Young and Cenhao Zhu" />
 
 
 
@@ -29,7 +29,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="clustering-1.html"/>
+<link rel="prev" href="ch-clustering.html"/>
 <link rel="next" href="center-based.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -179,7 +179,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="1.1" data-path="prerequisites.html"><a href="prerequisites.html"><i class="fa fa-check"></i><b>1.1</b> Prerequisites</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="probability-review.html"><a href="probability-review.html"><i class="fa fa-check"></i><b>2</b> Probability Review</a>
+<li class="chapter" data-level="2" data-path="ch-prob.html"><a href="ch-prob.html"><i class="fa fa-check"></i><b>2</b> Mathematical Background and Notation</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="important-notation.html"><a href="important-notation.html"><i class="fa fa-check"></i><b>2.1</b> Important notation</a></li>
 <li class="chapter" data-level="2.2" data-path="random-vectors-in-mathbbrd.html"><a href="random-vectors-in-mathbbrd.html"><i class="fa fa-check"></i><b>2.2</b> Random vectors in <span class="math inline">\(\mathbb{R}^d\)</span></a></li>
@@ -195,7 +195,7 @@ div.csl-indent {
 <li class="chapter" data-level="2.4.3" data-path="linear-algebra.html"><a href="linear-algebra.html#norms-and-distances"><i class="fa fa-check"></i><b>2.4.3</b> Norms and Distances</a></li>
 <li class="chapter" data-level="2.4.4" data-path="linear-algebra.html"><a href="linear-algebra.html#important-properties"><i class="fa fa-check"></i><b>2.4.4</b> Important properties</a></li>
 <li class="chapter" data-level="2.4.5" data-path="linear-algebra.html"><a href="linear-algebra.html#matrix-factorizations"><i class="fa fa-check"></i><b>2.4.5</b> Matrix Factorizations</a></li>
-<li class="chapter" data-level="2.4.6" data-path="linear-algebra.html"><a href="linear-algebra.html#symmetry-positive-definiteness-and-matrix-powers"><i class="fa fa-check"></i><b>2.4.6</b> Symmetry, Positive Definiteness, and Matrix Powers</a></li>
+<li class="chapter" data-level="2.4.6" data-path="linear-algebra.html"><a href="linear-algebra.html#positive-definiteness-and-matrix-powers"><i class="fa fa-check"></i><b>2.4.6</b> Positive Definiteness and Matrix Powers</a></li>
 </ul></li>
 <li class="chapter" data-level="2.5" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i><b>2.5</b> Exercises</a></li>
 </ul></li>
@@ -203,17 +203,26 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="3.1" data-path="dimension-reduction-and-manifold-learning.html"><a href="dimension-reduction-and-manifold-learning.html"><i class="fa fa-check"></i><b>3.1</b> Dimension reduction and manifold learning</a></li>
 <li class="chapter" data-level="3.2" data-path="clustering.html"><a href="clustering.html"><i class="fa fa-check"></i><b>3.2</b> Clustering</a></li>
-<li class="chapter" data-level="3.3" data-path="generating-synthetic-data.html"><a href="generating-synthetic-data.html"><i class="fa fa-check"></i><b>3.3</b> Generating synthetic data</a></li>
+<li class="chapter" data-level="3.3" data-path="generating-synthetic-data.html"><a href="generating-synthetic-data.html"><i class="fa fa-check"></i><b>3.3</b> Generating synthetic data</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="generating-synthetic-data.html"><a href="generating-synthetic-data.html#data-on-manifolds"><i class="fa fa-check"></i><b>3.3.1</b> Data on manifolds</a></li>
+<li class="chapter" data-level="3.3.2" data-path="generating-synthetic-data.html"><a href="generating-synthetic-data.html#clustered-data"><i class="fa fa-check"></i><b>3.3.2</b> Clustered data</a></li>
+</ul></li>
 <li class="chapter" data-level="3.4" data-path="exercises-1.html"><a href="exercises-1.html"><i class="fa fa-check"></i><b>3.4</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="linear-methods.html"><a href="linear-methods.html"><i class="fa fa-check"></i><b>4</b> Linear Methods</a>
+<li class="chapter" data-level="4" data-path="ch-linear.html"><a href="ch-linear.html"><i class="fa fa-check"></i><b>4</b> Linear Methods</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="sec-pca.html"><a href="sec-pca.html"><i class="fa fa-check"></i><b>4.1</b> Principal Component Analysis</a>
 <ul>
 <li class="chapter" data-level="4.1.1" data-path="sec-pca.html"><a href="sec-pca.html#derivation-1-iterative-projections"><i class="fa fa-check"></i><b>4.1.1</b> Derivation 1: Iterative Projections</a></li>
-<li class="chapter" data-level="4.1.2" data-path="sec-pca.html"><a href="sec-pca.html#derivation-2-optimal-linear-subspace"><i class="fa fa-check"></i><b>4.1.2</b> Derivation 2: Optimal Linear Subspace</a></li>
 </ul></li>
-<li class="chapter" data-level="4.2" data-path="singular-value-decomposition-1.html"><a href="singular-value-decomposition-1.html"><i class="fa fa-check"></i><b>4.2</b> Singular Value Decomposition</a></li>
+<li class="chapter" data-level="4.2" data-path="sec-svd.html"><a href="sec-svd.html"><i class="fa fa-check"></i><b>4.2</b> Singular Value Decomposition</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="sec-svd.html"><a href="sec-svd.html#low-rank-approximations"><i class="fa fa-check"></i><b>4.2.1</b> Low-rank approximations</a></li>
+<li class="chapter" data-level="4.2.2" data-path="sec-svd.html"><a href="sec-svd.html#svd-and-low-rank-approximations"><i class="fa fa-check"></i><b>4.2.2</b> SVD and Low Rank Approximations</a></li>
+<li class="chapter" data-level="4.2.3" data-path="sec-svd.html"><a href="sec-svd.html#connections-with-pca"><i class="fa fa-check"></i><b>4.2.3</b> Connections with PCA</a></li>
+<li class="chapter" data-level="4.2.4" data-path="sec-svd.html"><a href="sec-svd.html#recommender-systems"><i class="fa fa-check"></i><b>4.2.4</b> Recommender Systems</a></li>
+</ul></li>
 <li class="chapter" data-level="4.3" data-path="nonnegative-matrix-factorization.html"><a href="nonnegative-matrix-factorization.html"><i class="fa fa-check"></i><b>4.3</b> Nonnegative Matrix Factorization</a></li>
 <li class="chapter" data-level="4.4" data-path="sec-mds.html"><a href="sec-mds.html"><i class="fa fa-check"></i><b>4.4</b> Multidimensional Scaling</a>
 <ul>
@@ -227,7 +236,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="5.1" data-path="exercises-2.html"><a href="exercises-2.html"><i class="fa fa-check"></i><b>5.1</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="manifold-learning.html"><a href="manifold-learning.html"><i class="fa fa-check"></i><b>6</b> Manifold Learning</a>
+<li class="chapter" data-level="6" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html"><i class="fa fa-check"></i><b>6</b> Manifold Learning</a>
 <ul>
 <li class="chapter" data-level="6.1" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>6.1</b> Background</a>
 <ul>
@@ -235,27 +244,27 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="6.2" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html"><i class="fa fa-check"></i><b>6.2</b> Isometric Feature Map (ISOMAP)</a>
 <ul>
-<li class="chapter" data-level="6.2.1" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#introduction-1"><i class="fa fa-check"></i><b>6.2.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.2.1" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#introduction"><i class="fa fa-check"></i><b>6.2.1</b> Introduction</a></li>
 <li class="chapter" data-level="6.2.2" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#key-definitions"><i class="fa fa-check"></i><b>6.2.2</b> Key Definitions</a></li>
 <li class="chapter" data-level="6.2.3" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#algorithm"><i class="fa fa-check"></i><b>6.2.3</b> Algorithm</a></li>
 <li class="chapter" data-level="6.2.4" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#limitations-of-isomap"><i class="fa fa-check"></i><b>6.2.4</b> Limitations of ISOMAP</a></li>
 </ul></li>
 <li class="chapter" data-level="6.3" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html"><i class="fa fa-check"></i><b>6.3</b> Locally Linear Embeddings (LLEs)</a>
 <ul>
-<li class="chapter" data-level="6.3.1" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#introduction-2"><i class="fa fa-check"></i><b>6.3.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.3.1" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#introduction-1"><i class="fa fa-check"></i><b>6.3.1</b> Introduction</a></li>
 <li class="chapter" data-level="6.3.2" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#algorithm-1"><i class="fa fa-check"></i><b>6.3.2</b> Algorithm</a></li>
 <li class="chapter" data-level="6.3.3" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#strengths-and-weaknesses-of-lle"><i class="fa fa-check"></i><b>6.3.3</b> Strengths and Weaknesses of LLE</a></li>
 </ul></li>
 <li class="chapter" data-level="6.4" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html"><i class="fa fa-check"></i><b>6.4</b> Autoencoders (AEs)</a>
 <ul>
-<li class="chapter" data-level="6.4.1" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#introduction-3"><i class="fa fa-check"></i><b>6.4.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.4.1" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#introduction-2"><i class="fa fa-check"></i><b>6.4.1</b> Introduction</a></li>
 <li class="chapter" data-level="6.4.2" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#algorithm-2"><i class="fa fa-check"></i><b>6.4.2</b> Algorithm</a></li>
 <li class="chapter" data-level="6.4.3" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#example"><i class="fa fa-check"></i><b>6.4.3</b> Example</a></li>
 </ul></li>
 <li class="chapter" data-level="6.5" data-path="additional-methods.html"><a href="additional-methods.html"><i class="fa fa-check"></i><b>6.5</b> Additional methods</a></li>
 <li class="chapter" data-level="6.6" data-path="exercises-3.html"><a href="exercises-3.html"><i class="fa fa-check"></i><b>6.6</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="clustering-1.html"><a href="clustering-1.html"><i class="fa fa-check"></i><b>7</b> Clustering</a>
+<li class="chapter" data-level="7" data-path="ch-clustering.html"><a href="ch-clustering.html"><i class="fa fa-check"></i><b>7</b> Clustering</a>
 <ul>
 <li class="chapter" data-level="7.1" data-path="hierarchical.html"><a href="hierarchical.html"><i class="fa fa-check"></i><b>7.1</b> Hierarchical</a></li>
 <li class="chapter" data-level="7.2" data-path="center-based.html"><a href="center-based.html"><i class="fa fa-check"></i><b>7.2</b> Center-based</a></li>
@@ -294,7 +303,7 @@ div.csl-indent {
           </div>
         </div>
       </div>
-<a href="clustering-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="ch-clustering.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="center-based.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>

@@ -1,4 +1,4 @@
-```{r setup, include=FALSE}
+```{r isomap-setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, cache = TRUE)
 set.seed(1)
 require("dimRed")

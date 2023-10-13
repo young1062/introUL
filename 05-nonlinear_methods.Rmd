@@ -1,4 +1,4 @@
-# Manifold Learning
+# Manifold Learning {#ch-nonlinear}
 
 ## Background 
 
