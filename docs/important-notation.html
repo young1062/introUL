@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Linear Methods | An Introduction to Unsupervised Learning</title>
+  <title>2.1 Important notation | An Introduction to Unsupervised Learning</title>
   <meta name="description" content="An introductory text on the goals and methods of unsupervised learning" />
   <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Linear Methods | An Introduction to Unsupervised Learning" />
+  <meta property="og:title" content="2.1 Important notation | An Introduction to Unsupervised Learning" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="An introductory text on the goals and methods of unsupervised learning" />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Linear Methods | An Introduction to Unsupervised Learning" />
+  <meta name="twitter:title" content="2.1 Important notation | An Introduction to Unsupervised Learning" />
   
   <meta name="twitter:description" content="An introductory text on the goals and methods of unsupervised learning" />
   
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="exercises-1.html"/>
-<link rel="next" href="sec-pca.html"/>
+<link rel="prev" href="probability-review.html"/>
+<link rel="next" href="random-vectors-in-mathbbrd.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -286,17 +286,20 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="linear-methods" class="section level1 hasAnchor" number="4">
-<h1><span class="header-section-number">Chapter 4</span> Linear Methods<a href="linear-methods.html#linear-methods" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<!-- PCA -->
+<div id="important-notation" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Important notation<a href="important-notation.html#important-notation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Throughout this text, we will be working with vectors and matrices quite often so we begin with a bit of notation and a few important conventions we will adopt hereafter. We’ll use notation <span class="math inline">\(\vec{x}\in\mathbb{R}^d\)</span> to denote a <span class="math inline">\(d\)</span>-dimensional vector. Importantly, we adopt the convention that vectors are columns vectors by default so that <span class="math display">\[\vec{x} = \begin{bmatrix} x_1 \\ \vdots \\ x_d \end{bmatrix}\]</span> where <span class="math inline">\(x_1,\dots,x_d\)</span> are the entries or coordinates of vector <span class="math inline">\(\vec{x}\)</span>. Row vectors are then the transpose of column vectors so that <span class="math inline">\(\vec{x}^T = (x_1,\dots, x_d)\)</span>. When needed we’ll let <span class="math inline">\(\vec{0}\)</span> denote a vector of all zeros and <span class="math inline">\(\vec{1}\)</span> a vector of all ones with the dimensionality defined implicitly, e.g. if <span class="math inline">\(\vec{x}\in\mathbb{R}^d\)</span> then in the expression <span class="math inline">\(\vec{x} + \vec{1}\)</span>, you may interpret <span class="math inline">\(\vec{1}\in\mathbb{R}^d\)</span> so the summation is well defined.</p>
+<p>Matrices will be denoted in <strong>bold</strong> so that <span class="math inline">\({\bf A}\in\mathbb{R}^{m\times n}\)</span> denotes an <span class="math inline">\(m\times n\)</span> matrix with real entries. Subscripts are read as <em>row,column</em> so that <span class="math inline">\({\bf A}_{ij}\)</span> is the entry of <span class="math inline">\({\bf A}\)</span> in the <span class="math inline">\(i\)</span>th row and <span class="math inline">\(j\)</span>th column. A superscript <span class="math inline">\(T\)</span> denotes the transpose of a matrix. For a square matrix <span class="math inline">\({\bf B}\in \mathbb{R}^{n\times n}\)</span>, we use notation <span class="math inline">\(Tr({\bf B})\)</span> to denote the trace of <span class="math inline">\({\bf B}\)</span> and <span class="math inline">\(det({\bf B}) = |{\bf B}|\)</span> to denotes its determinant.</p>
+<p>Using this above notation, we may also define the inner product and outer product of two vectors. For vectors <span class="math inline">\(\vec{x}\)</span> and <span class="math inline">\(\vec{y}\)</span>, the inner product or dot product of <span class="math inline">\(\vec{x}\)</span> and <span class="math inline">\(\vec{y}\)</span> is the scalar <span class="math inline">\(\vec{x}^T \vec{y} = \sum_{i=1}^d x_i y_i\)</span>. Alternatively, we may also consider the outer product <span class="math inline">\(\vec{x}\vec{y}^T\)</span> which is a matrix such that <span class="math inline">\((\vec{x} \vec{y}^T)_{ij} = x_i y_j.\)</span> For the inner product to be well defined <span class="math inline">\(\vec{x}\)</span> and <span class="math inline">\(\vec{y}\)</span> must have the same dimension. This is not the case for the outer product. If <span class="math inline">\(\vec{x}\in\mathbb{R}^m\)</span> and <span class="math inline">\(\vec{y}\in\mathbb{R}^n\)</span> then <span class="math inline">\(\vec{x} \vec{y}^T \in \mathbb{R}^{m\times n}.\)</span> If we view a <span class="math inline">\(d\)</span>-dimensional vector as a <span class="math inline">\(d\times 1\)</span> matrix, then both of these algebraic computations are completely consistent with standard matrix multiplication which we will revisit near the end of this chapter.</p>
+<p>Let <span class="math inline">\(f:\mathbb{R}^d\to \mathbb{R}\)</span> be a function of <span class="math inline">\(d\)</span>-dimensional vector <span class="math inline">\(\vec{x}\)</span>. Then we define the gradient of <span class="math inline">\(f\)</span> with respect to <span class="math inline">\(\vec{x}\)</span>, denoted <span class="math inline">\(\nabla f\)</span>, to be the <span class="math inline">\(d\)</span>-dimensional vector of partial deriviates of <span class="math inline">\(f\)</span> with respect to the coordinates of <span class="math inline">\(\vec{x}\)</span> so that <span class="math display">\[\nabla f = \begin{bmatrix} \frac{\partial f}{ \partial x_1} \\ \vdots \\ \frac{\partial f}{\partial x_d} \end{bmatrix}.\]</span> The Hessian matrix of <span class="math inline">\(f\)</span> with respect to <span class="math inline">\(\vec{x}\)</span>, denoted as <span class="math inline">\(\mathcal{H}f\)</span>, is the <span class="math inline">\(d\times d\)</span> matrix of second order partial derivatives of <span class="math inline">\(f\)</span> with respect to the coordinates of <span class="math inline">\(\vec{x}\)</span> so that <span class="math inline">\((\mathcal{H}f)_{ij} = \frac{\partial^2 f}{\partial x_i \partial x_j}\)</span>. If we are considering a function of multiple vector valued variables, e.g. <span class="math inline">\(f(\vec{x},\vec{y},\vec{z})\)</span> then we use <span class="math inline">\(\nabla_{\vec{x}}\)</span> to denote the gradient of <span class="math inline">\(f\)</span> w.r.t. the vector <span class="math inline">\(\vec{x}\)</span> only.</p>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="exercises-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="sec-pca.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="probability-review.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="random-vectors-in-mathbbrd.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -327,7 +330,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/03-linear_methods.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/01-probability_review.Rmd",
 "text": "Edit"
 },
 "history": {

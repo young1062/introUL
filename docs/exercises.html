@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Linear Methods | An Introduction to Unsupervised Learning</title>
+  <title>2.5 Exercises | An Introduction to Unsupervised Learning</title>
   <meta name="description" content="An introductory text on the goals and methods of unsupervised learning" />
   <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Linear Methods | An Introduction to Unsupervised Learning" />
+  <meta property="og:title" content="2.5 Exercises | An Introduction to Unsupervised Learning" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="An introductory text on the goals and methods of unsupervised learning" />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Linear Methods | An Introduction to Unsupervised Learning" />
+  <meta name="twitter:title" content="2.5 Exercises | An Introduction to Unsupervised Learning" />
   
   <meta name="twitter:description" content="An introductory text on the goals and methods of unsupervised learning" />
   
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="exercises-1.html"/>
-<link rel="next" href="sec-pca.html"/>
+<link rel="prev" href="linear-algebra.html"/>
+<link rel="next" href="central-goals-and-assumptions.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -286,17 +286,39 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="linear-methods" class="section level1 hasAnchor" number="4">
-<h1><span class="header-section-number">Chapter 4</span> Linear Methods<a href="linear-methods.html#linear-methods" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<!-- PCA -->
+<div id="exercises" class="section level2 hasAnchor" number="2.5">
+<h2><span class="header-section-number">2.5</span> Exercises<a href="exercises.html#exercises" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li><p>Let <span class="math inline">\(f(\vec{x}) = \vec{x}^T {\bf A}\vec{x}\)</span> for a vector <span class="math inline">\(\vec{x}\in \mathbb{R}^d\)</span> and a matrix <span class="math inline">\({\bf A}\in\mathbb{R}^{d\times d}\)</span> which is constant. Give expressions for <span class="math inline">\(\nabla f\)</span> and <span class="math inline">\(\mathcal{H} f\)</span> using only matrices and vectors (no summation notation is allowed).</p></li>
+<li><p>Given a random vector <span class="math inline">\(\vec{x}\)</span> with mean <span class="math inline">\(\vec{\mu}\)</span> and covariance matrix <span class="math inline">\({\bf \Sigma} = E[(\vec{x}-\vec{\mu})(\vec{x}-\vec{\mu})^T\,]\)</span> verify the identity <span class="math inline">\({\bf \Sigma} = E[\,\vec{x}\,\vec{x}^T\,] - \vec{\mu} \,\vec{\mu}^T\)</span>.</p></li>
+<li><p>Suppose <span class="math inline">\(\vec{x}\in \mathbb{R}^n\)</span> is a random vector with covariance <span class="math inline">\({\bf \Sigma}\in\mathbb{R}^{n\times n}\)</span>, and let <span class="math inline">\({\bf A} \in \mathbb{R}^{m\times n}\)</span> be a matrix with constant entries (non-random). Show that the covariance matrix of <span class="math inline">\({\bf A}\vec{x}\)</span> is <span class="math inline">\({\bf A\Sigma A}^T.\)</span></p></li>
+<li><p>Show that the <span class="math inline">\(N\times N\)</span> centering matrix <span class="math inline">\({\bf H} = {\bf I} - \frac{1}{N}\mathbb{1}\mathbb{1}^T\)</span> is idempotent, i.e. <span class="math inline">\({\bf H}^2 = {\bf H}.\)</span></p></li>
+<li><p>Consider the data matrix <span class="math display">\[{\bf X}=\begin{bmatrix}\vec{x}_1^T \\ \vdots \\ \vec{x}_N^T\end{bmatrix}.\]</span> Show that <span class="math display">\[{\bf HX} = \begin{bmatrix} \vec{x}_1^T -\bar{x}^T \\ \vdots \\ \vec{x}_N^T - \bar{x}^T\end{bmatrix}\]</span> where <span class="math inline">\({\bf H}\)</span> is the centering matrix and <span class="math inline">\(\bar{x}\)</span> is the sample mean of vectors <span class="math inline">\(\vec{x}_1,\dots, \vec{x}_N.\)</span></p></li>
+<li><p>Let <span class="math inline">\({\bf A}\in \mathbb{R}^{m\times n}\)</span>.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Explain why <span class="math inline">\({\bf A A}^T\)</span> and <span class="math inline">\({\bf A}^T{\bf A}\)</span> are diagonalizable and positive semi-definite.</p></li>
+<li><p>Give expressions for the singular vectors and singular values of <span class="math inline">\({\bf A}\)</span> in terms of the eigenvectors and eigenvalues of <span class="math inline">\({\bf A A}^T\)</span> and <span class="math inline">\({\bf A}^T{\bf A}\)</span>.</p></li>
+</ol></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+</ol>
+
 </div>
+<!-- </div> -->
             </section>
 
           </div>
         </div>
       </div>
-<a href="exercises-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="sec-pca.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="linear-algebra.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="central-goals-and-assumptions.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -327,7 +349,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/03-linear_methods.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/01-probability_review.Rmd",
 "text": "Edit"
 },
 "history": {

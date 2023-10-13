@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Linear Methods | An Introduction to Unsupervised Learning</title>
+  <title>6.4 Autoencoders (AEs) | An Introduction to Unsupervised Learning</title>
   <meta name="description" content="An introductory text on the goals and methods of unsupervised learning" />
   <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Linear Methods | An Introduction to Unsupervised Learning" />
+  <meta property="og:title" content="6.4 Autoencoders (AEs) | An Introduction to Unsupervised Learning" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="An introductory text on the goals and methods of unsupervised learning" />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Linear Methods | An Introduction to Unsupervised Learning" />
+  <meta name="twitter:title" content="6.4 Autoencoders (AEs) | An Introduction to Unsupervised Learning" />
   
   <meta name="twitter:description" content="An introductory text on the goals and methods of unsupervised learning" />
   
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="exercises-1.html"/>
-<link rel="next" href="sec-pca.html"/>
+<link rel="prev" href="locally-linear-embeddings-lles.html"/>
+<link rel="next" href="additional-methods.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -286,17 +286,133 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="linear-methods" class="section level1 hasAnchor" number="4">
-<h1><span class="header-section-number">Chapter 4</span> Linear Methods<a href="linear-methods.html#linear-methods" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<!-- PCA -->
+<div id="autoencoders-aes" class="section level2 hasAnchor" number="6.4">
+<h2><span class="header-section-number">6.4</span> Autoencoders (AEs)<a href="autoencoders-aes.html#autoencoders-aes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="introduction-3" class="section level3 hasAnchor" number="6.4.1">
+<h3><span class="header-section-number">6.4.1</span> Introduction<a href="autoencoders-aes.html#introduction-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Autoencoders, emanating from the domain of neural network research, represent a class of unsupervised deep learning models. At its core, autoencoders seek to learn a compressed, efficient representation of input data by leveraging a network structure that encodes the data into a reduced dimensionality and subsequently decodes it to reconstruct the original data.</p>
+<p>The typical architecture of an autoencoder comprises three main components:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Encoder</strong>: A function <span class="math inline">\(f(\vec{x})\)</span> that compresses the input <span class="math inline">\(\vec{x}\)</span>s into a latent representation.</p></li>
+<li><p><strong>Latent Space</strong>: The reduced dimensionality representation, often denoted as <span class="math inline">\(\vec{z}\)</span>, where <span class="math inline">\(\vec{z} = f(\vec{x})\)</span>.</p></li>
+<li><p><strong>Decoder</strong>: A function <span class="math inline">\(g(\vec{z})\)</span> that aims to reconstruct the original input from the latent representation.</p></li>
+</ol>
+<p>The primary objective during the training phase of an autoencoder is to minimize the reconstruction error, often quantified using metrics such as Mean Squared Error (MSE) between the input data and its reconstructed counterpart. The minimization forces the model to capture salient features of the data in the latent space, thereby enabling efficient data compression, noise reduction, and feature extraction.</p>
+<p>The utility of Autoencoders has been demonstrated in a wide array of applications, from dimensionality reduction, anomaly detection, denoising, to more complex tasks such as generating new data instances. Variations and extensions of the basic Autoencoder model, including Variational Autoencoders (VAEs) and Denoising Autoencoders, have further broadened their applicability by introducing probabilistic interpretations and noise robustness, respectively.</p>
+<p>In the broader context of machine learning and artificial intelligence, Autoencoders exemplify the power of unsupervised learning paradigms, emphasizing the capability of neural networks to derive meaningful representations from data without explicit labeling.</p>
+</div>
+<div id="algorithm-2" class="section level3 hasAnchor" number="6.4.2">
+<h3><span class="header-section-number">6.4.2</span> Algorithm<a href="autoencoders-aes.html#algorithm-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="notations" class="section level4 hasAnchor" number="6.4.2.1">
+<h4><span class="header-section-number">6.4.2.1</span> Notations:<a href="autoencoders-aes.html#notations" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><strong>Input</strong>
+- Dataset <span class="math inline">\(\mathbf{X} = \{\vec{x}_1, \vec{x}_2, \dots, \vec{x}_n\}\)</span> where <span class="math inline">\(\vec{x}_i\)</span> represents each data sample.
+- Encoder function with parameters <span class="math inline">\(\theta_e\)</span>: <span class="math inline">\(f_{\theta_e}(x)\)</span>
+- Decoder function with parameters <span class="math inline">\(\theta_d\)</span>: <span class="math inline">\(g_{\theta_d}(z)\)</span>
+- Objective function to measure reconstruction error, e.g., Mean Squared Error (MSE).</p>
+<p><strong>Output</strong>:
+- Trained parameters <span class="math inline">\(\theta_e^{\star}\)</span> and <span class="math inline">\(\theta_d^{\star}\)</span> that minimize the reconstruction error.</p>
+</div>
+<div id="steps-breakdown" class="section level4 hasAnchor" number="6.4.2.2">
+<h4><span class="header-section-number">6.4.2.2</span> Steps Breakdown:<a href="autoencoders-aes.html#steps-breakdown" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ol style="list-style-type: decimal">
+<li><p><strong>Initialization</strong>:</p>
+<ul>
+<li>Initialize network weights (parameters <span class="math inline">\(\theta_e\)</span> for encoder and <span class="math inline">\(\theta_d\)</span> for decoder) using a method such as Xavier initialization or random initialization.</li>
+</ul></li>
+<li><p><strong>Forward Pass</strong>:
+For each data sample <span class="math inline">\(\vec{x}_i\)</span>:</p>
+<ul>
+<li>Encode input data sample to get the latent representation:
+<span class="math display">\[ \vec{z}_i = f_{\theta_e}(\vec{x}_i) \]</span></li>
+<li>Decode the latent representation to get the reconstructed data:
+<span class="math display">\[ \vec{x}&#39;_i = g_{\theta_d}(\vec{z}_i) \]</span></li>
+</ul></li>
+<li><p><strong>Compute Loss</strong>:
+Calculate the reconstruction loss for the sample. For example, if using MSE:
+<span class="math display">\[ L(\vec{x}_i, \vec{x}&#39;_i) = ||\vec{x}_i - \vec{x}&#39;_i||^2 \]</span>
+Accumulate the loss for all samples to get the total loss.</p></li>
+<li><p><strong>Backward Pass</strong>:
+Using a method like gradient descent or one of its variants (e.g., Adam, RMSProp):</p>
+<ul>
+<li>Compute the gradients of the loss with respect to the network parameters (<span class="math inline">\(\theta_e\)</span> and <span class="math inline">\(\theta_d\)</span>).</li>
+<li>Update the weights in the direction that minimizes the loss.</li>
+</ul></li>
+<li><p><strong>Iterate</strong>:</p>
+<ul>
+<li>Repeat steps 2-4 for a predefined number of epochs or until the change in reconstruction error between epochs falls below a specified threshold.</li>
+</ul></li>
+<li><p><strong>Model Retrieval</strong>:</p>
+<ul>
+<li>After training, retrieve the encoder <span class="math inline">\(f_{\theta_e^{\star}}\)</span> and decoder <span class="math inline">\(g_{\theta_d^{\star}}\)</span> with the optimal parameters <span class="math inline">\(\theta_e^{\star}\)</span> and <span class="math inline">\(\theta_d^{\star}\)</span>.</li>
+</ul></li>
+</ol>
+</div>
+</div>
+<div id="example" class="section level3 hasAnchor" number="6.4.3">
+<h3><span class="header-section-number">6.4.3</span> Example<a href="autoencoders-aes.html#example" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="autoencoders-aes.html#cb23-1" tabindex="-1"></a><span class="co"># # keras provides an interface to the Keras deep learning library in Python</span></span>
+<span id="cb23-2"><a href="autoencoders-aes.html#cb23-2" tabindex="-1"></a><span class="co"># library(keras)</span></span>
+<span id="cb23-3"><a href="autoencoders-aes.html#cb23-3" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb23-4"><a href="autoencoders-aes.html#cb23-4" tabindex="-1"></a><span class="co"># # load the Minst dataset</span></span>
+<span id="cb23-5"><a href="autoencoders-aes.html#cb23-5" tabindex="-1"></a><span class="co"># mnist &lt;- dslabs::read_mnist(</span></span>
+<span id="cb23-6"><a href="autoencoders-aes.html#cb23-6" tabindex="-1"></a><span class="co">#   path = NULL,</span></span>
+<span id="cb23-7"><a href="autoencoders-aes.html#cb23-7" tabindex="-1"></a><span class="co">#   download = FALSE,</span></span>
+<span id="cb23-8"><a href="autoencoders-aes.html#cb23-8" tabindex="-1"></a><span class="co">#   destdir = tempdir(),</span></span>
+<span id="cb23-9"><a href="autoencoders-aes.html#cb23-9" tabindex="-1"></a><span class="co">#   url = &quot;https://www2.harvardx.harvard.edu/courses/IDS_08_v2_03/&quot;,</span></span>
+<span id="cb23-10"><a href="autoencoders-aes.html#cb23-10" tabindex="-1"></a><span class="co">#   keep.files = TRUE</span></span>
+<span id="cb23-11"><a href="autoencoders-aes.html#cb23-11" tabindex="-1"></a><span class="co"># )</span></span>
+<span id="cb23-12"><a href="autoencoders-aes.html#cb23-12" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb23-13"><a href="autoencoders-aes.html#cb23-13" tabindex="-1"></a><span class="co"># x_train &lt;- mnist$train$images</span></span>
+<span id="cb23-14"><a href="autoencoders-aes.html#cb23-14" tabindex="-1"></a><span class="co"># x_test &lt;- mnist$test$images</span></span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="autoencoders-aes.html#cb24-1" tabindex="-1"></a><span class="co"># # Reshape the data and normalize</span></span>
+<span id="cb24-2"><a href="autoencoders-aes.html#cb24-2" tabindex="-1"></a><span class="co"># gc()</span></span>
+<span id="cb24-3"><a href="autoencoders-aes.html#cb24-3" tabindex="-1"></a><span class="co"># library(reticulate)</span></span>
+<span id="cb24-4"><a href="autoencoders-aes.html#cb24-4" tabindex="-1"></a><span class="co"># x_train &lt;- array_reshape(x_train, c(nrow(x_train), 784))</span></span>
+<span id="cb24-5"><a href="autoencoders-aes.html#cb24-5" tabindex="-1"></a><span class="co"># x_test &lt;- array_reshape(x_test, c(nrow(x_test), 784))</span></span>
+<span id="cb24-6"><a href="autoencoders-aes.html#cb24-6" tabindex="-1"></a><span class="co"># x_train &lt;- x_train / 255</span></span>
+<span id="cb24-7"><a href="autoencoders-aes.html#cb24-7" tabindex="-1"></a><span class="co"># x_test &lt;- x_test / 255</span></span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="autoencoders-aes.html#cb25-1" tabindex="-1"></a><span class="co"># encoding_dim &lt;- 32  # for compression</span></span>
+<span id="cb25-2"><a href="autoencoders-aes.html#cb25-2" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb25-3"><a href="autoencoders-aes.html#cb25-3" tabindex="-1"></a><span class="co"># input_img &lt;- layer_input(shape = c(784))</span></span>
+<span id="cb25-4"><a href="autoencoders-aes.html#cb25-4" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb25-5"><a href="autoencoders-aes.html#cb25-5" tabindex="-1"></a><span class="co"># # Encoder layers</span></span>
+<span id="cb25-6"><a href="autoencoders-aes.html#cb25-6" tabindex="-1"></a><span class="co"># encoded &lt;- layer_dense(input_img, encoding_dim, activation = &#39;relu&#39;)</span></span>
+<span id="cb25-7"><a href="autoencoders-aes.html#cb25-7" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb25-8"><a href="autoencoders-aes.html#cb25-8" tabindex="-1"></a><span class="co"># # Decoder layers</span></span>
+<span id="cb25-9"><a href="autoencoders-aes.html#cb25-9" tabindex="-1"></a><span class="co"># decoded &lt;- layer_dense(encoded, 784, activation = &#39;sigmoid&#39;)</span></span>
+<span id="cb25-10"><a href="autoencoders-aes.html#cb25-10" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb25-11"><a href="autoencoders-aes.html#cb25-11" tabindex="-1"></a><span class="co"># # Create the autoencoder model</span></span>
+<span id="cb25-12"><a href="autoencoders-aes.html#cb25-12" tabindex="-1"></a><span class="co"># autoencoder &lt;- keras_model(input_img, decoded)</span></span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="autoencoders-aes.html#cb26-1" tabindex="-1"></a><span class="co"># autoencoder %&gt;% fit(</span></span>
+<span id="cb26-2"><a href="autoencoders-aes.html#cb26-2" tabindex="-1"></a><span class="co">#   x_train, x_train,</span></span>
+<span id="cb26-3"><a href="autoencoders-aes.html#cb26-3" tabindex="-1"></a><span class="co">#   epochs = 50,</span></span>
+<span id="cb26-4"><a href="autoencoders-aes.html#cb26-4" tabindex="-1"></a><span class="co">#   batch_size = 256,</span></span>
+<span id="cb26-5"><a href="autoencoders-aes.html#cb26-5" tabindex="-1"></a><span class="co">#   shuffle = TRUE,</span></span>
+<span id="cb26-6"><a href="autoencoders-aes.html#cb26-6" tabindex="-1"></a><span class="co">#   validation_data = list(x_test, x_test)</span></span>
+<span id="cb26-7"><a href="autoencoders-aes.html#cb26-7" tabindex="-1"></a><span class="co"># )</span></span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="autoencoders-aes.html#cb27-1" tabindex="-1"></a><span class="co"># # Get the reconstructed images</span></span>
+<span id="cb27-2"><a href="autoencoders-aes.html#cb27-2" tabindex="-1"></a><span class="co"># decoded_imgs &lt;- autoencoder %&gt;% predict(x_test)</span></span>
+<span id="cb27-3"><a href="autoencoders-aes.html#cb27-3" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb27-4"><a href="autoencoders-aes.html#cb27-4" tabindex="-1"></a><span class="co"># # Display the original and reconstructed images</span></span>
+<span id="cb27-5"><a href="autoencoders-aes.html#cb27-5" tabindex="-1"></a><span class="co"># par(mfrow=c(2,10), mai=c(0.2, 0.2, 0.2, 0.2))</span></span>
+<span id="cb27-6"><a href="autoencoders-aes.html#cb27-6" tabindex="-1"></a><span class="co"># for (i in 1:10) {</span></span>
+<span id="cb27-7"><a href="autoencoders-aes.html#cb27-7" tabindex="-1"></a><span class="co">#   # Original</span></span>
+<span id="cb27-8"><a href="autoencoders-aes.html#cb27-8" tabindex="-1"></a><span class="co">#   img &lt;- array_reshape(x_test[i,], c(28, 28))</span></span>
+<span id="cb27-9"><a href="autoencoders-aes.html#cb27-9" tabindex="-1"></a><span class="co">#   image(1:28, 1:28, img, col = gray((0:255)/255), xaxt = &#39;n&#39;, yaxt = &#39;n&#39;, main = &quot;Original&quot;)</span></span>
+<span id="cb27-10"><a href="autoencoders-aes.html#cb27-10" tabindex="-1"></a><span class="co">#   # Reconstruction</span></span>
+<span id="cb27-11"><a href="autoencoders-aes.html#cb27-11" tabindex="-1"></a><span class="co">#   img &lt;- array_reshape(decoded_imgs[i,], c(28, 28))</span></span>
+<span id="cb27-12"><a href="autoencoders-aes.html#cb27-12" tabindex="-1"></a><span class="co">#   image(1:28, 1:28, img, col = gray((0:255)/255), xaxt = &#39;n&#39;, yaxt = &#39;n&#39;, main = &quot;Reconstructed&quot;)</span></span>
+<span id="cb27-13"><a href="autoencoders-aes.html#cb27-13" tabindex="-1"></a><span class="co"># }</span></span></code></pre></div>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="exercises-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="sec-pca.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="locally-linear-embeddings-lles.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="additional-methods.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -327,7 +443,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/03-linear_methods.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/05-nonlinear_methods.Rmd",
 "text": "Edit"
 },
 "history": {
