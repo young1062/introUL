@@ -193,7 +193,8 @@ history <- autoencoder %>% fit(
   epochs = 20, 
   batch_size = 256, 
   shuffle = TRUE,
-  validation_split = 0.2
+  validation_split = 0.2,
+  getOption("keras.fit_verbose", default = 0)
 )
 
 plot(history)
