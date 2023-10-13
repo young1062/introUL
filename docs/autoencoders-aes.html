@@ -432,17 +432,17 @@ Range: Produces an output vector in the range [0,1], and the sum of the probabil
 <span id="cb27-4"><a href="autoencoders-aes.html#cb27-4" tabindex="-1"></a>)</span>
 <span id="cb27-5"><a href="autoencoders-aes.html#cb27-5" tabindex="-1"></a></span>
 <span id="cb27-6"><a href="autoencoders-aes.html#cb27-6" tabindex="-1"></a><span class="fu">summary</span>(autoencoder)</span></code></pre></div>
-<pre><code>## Model: &quot;model_2&quot;
+<pre><code>## Model: &quot;model_4&quot;
 ## ___________________________________________________________________________________________________________________________________
 ##  Layer (type)                                             Output Shape                                         Param #             
 ## ===================================================================================================================================
-##  input_2 (InputLayer)                                     [(None, 784)]                                        0                   
-##  dense_5 (Dense)                                          (None, 128)                                          100480              
-##  dropout_2 (Dropout)                                      (None, 128)                                          0                   
-##  dense_4 (Dense)                                          (None, 2)                                            258                 
-##  dense_7 (Dense)                                          (None, 128)                                          384                 
-##  dropout_3 (Dropout)                                      (None, 128)                                          0                   
-##  dense_6 (Dense)                                          (None, 784)                                          101136              
+##  input_3 (InputLayer)                                     [(None, 784)]                                        0                   
+##  dense_9 (Dense)                                          (None, 128)                                          100480              
+##  dropout_4 (Dropout)                                      (None, 128)                                          0                   
+##  dense_8 (Dense)                                          (None, 2)                                            258                 
+##  dense_11 (Dense)                                         (None, 128)                                          384                 
+##  dropout_5 (Dropout)                                      (None, 128)                                          0                   
+##  dense_10 (Dense)                                         (None, 784)                                          101136              
 ## ===================================================================================================================================
 ## Total params: 202,258
 ## Trainable params: 202,258
@@ -459,7 +459,7 @@ Range: Produces an output vector in the range [0,1], and the sum of the probabil
 <span id="cb29-8"><a href="autoencoders-aes.html#cb29-8" tabindex="-1"></a>)</span>
 <span id="cb29-9"><a href="autoencoders-aes.html#cb29-9" tabindex="-1"></a></span>
 <span id="cb29-10"><a href="autoencoders-aes.html#cb29-10" tabindex="-1"></a><span class="fu">plot</span>(history)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
 <ol start="4" style="list-style-type: decimal">
 <li>Visualize the Encoded Representations</li>
 </ol>
@@ -470,13 +470,13 @@ Range: Produces an output vector in the range [0,1], and the sum of the probabil
 <span id="cb30-4"><a href="autoencoders-aes.html#cb30-4" tabindex="-1"></a><span class="co"># Convert to a data frame for easier viewing</span></span>
 <span id="cb30-5"><a href="autoencoders-aes.html#cb30-5" tabindex="-1"></a>encoded_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(encoded_images)</span>
 <span id="cb30-6"><a href="autoencoders-aes.html#cb30-6" tabindex="-1"></a><span class="fu">head</span>(encoded_df)</span></code></pre></div>
-<pre><code>##            V1          V2
-## 1 -0.05482734  0.76049703
-## 2  0.95131624  0.98624885
-## 3  0.45077002 -0.98776287
-## 4 -0.99996561  0.01865193
-## 5 -0.28018752 -0.99428600
-## 6  0.87414086 -0.11454346</code></pre>
+<pre><code>##           V1         V2
+## 1  0.1047384  0.7744787
+## 2 -0.9995993  0.8830780
+## 3  0.1885463  0.2199088
+## 4 -0.7977964 -0.9999998
+## 5  0.9475339 -0.2778585
+## 6 -0.1499140  0.2925460</code></pre>
 <p>Using the ggplot2 package, the #D encoded images are visualized, color-coded by their true labels. This visualization can provide insights into how well the encoder has learned to cluster different digits in this reduced-dimensional space. We also compare the result of AutoEncoder with that of PCA, as shown below.</p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="autoencoders-aes.html#cb32-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb32-2"><a href="autoencoders-aes.html#cb32-2" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
@@ -512,9 +512,9 @@ Range: Produces an output vector in the range [0,1], and the sum of the probabil
 <span id="cb33-15"><a href="autoencoders-aes.html#cb33-15" tabindex="-1"></a><span class="co">#               size = 0.1)</span></span></code></pre></div>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="autoencoders-aes.html#cb34-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))</span>
 <span id="cb34-2"><a href="autoencoders-aes.html#cb34-2" tabindex="-1"></a>p</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-56-1.png" width="672" /></p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="autoencoders-aes.html#cb35-1" tabindex="-1"></a>ae</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-57-2.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-56-2.png" width="672" /></p>
 </div>
 </div>
 <h3>References</h3>

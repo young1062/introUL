@@ -197,33 +197,32 @@ print(result)
 
 **3) Applying MDS to $\Delta$**
 
-As mentioned before, ISOMAP can be viewed as the application of classical MDS in non-linear case. As a result, the reconstruction of $\{\vec{z}_i\}$ in the $k$ dimensional 
-$\mathcal{M}_1$ follows similar steps as that of classical MDS. The main goal is to preserve the geodesic distance of the manifold in $\mathcal{M}_2$ as much as possible. 
+As mentioned before, ISOMAP can be viewed as the application of classical MDS in non-linear case. As a result, the reconstruction of $\{\vec{z}_i\}$ in the $k$ dimensional  $\mathcal{M}_1$ follows from an application of classical scaling, but we use the manifold distances estimated in the previous step. The main goal is thus to find low-dimensional coordinates which preserve the geodesic distance of the manifold in $\mathcal{M}_2$ as much as possible. 
 
-Without any additional information, there are infinite $\{\vec{z}_i\}$ that can be viewed as the optimal solution. For some invertible function $\Phi:\mathbb{R}^k\to\mathbb{R}^k$, a new manifold mapping $\Psi \circ \Phi^{-1}$ can be constructed. $\vec{x}_i = \Psi \circ \Phi^{-1} (\Phi(\vec{z}_i))$, which proofs that $\{\Phi(\vec{z}_i)\}$ is equivalent to $\{\vec{z}_i\}$ when it comes to the reconstruction of the lower dimensional configuration.
+<!-- Without any additional information, there are infinite $\{\vec{z}_i\}_{i=1}^N \subset \mathbb{R}^k$ that can be viewed as the optimal solution. For some invertible function $\Phi:\mathbb{R}^k\to\mathbb{R}^k$, a new manifold mapping $\Psi \circ \Phi^{-1}$ can be constructed. $\vec{x}_i = \Psi \circ \Phi^{-1} (\Phi(\vec{z}_i))$, which proofs that $\{\Phi(\vec{z}_i)\}$ is equivalent to $\{\vec{z}_i\}$ when it comes to the reconstruction of the lower dimensional configuration. -->
 
-Without loss of generality, we assume that $\{\vec{z}_i\}$ are actually centered. So the distance matrix of $\{\vec{z}_i\}$ can be expressed as $B=Z^T Z$, so that $B_{ii}=||z_i||^2_2$ and $B_{ij}={z_i}^T z_j$.
+<!-- Without loss of generality, we assume that $\{\vec{z}_i\}$ are actually centered. So the distance matrix of $\{\vec{z}_i\}$ can be expressed as ${\bf B}={\bf Z Z}^T$, so that ${\bf B}_{ii}=||\vec{z}_i||^2_2$ and ${\bf B}_{ij}={\vec{z}_i}^T \vec{z}_j$. -->
 
-The embedding vectors $\{\hat{z}_{i}\}$ (estimate of points in lower dimensional feature space $\mathcal{M}_1$) are chosen in order to minimize the objective function:
+<!-- The embedding vectors $\{\hat{z}_{i}\}$ (estimate of points in lower dimensional feature space $\mathcal{M}_1$) are chosen in order to minimize the objective function: -->
 
-$$(\sum ||\vec{z}_i - \vec{z}_j||_2 - \Delta_{ij})^2$$
+<!-- $$\text{argmin}_{{\bf Z}\in\mathbb{R}^{N\times k}} \|{\bf ZZ}^T - {\bf B}\|_F^2$$ -->
 
-Following the same procedure explained in classical MDS chapter, we can compute each entry of $B$:
-$$B_{ij}= -\frac{1}{2} \Delta^2_{ij} + \frac{1}{d} \sum^{d}_{i=1} \Delta^2_{ij} + \frac{1}{d} \sum^{d}_{j=1} \Delta^2_{ij} - \frac{1}{2d^2} \sum^{d}_{i=1} \sum^{d}_{j=1} \Delta^2_{ij}$$
+<!-- where the entries of ${\bf B}$ are : -->
+<!-- $${\bf B}_{ij}= -\frac{1}{2} \Delta^2_{ij} + \frac{1}{d} \sum^{d}_{i=1} \Delta^2_{ij} + \frac{1}{d} \sum^{d}_{j=1} \Delta^2_{ij} - \frac{1}{2d^2} \sum^{d}_{i=1} \sum^{d}_{j=1} \Delta^2_{ij}.$$ -->
 
-To express it in matrix form, it is actually, $B = - \frac{1}{2} H \Delta H$, where $H = I_n - \frac{1}{n} \mathbb{1} \mathbb{1}^T$.
+<!-- In matrix form, it is actually, $B = - \frac{1}{2} H \Delta H$, where $H = I_n - \frac{1}{n} \mathbb{1} \mathbb{1}^T$. Solving this optimization is equivalent to finding the classical scaling solution in $k$ dimensions.   -->
 
-The next step is just a PCA problem. Implement eigen decomposition on matrix B, $B=U \Lambda U^T= (\Lambda^{1/2} U)^T (\Lambda^{1/2} U)$, then arrange the singular value in descending order, find the first $k^{\prime}$ ones. We acquire $\Lambda_{k^{\prime}}$ and $U_{k^{\prime}}$. 
-$$(\hat{z}_1 | \hat{z}_2 | \dots | \hat{z}_N) = \Lambda_{k^{\prime}} U_{k^{\prime}}$$
+<!-- The next step is just a PCA problem. Implement eigen-decomposition on matrix ${\bf B}, $${\bf B}={\bf U \Lambda U}^T=  ({\bf U \Lambda}^{1/2} )({\bf U \Lambda}^{1/2} )^T$$, then arrange the singular value in descending order, find the first $k^{\prime}$ ones. We acquire $\Lambda_{k^{\prime}}$ and $U_{k^{\prime}}$.  -->
+<!-- $$(\hat{z}_1 | \hat{z}_2 | \dots | \hat{z}_N) = \Lambda_{k^{\prime}} U_{k^{\prime}}$$ -->
 
-Since we don't know the dimension of the underlying feature space, here $k^{\prime}$ is a tuning parameter. Usually, we use a scree plot ($k^{\prime}$ against the sum of the omitted eigenvalues ) and find the elbow point.
+Since we don't know the dimension of the underlying feature space, here $k^{\prime}$ is a tuning parameter. Usually, we use a scree plot ($k^{\prime}$ against the sum of the omitted eigenvalues ) and find the elbow point similar to the ideas discussed in the previous section on classical scaling.
 
 
 ### Limitations of ISOMAP
 
 Though ISOMAP is a powerful manifold learning method that works well under most circumstances. It still has some limitations in certain scenarios.
 
-1) If the noises $\{\epsilon_i\}$ is not negligible, then ISOMAP may fail to identify the manifold. Also, ISOMAP is quite sensitive to the tuning parameters. To alleviate the negative impact, it's highly suggested to start with a relatively small $\epsilon$ or $K$, and increase them gradually. Here we use the Swiss Roll Example to help explain this point. 
+1) If the data is corrupted by nonneglible noises $\{\epsilon_i\}$, then ISOMAP may fail to identify the manifold. Also, ISOMAP is quite sensitive to the tuning parameters. To alleviate the negative impact, it's highly suggested to start with a relatively small $\epsilon$ or $K$, and increase them gradually. Here we use the Swiss Roll Example to help explain this point. 
 
 ```{r}
 # generate Swiss roll-shaped data
@@ -279,7 +278,7 @@ scatterplot3d(Swiss_sparse, color = myColorRamp(c("red","purple","blue","green",
                xlab = expression(x[1]), ylab = expression(x[2]), zlab = expression(x[3]))
 ```
 
- However, when using ISOMAP to recover the lower-dimensional feature space, complications arise, even when adjusting various tuning parameters.
+However, when using ISOMAP to recover the lower-dimensional feature space, complications arise, even when adjusting various tuning parameters.
 
 ```{r}
 set.seed(77)
@@ -303,9 +302,9 @@ plot(embed(Swiss_sparse, "Isomap", .mute = c("message", "output"), ndim =2, knn 
 ```
 
 
-3) One of the two major assumptions of ISOMAP is the convexity of the manifold, that is to say, if the manifold contains many holes and concave margins, then the result of ISOMAP will probably be not ideal. 
+3) One of the two major assumptions of ISOMAP is that $\mathcal{M}_1$ is convex, that is to say, if the low-dimensional manifold contains many holes and concave margins (so that the manifold distance in $\mathcal{M}_1$ is not the same as the Euclidean distance) then ISOMAP will probably be not ideal. 
 
-Here we use the example of a folded washer manifold to illustrate this point. It is obvious that the folded washer is concave in its four ends. No matter how we tune the parameter $K$, ISOMAP always fails to recover the lower dimensional feature.
+Here we use the example of a folded washer manifold to illustrate this point. The hole in the center of the washer breaks convexity. No matter how we tune the parameter $K$, ISOMAP always fails to recover the lower dimensional feature.
 
 ```{r}
 # generate washer in 2d 
