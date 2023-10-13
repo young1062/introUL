@@ -432,17 +432,17 @@ Range: Produces an output vector in the range [0,1], and the sum of the probabil
 <span id="cb27-4"><a href="autoencoders-aes.html#cb27-4" tabindex="-1"></a>)</span>
 <span id="cb27-5"><a href="autoencoders-aes.html#cb27-5" tabindex="-1"></a></span>
 <span id="cb27-6"><a href="autoencoders-aes.html#cb27-6" tabindex="-1"></a><span class="fu">summary</span>(autoencoder)</span></code></pre></div>
-<pre><code>## Model: &quot;model&quot;
+<pre><code>## Model: &quot;model_2&quot;
 ## ___________________________________________________________________________________________________________________________________
 ##  Layer (type)                                             Output Shape                                         Param #             
 ## ===================================================================================================================================
-##  input_1 (InputLayer)                                     [(None, 784)]                                        0                   
-##  dense_1 (Dense)                                          (None, 128)                                          100480              
-##  dropout (Dropout)                                        (None, 128)                                          0                   
-##  dense (Dense)                                            (None, 2)                                            258                 
-##  dense_3 (Dense)                                          (None, 128)                                          384                 
-##  dropout_1 (Dropout)                                      (None, 128)                                          0                   
-##  dense_2 (Dense)                                          (None, 784)                                          101136              
+##  input_2 (InputLayer)                                     [(None, 784)]                                        0                   
+##  dense_5 (Dense)                                          (None, 128)                                          100480              
+##  dropout_2 (Dropout)                                      (None, 128)                                          0                   
+##  dense_4 (Dense)                                          (None, 2)                                            258                 
+##  dense_7 (Dense)                                          (None, 128)                                          384                 
+##  dropout_3 (Dropout)                                      (None, 128)                                          0                   
+##  dense_6 (Dense)                                          (None, 784)                                          101136              
 ## ===================================================================================================================================
 ## Total params: 202,258
 ## Trainable params: 202,258
@@ -454,105 +454,67 @@ Range: Produces an output vector in the range [0,1], and the sum of the probabil
 <span id="cb29-3"><a href="autoencoders-aes.html#cb29-3" tabindex="-1"></a>  <span class="at">epochs =</span> <span class="dv">20</span>, </span>
 <span id="cb29-4"><a href="autoencoders-aes.html#cb29-4" tabindex="-1"></a>  <span class="at">batch_size =</span> <span class="dv">256</span>, </span>
 <span id="cb29-5"><a href="autoencoders-aes.html#cb29-5" tabindex="-1"></a>  <span class="at">shuffle =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb29-6"><a href="autoencoders-aes.html#cb29-6" tabindex="-1"></a>  <span class="at">validation_split =</span> <span class="fl">0.2</span></span>
-<span id="cb29-7"><a href="autoencoders-aes.html#cb29-7" tabindex="-1"></a>)</span></code></pre></div>
-<pre><code>## Epoch 1/20
-## 188/188 - 1s - loss: 0.0730 - val_loss: 0.0592 - 1s/epoch - 8ms/step
-## Epoch 2/20
-## 188/188 - 1s - loss: 0.0618 - val_loss: 0.0563 - 816ms/epoch - 4ms/step
-## Epoch 3/20
-## 188/188 - 1s - loss: 0.0595 - val_loss: 0.0552 - 784ms/epoch - 4ms/step
-## Epoch 4/20
-## 188/188 - 1s - loss: 0.0585 - val_loss: 0.0547 - 802ms/epoch - 4ms/step
-## Epoch 5/20
-## 188/188 - 1s - loss: 0.0579 - val_loss: 0.0544 - 797ms/epoch - 4ms/step
-## Epoch 6/20
-## 188/188 - 1s - loss: 0.0575 - val_loss: 0.0540 - 800ms/epoch - 4ms/step
-## Epoch 7/20
-## 188/188 - 1s - loss: 0.0571 - val_loss: 0.0538 - 812ms/epoch - 4ms/step
-## Epoch 8/20
-## 188/188 - 1s - loss: 0.0568 - val_loss: 0.0535 - 798ms/epoch - 4ms/step
-## Epoch 9/20
-## 188/188 - 1s - loss: 0.0566 - val_loss: 0.0534 - 796ms/epoch - 4ms/step
-## Epoch 10/20
-## 188/188 - 1s - loss: 0.0564 - val_loss: 0.0533 - 797ms/epoch - 4ms/step
-## Epoch 11/20
-## 188/188 - 1s - loss: 0.0562 - val_loss: 0.0532 - 792ms/epoch - 4ms/step
-## Epoch 12/20
-## 188/188 - 1s - loss: 0.0562 - val_loss: 0.0531 - 796ms/epoch - 4ms/step
-## Epoch 13/20
-## 188/188 - 1s - loss: 0.0560 - val_loss: 0.0529 - 795ms/epoch - 4ms/step
-## Epoch 14/20
-## 188/188 - 1s - loss: 0.0559 - val_loss: 0.0527 - 794ms/epoch - 4ms/step
-## Epoch 15/20
-## 188/188 - 1s - loss: 0.0558 - val_loss: 0.0525 - 794ms/epoch - 4ms/step
-## Epoch 16/20
-## 188/188 - 1s - loss: 0.0557 - val_loss: 0.0523 - 794ms/epoch - 4ms/step
-## Epoch 17/20
-## 188/188 - 1s - loss: 0.0556 - val_loss: 0.0522 - 797ms/epoch - 4ms/step
-## Epoch 18/20
-## 188/188 - 1s - loss: 0.0555 - val_loss: 0.0520 - 796ms/epoch - 4ms/step
-## Epoch 19/20
-## 188/188 - 1s - loss: 0.0554 - val_loss: 0.0519 - 800ms/epoch - 4ms/step
-## Epoch 20/20
-## 188/188 - 1s - loss: 0.0553 - val_loss: 0.0518 - 794ms/epoch - 4ms/step</code></pre>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="autoencoders-aes.html#cb31-1" tabindex="-1"></a><span class="fu">plot</span>(history)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
+<span id="cb29-6"><a href="autoencoders-aes.html#cb29-6" tabindex="-1"></a>  <span class="at">validation_split =</span> <span class="fl">0.2</span>,</span>
+<span id="cb29-7"><a href="autoencoders-aes.html#cb29-7" tabindex="-1"></a>  <span class="fu">getOption</span>(<span class="st">&quot;keras.fit_verbose&quot;</span>, <span class="at">default =</span> <span class="dv">0</span>)</span>
+<span id="cb29-8"><a href="autoencoders-aes.html#cb29-8" tabindex="-1"></a>)</span>
+<span id="cb29-9"><a href="autoencoders-aes.html#cb29-9" tabindex="-1"></a></span>
+<span id="cb29-10"><a href="autoencoders-aes.html#cb29-10" tabindex="-1"></a><span class="fu">plot</span>(history)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
 <ol start="4" style="list-style-type: decimal">
 <li>Visualize the Encoded Representations</li>
 </ol>
 <p>To visualize the 2D representations learned by the Encoder, a separate Encoder model is created. This model shares its weights with the Autoencoders’ Encoder portion. It’s then used to predict or transform the training images into their 2D encoded form.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="autoencoders-aes.html#cb32-1" tabindex="-1"></a>encoder <span class="ot">&lt;-</span> <span class="fu">keras_model</span>(<span class="at">inputs =</span> input_img, <span class="at">outputs =</span> encoded)</span>
-<span id="cb32-2"><a href="autoencoders-aes.html#cb32-2" tabindex="-1"></a>encoded_images <span class="ot">&lt;-</span> <span class="fu">predict</span>(encoder, train_images)</span></code></pre></div>
-<pre><code>## 1875/1875 - 1s - 606ms/epoch - 323us/step</code></pre>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="autoencoders-aes.html#cb34-1" tabindex="-1"></a><span class="co"># Convert to a data frame for easier viewing</span></span>
-<span id="cb34-2"><a href="autoencoders-aes.html#cb34-2" tabindex="-1"></a>encoded_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(encoded_images)</span>
-<span id="cb34-3"><a href="autoencoders-aes.html#cb34-3" tabindex="-1"></a><span class="fu">head</span>(encoded_df)</span></code></pre></div>
-<pre><code>##           V1         V2
-## 1  0.1338391  0.8019912
-## 2 -0.9999831  0.8853664
-## 3  0.9500867  0.2794235
-## 4 -0.9991414 -0.9999998
-## 5  0.9507403 -0.5422963
-## 6 -0.3786253  0.3030194</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="autoencoders-aes.html#cb30-1" tabindex="-1"></a>encoder <span class="ot">&lt;-</span> <span class="fu">keras_model</span>(<span class="at">inputs =</span> input_img, <span class="at">outputs =</span> encoded)</span>
+<span id="cb30-2"><a href="autoencoders-aes.html#cb30-2" tabindex="-1"></a>encoded_images <span class="ot">&lt;-</span> <span class="fu">predict</span>(encoder, train_images)</span>
+<span id="cb30-3"><a href="autoencoders-aes.html#cb30-3" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="autoencoders-aes.html#cb30-4" tabindex="-1"></a><span class="co"># Convert to a data frame for easier viewing</span></span>
+<span id="cb30-5"><a href="autoencoders-aes.html#cb30-5" tabindex="-1"></a>encoded_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(encoded_images)</span>
+<span id="cb30-6"><a href="autoencoders-aes.html#cb30-6" tabindex="-1"></a><span class="fu">head</span>(encoded_df)</span></code></pre></div>
+<pre><code>##            V1          V2
+## 1 -0.05482734  0.76049703
+## 2  0.95131624  0.98624885
+## 3  0.45077002 -0.98776287
+## 4 -0.99996561  0.01865193
+## 5 -0.28018752 -0.99428600
+## 6  0.87414086 -0.11454346</code></pre>
 <p>Using the ggplot2 package, the #D encoded images are visualized, color-coded by their true labels. This visualization can provide insights into how well the encoder has learned to cluster different digits in this reduced-dimensional space. We also compare the result of AutoEncoder with that of PCA, as shown below.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="autoencoders-aes.html#cb36-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb36-2"><a href="autoencoders-aes.html#cb36-2" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
-<span id="cb36-3"><a href="autoencoders-aes.html#cb36-3" tabindex="-1"></a>labels_train <span class="ot">&lt;-</span> mnist<span class="sc">$</span>train<span class="sc">$</span>y</span>
-<span id="cb36-4"><a href="autoencoders-aes.html#cb36-4" tabindex="-1"></a>labels_train <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(labels_train)</span>
-<span id="cb36-5"><a href="autoencoders-aes.html#cb36-5" tabindex="-1"></a></span>
-<span id="cb36-6"><a href="autoencoders-aes.html#cb36-6" tabindex="-1"></a><span class="co"># Plotting the data</span></span>
-<span id="cb36-7"><a href="autoencoders-aes.html#cb36-7" tabindex="-1"></a>ae <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(encoded_df, <span class="fu">aes</span>(<span class="at">x =</span> V1, <span class="at">y =</span> V2, <span class="at">color =</span> labels_train)) <span class="sc">+</span></span>
-<span id="cb36-8"><a href="autoencoders-aes.html#cb36-8" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb36-9"><a href="autoencoders-aes.html#cb36-9" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Autoencoder projection&quot;</span>,</span>
-<span id="cb36-10"><a href="autoencoders-aes.html#cb36-10" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;DF1&quot;</span>,</span>
-<span id="cb36-11"><a href="autoencoders-aes.html#cb36-11" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;DF2&quot;</span>,</span>
-<span id="cb36-12"><a href="autoencoders-aes.html#cb36-12" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">&quot;Response&quot;</span>) <span class="sc">+</span></span>
-<span id="cb36-13"><a href="autoencoders-aes.html#cb36-13" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb36-14"><a href="autoencoders-aes.html#cb36-14" tabindex="-1"></a><span class="co"># plotting 3d results</span></span>
-<span id="cb36-15"><a href="autoencoders-aes.html#cb36-15" tabindex="-1"></a><span class="co"># ae3 &lt;- plot_ly(encoded_df, x=~V1, y=~V2, z =~V3, </span></span>
-<span id="cb36-16"><a href="autoencoders-aes.html#cb36-16" tabindex="-1"></a><span class="co">#                 color = labels_train,</span></span>
-<span id="cb36-17"><a href="autoencoders-aes.html#cb36-17" tabindex="-1"></a><span class="co">#                 size = 0.1)</span></span></code></pre></div>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="autoencoders-aes.html#cb37-1" tabindex="-1"></a>pca_result <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(train_images)</span>
-<span id="cb37-2"><a href="autoencoders-aes.html#cb37-2" tabindex="-1"></a></span>
-<span id="cb37-3"><a href="autoencoders-aes.html#cb37-3" tabindex="-1"></a><span class="co"># Extract the scores of the first two principal components</span></span>
-<span id="cb37-4"><a href="autoencoders-aes.html#cb37-4" tabindex="-1"></a>scores <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(pca_result<span class="sc">$</span>x[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span>
-<span id="cb37-5"><a href="autoencoders-aes.html#cb37-5" tabindex="-1"></a><span class="fu">colnames</span>(scores) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;PC1&quot;</span>, <span class="st">&quot;PC2&quot;</span>)</span>
-<span id="cb37-6"><a href="autoencoders-aes.html#cb37-6" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(scores, <span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> labels_train)) <span class="sc">+</span></span>
-<span id="cb37-7"><a href="autoencoders-aes.html#cb37-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb37-8"><a href="autoencoders-aes.html#cb37-8" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;PCA&quot;</span>, <span class="at">x =</span> <span class="st">&quot;PC1&quot;</span>, <span class="at">y =</span> <span class="st">&quot;PC2&quot;</span>, <span class="at">color=</span><span class="st">&quot;response&quot;</span>) <span class="sc">+</span></span>
-<span id="cb37-9"><a href="autoencoders-aes.html#cb37-9" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb37-10"><a href="autoencoders-aes.html#cb37-10" tabindex="-1"></a><span class="co"># # 3D </span></span>
-<span id="cb37-11"><a href="autoencoders-aes.html#cb37-11" tabindex="-1"></a><span class="co"># scores &lt;- as.data.frame(pca_result$x[, 1:3])</span></span>
-<span id="cb37-12"><a href="autoencoders-aes.html#cb37-12" tabindex="-1"></a><span class="co"># colnames(scores) &lt;- c(&quot;PC1&quot;, &quot;PC2&quot;, &quot;PC3&quot;)</span></span>
-<span id="cb37-13"><a href="autoencoders-aes.html#cb37-13" tabindex="-1"></a><span class="co"># p3 &lt;- plot_ly(scores, x = ~PC1, y =~PC2, z=~PC3, </span></span>
-<span id="cb37-14"><a href="autoencoders-aes.html#cb37-14" tabindex="-1"></a><span class="co">#               color = labels_train,</span></span>
-<span id="cb37-15"><a href="autoencoders-aes.html#cb37-15" tabindex="-1"></a><span class="co">#               size = 0.1)</span></span></code></pre></div>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="autoencoders-aes.html#cb38-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))</span>
-<span id="cb38-2"><a href="autoencoders-aes.html#cb38-2" tabindex="-1"></a>p</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-56-1.png" width="672" /></p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="autoencoders-aes.html#cb39-1" tabindex="-1"></a>ae</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-56-2.png" width="672" /></p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="autoencoders-aes.html#cb32-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb32-2"><a href="autoencoders-aes.html#cb32-2" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb32-3"><a href="autoencoders-aes.html#cb32-3" tabindex="-1"></a>labels_train <span class="ot">&lt;-</span> mnist<span class="sc">$</span>train<span class="sc">$</span>y</span>
+<span id="cb32-4"><a href="autoencoders-aes.html#cb32-4" tabindex="-1"></a>labels_train <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(labels_train)</span>
+<span id="cb32-5"><a href="autoencoders-aes.html#cb32-5" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="autoencoders-aes.html#cb32-6" tabindex="-1"></a><span class="co"># Plotting the data</span></span>
+<span id="cb32-7"><a href="autoencoders-aes.html#cb32-7" tabindex="-1"></a>ae <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(encoded_df, <span class="fu">aes</span>(<span class="at">x =</span> V1, <span class="at">y =</span> V2, <span class="at">color =</span> labels_train)) <span class="sc">+</span></span>
+<span id="cb32-8"><a href="autoencoders-aes.html#cb32-8" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb32-9"><a href="autoencoders-aes.html#cb32-9" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Autoencoder projection&quot;</span>,</span>
+<span id="cb32-10"><a href="autoencoders-aes.html#cb32-10" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;DF1&quot;</span>,</span>
+<span id="cb32-11"><a href="autoencoders-aes.html#cb32-11" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;DF2&quot;</span>,</span>
+<span id="cb32-12"><a href="autoencoders-aes.html#cb32-12" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">&quot;Response&quot;</span>) <span class="sc">+</span></span>
+<span id="cb32-13"><a href="autoencoders-aes.html#cb32-13" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb32-14"><a href="autoencoders-aes.html#cb32-14" tabindex="-1"></a><span class="co"># plotting 3d results</span></span>
+<span id="cb32-15"><a href="autoencoders-aes.html#cb32-15" tabindex="-1"></a><span class="co"># ae3 &lt;- plot_ly(encoded_df, x=~V1, y=~V2, z =~V3, </span></span>
+<span id="cb32-16"><a href="autoencoders-aes.html#cb32-16" tabindex="-1"></a><span class="co">#                 color = labels_train,</span></span>
+<span id="cb32-17"><a href="autoencoders-aes.html#cb32-17" tabindex="-1"></a><span class="co">#                 size = 0.1)</span></span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="autoencoders-aes.html#cb33-1" tabindex="-1"></a>pca_result <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(train_images)</span>
+<span id="cb33-2"><a href="autoencoders-aes.html#cb33-2" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="autoencoders-aes.html#cb33-3" tabindex="-1"></a><span class="co"># Extract the scores of the first two principal components</span></span>
+<span id="cb33-4"><a href="autoencoders-aes.html#cb33-4" tabindex="-1"></a>scores <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(pca_result<span class="sc">$</span>x[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span>
+<span id="cb33-5"><a href="autoencoders-aes.html#cb33-5" tabindex="-1"></a><span class="fu">colnames</span>(scores) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;PC1&quot;</span>, <span class="st">&quot;PC2&quot;</span>)</span>
+<span id="cb33-6"><a href="autoencoders-aes.html#cb33-6" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(scores, <span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> labels_train)) <span class="sc">+</span></span>
+<span id="cb33-7"><a href="autoencoders-aes.html#cb33-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb33-8"><a href="autoencoders-aes.html#cb33-8" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;PCA&quot;</span>, <span class="at">x =</span> <span class="st">&quot;PC1&quot;</span>, <span class="at">y =</span> <span class="st">&quot;PC2&quot;</span>, <span class="at">color=</span><span class="st">&quot;response&quot;</span>) <span class="sc">+</span></span>
+<span id="cb33-9"><a href="autoencoders-aes.html#cb33-9" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb33-10"><a href="autoencoders-aes.html#cb33-10" tabindex="-1"></a><span class="co"># # 3D </span></span>
+<span id="cb33-11"><a href="autoencoders-aes.html#cb33-11" tabindex="-1"></a><span class="co"># scores &lt;- as.data.frame(pca_result$x[, 1:3])</span></span>
+<span id="cb33-12"><a href="autoencoders-aes.html#cb33-12" tabindex="-1"></a><span class="co"># colnames(scores) &lt;- c(&quot;PC1&quot;, &quot;PC2&quot;, &quot;PC3&quot;)</span></span>
+<span id="cb33-13"><a href="autoencoders-aes.html#cb33-13" tabindex="-1"></a><span class="co"># p3 &lt;- plot_ly(scores, x = ~PC1, y =~PC2, z=~PC3, </span></span>
+<span id="cb33-14"><a href="autoencoders-aes.html#cb33-14" tabindex="-1"></a><span class="co">#               color = labels_train,</span></span>
+<span id="cb33-15"><a href="autoencoders-aes.html#cb33-15" tabindex="-1"></a><span class="co">#               size = 0.1)</span></span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="autoencoders-aes.html#cb34-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb34-2"><a href="autoencoders-aes.html#cb34-2" tabindex="-1"></a>p</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="autoencoders-aes.html#cb35-1" tabindex="-1"></a>ae</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-57-2.png" width="672" /></p>
 </div>
 </div>
 <h3>References</h3>

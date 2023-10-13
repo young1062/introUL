@@ -485,7 +485,7 @@ Plot <span class="math inline">\(Q(k)\)</span> against <span class="math inline"
 <span id="cb20-32"><a href="locally-linear-embeddings-lles.html#cb20-32" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">do.lle</span>(Swiss, <span class="at">ndim =</span> <span class="dv">2</span>, <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;knn&quot;</span>,<span class="dv">50</span>))<span class="sc">$</span>Y,</span>
 <span id="cb20-33"><a href="locally-linear-embeddings-lles.html#cb20-33" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;1st Dimension&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;2nd Dimension&quot;</span>, <span class="at">main =</span> <span class="st">&quot;K=50&quot;</span>,</span>
 <span id="cb20-34"><a href="locally-linear-embeddings-lles.html#cb20-34" tabindex="-1"></a>     <span class="at">col =</span> <span class="fu">myColorRamp</span>(<span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;purple&quot;</span>,<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;green&quot;</span>,<span class="st">&quot;yellow&quot;</span>), S))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
 <ol start="2" style="list-style-type: decimal">
 <li><strong>Vulnerable to sparse or unevenly-distributed samples</strong></li>
 </ol>
@@ -516,7 +516,7 @@ Plot <span class="math inline">\(Q(k)\)</span> against <span class="math inline"
 <span id="cb21-23"><a href="locally-linear-embeddings-lles.html#cb21-23" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">do.lle</span>(Swiss_sparse, <span class="at">ndim =</span> <span class="dv">2</span>, <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;knn&quot;</span>,<span class="dv">45</span>))<span class="sc">$</span>Y,</span>
 <span id="cb21-24"><a href="locally-linear-embeddings-lles.html#cb21-24" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;1st Dimension&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;2nd Dimension&quot;</span>, <span class="at">main =</span> <span class="st">&quot;K=45&quot;</span>,</span>
 <span id="cb21-25"><a href="locally-linear-embeddings-lles.html#cb21-25" tabindex="-1"></a>     <span class="at">col =</span> <span class="fu">myColorRamp</span>(<span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;purple&quot;</span>,<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;green&quot;</span>,<span class="st">&quot;yellow&quot;</span>), S))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
 <p>In addition, we manually create a Swiss Roll with some sparse regions and try LLE on it. From naked eye, these sparse regions won’t affect the overall manifold look. However, since LLE utilizes the local structure, it is greatly affected.</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="locally-linear-embeddings-lles.html#cb22-1" tabindex="-1"></a><span class="fu">library</span>(scatterplot3d)</span>
 <span id="cb22-2"><a href="locally-linear-embeddings-lles.html#cb22-2" tabindex="-1"></a><span class="fu">library</span>(Rdimtools)</span>
@@ -550,7 +550,7 @@ Plot <span class="math inline">\(Q(k)\)</span> against <span class="math inline"
 <span id="cb22-30"><a href="locally-linear-embeddings-lles.html#cb22-30" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">do.lle</span>(Swiss_masked, <span class="at">ndim =</span> <span class="dv">2</span>, <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;knn&quot;</span>,<span class="dv">50</span>))<span class="sc">$</span>Y,</span>
 <span id="cb22-31"><a href="locally-linear-embeddings-lles.html#cb22-31" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;1st Dimension&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;2nd Dimension&quot;</span>, <span class="at">main =</span> <span class="st">&quot;K=50&quot;</span>,</span>
 <span id="cb22-32"><a href="locally-linear-embeddings-lles.html#cb22-32" tabindex="-1"></a>     <span class="at">col =</span> <span class="fu">myColorRamp</span>(<span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;purple&quot;</span>,<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;green&quot;</span>,<span class="st">&quot;yellow&quot;</span>), S))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
 <ol start="3" style="list-style-type: decimal">
 <li><strong>Sensitivity to noise</strong></li>
 </ol>
