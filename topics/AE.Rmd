@@ -4,21 +4,21 @@ output:
   html_document: default
 ---
 
-```{r setup, include=FALSE}
+```{r setup-ae, include=FALSE}
 require("keras")
 require("ggplot2")
 # require("tidyverse")
 # require("h2o")
 require("reticulate")
 # specify the directory of your conda environment
-use_python("/Users/zhucenhao/venv_introUL/bin/python3", required=TRUE)
+use_python("/Users/alexyoung/anaconda3/bin/python3", required=TRUE)
 ```
 
 ## Autoencoders (AEs)
 
 ### Introduction
 
-Autoencoders, emanating from the domain of neural network research, represent a class of unsupervised deep learning models. At its core, autoencoders seek to learn a compressed, efficient representation of input data by leveraging a network structure that encodes the data into a reduced dimensionality and subsequently decodes it to reconstruct the original data. [@NN]
+Autoencoders, which originated from the domain of neural network research, represent a class of unsupervised deep learning models. At its core, autoencoders seek to learn a compressed, efficient representation of input data by leveraging a network structure that nonlinearly encodes the data into a lower dimension space and subsequently decodes it to reconstruct the original data. [@NN]
 
 The typical architecture of an autoencoder comprises three main components: 
 
@@ -115,7 +115,7 @@ input_img <- layer_input(shape = c(28*28))
 encoded <- input_img %>% 
   layer_dense(units = 128, activation = "relu") %>% 
   layer_dropout(rate=0.8) %>%
-  layer_dense(units = 2, activation = "tanh")
+  layer_dense(units = 3, activation = "tanh")
 ```
 
 The Encoder starts with the input image and passes it through a dense layer with 128 neurons and ReLU activation. A dropout layer is added for regularization, reducing the risk of over-fitting. The last layer of the Encoder further compresses the data into a 2D representation. 
@@ -187,7 +187,7 @@ summary(autoencoder)
 
 The Autoencoder is trained using the training images as both inputs and targets. This is because the Autoencoder's goal is to reconstruct its input as closely as possible.
 
-```{r}
+```{r, message = FALSE}
 history <- autoencoder %>% fit(
   train_images, train_images, 
   epochs = 20, 
@@ -212,42 +212,50 @@ encoded_df <- as.data.frame(encoded_images)
 head(encoded_df)
 ```
 
-Using the ggplot2 package, the 2D encoded images are visualized, color-coded by their true labels. This visualization can provide insights into how well the encoder has learned to cluster different digits in this reduced-dimensional space. We also compare the result of AutoEncoder with that of PCA, as shown below. 
+Using the ggplot2 package, the #D encoded images are visualized, color-coded by their true labels. This visualization can provide insights into how well the encoder has learned to cluster different digits in this reduced-dimensional space. We also compare the result of AutoEncoder with that of PCA, as shown below. 
 
 ```{r}
 library(ggplot2)
+library(plotly)
 labels_train <- mnist$train$y
 labels_train <- as.factor(labels_train)
 
 # Plotting the data
-ae <- ggplot(encoded_df, aes(x = V1, y = V2, color = labels_train)) + 
-  geom_point(alpha = 0.6, size = 1) + 
-  labs(title = "Autoencoder projection", 
-       x = "DF1", 
-       y = "DF2", 
-       color = "Response") + 
-  theme_minimal()
+# ae <- ggplot(encoded_df, aes(x = V1, y = V2, color = labels_train)) + 
+#   geom_point(alpha = 0.6, size = 1) + 
+#   labs(title = "Autoencoder projection", 
+#        x = "DF1", 
+#        y = "DF2", 
+#        color = "Response") + 
+#   theme_minimal()
+# plotting 3d results
+ae3 <- plot_ly(encoded_df, x=~V1, y=~V2, z =~V3, 
+                color = labels_train,
+                size = 0.1)
+
 ```
 
 
 ```{R}
-library(ggplot2)
 pca_result <- prcomp(train_images)
 
 # Extract the scores of the first two principal components
-scores <- as.data.frame(pca_result$x[, 1:2])
-colnames(scores) <- c("PC1", "PC2")
+scores <- as.data.frame(pca_result$x[, 1:3])
+colnames(scores) <- c("PC1", "PC2", "PC3")
 
-p <- ggplot(scores, aes(x = PC1, y = PC2, color = labels_train)) + 
-  geom_point(alpha = 0.6) + 
-  labs(title = "PCA", x = "PC1", y = "PC2", color="response") + 
-  theme_minimal()
+# p <- ggplot(scores, aes(x = PC1, y = PC2, color = labels_train)) + 
+#   geom_point(alpha = 0.6) + 
+#   labs(title = "PCA", x = "PC1", y = "PC2", color="response") + 
+#   theme_minimal()
+p3 <- plot_ly(scores, x = ~PC1, y =~PC2, z=~PC3, 
+              color = labels_train,
+              size = 0.1)
 ```
 
 ```{r}
 par(mfrow = c(2,1))
-plot(p)
-plot(ae)
+p3
+ae3
 ```
 
 
