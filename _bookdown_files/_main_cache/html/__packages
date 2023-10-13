@@ -1,8 +1,9 @@
+scatterplot3d
+Rdimtools
 MASS
 ggplot2
 plotly
 mvtnorm
-scatterplot3d
 maps
 gdata
 igraph
@@ -12,8 +13,7 @@ Matrix
 CVST
 DRR
 dimRed
-rgl
-Rdimtools
 energy
+rgl
 princurve
 keras

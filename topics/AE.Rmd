@@ -1,12 +1,28 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+require("keras")
+require("ggplot2")
+# require("tidyverse")
+# require("h2o")
+require("reticulate")
+# specify the directory of your conda environment
+use_python("/Users/zhucenhao/venv_introUL/bin/python3", required=TRUE)
+```
+
 ## Autoencoders (AEs)
 
 ### Introduction
 
-Autoencoders, emanating from the domain of neural network research, represent a class of unsupervised deep learning models. At its core, autoencoders seek to learn a compressed, efficient representation of input data by leveraging a network structure that encodes the data into a reduced dimensionality and subsequently decodes it to reconstruct the original data.
+Autoencoders, emanating from the domain of neural network research, represent a class of unsupervised deep learning models. At its core, autoencoders seek to learn a compressed, efficient representation of input data by leveraging a network structure that encodes the data into a reduced dimensionality and subsequently decodes it to reconstruct the original data. [@NN]
 
 The typical architecture of an autoencoder comprises three main components: 
 
-1) **Encoder**: A function $f(\vec{x})$ that compresses the input $\vec{x}$s into a latent representation.
+1) **Encoder**: A function $f(\vec{x})$ that compresses the input $\vec{x}$ into a latent representation.
 
 2) **Latent Space**: The reduced dimensionality representation, often denoted as $\vec{z}$, where $\vec{z} = f(\vec{x})$.
 
@@ -14,117 +30,226 @@ The typical architecture of an autoencoder comprises three main components:
 
 The primary objective during the training phase of an autoencoder is to minimize the reconstruction error, often quantified using metrics such as Mean Squared Error (MSE) between the input data and its reconstructed counterpart. The minimization forces the model to capture salient features of the data in the latent space, thereby enabling efficient data compression, noise reduction, and feature extraction.
 
-The utility of Autoencoders has been demonstrated in a wide array of applications, from dimensionality reduction, anomaly detection, denoising, to more complex tasks such as generating new data instances. Variations and extensions of the basic Autoencoder model, including Variational Autoencoders (VAEs) and Denoising Autoencoders, have further broadened their applicability by introducing probabilistic interpretations and noise robustness, respectively.
+The utility of Autoencoders has been demonstrated in a wide array of applications, from dimensionality reduction, anomaly detection, denoising, to more complex tasks such as generating new data instances. Variations and extensions of the basic Autoencoder model, including Variational Autoencoders (VAEs) [@VAE] and Denoising Autoencoders [@DenoiseAE], have further broadened their applicability by introducing probabilistic interpretations and noise robustness, respectively.
 
 In the broader context of machine learning and artificial intelligence, Autoencoders exemplify the power of unsupervised learning paradigms, emphasizing the capability of neural networks to derive meaningful representations from data without explicit labeling.
 
 ### Algorithm
 
-#### Notations:
+#### Notations
+
 **Input**
-- Dataset $\mathbf{X} = \{\vec{x}_1, \vec{x}_2, \dots, \vec{x}_n\}$ where $\vec{x}_i$ represents each data sample.
-- Encoder function with parameters $\theta_e$: $f_{\theta_e}(x)$
-- Decoder function with parameters $\theta_d$: $g_{\theta_d}(z)$
-- Objective function to measure reconstruction error, e.g., Mean Squared Error (MSE).
+- Dataset $X = \{\vec{x}_1, \vec{x}_2, \dots \vec{x}_n\}$ where $\vec{x}_i$ is a vectorized representation of each data sample.
+- Encoder neural network $E$ with parameters $\theta_e$ mapping inputs to latent space.
+- Decoder neural network $D$ with parameters $\theta_d$ mapping latent space back to the original space.
+- Reconstruction loss function $L$, e.g., Mean Squared Error (MSE).
 
 **Output**: 
-- Trained parameters $\theta_e^{\star}$ and $\theta_d^{\star}$ that minimize the reconstruction error.
+- Optimized parameters $\theta_e^*$ for $E$ and $\theta_d^*$ for $D$.
 
-#### Steps Breakdown:
+#### Steps Breakdown
 
 1) **Initialization**:
-   - Initialize network weights (parameters $\theta_e$ for encoder and $\theta_d$ for decoder) using a method such as Xavier initialization or random initialization.
+   - Initialize encoder $E$ and decoder $D$ neural network weights using techniques like Xavier or He initialization to ensure weight variance remains controlled during training.
 
-2) **Forward Pass**:
+2) **Forward Propagation**:
    For each data sample $\vec{x}_i$:
-   - Encode input data sample to get the latent representation:
-     \[ \vec{z}_i = f_{\theta_e}(\vec{x}_i) \]
-   - Decode the latent representation to get the reconstructed data:
-     \[ \vec{x}'_i = g_{\theta_d}(\vec{z}_i) \]
+   - Use encoder $E$ to transform $\vec{x}_i$ to latent space:
+     \[ \vec{z}_i = E_{\theta_e}(\vec{x}_i) \]
+   - Use decoder $D$ to reconstruct $\vec{x}_i$ from $\vec{z}_i$:
+     \[ \vec{x}^{\prime}_i = D_{\theta_d}(\vec{z}_i) \]
 
-3) **Compute Loss**:
-   Calculate the reconstruction loss for the sample. For example, if using MSE:
-   \[ L(\vec{x}_i, \vec{x}'_i) = ||\vec{x}_i - \vec{x}'_i||^2 \]
-   Accumulate the loss for all samples to get the total loss.
+3) **Loss Computation**:
+   - Calculate reconstruction loss for the given sample using $L$:
+     \[ L_i = L(\vec{x}_i, \vec{x}^{\prime}_i) \]
+   - Compute average loss for the batch:
+     \[ L_{batch} = \frac{1}{N} \sum_{i=1}^{N} L_i \]
+     where $N$ is the batch size.
 
-4) **Backward Pass**:
-   Using a method like gradient descent or one of its variants (e.g., Adam, RMSProp):
-   - Compute the gradients of the loss with respect to the network parameters ($\theta_e$ and $\theta_d$).
-   - Update the weights in the direction that minimizes the loss.
+4) **Backward Propagation**:
+   - Compute the gradient of $L_{batch}$ with respect to encoder and decoder parameters using back-propagation.
+   - Use gradient descent (or its variants) to update both $\theta_e$ and $\theta_d$:
+     \[ \theta_e = \theta_e - \alpha \frac{\partial L_{batch}}{\partial \theta_e} \]
+     \[ \theta_d = \theta_d - \alpha \frac{\partial L_{batch}}{\partial \theta_d} \]
+     where $\alpha$ is the learning rate.
 
-5) **Iterate**:
-   - Repeat steps 2-4 for a predefined number of epochs or until the change in reconstruction error between epochs falls below a specified threshold.
+5) **Training Loop**:
+   - Execute steps 2-4 for multiple iterations (epochs) over the entire data set. Regularly shuffle the data set before each epoch to ensure IID (independent and identically distributed) property.
 
 6) **Model Retrieval**:
-   - After training, retrieve the encoder $f_{\theta_e^{\star}}$ and decoder $g_{\theta_d^{\star}}$ with the optimal parameters $\theta_e^{\star}$ and $\theta_d^{\star}$.
+   - Once convergence is achieved, i.e., when the reduction in $L_{batch}$ between subsequent epochs is negligible or after a pre-defined number of epochs, extract the optimized parameters  $\theta_e^*$ and $\theta_d^*$. These define the trained Autoencoder.
 
+7) **Optional Fine-tuning**:
+   - For better performance, further fine-tune the trained Autoencoder using techniques like early stopping based on validation loss, or introduce regularization techniques like dropout to prevent overfitting.
+   
 
 ### Example
 
+Compared to other manifold learning methods we have introduced (ISOMAP and LLE), the implementation and parameter tuning of Autoencoders is much more complicated. We'll explore how to implement an autoencoder in R using the **Keras** library with the famous MNIST dataset. As a Neuro Network method, Autoencoders have a number of parameters, thus requiring a large dataset to train. This explains why we choose MNIST dataset here.
+
+1) Load and Preprocess the Data
 ```{r}
-# # keras provides an interface to the Keras deep learning library in Python
-# library(keras)
-# 
-# # load the Minst dataset
-# mnist <- dslabs::read_mnist(
-#   path = NULL,
-#   download = FALSE,
-#   destdir = tempdir(),
-#   url = "https://www2.harvardx.harvard.edu/courses/IDS_08_v2_03/",
-#   keep.files = TRUE
-# )
-# 
-# x_train <- mnist$train$images
-# x_test <- mnist$test$images
+mnist <- dataset_mnist()
+train_images <- mnist$train$x
+```
+
+The above code loads the MNIST dataset from **keras** package. mnist variable is divided into a training set and a test set, both containing the image information and label information. Since we are using Autoencoders to conduct dimensio reduction here (unsupervised learning), we only require the image information from the traing set. The train_images contains the images from the training set.
+
+```{r}
+# Flatten and normalize the images
+train_images <- array_reshape(train_images, c(nrow(train_images), 28*28))
+train_images <- train_images / 255
+```
+
+For an Autoencoder to process these images, they need to be reshaped into a flat vector. This step reshapes each 28x28 image into a vector of length 784. Furthermore, to facilitate the neural network's training, the pixel values (originally between 0 to 255) are normalized to fall between 0 and 1.
+
+2) Build the Autoencoders
+
+The autoencoder comprises two main parts: Encoder and Decoder, as we have stated before.
+
+```{r}
+# initiates the input layer for the autoencoder which expects input vectors of length 784
+input_img <- layer_input(shape = c(28*28)) 
+
+# Encoder
+encoded <- input_img %>% 
+  layer_dense(units = 128, activation = "relu") %>% 
+  layer_dropout(rate=0.8) %>%
+  layer_dense(units = 2, activation = "tanh")
+```
+
+The Encoder starts with the input image and passes it through a dense layer with 128 neurons and ReLU activation. A dropout layer is added for regularization, reducing the risk of over-fitting. The last layer of the Encoder further compresses the data into a 2D representation. 
+
+**Dropout Layer**
+In the context of Keras, layer_dropout(rate=0.8) adds a dropout layer where there's an 80% chance that any given neuron in the previous layer will be turned off during training for a particular update.
+
+In practice, it means that during training step, for each training iteration, $80\%$ of the neurons of the preceding layer will be randomly selected and turned off. These turned-off neurons won't have any influence on the computation for that specific iteration. Dropout is only active during training, during testing step, all neurons will be active, and dropout won't be applied.
+
+This step is super important, if dropout layer is not introduced, the model will be largely over-fitted. You may try this yourself.
+
+**Activation Function**
+
+Activation functions play a vital role in neural networks, determining the output of a neuron based on its input. They introduce non-linear properties into the network, enabling it to learn from the error and make adjustments, which is essential for learning complex patterns.
+
+There are several common activation functions we can choose from.
+
+1) **Sigmoid (Logistic) Function:** 
+Equation: \( f(x) = \frac{1}{1 + e^{-x}} \)
+Range: Between 0 and 1
+Pros: Smooth gradient, preventing "jumps" in output values
+Cons: Can cause vanishing gradient problems in deep networks.
+
+2) **Hyperbolic Tangent (tanh) Function:** 
+Equation: \( f(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}} \)
+Range: Between -1 and 1
+Pros: Zero-centered, making it easier for the model to generalize
+Cons: Like the sigmoid, it can also lead to vanishing gradient issues.
+
+3) **Rectified Linear Unit (ReLU) Function:** 
+Equation: \( f(x) = max(0, x) \)
+Range: From 0 to infinity.
+Pros: Helps mitigate the vanishing gradient problem, leading to faster convergence.
+Cons: Neurons can sometimes "die", especially with a large learning rate.
+
+4) **Softmax Function:** 
+Equation: Used primarily in the output layer of a classifier, where it turns logits into probabilities by distributing them over several classes
+Range: Produces an output vector in the range [0,1], and the sum of the probabilities will be 1.
+
+Each activation function has its unique characteristics and is suitable for different kinds of tasks. The choice of an activation function depends on the specific problem at hand, the nature of the data, and the architecture of the neural network.
+
+
+
+```{r}
+# Decoder
+decoded <- encoded %>% 
+  layer_dense(units = 128, activation = "relu") %>% 
+  layer_dropout(rate=0.8) %>%
+  layer_dense(units = 28*28, activation = "tanh")
+
+# combines the encoder and decoder into the Autoencoder model
+autoencoder <- keras_model(input = input_img, output = decoded)
+```
+
+The Decoder takes the encoded 2D representation and attempts to reconstruct the original image. It uses a dense layer with 128 neurons followed by another dropout layer. The final dense layer outputs vectors of length $784 \, (28 \times 28)$, matching the original image's shape.
+
+3) Compile and Train Autoencoders
+
+Before training, the model needs to be compiled. The 'adam' optimizer and the 'mean_squared_error' loss function are chosen for this task. You may choose different loss functions according to your specific data type and objective, here MSE might be the most suitable.
+
+```{r}
+autoencoder %>% compile(
+  optimizer = 'adam', 
+  loss = 'mean_squared_error'
+)
+
+summary(autoencoder)
+```
+
+The Autoencoder is trained using the training images as both inputs and targets. This is because the Autoencoder's goal is to reconstruct its input as closely as possible.
+
+```{r}
+history <- autoencoder %>% fit(
+  train_images, train_images, 
+  epochs = 20, 
+  batch_size = 256, 
+  shuffle = TRUE,
+  validation_split = 0.2
+)
+
+plot(history)
+```
+
+4) Visualize the Encoded Representations
+
+To visualize the 2D representations learned by the Encoder, a separate Encoder model is created. This model shares its weights with the Autoencoders' Encoder portion. It's then used to predict or transform the training images into their 2D encoded form.
+
+```{r}
+encoder <- keras_model(inputs = input_img, outputs = encoded)
+encoded_images <- predict(encoder, train_images)
+
+# Convert to a data frame for easier viewing
+encoded_df <- as.data.frame(encoded_images)
+head(encoded_df)
+```
+
+Using the ggplot2 package, the 2D encoded images are visualized, color-coded by their true labels. This visualization can provide insights into how well the encoder has learned to cluster different digits in this reduced-dimensional space. We also compare the result of AutoEncoder with that of PCA, as shown below. 
+
+```{r}
+library(ggplot2)
+labels_train <- mnist$train$y
+labels_train <- as.factor(labels_train)
+
+# Plotting the data
+ae <- ggplot(encoded_df, aes(x = V1, y = V2, color = labels_train)) + 
+  geom_point(alpha = 0.6, size = 1) + 
+  labs(title = "Autoencoder projection", 
+       x = "DF1", 
+       y = "DF2", 
+       color = "Response") + 
+  theme_minimal()
+```
+
+
+```{R}
+library(ggplot2)
+pca_result <- prcomp(train_images)
+
+# Extract the scores of the first two principal components
+scores <- as.data.frame(pca_result$x[, 1:2])
+colnames(scores) <- c("PC1", "PC2")
+
+p <- ggplot(scores, aes(x = PC1, y = PC2, color = labels_train)) + 
+  geom_point(alpha = 0.6) + 
+  labs(title = "PCA", x = "PC1", y = "PC2", color="response") + 
+  theme_minimal()
 ```
 
 ```{r}
-# # Reshape the data and normalize
-# gc()
-# library(reticulate)
-# x_train <- array_reshape(x_train, c(nrow(x_train), 784))
-# x_test <- array_reshape(x_test, c(nrow(x_test), 784))
-# x_train <- x_train / 255
-# x_test <- x_test / 255
-```
-```{r}
-# encoding_dim <- 32  # for compression
-# 
-# input_img <- layer_input(shape = c(784))
-# 
-# # Encoder layers
-# encoded <- layer_dense(input_img, encoding_dim, activation = 'relu')
-# 
-# # Decoder layers
-# decoded <- layer_dense(encoded, 784, activation = 'sigmoid')
-# 
-# # Create the autoencoder model
-# autoencoder <- keras_model(input_img, decoded)
+par(mfrow = c(2,1))
+plot(p)
+plot(ae)
 ```
 
-```{r}
-# autoencoder %>% fit(
-#   x_train, x_train,
-#   epochs = 50,
-#   batch_size = 256,
-#   shuffle = TRUE,
-#   validation_data = list(x_test, x_test)
-# )
-```
 
-```{r}
-# # Get the reconstructed images
-# decoded_imgs <- autoencoder %>% predict(x_test)
-# 
-# # Display the original and reconstructed images
-# par(mfrow=c(2,10), mai=c(0.2, 0.2, 0.2, 0.2))
-# for (i in 1:10) {
-#   # Original
-#   img <- array_reshape(x_test[i,], c(28, 28))
-#   image(1:28, 1:28, img, col = gray((0:255)/255), xaxt = 'n', yaxt = 'n', main = "Original")
-#   # Reconstruction
-#   img <- array_reshape(decoded_imgs[i,], c(28, 28))
-#   image(1:28, 1:28, img, col = gray((0:255)/255), xaxt = 'n', yaxt = 'n', main = "Reconstructed")
-# }
-```
+
 
