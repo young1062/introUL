@@ -29,12 +29,15 @@ fig:ribbon
 fig:ex-clusters
 def:first-pca
 exm:pca-demo-1
-fig:unnamed-chunk-22
+fig:unnamed-chunk-19
 fig:pca1
 fig:pca2
 thm:pca-eig
 cor:pca-all
 thm:svd-frob
+fig:nmf-ex
+def:pos-span
+exm:mds-cities
 def:def-manifold
 exm:ex-manifolds
 exm:ex-non-manifold
@@ -42,11 +45,7 @@ exm:ex-swiss-roll
 exm:ex-swiss-w-noise
 exm:ex-helix-distance
 eq:def-manifold-dist
-<<<<<<< HEAD
 intro
-=======
-introduction
->>>>>>> aa6a19348ad3d5375107e4902caecb69dfb07196
 prerequisites
 ch-prob
 important-notation
@@ -85,14 +84,19 @@ recommender-systems
 imputation
 recommendation
 nonnegative-matrix-factorization
+interpretability-superpositions-and-positive-spans
+geometric-interpretation
+finding-an-nmf-multiplicative-updates
+nmf-in-practice
+sec-nmf-ext
+archetypes
+volume-regularized-nmf
 sec-mds
+key-features-of-mds
 classical-scaling
 definitions
 recover-coordinates
-<<<<<<< HEAD
-=======
 duality-of-pca-and-classical-scaling
->>>>>>> aa6a19348ad3d5375107e4902caecb69dfb07196
 metric-mds
 nonmetric-mds
 kernels-and-nonlinearity
@@ -101,19 +105,12 @@ ch-nonlinear
 background
 data-on-a-manifold
 isometric-feature-map-isomap
-<<<<<<< HEAD
 introduction
 key-definitions
 algorithm
 limitations-of-isomap
-local-linear-embeddings-lles
-=======
-introduction-1
-key-definitions
-algorithm
-limitations-of-isomap
 locally-linear-embeddings-lles
-introduction-2
+introduction-1
 algorithm-1
 construct-neighborhood-graph
 reconsruct-with-linear-weights
@@ -121,9 +118,8 @@ embedding
 strengths-and-weaknesses-of-lle
 strengths
 weaknesses
->>>>>>> aa6a19348ad3d5375107e4902caecb69dfb07196
 autoencoders-aes
-introduction-3
+introduction-2
 algorithm-2
 notations
 steps-breakdown

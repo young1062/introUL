@@ -17,3 +17,11 @@ Rdimtools
 energy
 princurve
 keras
+registry
+rngtools
+cluster
+BiocGenerics
+Biobase
+bigmemory
+synchronicity
+NMF
