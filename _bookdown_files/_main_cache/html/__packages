@@ -1,10 +1,14 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 scatterplot3d
 Rdimtools
+=======
+>>>>>>> linear_development
 MASS
 ggplot2
 plotly
 mvtnorm
+<<<<<<< HEAD
 maps
 gdata
 igraph
@@ -20,11 +24,19 @@ scatterplot3d
 maps
 gdata
 >>>>>>> main
+=======
+scatterplot3d
+maps
+gdata
+igraph
+threejs
+>>>>>>> linear_development
 kernlab
 Matrix
 CVST
 DRR
 dimRed
+<<<<<<< HEAD
 energy
 rgl
 <<<<<<< HEAD
@@ -35,3 +47,21 @@ reticulate
 Rdimtools
 princurve
 >>>>>>> main
+=======
+rgl
+Rdimtools
+energy
+princurve
+keras
+registry
+rngtools
+cluster
+BiocGenerics
+Biobase
+bigmemory
+synchronicity
+NMF
+foreach
+iterators
+doParallel
+>>>>>>> linear_development

@@ -1,7 +1,5 @@
 ## Multidimensional Scaling {#sec-mds}
 
-1) Introduction and Settings
- 
 Multidimensional scaling (MDS) is a broad name for a myriad of different methods which are designed to handle a common problem.  Suppose there are $N$ objects of interest in a dataset.  Examples include a set of geographic locations or cells from mass spectrometry or census blocks, etc.  Importantly, we do not need actual data corresponding to each object.  In MDS, we instead require a measure the distance or dissimilarity between each pair of objects.  We can organize these distances into a matrix ${\bf \Delta}\in\mathbb{R}^{N\times N}$, with ${\bf \Delta}_{rs}$ representing the distance/dissimilarity between objects $r$ and $s$. Thus, ${\bf \Delta}_{rr}=0$ and for now, we may assume that ${\bf \Delta}_{sr} = {\bf \Delta}_{rs}$. The matrix ${\bf \Delta}$ is often called a *Distance* or *Dissimilarity* matrix. In practice, we may construct a distance matrix from observations, but for the purposes of MDS we only require ${\bf \Delta}$.
 
 The primary goal of MDS is to find a set of lower-dimensional points $\vec{y}_1, \dots, \vec{y}_N \in \mathbb{R}^{t}$ corresponding to each of the $N$ objects such that the distance between $\vec{y}_r$ and $\vec{y}_s$ is close to ${\bf \Delta}_{rs}$. There are numerous different notions of distance one use in $\mathbb{R}^t$. Additionally, we may not know the notion of distance/dissimilarity used when computing ${\bf \Delta}$ or if the dissimilarity corresponds to any well defined notion of distance.  Euclidean distance is a common choice for the distance of the lower-dimensional vectors.  Fixing this choice still leaves many open questions. Are the original distances Euclidean? If so, can we determine the dimensionality of the original data?
@@ -9,9 +7,8 @@ The primary goal of MDS is to find a set of lower-dimensional points $\vec{y}_1,
 MDS also serves as a data visualization method. In this case, $t$ is typically chosen to be either two or three, and the $N$ points in the two-dimensional (or three-dimensional) representation may be plotted so that one can visualize the relationships between data.  Before turning to the most common methods of MDS, let's view a few examples using distances between cities.
 
 
-::: {.example #mds-cities name="MDS applied to distances between cities"}
+::: {.example #mds-cities name="Classical scaling applied to distances between cities"}
 
-<!-- Here we use the sphere distances of multiple large cities as an example to illustrate the power of MDS in recovering the original expressions and visualizing them. -->
 
 ```{r setup-mds, include=FALSE, echo = FALSE, message = FALSE, fig.align='center'}
 require("scatterplot3d")
@@ -28,7 +25,7 @@ The *eurodist* R package provides air travel distances between 21 cities in Euro
 knitr::kable(as.matrix(UScitiesD), "simple")
 ```
 
-After conducting classical MDS (a method of MDS, details will be discussed later), we acquire the plot below. The plot is consistent with the geographical relationships between the cities. Miami and Seattle are the farthest apart in our plot. NY and D.C. are quite close on the plot, which is also true for Los Angeles and San Francisco.
+After conducting classical scaling (a method of MDS, details will be discussed later), we acquire the plot below. The plot is consistent with the geographical relationships between the cities. Miami and Seattle are the farthest apart in our plot. NY and D.C. are quite close on the plot, which is also true for Los Angeles and San Francisco.
 
 
 ```{r, echo = FALSE}
@@ -40,7 +37,7 @@ text(city.loc, labels = attr(UScitiesD, "Labels"),
      cex = 0.75)
 ```
 
-Actually, if we rotate the above plot 180 degrees, a crude US map appears impressively. 
+If we rotate the above plot 180 degrees, we recover an representation of the cities consistent with the typical map of the US. 
 
 ```{r, echo = FALSE}
 city.loc.rot <- -city.loc
@@ -51,8 +48,7 @@ text(city.loc.rot, labels = attr(UScitiesD, "Labels"),
      cex = 0.75)
 ```
 
-Again, let's try MDS on the 21 European cities, again applying some reflections of the map given by MDS to help it comply to the conventional orientation of a European map.
->>>>>>> fe6c00855e493ca3aa72864411530b42ede78222
+Now let's try MDS on the 21 European cities
 
 ```{r}
 knitr::kable(as.matrix(eurodist),"simple")
@@ -74,7 +70,7 @@ text(city.loc.flip, labels = attr(eurodist, "Labels"),
      cex = 0.75)
 ```
 
-The above plot reconstructs the European map quite well. Gibraltar, Lisbon and Madrid are in the south-west corner, the two North European cities Stockholm and Copenhagen are in the north end, and Athens is in the south-west corner.
+After applying a reflection of the map given by classical scaling to help it comply to the conventional orientation of a European map, the above plot reconstructs the European map quite well. Gibraltar, Lisbon and Madrid are in the south-west corner, the two North European cities Stockholm and Copenhagen are in the north end, and Athens is in the south-west corner.
 
 Finally, let's consider the 18 representative global cities. Their pairwise flight lengths (geodesic distance) are shown in the table below. As we can see, the geodesic distances between the three Southern-Hemisphere cities: Rio, Cape Town, Melbourne and other Northern-Hemisphere cities are generally large (almost all over 10,000 kilometers)
 
@@ -153,121 +149,95 @@ plot_ly(data.frame( x = MDS3$points[,1], y= MDS3$points[,2], z = -MDS3$points[,3
 
 The three-dimensional visualization result of classical MDS is shown above. You can rotate and magnify it on your laptop. The blue points represent Asian cities, the black points represent European cities, and the red points represent North American cities. If you inspect the plot clearly, you may notice that the cities appear to be constrained to the surface of a sphere, which complies to the true scenario. 
 
-In each of the examples, classical MDS was quite successful in generating maps which reflected the geographical configuration with continental or global maps which were (after some reflections/rotations) consistent with conventional maps.
+In each of the examples, classical MDS was quite successful in generating maps which reflected the geographical configuration with continental or global maps which were (after some reflections/rotations) consistent with conventional maps. Let's discuss the details.
 
 :::
->>>>>>> fe6c00855e493ca3aa72864411530b42ede78222
 
 
 ### Key features of MDS
 
-Beyond demonstrating the capacity of MDS to recover meaningful visualization, we also gain two insights from the examples above.
+MDS can be divided into three major types: Classical Scaling; Metric MDS; and Non-Metric MDS. The choice of method depends on the specifics of the distance/dissimilarity matrix and features which are preferential to preserve. Classical Scaling and Metric MDS require that the provided distances correspond to a metric (more on this below), while Non-metric MDS is usually used when the input data doesn't satisfy the properties of a true distance metric or when the relationships are ordinal (i.e., we only know which distances are larger, but not by how much). 
 
-i) The pairwise distance between two objects need not be Euclidean. In the above example, they are actually [great circle distance](https://en.wikipedia.org/wiki/Great-circle_distance). Actually, based on the type of distance metric and the specific recovery method of the Proximity Matrix, MDS can be divided into three major types: Classical Scaling; Metric MDS; and Non-Metric MDS. 
+Beyond demonstrating the capacity of MDS to recover meaningful visualization, we also gain two insights from the examples above which hold for any MDS algorithm.
 
+i) As we can tell from the recovery of US map and European map, the configurations of $\tilde{y}_1, \tilde{y}_2, \dots, \tilde{y}_N$ are not unique, as we can rotate or flip the map. Actually, if $\tilde{y}_1, \tilde{y}_2, \dots, \tilde{y}_N \in \mathbb{R}^{t^{\prime}}$ is considered as the optimal solution using Euclidean distance, then given any vector $\vec{b} \in \mathbb{R}^{t^{\prime}}$ and orthogonal matrix $A \in \mathbb{R}^{t^{\prime} \times t^{\prime}}$, $||(A \tilde{y}_r + \vec{b} - (A \tilde{y}_s + \vec{b})|| = ||\tilde{y}_r - \tilde{y}_s||$. Rotation, Reflection or Translation don't alter the pairwise distances. So $A \tilde{y}_1 + \vec{b}, A \tilde{y}_2 + \vec{b}, \dots, A \tilde{y}_N + \vec{b}$ is also an optimal solution.  Outside of Euclidean distances, reflections are still possible which eliminate the possibility of unique configurations.
 
-Classical Scaling and Metric MDS generally require that the input data is a true distance metric, while Non-metric MDS is usually used when the input data doesn't satisfy the properties of a true distance metric or when the relationships are ordinal (i.e., we only know which distances are larger, but not by how much). 
+ii) The pairwise distance between two objects need not be Euclidean. In the above example, they are actually [great circle distance](https://en.wikipedia.org/wiki/Great-circle_distance).
 
-To add, Classical MDS operates by applying an eigen-decomposition to the "double-centered" dissimilarity matrix, while Metric MDS and Non-Metric MDS may employ iterative optimization methods to better accommodate non-linear relationships in data structure.
-
-ii) As we can tell from the recovery of US map and European map, the configurations of $\tilde{y}_1, \tilde{y}_2, \dots, \tilde{y}_N$ are not unique, as we can rotate or flip the map. Actually, if $\tilde{y}_1, \tilde{y}_2, \dots, \tilde{y}_N \in \mathbb{R}^{t^{\prime}}$ is considered as the optimal solution, given any vector $\vec{b} \in \mathbb{R}^{t^{\prime}}$ and orthogonal matrix $A \in \mathbb{R}^{t^{\prime} \times t^{\prime}}$, $||(A \tilde{y}_r + \vec{b} - (A \tilde{y}_s + \vec{b})|| = ||\tilde{y}_r - \tilde{y}_s||$. Rotation, Reflection or Translation don't alter the pairwise distances. So $A \tilde{y}_1 + \vec{b}, A \tilde{y}_2 + \vec{b}, \dots, A \tilde{y}_N + \vec{b}$ is also an optimal solution.
+In the following subsections, we will discuss the specifics of classical scaling with a brief discussion on two common methods of MDS, one each in metric and nonmetric MDS.
 
 
 
 
 ### Classical Scaling
 
-Before going deep into Classical Scaling, we first need to introduce some important definitions.
+Let us first introduce some important definitions.
 
-#### Definitions:
+:::{.definition #dist-mat name="Distance Matrix"} 
+A matrix $\Delta \in \mathbb{R}^{N \times N}$ is called a distance matrix if it possesses the following properties:
 
-i) A matrix $\Delta \in \mathbb{R}^{N \times N}$ is called a distance matrix if it possesses the following properties:
+a) Symmetry:  $\Delta$ is symmetric, meaning that: $\Delta_{rs} = \Delta_{sr} \quad \text{for all } r \text{ and } s$
 
-  a) Symmetry
+b) Zero Diagonal:  The diagonal entries of the matrix represent the distance of a point to itself, and are thus all zeros: $\Delta_{rr} \equiv 0 \quad \text{for all } 1 \leq r \leq N$
 
-$\Delta$ is symmetric, meaning that:
+c) Non-negativity:  All distances are non-negative: $\Delta_{rs} \geq 0$
 
-$$\Delta_{rs} = \Delta_{sr} \quad \text{for all } r \text{ and } s$$
-
-This implies that the distance between points $r$ and $s$ is the same as the distance between points $s$ and $r$.
-
-  b) Zero Diagonal
-
-The diagonal entries of the matrix represent the distance of a point to itself, and are thus all zeros:
-
-$$\Delta_{rr} \equiv 0 \quad \text{for all } 1 \leq r \leq N$$
-
-  c) Non-negativity
-
-All distances are non-negative:
-
-$$\Delta_{rs} \geq 0$$
-
-  d) Triangle Inequality
-
-The matrix respects the triangle inequality:
-
+d) Triangle Inequality:  The distances in the matrix respect the triangle inequality:
 $$\Delta_{rs} \leq \Delta_{rt} + \Delta_{ts}$$
+:::
 
-This property ensures that the direct distance between two points $r$ and $s$ is never greater than the sum of the distances from $r$ to a third point $t$ and from $t$ to $s$.
+Distance matrices can be computed in many different ways. We will focus on the following specific case.
+
+::: {.definition #euc-dist name="Euclidean Distance Matrix"} 
+A distance matrix $\Delta \in \mathbb{R}^{N \times N}$ is a Euclidean distance matrix if there exists a configuration $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N$ s.t. $\Delta_{rs}$ represents the Euclidean distance between points $r$ and $s$, i.e., $||\vec{y}_r-\vec{y}_s||=\Delta_{rs} \forall r,s$. 
+:::
 
 
-ii) Further, the distance matrix $\Delta \in \mathbb{R}^{N \times N}$ is a Euclidean distance matrix if there exists a configuration $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N$ s.t. $\Delta_{rs}$ represents the Euclidean distance between points $r$ and $s$, i.e., $||\vec{y}_r-\vec{y}_s||=\Delta_{rs} \forall r,s$. 
+Classical scaling operates under the assumption that $\Delta$ is a Euclidean distance matrix though the dimensionality of the configuration $\vec{y}_1,\dots,\vec{y}_N$ which gives rise to the distances specified by $\Delta$ is unknown. As we shall see, the minimum dimensionality needed for the configuration to give the specified distances (assuming it exists at all) will be discovered through the classical scaling algorthm.  Furthermore, since we are free to translate any configuration without altering pairwise distance, we will seek a configuration $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N$ which is centered to simplify the following computation. The rotation of the configuration will also be given so that an optimal solution in $k-1$ dimensions can be attained by dropping the final coordinate in the $k$ dimensional configuration.
 
-For configuration $\vec{y}_i, \vec{y}_j \in \mathbb{R}^t$, the Euclidean distance between point $r$ and point $s$ is defined as $\delta_{ij}=||\vec{y}_i - \vec{y}_j||= \left\{\sum_{k=1}^t \left(y_{i k}-x_{j k}\right)^2\right\}^{1/2}$. **Remember to take the square root**
+#### Recovering Coordinates
 
-iii) Prerequisite for Classical Scaling: 
-
-  a) Strictly speaking, we require that the Proximity Matrix $\Delta$ is a Euclidean distance matrix. 
-
-  b) Furthermore, it is assumed that the configurations $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N$ are centered. In other words, $\sum_{i=1}^N \vec{y}_i = \vec{0}$. This step eliminates the influence of location.
-
-#### Recover Coordinates
-
-It may sound difficult to recover the configuration $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N$ from merely the Euclidean distance matrix $\Delta$ at the first glance. However, the situation becomes clearer after some analysis.
-
-$\Delta^2_{rs}$ can be expressed as $\Delta^2_{rs} = ||\vec{y}_r||^2 + ||\vec{y}_s||^2 - 2 \vec{y}_r^T \vec{y}_s$. It's not difficult to observe that both terms are very easy to be expressed with the original configuration: $Y = \left(\begin{array}{c} \vec{y}_1^{\top} \\ \vec{y}_2^{\top} \\ \vdots \\ \dot{y}_N^{\top} \end{array}\right)$.
-
-The entries of the inner product matrix, i.e. $B = YY^T \in \mathbb{R}^{N \times N}$ are able to express the Euclidean distance matrix $\Delta$. 
+After some preprocessing, finding a centered configuration $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N$ from the Euclidean distance matrix $\Delta$ is possible through some of the linear algebra techniques we have discussed so far. Observe that $\Delta^2_{rs}$ can be expressed as $$\Delta^2_{rs} = ||\vec{y}_r||^2 + ||\vec{y}_s||^2 - 2 \vec{y}_r^T \vec{y}_s$$ so that 
+$$\vec{y}_r^T\vec{y}_s = -\frac{1}{2}\left(\Delta_{rs} - \|\vec{y}_r\|^2 - \|\vec{y}_s\|^2 \right).$$ We will use this relationship to build an inner product matrix ${\bf B}$ with entries ${\bf B}_{rs} = \vec{y}_r^T\vec{y}_s$. In matrix form, we may write $${\bf B} = {\bf Y Y}^T$$, where ${\bf Y}$ is a data matrix containing the configuration $\vec{y}_1,\dots,\vec{y}_N$ with Euclidean distances $\Delta$. 
 
 **1) Computing the inner product matrix $B$**
 
-The inner product term can be represented as: $B_{ij} = \vec{y}_r^T \vec{y}_s$, while the norms of $\vec{y}_r$ and $\vec{y}_s$ can be represented by the entry of $B$, i.e. $B_{ii} = ||\vec{y}_i||^2$. As a result, $\Delta^2_{ij} = B_{ii} + B_{jj} - 2 B_{ij}$. 
+The inner product term can be represented as: $B_{ij} = \vec{y}_i^T \vec{y}_j$.  As a result, $$(\Delta_{ij})^2 = B_{ii} + B_{jj} - 2 B_{ij}.$$
 
-**Key Observation** Here, we successfully express the entries of $\Delta$ (known) with entries of $B$ (unknown). However, our goal is to find a way to express entries of $B$ (unknown) with entries of $\Delta$. Intuitively, we want to cancel out $B_{ij}$ terms in the expression. Considering that $\sum_{i=1}^N \vec{y}_i = \vec{0}$, we sum both sides of the equation over the index $i$. We can get the following expression: (Because $\sum_{i=1}^N B_{ij} = \vec{y}_j^T (\sum_{i=1}^N \vec{y}_i) = 0$)
-$$\sum_{i=1}^N \Delta_{ij}^2=\operatorname{tr}(B) + N B_{ii}$$
+**Key Observation** In the previous line, we express the entries of $\Delta$ (known) with entries of $B$ (unknown). Our goal is to find a way to express entries of $B$ (unknown) with entries of $\Delta$. Intuitively, we want to cancel out $B_{ij}$ terms in the expression. Considering that $\sum_{i=1}^N \vec{y}_i = \vec{0}$, we sum both sides of the equation over the index $i$. We can get the following expression:  
+$$\sum_{i=1}^N (\Delta_{ij})^2=\operatorname{tr}(B) + N B_{ii}$$
 
 Similarly, we can also sum both sides of the equation over index $j$, and get the expression:
-$$\sum_{j=1}^N \Delta_{ij}^2=\operatorname{tr}(B) + N B_{jj}$$
+$$\sum_{j=1}^N (\Delta_{ij})^2=\operatorname{tr}(B) + N B_{jj}$$
 
 We successfully eliminate all the off-diagonal terms of $B$ through the above steps. Now, we want to take a step further. Sum both sides of the equations over both indexes $i$ and $j$. We acquire the following expression:
-$$\sum_{i=1}^N \sum_{j=1}^N \Delta_{ij}^2 = 2N \operatorname{tr}(B)$$
+$$\sum_{i=1}^N \sum_{j=1}^N (\Delta_{ij})^2 = 2N \operatorname{tr}(B)$$
 
 Now we can solve the entries of $\Delta$ using the entries of $B$ through a backward calculation. From the last equation, we get 
 $$\operatorname{tr}(B) = \frac{1}{2N} \sum_{i=1}^N \sum_{j=1}^N \Delta_{ij}^2$$
 
 Then substitute the above expression into above formulas, we get the expression of the diagonal entries of $B$:
 
-$$B_{ii} = \frac{1}{N} (\sum_{j=1}^{N} \Delta_{ij}^2 - \operatorname{tr} (B))$$
+$$B_{ii} = \frac{1}{N} (\sum_{j=1}^{N} (\Delta_{ij})^2 - \operatorname{tr} (B))$$
 
 After that, we can finally get the off-diagonal entries of $B$:
 
 \begin{aligned}
-B_{ij} & = \frac{1}{2} (B_{ii} + B_{jj} - \Delta_{ij}^2) \\
-& = -\frac{1}{2} \Delta_{ij}^2 + \frac{1}{N} \sum_{i=1}^N \Delta_{ij}^2 + \frac{1}{N} \sum_{j=1}^N \Delta_{ij}^2-\frac{1}{2 N^2} \sum_{i=1}^N \sum_{j=1}^N \Delta_{ij}^2
+B_{ij} & = \frac{1}{2} (B_{ii} + B_{jj} - (\Delta_{ij})^2) \\
+& = -\frac{1}{2} (\Delta_{ij})^2 + \frac{1}{N} \sum_{i=1}^N (\Delta_{ij})^2 + \frac{1}{N} \sum_{j=1}^N (\Delta_{ij})^2-\frac{1}{2 N^2} \sum_{i=1}^N \sum_{j=1}^N (\Delta_{ij})^2
 \end{aligned}
 
-Actually, we may also express the inner product matrix $B$ in a matrix form, which is what we do in real data computation. Here $A \in \mathbb{R}^{N \times N}, A_{ij} = \Delta^2_{ij} \quad \text{for} \; \forall \; 1 \leq i,j \leq N$, $H = \mathbb{I}_N - \frac{1}{N} \mathbb{1}_N \mathbb{1}_N^T$. 
+We may more compactly express the inner product matrix $B$ in a matrix form, as $$B = HAH$$ where $A \in \mathbb{R}^{N \times N}$ has entries $A_{ij} = -\frac{1}{2}(\Delta_{ij}) \quad \text{for} \; \forall \; 1 \leq i,j \leq N$ and $H$ is the centering matrix $$H = \mathbb{I}_N - \frac{1}{N} \mathbb{1}_N \mathbb{1}_N^T$$. 
 
-$$B = H A H$$
+
 
 
 
 **2) Recover the coordinates using inner product matrix $B$**
 
-Both diagonal and off-diagonal entries of the inner product matrix $B$ has been shown. We assumed that $B$ = $YY^T$, so $B$ is symmetric and positive semi-definite (all eigenvalues are non-negative), with $t$ positive eigenvalues and $N-t$ 'zero' eigenvalues. 
+Both diagonal and off-diagonal entries of the inner product matrix $B$ has been shown. We assumed that $B$ = $YY^T$, so $B$ is symmetric and positive semi-definite (all eigenvalues are non-negative). Assuming $B$ is rank $t$ implies that it has $t$ positive eigenvalues and $N-t$ 'zero' eigenvalues. 
 
-Our intuition is to apply SVD to $B$ in order to recover the configuration $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N \in \mathbb{R}^t$.
+Our intuition is to apply SVD/diagonalization to $B$ in order to recover the configuration $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N \in \mathbb{R}^t$ by computing the nonzero eigenvalues and corresponding eigenvectors giving the factorization.
 
 \begin{align}
 B & = \left(\vec{u}_1\left|\vec{u}_2\right| \ldots \mid \vec{u}_t\right) \begin{pmatrix}
@@ -280,7 +250,7 @@ B & = \left(\vec{u}_1\left|\vec{u}_2\right| \ldots \mid \vec{u}_t\right) \begin{
 \vdots \\ 
 \vec{u}_t^{\top} 
 \end{array}\right) \\
-& = \tilde{u} \begin{pmatrix}
+& = \tilde{U} \begin{pmatrix}
 \lambda^{1/2}_1 & \cdots & 0 \\
 \vdots & \ddots & \vdots \\
 0 & \cdots & \lambda^{1/2}_t \end{pmatrix}
@@ -288,34 +258,38 @@ B & = \left(\vec{u}_1\left|\vec{u}_2\right| \ldots \mid \vec{u}_t\right) \begin{
 \lambda^{1/2}_1 & \cdots & 0 \\
 \vdots & \ddots & \vdots \\
 0 & \cdots & \lambda^{1/2}_t \end{pmatrix}
-\tilde{u}^T \\
-& = (\tilde{u} \Lambda^{1/2}) (\tilde{u} \Lambda^{1/2})^T
+\tilde{U}^T \\
+& = (\tilde{U} \Lambda^{1/2}) (\tilde{U} \Lambda^{1/2})^T
 \end{align}
 
-Let $Y=\tilde{u} \Lambda^{1/2}$, use rows of $\tilde{u} \Lambda^{1/2}$ as $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N$. It satisfies every entry of the inner product matrix $B$, as well as all pairwise distances $\Delta_{ij}$. 
+Let $Y=\tilde{U} \Lambda^{1/2}$, so that rows of $\tilde{U} \Lambda^{1/2}$ correspond to the vectors $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N$. It satisfies every entry of the inner product matrix $B$, as well as all pairwise distances $\Delta_{ij}$!  Importantly, the rank of $B$ immediately indicates the minimal dimension needed to recover a configuration which exactly recovers the Euclidean distances in $\Delta.$ 
+\DeclareMathOperator*{\argmin}{arg\,min}
+For visualization, we may prefer a lower dimensional configuration than the dimensionality $t$ discovered through classical scaling. For a $k < t$ dimensional configuration, we instead use the first $k$ columns of $\tilde{U}\Lambda^{1/2}$ as a our $k$-dimensional vectors.  Outside of optimal recovery, we may instead formulate the classical scaling problem in $k$-dimensions as the following minimization problem.  
+
+$$\argmin_{Y \in \mathbb{R}^{N\times k}} \| B - YY^T\|_F$$
+from which it follows that $YY^T$ is built from the rank $k$ approximation to $B$.  Using the results from SVD and the equivalence of SVD and eigendecompositions for symmetric positive, semidefinite matrices, this is equivalent to using the first $k$ columns of $\tilde{U}\Lambda^{1/2}$.
 
 **Dealing with real data case**
 
-In real data case, sometimes the Euclidean condition is not met. As in the previous globe map example, the distance matrix actually computes the geodesic distance instead of the Euclidean distance. Under this circumstance, the "inner product" matrix $B = HAH$ (we put a quotation mark here because $B$ is no longer the inner product matrix) is not necessarily positive semi-definite.
+For a given distance matrix, the Euclidean condition may not hold. In the previous globe map example, the distance matrix is based on the geodesic distance instead of the Euclidean distance. Under this circumstance, the "inner product" matrix $B = HAH$ is still symmetric but will not be positive definite.  As a simpler example, consider the following case
 
-Let's put a numeric example here to illustrate this point. 
-
-Suppose we have a proximity matrix $\Delta$:
+::: {.example #non-euc name="Non Euclidean Distances"}
+Suppose we have a distance matrix $\Delta$:
 
 Given the matrix:
 \[ 
-\Delta = \begin{pmatrix} 0 & 1 & 3 \\ 1 & 0 & 1 \\ 3 & 1 & 0 \end{pmatrix} 
+\Delta = \begin{pmatrix} 0 & 1 & 1 & 2 \\ 1 & 0 & 1 & 1 \\ 1 & 1 & 0 & 1 \\ 2 & 1 & 1& 0 \end{pmatrix} 
 \]
 
 ```{r}
 # Given matrix Delta
-Delta <- matrix(c(0,1,3,1,0,1,3,1,0), nrow=3, byrow=TRUE)
+Delta <- matrix(c(0,1,1,2,
+                  1,1,0,1,
+                  1,1,0,1,
+                  2,1,1,0), nrow=4, byrow=TRUE)
 Delta
 ```
-
-Obviously, matrix $\Delta$ does not satisfy Triangle Inequality, so it's not a Euclidean distance matrix (even not a distance matrix actually)
-
-  i) Compute matrix \( A \) as:
+i) Compute matrix \( A \) as:
 \[ 
 A = -\frac{1}{2} \Delta^2 
 \]
@@ -325,7 +299,7 @@ A <- -0.5 * Delta^2
 A
 ```
 
-  ii) Compute matrix \( B \) using:
+ii) Compute matrix \( B \) using:
 \[ 
 H = I - \frac{1}{n} \mathbf{11}^T 
 \]
@@ -346,33 +320,34 @@ B <- H %*% A %*% H
 B
 ```
 
-  iii) Finally, perform an eigen-decomposition on matrix \( B \).
+iii) Finally, perform an eigen-decomposition on matrix \( B \) which gives eigenvalues.
 
 ```{r}
 eigen_decomp_B <- eigen(B)
 
 # Extract eigenvalues and eigenvectors
-eigenvalues_B <- eigen_decomp_B$values
-eigenvectors_B <- eigen_decomp_B$vectors
+eigenvalues_B <- round(eigen_decomp_B$values,3)
+# eigenvectors_B <- eigen_decomp_B$vectors
 
 eigenvalues_B
-eigenvectors_B
+# eigenvectors_B
 ```
-Here, we have a negative eigenvalue $-\frac{5}{6}$. This is because the original proximity matrix $\Delta$ is not a distance matrix.
+Here, we have a negative eigenvalue $-\frac{1}{4}$. This indicates the original distance matrix $\Delta$ is not a Euclidean distance matrix; there is no Euclidean space containing four vectors with the given pairwise distances!!
+
+::: 
+
+**Other practical issues**
+
+1) **Asymmetric $\Delta$:** There are cases where the distance matrix $\Delta$ is not symmetric. In this case, we usually set $\Delta \leftarrow \frac{1}{2}(\Delta + \Delta^T)$ to enforce symmetry.
+
+2) When there exist some negative eigenvalues in the inner product matrix $B$, we usually have two options to deal with it. 
+
+    a) Inflate the original proximity matrix $\Delta$ by a small constant factor $c$, i.e., $\Delta_{ij} \leftarrow \Delta_{ij} + c, \; \text{if} \; i \neq j$ until $B$ is positive semidefinite.
+  
+    b) If there exist several negative eigenvalues with small absolute value (compared to the largest several positive eigenvalues), and there are more positive eigenvalues than our prior estimation (the dimension of the original configuration), we may just pick the largest $t$ eigenvalues and eliminate the rest.
 
 
-**Handle Negative Eigenvalues**
-
-i) **non-symetric issue:** There are cases where the proximity matrix $\Delta$ is not symmetric (though it rarely happens in classical scaling scenario). Usually we set $\Delta \leftarrow \Delta + \Delta^T$. In that way, we manually make $\Delta$ symmetric.
-
-ii) When there exist some negative eigenvalues in the inner product matrix $B$, we usually have two options to deal with it. 
-
-  a) Inflate the original proximity matrix $\Delta$ by a small constant factor $c$, i.e., $\Delta_{ij} \leftarrow \Delta_{ij} + c, \; \text{if} \; i \neq j$. In this way, we can deal with the violence of **Triangular Inequality**.
-
-  b) If there exist several negative eigenvalues with small absolute value (compared to the largest several positive eigenvalues), and there are more positive eigenvalues than our prior estimation (the dimension of the original configuration), we may just pick the largest $t$ eigenvalues and eliminate the rest.
-
-
-**Global City Distance case revisit**
+::: {.example #cities-2 name="Global Cities Revisited"}
 
 We can also consider the previous global city distance matrix example. Plot the scree plot of the inner product matrix. 
 
@@ -381,27 +356,68 @@ plot(cmdscale(D, eig = TRUE)$eig, xlab = 'k', ylab = expression(lambda[k]))
 ```
 
 We find that the first three eigenvalues are much larger than the rest, so we assume that the dimension of the original configuration is 3, which also complies to our knowledge about global map.
+:::
 
 #### Duality of PCA and Classical Scaling
 
-You may have already observed that Classical Scaling is actually equivalent to PCA to some extent. Cox states that "there is a duality between a principals components analysis and classical MDS where dissimilarities are given by Euclidean distance"[@Cox_MDS].
+You may have already observed that Classical Scaling is actually equivalent to PCA to some extent. Cox states that "there is a duality between a principals components analysis and classical MDS where dissimilarities are given by Euclidean distance"[@Cox_MDS]. In particular, this duality arises when the distance matrix is generated by computing Euclidean distances of vectors $\vec{x}_1,\dots,\vec{x}_N$.
 
-Given the matrix expression of the original configuration $\mathbf{X} \in \mathbb{R}^{N \times k}$. Recall that PCA is attained by finding the eigen-vectors of the covariance matrix $\frac{1}{N-1} (HX)^T (HX)$, where $H$ is the centering matrix. Suppose the $k$ eigen-vectors are $\vec{w}_1, \vec{w}_2, \dots, \vec{w}_k$, and the corresponding eigenvalues are $\mu_1, \mu_2, \dots,\mu_k$. Then $HX=YW^T$, where $W=(\vec{w}_1 | \vec{w}_2 | \dots | \vec{w}_N)$ represents PC Loadings, and $Y$ represents PC Scores. 
+Given the matrix expression of the original configuration $\mathbf{X} \in \mathbb{R}^{N \times d}$. Recall that PCA is attained by finding the eigen-vectors of the covariance matrix $\frac{1}{N-1} (HX)^T (HX)$, where $H$ is the centering matrix. Suppose the $k$ eigen-vectors are $\vec{w}_1, \vec{w}_2, \dots, \vec{w}_k$, and the corresponding eigenvalues are $\mu_1, \mu_2, \dots,\mu_k$. Then $HX=YW^T$, where $W=(\vec{w}_1 | \vec{w}_2 | \dots | \vec{w}_N)$ represents PC Loadings, and $Y$ represents PC Scores. 
 
-While MDS is attained by first converting $X$ into distance matrix, here, Euclidean distance. In classical MDS algorithm, we convert the Euclidean distance matrix into the inner product matrix $B=(HX)(HX)^T$. then we find the eigen-vectors of $B$ --- call the eigen-vectors $\vec{\nu}_1, \vec{\nu}_2, \dots, \vec{\nu}_N$, and eigenvalues $\lambda_1, \lambda_2, \dots, \lambda_N$. 
+While MDS is attained by first converting $X$ into distance matrix, here, Euclidean distance. In the classical MDS algorithm, the process of converting the Euclidean distance matrix into the inner product matrix gives $B=(HX)(HX)^T$. then we find the eigenvectors of $B$ which are equivalent to the left singular vectors of $HX$ and with nonzero eigenvalues $\lambda_1, \lambda_2, \dots, \lambda_d$ which are the squared singular values of $HX$. 
 
-Recall what you have learnt in Linear Algebra. The eigenvalues of $XX^T$ are the same as those for $X^TX$, together with an extra n-p zero eigenvalues. So, for $i < p$, $\mu_i = \lambda_i$. So the first $t$ PC scores give the t-dimensional configuration for Classical Scaling. **Choosing the number of dimensionality $t$ of the original configuration is equivalent to choosing the number of principal components to keep**
+Recall what you have learned in Linear Algebra. The eigenvalues of $HX(HX)^T$ are the same as those for $X^TX$, together with an extra n-p zero eigenvalues. So the first $t$ PC scores give the t-dimensional configuration for Classical Scaling. **Choosing the number of dimensionality $t$ of the original configuration is equivalent to choosing the number of principal components to keep.**
 
-Furthermore, we have shown that $HX=YW^T$, then $B=(HX)(HX)^T=YW^TWY^T=YY^T$, this means **PC scores are the exact solutions for Classical Scaling!**
-
-As a result, classical MDS has the same strengths and weaknesses of PCA.
+Furthermore, we have shown that $HX=YW^T$, then $B=(HX)(HX)^T=YW^TWY^T=YY^T$, this means **PC scores are the exact solutions for Classical Scaling!**  As a result, classical MDS has the same strengths and weaknesses of PCA.
 
 
 
 ### Metric MDS
 
+Metric MDS is a set of algorithms which seek optimal configuration which minimize a specified loss function.  Typically, this loss function is called the stress which has the general form
+$$S(\vec{y}_1,\dots,\vec{y}_N) = \sum_{i < j} W_{ij} \left(\|\vec{y}_i-\vec{y}_j\|^2 - \Delta_{ij}\right)^2 = \frac{1}{2}\sum_{i\ne j} W_{ij}\left(\|\vec{y}_i-\vec{y}_j\|^2 - \Delta_{ij}\right)^2$$
+where the weights $W_{ij}\ge 0$ have different conventions which prioritize the preservation of certain distances in the original coordinates.  Heuristically, you can think of $\left(\|\vec{y}_i-\vec{y}_j\|^2 - \Delta_{ij}\right)^2$ as measuring how far the lower-dimensional Euclidean distances $\|\vec{y}_i-\vec{y}_j\|$ deviate from the specified original distance $\Delta_{ij}$. Importantly, there is no closed form expression for $\vec{y}_1,\dots,\vec{y}_N$ which minimize $S$ so gradient based optimization methods are typically used in practice. When the desired dimension is unknown, one can estimate different $\vec{y}_1,\dots,\vec{y}_N$ in different dimensions and compare the optimal stress as a data driven method for choosing the dimensionality. 
 
+A important method of metric MDS is the Sammon mapping which takes $W_{ij} \propto \frac{1}{\Delta_{ij}}$. Thus, if $\Delta_{ij} \gg \Delta_{k\ell}$ it follows that $W_{ij} \ll W_{k\ell}$ and we may infer that the Sammon mapping places a greater emphasis on the preservation of small distances!  Briefly, we show the results of the Sammon mapping applied to the global cities data.
+
+::: {.example #sammon-cities name="Sammon mapping and global cities"}
+
+First, we show the minimal Sammon stress at each dimension. 
+```{r}
+t <- stress <- 1:8
+for (j in t){
+stress[j] <- sammon(D, k = j, trace = F)$stress
+}
+plot(stress, xlab = "Dimension", ylab = "Sammon stress")
+```
+```{r}
+out <- sammon(D, k = 3, trace = F)
+ax <- list(
+  title = "",
+  zeroline = FALSE,
+  showline = FALSE,
+  showticklabels = FALSE,
+  showgrid = TRUE
+)
+scene = list(
+  xaxis = ax,
+  yaxis = ax,
+  zaxis = ax)
+plot_ly(data.frame( x = out$points[,1], y= out$points[,2], z = -out$points[,3]),
+        text = names,
+        x = ~x, y = ~y, z = ~z,
+        marker = list(size = 5, color = continent)) %>%
+  add_markers() %>%
+  add_text() %>%
+  layout(scene = scene)
+```
+This stress saturates near a small value for dimensions three and up suggesting a three dimensional configuration is suitable. We show this result below. Note its similarities to the result of classical scaling (which is default initialization for the Sammon mapping optimization algorithm).
+
+
+:::
 
 
 
 ### Nonmetric MDS
+
+To be added in the next edition.
