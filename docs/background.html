@@ -30,7 +30,7 @@
   
   
 <link rel="prev" href="ch-nonlinear.html"/>
-<link rel="next" href="isometric-feature-map-isomap.html"/>
+<link rel="next" href="additional-methods.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -249,27 +249,8 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="6.1.1" data-path="background.html"><a href="background.html#data-on-a-manifold"><i class="fa fa-check"></i><b>6.1.1</b> Data on a manifold</a></li>
 </ul></li>
-<li class="chapter" data-level="6.2" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html"><i class="fa fa-check"></i><b>6.2</b> Isometric Feature Map (ISOMAP)</a>
-<ul>
-<li class="chapter" data-level="6.2.1" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#introduction"><i class="fa fa-check"></i><b>6.2.1</b> Introduction</a></li>
-<li class="chapter" data-level="6.2.2" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#key-definitions"><i class="fa fa-check"></i><b>6.2.2</b> Key Definitions</a></li>
-<li class="chapter" data-level="6.2.3" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#algorithm"><i class="fa fa-check"></i><b>6.2.3</b> Algorithm</a></li>
-<li class="chapter" data-level="6.2.4" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#limitations-of-isomap"><i class="fa fa-check"></i><b>6.2.4</b> Limitations of ISOMAP</a></li>
-</ul></li>
-<li class="chapter" data-level="6.3" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html"><i class="fa fa-check"></i><b>6.3</b> Locally Linear Embeddings (LLEs)</a>
-<ul>
-<li class="chapter" data-level="6.3.1" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#introduction-1"><i class="fa fa-check"></i><b>6.3.1</b> Introduction</a></li>
-<li class="chapter" data-level="6.3.2" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#algorithm-1"><i class="fa fa-check"></i><b>6.3.2</b> Algorithm</a></li>
-<li class="chapter" data-level="6.3.3" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#strengths-and-weaknesses-of-lle"><i class="fa fa-check"></i><b>6.3.3</b> Strengths and Weaknesses of LLE</a></li>
-</ul></li>
-<li class="chapter" data-level="6.4" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html"><i class="fa fa-check"></i><b>6.4</b> Autoencoders (AEs)</a>
-<ul>
-<li class="chapter" data-level="6.4.1" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#introduction-2"><i class="fa fa-check"></i><b>6.4.1</b> Introduction</a></li>
-<li class="chapter" data-level="6.4.2" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#algorithm-2"><i class="fa fa-check"></i><b>6.4.2</b> Algorithm</a></li>
-<li class="chapter" data-level="6.4.3" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#example"><i class="fa fa-check"></i><b>6.4.3</b> Example</a></li>
-</ul></li>
-<li class="chapter" data-level="6.5" data-path="additional-methods.html"><a href="additional-methods.html"><i class="fa fa-check"></i><b>6.5</b> Additional methods</a></li>
-<li class="chapter" data-level="6.6" data-path="exercises-3.html"><a href="exercises-3.html"><i class="fa fa-check"></i><b>6.6</b> Exercises</a></li>
+<li class="chapter" data-level="6.2" data-path="additional-methods.html"><a href="additional-methods.html"><i class="fa fa-check"></i><b>6.2</b> Additional methods</a></li>
+<li class="chapter" data-level="6.3" data-path="exercises-3.html"><a href="exercises-3.html"><i class="fa fa-check"></i><b>6.3</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="ch-clustering.html"><a href="ch-clustering.html"><i class="fa fa-check"></i><b>7</b> Clustering</a>
 <ul>
@@ -344,7 +325,18 @@ Below we show <span class="math inline">\(N=10^4\)</span> samples which are draw
 <p>There is also a issue with the uniqueness problem statement. Given only the high dimensional observations, there is no way we could identify the original lower-dimensional points without more information. In fact, one could find an unlimited sources of equally suitable results. Here is the issue.</p>
 <p>Let <span class="math inline">\(\Phi:\mathbb{R}^k\to\mathbb{R}^k\)</span> be some invertible function. As an example, you could think of <span class="math inline">\(\Phi\)</span> as defining a translation, reflection, rotation, or some composition of these operations. If our original observed data are <span class="math inline">\(\vec{x}_i = \Psi(\vec{z}_i)\)</span>, our manifold learning algorithm could instead infer that the manifold map is <span class="math inline">\(\Psi \circ \Phi^{-1}\)</span> and the lower-dimensional points are <span class="math inline">\(\Phi(\vec{z}_i)\)</span>. This is a perfectly reasonable result since <span class="math inline">\((\Psi\circ \Phi^{-1}\circ)\Phi(\vec{z}_i) = \Psi(\vec{z}_i)= \vec{x}_i\)</span> for <span class="math inline">\(i=1,\dots,N\)</span>, which is the only result we require. Without additional information, there is little we could do to address this issue. For the purposes of visualization, however, we will typically be most interested in the relationship between the lower-dimensional points rather than their specific location or orientation. As such, we need not be concerned about a manifold learning algorithm that provides a translated or rotated representation of <span class="math inline">\(\vec{z}_1,\dots,\vec{z}_N.\)</span> More complicated transformations of the lower-dimensional coordinates are of greater concern and may be addressed through additional assumptions about the manifold map <span class="math inline">\(\Psi.\)</span></p>
 <p>In the following sections, we will review a small collection of different methods which address the manifold learning problem. This collection is by no means exhaustive so we provide a small list with associated references to conclude the chapter.</p>
-<!-- ISOMAP -->
+<!-- <!-- ISOMAP -->
+<p>–&gt;
+<!-- ```{r child = 'topics/ISOMAP.Rmd'} -->
+<!-- ``` --></p>
+<!-- <!-- LLE -->
+<p>–&gt;
+<!-- ```{r child = 'topics/LLE.Rmd'} -->
+<!-- ``` --></p>
+<!-- <!-- AE -->
+<p>–&gt;
+<!-- ```{r child = 'topics/AE.Rmd'} -->
+<!-- ``` --></p>
 </div>
 </div>
             </section>
@@ -353,7 +345,7 @@ Below we show <span class="math inline">\(N=10^4\)</span> samples which are draw
         </div>
       </div>
 <a href="ch-nonlinear.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="isometric-feature-map-isomap.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="additional-methods.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

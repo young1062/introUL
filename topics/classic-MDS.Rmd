@@ -383,7 +383,8 @@ A important method of metric MDS is the Sammon mapping which takes $W_{ij} \prop
 ::: {.example #sammon-cities name="Sammon mapping and global cities"}
 
 First, we show the minimal Sammon stress at each dimension. 
-```{r}
+
+```{r, fig.cap="Sammon stress for Global Cities Data"}
 t <- stress <- 1:8
 for (j in t){
 stress[j] <- sammon(D, k = j, trace = F)$stress
@@ -412,8 +413,6 @@ plot_ly(data.frame( x = out$points[,1], y= out$points[,2], z = -out$points[,3]),
   layout(scene = scene)
 ```
 This stress saturates near a small value for dimensions three and up suggesting a three dimensional configuration is suitable. We show this result below. Note its similarities to the result of classical scaling (which is default initialization for the Sammon mapping optimization algorithm).
-
-
 :::
 
 

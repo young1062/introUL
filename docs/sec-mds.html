@@ -249,27 +249,8 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="6.1.1" data-path="background.html"><a href="background.html#data-on-a-manifold"><i class="fa fa-check"></i><b>6.1.1</b> Data on a manifold</a></li>
 </ul></li>
-<li class="chapter" data-level="6.2" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html"><i class="fa fa-check"></i><b>6.2</b> Isometric Feature Map (ISOMAP)</a>
-<ul>
-<li class="chapter" data-level="6.2.1" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#introduction"><i class="fa fa-check"></i><b>6.2.1</b> Introduction</a></li>
-<li class="chapter" data-level="6.2.2" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#key-definitions"><i class="fa fa-check"></i><b>6.2.2</b> Key Definitions</a></li>
-<li class="chapter" data-level="6.2.3" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#algorithm"><i class="fa fa-check"></i><b>6.2.3</b> Algorithm</a></li>
-<li class="chapter" data-level="6.2.4" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#limitations-of-isomap"><i class="fa fa-check"></i><b>6.2.4</b> Limitations of ISOMAP</a></li>
-</ul></li>
-<li class="chapter" data-level="6.3" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html"><i class="fa fa-check"></i><b>6.3</b> Locally Linear Embeddings (LLEs)</a>
-<ul>
-<li class="chapter" data-level="6.3.1" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#introduction-1"><i class="fa fa-check"></i><b>6.3.1</b> Introduction</a></li>
-<li class="chapter" data-level="6.3.2" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#algorithm-1"><i class="fa fa-check"></i><b>6.3.2</b> Algorithm</a></li>
-<li class="chapter" data-level="6.3.3" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#strengths-and-weaknesses-of-lle"><i class="fa fa-check"></i><b>6.3.3</b> Strengths and Weaknesses of LLE</a></li>
-</ul></li>
-<li class="chapter" data-level="6.4" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html"><i class="fa fa-check"></i><b>6.4</b> Autoencoders (AEs)</a>
-<ul>
-<li class="chapter" data-level="6.4.1" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#introduction-2"><i class="fa fa-check"></i><b>6.4.1</b> Introduction</a></li>
-<li class="chapter" data-level="6.4.2" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#algorithm-2"><i class="fa fa-check"></i><b>6.4.2</b> Algorithm</a></li>
-<li class="chapter" data-level="6.4.3" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#example"><i class="fa fa-check"></i><b>6.4.3</b> Example</a></li>
-</ul></li>
-<li class="chapter" data-level="6.5" data-path="additional-methods.html"><a href="additional-methods.html"><i class="fa fa-check"></i><b>6.5</b> Additional methods</a></li>
-<li class="chapter" data-level="6.6" data-path="exercises-3.html"><a href="exercises-3.html"><i class="fa fa-check"></i><b>6.6</b> Exercises</a></li>
+<li class="chapter" data-level="6.2" data-path="additional-methods.html"><a href="additional-methods.html"><i class="fa fa-check"></i><b>6.2</b> Additional methods</a></li>
+<li class="chapter" data-level="6.3" data-path="exercises-3.html"><a href="exercises-3.html"><i class="fa fa-check"></i><b>6.3</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="ch-clustering.html"><a href="ch-clustering.html"><i class="fa fa-check"></i><b>7</b> Clustering</a>
 <ul>
@@ -304,23 +285,11 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="sec-mds" class="section level2 hasAnchor" number="4.4">
 <h2><span class="header-section-number">4.4</span> Multidimensional Scaling<a href="sec-mds.html#sec-mds" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<<<<<<< HEAD
-<ol style="list-style-type: decimal">
-<li>Introduction and Settings</li>
-</ol>
-=======
->>>>>>> linear_development
 <p>Multidimensional scaling (MDS) is a broad name for a myriad of different methods which are designed to handle a common problem. Suppose there are <span class="math inline">\(N\)</span> objects of interest in a dataset. Examples include a set of geographic locations or cells from mass spectrometry or census blocks, etc. Importantly, we do not need actual data corresponding to each object. In MDS, we instead require a measure the distance or dissimilarity between each pair of objects. We can organize these distances into a matrix <span class="math inline">\({\bf \Delta}\in\mathbb{R}^{N\times N}\)</span>, with <span class="math inline">\({\bf \Delta}_{rs}\)</span> representing the distance/dissimilarity between objects <span class="math inline">\(r\)</span> and <span class="math inline">\(s\)</span>. Thus, <span class="math inline">\({\bf \Delta}_{rr}=0\)</span> and for now, we may assume that <span class="math inline">\({\bf \Delta}_{sr} = {\bf \Delta}_{rs}\)</span>. The matrix <span class="math inline">\({\bf \Delta}\)</span> is often called a <em>Distance</em> or <em>Dissimilarity</em> matrix. In practice, we may construct a distance matrix from observations, but for the purposes of MDS we only require <span class="math inline">\({\bf \Delta}\)</span>.</p>
 <p>The primary goal of MDS is to find a set of lower-dimensional points <span class="math inline">\(\vec{y}_1, \dots, \vec{y}_N \in \mathbb{R}^{t}\)</span> corresponding to each of the <span class="math inline">\(N\)</span> objects such that the distance between <span class="math inline">\(\vec{y}_r\)</span> and <span class="math inline">\(\vec{y}_s\)</span> is close to <span class="math inline">\({\bf \Delta}_{rs}\)</span>. There are numerous different notions of distance one use in <span class="math inline">\(\mathbb{R}^t\)</span>. Additionally, we may not know the notion of distance/dissimilarity used when computing <span class="math inline">\({\bf \Delta}\)</span> or if the dissimilarity corresponds to any well defined notion of distance. Euclidean distance is a common choice for the distance of the lower-dimensional vectors. Fixing this choice still leaves many open questions. Are the original distances Euclidean? If so, can we determine the dimensionality of the original data?</p>
 <p>MDS also serves as a data visualization method. In this case, <span class="math inline">\(t\)</span> is typically chosen to be either two or three, and the <span class="math inline">\(N\)</span> points in the two-dimensional (or three-dimensional) representation may be plotted so that one can visualize the relationships between data. Before turning to the most common methods of MDS, let’s view a few examples using distances between cities.</p>
 <div class="example">
-<<<<<<< HEAD
-<p><span id="exm:mds-cities" class="example"><strong>Example 4.2  (MDS applied to distances between cities) </strong></span></p>
-<!-- Here we use the sphere distances of multiple large cities as an example to illustrate the power of MDS in recovering the original expressions and visualizing them. -->
-<p>The <em>eurodist</em> R package provides air travel distances between 21 cities in Europe and 10 cities in the US. For the moment, we will focus on the 10 US cities with names and distances given in the following tables</p>
-=======
 <p><span id="exm:mds-cities" class="example"><strong>Example 4.3  (Classical scaling applied to distances between cities) </strong></span>The <em>eurodist</em> R package provides air travel distances between 21 cities in Europe and 10 cities in the US. For the moment, we will focus on the 10 US cities with names and distances given in the following tables</p>
->>>>>>> linear_development
 <table>
 <thead>
 <tr class="header">
@@ -470,20 +439,11 @@ div.csl-indent {
 </tr>
 </tbody>
 </table>
-<<<<<<< HEAD
-<p>After conducting classical MDS (a method of MDS, details will be discussed later), we acquire the plot below. The plot is consistent with the geographical relationships between the cities. Miami and Seattle are the farthest apart in our plot. NY and D.C. are quite close on the plot, which is also true for Los Angeles and San Francisco.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
-<p>Actually, if we rotate the above plot 180 degrees, a crude US map appears impressively.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
-<p>Again, let’s try MDS on the 21 European cities, again applying some reflections of the map given by MDS to help it comply to the conventional orientation of a European map.
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; fe6c00855e493ca3aa72864411530b42ede78222</p>
-=======
 <p>After conducting classical scaling (a method of MDS, details will be discussed later), we acquire the plot below. The plot is consistent with the geographical relationships between the cities. Miami and Seattle are the farthest apart in our plot. NY and D.C. are quite close on the plot, which is also true for Los Angeles and San Francisco.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p>If we rotate the above plot 180 degrees, we recover an representation of the cities consistent with the typical map of the US.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <p>Now let’s try MDS on the 21 European cities</p>
->>>>>>> linear_development
 <table>
 <thead>
 <tr class="header">
@@ -1018,7 +978,7 @@ div.csl-indent {
 </tr>
 </tbody>
 </table>
-<p><img src="_main_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <p>After applying a reflection of the map given by classical scaling to help it comply to the conventional orientation of a European map, the above plot reconstructs the European map quite well. Gibraltar, Lisbon and Madrid are in the south-west corner, the two North European cities Stockholm and Copenhagen are in the north end, and Athens is in the south-west corner.</p>
 <p>Finally, let’s consider the 18 representative global cities. Their pairwise flight lengths (geodesic distance) are shown in the table below. As we can see, the geodesic distances between the three Southern-Hemisphere cities: Rio, Cape Town, Melbourne and other Northern-Hemisphere cities are generally large (almost all over 10,000 kilometers)</p>
 <table>
@@ -1426,47 +1386,8 @@ div.csl-indent {
 </tr>
 </tbody>
 </table>
-<<<<<<< HEAD
-<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-d8a6981575f8b0739c4e" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-d8a6981575f8b0739c4e">{"x":{"visdat":{"d9b4f43df8a":["function () ","plotlyVisDat"]},"cur_data":"d9b4f43df8a","attrs":{"d9b4f43df8a":{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":{},"y":{},"z":{},"marker":{"size":5,"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"]},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","inherit":true},"d9b4f43df8a.1":{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":{},"y":{},"z":{},"marker":{"size":5,"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"]},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"text","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"","zeroline":false,"showline":false,"showticklabels":false,"showgrid":true},"yaxis":{"title":"","zeroline":false,"showline":false,"showticklabels":false,"showgrid":true},"zaxis":{"title":"","zeroline":false,"showline":false,"showticklabels":false,"showgrid":true}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":[5343.9877289020233,41.140863824298336,7005.9310679057635,957.96677970857229,-3156.0709693998551,7934.2357737096027,-6113.9443366480236,-5912.3299842780689,-220.65980656084307,4562.9046904158258,-6341.1960811477611,-3056.9920394165256,-7913.8549402285762,-2261.6901911745376,-3044.6660038081181,8131.6917077783037,-1609.4274814758753,5652.973221893807],"y":[-1230.200982493398,8921.1810193426445,-303.63229523740449,-8682.775955652045,2568.5362904738859,-2325.5876252753369,-4904.7132522663906,-2034.497770624947,2386.7704037260823,3465.5886580926508,-2075.0155180250599,2920.1754766403678,3041.9874515509109,3924.7383619940251,-6342.4234776081357,2466.5855740698066,2008.1293377260868,-3804.8456964337433],"z":[2934.5840202010972,-5544.9733301782771,1629.6243019835349,-1245.0767135166777,3259.5433910247648,-9061.0043511824679,-2754.1499571706909,1509.9751051745079,3207.836821273494,1762.8011381620981,987.39657250125333,3108.8208436851914,-7541.4732083967556,2580.2445646129659,-118.99226663268468,-897.51180217772207,3420.3758431654628,2761.9790274709017],"marker":{"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"],"size":5,"line":{"color":"rgba(31,119,180,1)"}},"type":"scatter3d","mode":"markers","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":[5343.9877289020233,41.140863824298336,7005.9310679057635,957.96677970857229,-3156.0709693998551,7934.2357737096027,-6113.9443366480236,-5912.3299842780689,-220.65980656084307,4562.9046904158258,-6341.1960811477611,-3056.9920394165256,-7913.8549402285762,-2261.6901911745376,-3044.6660038081181,8131.6917077783037,-1609.4274814758753,5652.973221893807],"y":[-1230.200982493398,8921.1810193426445,-303.63229523740449,-8682.775955652045,2568.5362904738859,-2325.5876252753369,-4904.7132522663906,-2034.497770624947,2386.7704037260823,3465.5886580926508,-2075.0155180250599,2920.1754766403678,3041.9874515509109,3924.7383619940251,-6342.4234776081357,2466.5855740698066,2008.1293377260868,-3804.8456964337433],"z":[2934.5840202010972,-5544.9733301782771,1629.6243019835349,-1245.0767135166777,3259.5433910247648,-9061.0043511824679,-2754.1499571706909,1509.9751051745079,3207.836821273494,1762.8011381620981,987.39657250125333,3108.8208436851914,-7541.4732083967556,2580.2445646129659,-118.99226663268468,-897.51180217772207,3420.3758431654628,2761.9790274709017],"marker":{"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"],"size":5,"line":{"color":"rgba(255,127,14,1)"}},"type":"scatter3d","mode":"text+markers","error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
-<p>The three-dimensional visualization result of classical MDS is shown above. You can rotate and magnify it on your laptop. The blue points represent Asian cities, the black points represent European cities, and the red points represent North American cities. If you inspect the plot clearly, you may notice that the cities appear to be constrained to the surface of a sphere, which complies to the true scenario.</p>
-<p>In each of the examples, classical MDS was quite successful in generating maps which reflected the geographical configuration with continental or global maps which were (after some reflections/rotations) consistent with conventional maps.</p>
-</div>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>fe6c00855e493ca3aa72864411530b42ede78222</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-<div id="key-features-of-mds" class="section level3 hasAnchor" number="4.4.1">
-<h3><span class="header-section-number">4.4.1</span> Key features of MDS<a href="sec-mds.html#key-features-of-mds" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Beyond demonstrating the capacity of MDS to recover meaningful visualization, we also gain two insights from the examples above.</p>
-<ol style="list-style-type: lower-roman">
-<li>The pairwise distance between two objects need not be Euclidean. In the above example, they are actually <a href="https://en.wikipedia.org/wiki/Great-circle_distance">great circle distance</a>. Actually, based on the type of distance metric and the specific recovery method of the Proximity Matrix, MDS can be divided into three major types: Classical Scaling; Metric MDS; and Non-Metric MDS.</li>
-</ol>
-<p>Classical Scaling and Metric MDS generally require that the input data is a true distance metric, while Non-metric MDS is usually used when the input data doesn’t satisfy the properties of a true distance metric or when the relationships are ordinal (i.e., we only know which distances are larger, but not by how much).</p>
-<p>To add, Classical MDS operates by applying an eigen-decomposition to the “double-centered” dissimilarity matrix, while Metric MDS and Non-Metric MDS may employ iterative optimization methods to better accommodate non-linear relationships in data structure.</p>
-<ol start="2" style="list-style-type: lower-roman">
-<li>As we can tell from the recovery of US map and European map, the configurations of <span class="math inline">\(\tilde{y}_1, \tilde{y}_2, \dots, \tilde{y}_N\)</span> are not unique, as we can rotate or flip the map. Actually, if <span class="math inline">\(\tilde{y}_1, \tilde{y}_2, \dots, \tilde{y}_N \in \mathbb{R}^{t^{\prime}}\)</span> is considered as the optimal solution, given any vector <span class="math inline">\(\vec{b} \in \mathbb{R}^{t^{\prime}}\)</span> and orthogonal matrix <span class="math inline">\(A \in \mathbb{R}^{t^{\prime} \times t^{\prime}}\)</span>, <span class="math inline">\(||(A \tilde{y}_r + \vec{b} - (A \tilde{y}_s + \vec{b})|| = ||\tilde{y}_r - \tilde{y}_s||\)</span>. Rotation, Reflection or Translation don’t alter the pairwise distances. So <span class="math inline">\(A \tilde{y}_1 + \vec{b}, A \tilde{y}_2 + \vec{b}, \dots, A \tilde{y}_N + \vec{b}\)</span> is also an optimal solution.</li>
-</ol>
-</div>
-<div id="classical-scaling" class="section level3 hasAnchor" number="4.4.2">
-<h3><span class="header-section-number">4.4.2</span> Classical Scaling<a href="sec-mds.html#classical-scaling" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Before going deep into Classical Scaling, we first need to introduce some important definitions.</p>
-<div id="definitions" class="section level4 hasAnchor" number="4.4.2.1">
-<h4><span class="header-section-number">4.4.2.1</span> Definitions:<a href="sec-mds.html#definitions" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-=======
-<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-2ea8b147df44daf29fda" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-2ea8b147df44daf29fda">{"x":{"visdat":{"1656c78f81132":["function () ","plotlyVisDat"]},"cur_data":"1656c78f81132","attrs":{"1656c78f81132":{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":{},"y":{},"z":{},"marker":{"size":5,"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"]},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","inherit":true},"1656c78f81132.1":{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":{},"y":{},"z":{},"marker":{"size":5,"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"]},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"text","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"","zeroline":false,"showline":false,"showticklabels":false,"showgrid":true},"yaxis":{"title":"","zeroline":false,"showline":false,"showticklabels":false,"showgrid":true},"zaxis":{"title":"","zeroline":false,"showline":false,"showticklabels":false,"showgrid":true}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":[5343.9877289020233,41.140863824298336,7005.9310679057635,957.96677970857229,-3156.0709693998551,7934.2357737096027,-6113.9443366480236,-5912.3299842780689,-220.65980656084307,4562.9046904158258,-6341.1960811477611,-3056.9920394165256,-7913.8549402285762,-2261.6901911745376,-3044.6660038081181,8131.6917077783037,-1609.4274814758753,5652.973221893807],"y":[-1230.200982493398,8921.1810193426445,-303.63229523740449,-8682.775955652045,2568.5362904738859,-2325.5876252753369,-4904.7132522663906,-2034.497770624947,2386.7704037260823,3465.5886580926508,-2075.0155180250599,2920.1754766403678,3041.9874515509109,3924.7383619940251,-6342.4234776081357,2466.5855740698066,2008.1293377260868,-3804.8456964337433],"z":[2934.5840202010972,-5544.9733301782771,1629.6243019835349,-1245.0767135166777,3259.5433910247648,-9061.0043511824679,-2754.1499571706909,1509.9751051745079,3207.836821273494,1762.8011381620981,987.39657250125333,3108.8208436851914,-7541.4732083967556,2580.2445646129659,-118.99226663268468,-897.51180217772207,3420.3758431654628,2761.9790274709017],"marker":{"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"],"size":5,"line":{"color":"rgba(31,119,180,1)"}},"type":"scatter3d","mode":"markers","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":[5343.9877289020233,41.140863824298336,7005.9310679057635,957.96677970857229,-3156.0709693998551,7934.2357737096027,-6113.9443366480236,-5912.3299842780689,-220.65980656084307,4562.9046904158258,-6341.1960811477611,-3056.9920394165256,-7913.8549402285762,-2261.6901911745376,-3044.6660038081181,8131.6917077783037,-1609.4274814758753,5652.973221893807],"y":[-1230.200982493398,8921.1810193426445,-303.63229523740449,-8682.775955652045,2568.5362904738859,-2325.5876252753369,-4904.7132522663906,-2034.497770624947,2386.7704037260823,3465.5886580926508,-2075.0155180250599,2920.1754766403678,3041.9874515509109,3924.7383619940251,-6342.4234776081357,2466.5855740698066,2008.1293377260868,-3804.8456964337433],"z":[2934.5840202010972,-5544.9733301782771,1629.6243019835349,-1245.0767135166777,3259.5433910247648,-9061.0043511824679,-2754.1499571706909,1509.9751051745079,3207.836821273494,1762.8011381620981,987.39657250125333,3108.8208436851914,-7541.4732083967556,2580.2445646129659,-118.99226663268468,-897.51180217772207,3420.3758431654628,2761.9790274709017],"marker":{"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"],"size":5,"line":{"color":"rgba(255,127,14,1)"}},"type":"scatter3d","mode":"text+markers","error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-01848424da1fe0ac9527" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-01848424da1fe0ac9527">{"x":{"visdat":{"178b95f9a1c8a":["function () ","plotlyVisDat"]},"cur_data":"178b95f9a1c8a","attrs":{"178b95f9a1c8a":{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":{},"y":{},"z":{},"marker":{"size":5,"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"]},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","inherit":true},"178b95f9a1c8a.1":{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":{},"y":{},"z":{},"marker":{"size":5,"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"]},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"text","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"","zeroline":false,"showline":false,"showticklabels":false,"showgrid":true},"yaxis":{"title":"","zeroline":false,"showline":false,"showticklabels":false,"showgrid":true},"zaxis":{"title":"","zeroline":false,"showline":false,"showticklabels":false,"showgrid":true}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":[5343.9877289020233,41.140863824298336,7005.9310679057635,957.96677970857229,-3156.0709693998551,7934.2357737096027,-6113.9443366480236,-5912.3299842780689,-220.65980656084307,4562.9046904158258,-6341.1960811477611,-3056.9920394165256,-7913.8549402285762,-2261.6901911745376,-3044.6660038081181,8131.6917077783037,-1609.4274814758753,5652.973221893807],"y":[-1230.200982493398,8921.1810193426445,-303.63229523740449,-8682.775955652045,2568.5362904738859,-2325.5876252753369,-4904.7132522663906,-2034.497770624947,2386.7704037260823,3465.5886580926508,-2075.0155180250599,2920.1754766403678,3041.9874515509109,3924.7383619940251,-6342.4234776081357,2466.5855740698066,2008.1293377260868,-3804.8456964337433],"z":[2934.5840202010972,-5544.9733301782771,1629.6243019835349,-1245.0767135166777,3259.5433910247648,-9061.0043511824679,-2754.1499571706909,1509.9751051745079,3207.836821273494,1762.8011381620981,987.39657250125333,3108.8208436851914,-7541.4732083967556,2580.2445646129659,-118.99226663268468,-897.51180217772207,3420.3758431654628,2761.9790274709017],"marker":{"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"],"size":5,"line":{"color":"rgba(31,119,180,1)"}},"type":"scatter3d","mode":"markers","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":[5343.9877289020233,41.140863824298336,7005.9310679057635,957.96677970857229,-3156.0709693998551,7934.2357737096027,-6113.9443366480236,-5912.3299842780689,-220.65980656084307,4562.9046904158258,-6341.1960811477611,-3056.9920394165256,-7913.8549402285762,-2261.6901911745376,-3044.6660038081181,8131.6917077783037,-1609.4274814758753,5652.973221893807],"y":[-1230.200982493398,8921.1810193426445,-303.63229523740449,-8682.775955652045,2568.5362904738859,-2325.5876252753369,-4904.7132522663906,-2034.497770624947,2386.7704037260823,3465.5886580926508,-2075.0155180250599,2920.1754766403678,3041.9874515509109,3924.7383619940251,-6342.4234776081357,2466.5855740698066,2008.1293377260868,-3804.8456964337433],"z":[2934.5840202010972,-5544.9733301782771,1629.6243019835349,-1245.0767135166777,3259.5433910247648,-9061.0043511824679,-2754.1499571706909,1509.9751051745079,3207.836821273494,1762.8011381620981,987.39657250125333,3108.8208436851914,-7541.4732083967556,2580.2445646129659,-118.99226663268468,-897.51180217772207,3420.3758431654628,2761.9790274709017],"marker":{"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"],"size":5,"line":{"color":"rgba(255,127,14,1)"}},"type":"scatter3d","mode":"text+markers","error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <p>The three-dimensional visualization result of classical MDS is shown above. You can rotate and magnify it on your laptop. The blue points represent Asian cities, the black points represent European cities, and the red points represent North American cities. If you inspect the plot clearly, you may notice that the cities appear to be constrained to the surface of a sphere, which complies to the true scenario.</p>
 <p>In each of the examples, classical MDS was quite successful in generating maps which reflected the geographical configuration with continental or global maps which were (after some reflections/rotations) consistent with conventional maps. Let’s discuss the details.</p>
 </div>
@@ -1474,7 +1395,6 @@ div.csl-indent {
 <h3><span class="header-section-number">4.4.1</span> Key features of MDS<a href="sec-mds.html#key-features-of-mds" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>MDS can be divided into three major types: Classical Scaling; Metric MDS; and Non-Metric MDS. The choice of method depends on the specifics of the distance/dissimilarity matrix and features which are preferential to preserve. Classical Scaling and Metric MDS require that the provided distances correspond to a metric (more on this below), while Non-metric MDS is usually used when the input data doesn’t satisfy the properties of a true distance metric or when the relationships are ordinal (i.e., we only know which distances are larger, but not by how much).</p>
 <p>Beyond demonstrating the capacity of MDS to recover meaningful visualization, we also gain two insights from the examples above which hold for any MDS algorithm.</p>
->>>>>>> linear_development
 <ol style="list-style-type: lower-roman">
 <li><p>As we can tell from the recovery of US map and European map, the configurations of <span class="math inline">\(\tilde{y}_1, \tilde{y}_2, \dots, \tilde{y}_N\)</span> are not unique, as we can rotate or flip the map. Actually, if <span class="math inline">\(\tilde{y}_1, \tilde{y}_2, \dots, \tilde{y}_N \in \mathbb{R}^{t^{\prime}}\)</span> is considered as the optimal solution using Euclidean distance, then given any vector <span class="math inline">\(\vec{b} \in \mathbb{R}^{t^{\prime}}\)</span> and orthogonal matrix <span class="math inline">\(A \in \mathbb{R}^{t^{\prime} \times t^{\prime}}\)</span>, <span class="math inline">\(||(A \tilde{y}_r + \vec{b} - (A \tilde{y}_s + \vec{b})|| = ||\tilde{y}_r - \tilde{y}_s||\)</span>. Rotation, Reflection or Translation don’t alter the pairwise distances. So <span class="math inline">\(A \tilde{y}_1 + \vec{b}, A \tilde{y}_2 + \vec{b}, \dots, A \tilde{y}_N + \vec{b}\)</span> is also an optimal solution. Outside of Euclidean distances, reflections are still possible which eliminate the possibility of unique configurations.</p></li>
 <li><p>The pairwise distance between two objects need not be Euclidean. In the above example, they are actually <a href="https://en.wikipedia.org/wiki/Great-circle_distance">great circle distance</a>.</p></li>
@@ -1487,50 +1407,6 @@ div.csl-indent {
 <div class="definition">
 <p><span id="def:dist-mat" class="definition"><strong>Definition 4.3  (Distance Matrix) </strong></span>A matrix <span class="math inline">\(\Delta \in \mathbb{R}^{N \times N}\)</span> is called a distance matrix if it possesses the following properties:</p>
 <ol style="list-style-type: lower-alpha">
-<<<<<<< HEAD
-<li>Symmetry</li>
-</ol>
-<p><span class="math inline">\(\Delta\)</span> is symmetric, meaning that:</p>
-<p><span class="math display">\[\Delta_{rs} = \Delta_{sr} \quad \text{for all } r \text{ and } s\]</span></p>
-<p>This implies that the distance between points <span class="math inline">\(r\)</span> and <span class="math inline">\(s\)</span> is the same as the distance between points <span class="math inline">\(s\)</span> and <span class="math inline">\(r\)</span>.</p>
-<ol start="2" style="list-style-type: lower-alpha">
-<li>Zero Diagonal</li>
-</ol>
-<p>The diagonal entries of the matrix represent the distance of a point to itself, and are thus all zeros:</p>
-<p><span class="math display">\[\Delta_{rr} \equiv 0 \quad \text{for all } 1 \leq r \leq N\]</span></p>
-<ol start="3" style="list-style-type: lower-alpha">
-<li>Non-negativity</li>
-</ol>
-<p>All distances are non-negative:</p>
-<p><span class="math display">\[\Delta_{rs} \geq 0\]</span></p>
-<ol start="4" style="list-style-type: lower-alpha">
-<li>Triangle Inequality</li>
-</ol>
-<p>The matrix respects the triangle inequality:</p>
-<p><span class="math display">\[\Delta_{rs} \leq \Delta_{rt} + \Delta_{ts}\]</span></p>
-<p>This property ensures that the direct distance between two points <span class="math inline">\(r\)</span> and <span class="math inline">\(s\)</span> is never greater than the sum of the distances from <span class="math inline">\(r\)</span> to a third point <span class="math inline">\(t\)</span> and from <span class="math inline">\(t\)</span> to <span class="math inline">\(s\)</span>.</p>
-<ol start="2" style="list-style-type: lower-roman">
-<li>Further, the distance matrix <span class="math inline">\(\Delta \in \mathbb{R}^{N \times N}\)</span> is a Euclidean distance matrix if there exists a configuration <span class="math inline">\(\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N\)</span> s.t. <span class="math inline">\(\Delta_{rs}\)</span> represents the Euclidean distance between points <span class="math inline">\(r\)</span> and <span class="math inline">\(s\)</span>, i.e., <span class="math inline">\(||\vec{y}_r-\vec{y}_s||=\Delta_{rs} \forall r,s\)</span>.</li>
-</ol>
-<p>For configuration <span class="math inline">\(\vec{y}_i, \vec{y}_j \in \mathbb{R}^t\)</span>, the Euclidean distance between point <span class="math inline">\(r\)</span> and point <span class="math inline">\(s\)</span> is defined as <span class="math inline">\(\delta_{ij}=||\vec{y}_i - \vec{y}_j||= \left\{\sum_{k=1}^t \left(y_{i k}-x_{j k}\right)^2\right\}^{1/2}\)</span>. <strong>Remember to take the square root</strong></p>
-<ol start="3" style="list-style-type: lower-roman">
-<li>Prerequisite for Classical Scaling:</li>
-</ol>
-<ol style="list-style-type: lower-alpha">
-<li><p>Strictly speaking, we require that the Proximity Matrix <span class="math inline">\(\Delta\)</span> is a Euclidean distance matrix.</p></li>
-<li><p>Furthermore, it is assumed that the configurations <span class="math inline">\(\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N\)</span> are centered. In other words, <span class="math inline">\(\sum_{i=1}^N \vec{y}_i = \vec{0}\)</span>. This step eliminates the influence of location.</p></li>
-</ol>
-</div>
-<div id="recover-coordinates" class="section level4 hasAnchor" number="4.4.2.2">
-<h4><span class="header-section-number">4.4.2.2</span> Recover Coordinates<a href="sec-mds.html#recover-coordinates" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>It may sound difficult to recover the configuration <span class="math inline">\(\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N\)</span> from merely the Euclidean distance matrix <span class="math inline">\(\Delta\)</span> at the first glance. However, the situation becomes clearer after some analysis.</p>
-<p><span class="math inline">\(\Delta^2_{rs}\)</span> can be expressed as <span class="math inline">\(\Delta^2_{rs} = ||\vec{y}_r||^2 + ||\vec{y}_s||^2 - 2 \vec{y}_r^T \vec{y}_s\)</span>. It’s not difficult to observe that both terms are very easy to be expressed with the original configuration: <span class="math inline">\(Y = \left(\begin{array}{c} \vec{y}_1^{\top} \\ \vec{y}_2^{\top} \\ \vdots \\ \dot{y}_N^{\top} \end{array}\right)\)</span>.</p>
-<p>The entries of the inner product matrix, i.e. <span class="math inline">\(B = YY^T \in \mathbb{R}^{N \times N}\)</span> are able to express the Euclidean distance matrix <span class="math inline">\(\Delta\)</span>.</p>
-<p><strong>1) Computing the inner product matrix <span class="math inline">\(B\)</span></strong></p>
-<p>The inner product term can be represented as: <span class="math inline">\(B_{ij} = \vec{y}_r^T \vec{y}_s\)</span>, while the norms of <span class="math inline">\(\vec{y}_r\)</span> and <span class="math inline">\(\vec{y}_s\)</span> can be represented by the entry of <span class="math inline">\(B\)</span>, i.e. <span class="math inline">\(B_{ii} = ||\vec{y}_i||^2\)</span>. As a result, <span class="math inline">\(\Delta^2_{ij} = B_{ii} + B_{jj} - 2 B_{ij}\)</span>.</p>
-<p><strong>Key Observation</strong> Here, we successfully express the entries of <span class="math inline">\(\Delta\)</span> (known) with entries of <span class="math inline">\(B\)</span> (unknown). However, our goal is to find a way to express entries of <span class="math inline">\(B\)</span> (unknown) with entries of <span class="math inline">\(\Delta\)</span>. Intuitively, we want to cancel out <span class="math inline">\(B_{ij}\)</span> terms in the expression. Considering that <span class="math inline">\(\sum_{i=1}^N \vec{y}_i = \vec{0}\)</span>, we sum both sides of the equation over the index <span class="math inline">\(i\)</span>. We can get the following expression: (Because <span class="math inline">\(\sum_{i=1}^N B_{ij} = \vec{y}_j^T (\sum_{i=1}^N \vec{y}_i) = 0\)</span>)
-<span class="math display">\[\sum_{i=1}^N \Delta_{ij}^2=\operatorname{tr}(B) + N B_{ii}\]</span></p>
-=======
 <li><p>Symmetry: <span class="math inline">\(\Delta\)</span> is symmetric, meaning that: <span class="math inline">\(\Delta_{rs} = \Delta_{sr} \quad \text{for all } r \text{ and } s\)</span></p></li>
 <li><p>Zero Diagonal: The diagonal entries of the matrix represent the distance of a point to itself, and are thus all zeros: <span class="math inline">\(\Delta_{rr} \equiv 0 \quad \text{for all } 1 \leq r \leq N\)</span></p></li>
 <li><p>Non-negativity: All distances are non-negative: <span class="math inline">\(\Delta_{rs} \geq 0\)</span></p></li>
@@ -1551,7 +1427,6 @@ div.csl-indent {
 <p>The inner product term can be represented as: <span class="math inline">\(B_{ij} = \vec{y}_i^T \vec{y}_j\)</span>. As a result, <span class="math display">\[(\Delta_{ij})^2 = B_{ii} + B_{jj} - 2 B_{ij}.\]</span></p>
 <p><strong>Key Observation</strong> In the previous line, we express the entries of <span class="math inline">\(\Delta\)</span> (known) with entries of <span class="math inline">\(B\)</span> (unknown). Our goal is to find a way to express entries of <span class="math inline">\(B\)</span> (unknown) with entries of <span class="math inline">\(\Delta\)</span>. Intuitively, we want to cancel out <span class="math inline">\(B_{ij}\)</span> terms in the expression. Considering that <span class="math inline">\(\sum_{i=1}^N \vec{y}_i = \vec{0}\)</span>, we sum both sides of the equation over the index <span class="math inline">\(i\)</span>. We can get the following expression:<br />
 <span class="math display">\[\sum_{i=1}^N (\Delta_{ij})^2=\operatorname{tr}(B) + N B_{ii}\]</span></p>
->>>>>>> linear_development
 <p>Similarly, we can also sum both sides of the equation over index <span class="math inline">\(j\)</span>, and get the expression:
 <span class="math display">\[\sum_{j=1}^N (\Delta_{ij})^2=\operatorname{tr}(B) + N B_{jj}\]</span></p>
 <p>We successfully eliminate all the off-diagonal terms of <span class="math inline">\(B\)</span> through the above steps. Now, we want to take a step further. Sum both sides of the equations over both indexes <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>. We acquire the following expression:
@@ -1565,18 +1440,10 @@ div.csl-indent {
 B_{ij} &amp; = \frac{1}{2} (B_{ii} + B_{jj} - (\Delta_{ij})^2) \\
 &amp; = -\frac{1}{2} (\Delta_{ij})^2 + \frac{1}{N} \sum_{i=1}^N (\Delta_{ij})^2 + \frac{1}{N} \sum_{j=1}^N (\Delta_{ij})^2-\frac{1}{2 N^2} \sum_{i=1}^N \sum_{j=1}^N (\Delta_{ij})^2
 \end{aligned}\]</span>
-<<<<<<< HEAD
-<p>Actually, we may also express the inner product matrix <span class="math inline">\(B\)</span> in a matrix form, which is what we do in real data computation. Here <span class="math inline">\(A \in \mathbb{R}^{N \times N}, A_{ij} = \Delta^2_{ij} \quad \text{for} \; \forall \; 1 \leq i,j \leq N\)</span>, <span class="math inline">\(H = \mathbb{I}_N - \frac{1}{N} \mathbb{1}_N \mathbb{1}_N^T\)</span>.</p>
-<p><span class="math display">\[B = H A H\]</span></p>
-<p><strong>2) Recover the coordinates using inner product matrix <span class="math inline">\(B\)</span></strong></p>
-<p>Both diagonal and off-diagonal entries of the inner product matrix <span class="math inline">\(B\)</span> has been shown. We assumed that <span class="math inline">\(B\)</span> = <span class="math inline">\(YY^T\)</span>, so <span class="math inline">\(B\)</span> is symmetric and positive semi-definite (all eigenvalues are non-negative), with <span class="math inline">\(t\)</span> positive eigenvalues and <span class="math inline">\(N-t\)</span> ‘zero’ eigenvalues.</p>
-<p>Our intuition is to apply SVD to <span class="math inline">\(B\)</span> in order to recover the configuration <span class="math inline">\(\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N \in \mathbb{R}^t\)</span>.</p>
-=======
 <p>We may more compactly express the inner product matrix <span class="math inline">\(B\)</span> in a matrix form, as <span class="math display">\[B = HAH\]</span> where <span class="math inline">\(A \in \mathbb{R}^{N \times N}\)</span> has entries <span class="math inline">\(A_{ij} = -\frac{1}{2}(\Delta_{ij}) \quad \text{for} \; \forall \; 1 \leq i,j \leq N\)</span> and <span class="math inline">\(H\)</span> is the centering matrix <span class="math display">\[H = \mathbb{I}_N - \frac{1}{N} \mathbb{1}_N \mathbb{1}_N^T\]</span>.</p>
 <p><strong>2) Recover the coordinates using inner product matrix <span class="math inline">\(B\)</span></strong></p>
 <p>Both diagonal and off-diagonal entries of the inner product matrix <span class="math inline">\(B\)</span> has been shown. We assumed that <span class="math inline">\(B\)</span> = <span class="math inline">\(YY^T\)</span>, so <span class="math inline">\(B\)</span> is symmetric and positive semi-definite (all eigenvalues are non-negative). Assuming <span class="math inline">\(B\)</span> is rank <span class="math inline">\(t\)</span> implies that it has <span class="math inline">\(t\)</span> positive eigenvalues and <span class="math inline">\(N-t\)</span> ‘zero’ eigenvalues.</p>
 <p>Our intuition is to apply SVD/diagonalization to <span class="math inline">\(B\)</span> in order to recover the configuration <span class="math inline">\(\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N \in \mathbb{R}^t\)</span> by computing the nonzero eigenvalues and corresponding eigenvectors giving the factorization.</p>
->>>>>>> linear_development
 <p><span class="math display">\[\begin{align}
 B &amp; = \left(\vec{u}_1\left|\vec{u}_2\right| \ldots \mid \vec{u}_t\right) \begin{pmatrix}
 \lambda_1 &amp; \cdots &amp; 0 \\
@@ -1604,50 +1471,29 @@ For visualization, we may prefer a lower dimensional configuration than the dime
 <p><span class="math display">\[\mathop{\mathrm{arg\,min}}_{Y \in \mathbb{R}^{N\times k}} \| B - YY^T\|_F\]</span>
 from which it follows that <span class="math inline">\(YY^T\)</span> is built from the rank <span class="math inline">\(k\)</span> approximation to <span class="math inline">\(B\)</span>. Using the results from SVD and the equivalence of SVD and eigendecompositions for symmetric positive, semidefinite matrices, this is equivalent to using the first <span class="math inline">\(k\)</span> columns of <span class="math inline">\(\tilde{U}\Lambda^{1/2}\)</span>.</p>
 <p><strong>Dealing with real data case</strong></p>
-<<<<<<< HEAD
-<p>In real data case, sometimes the Euclidean condition is not met. As in the previous globe map example, the distance matrix actually computes the geodesic distance instead of the Euclidean distance. Under this circumstance, the “inner product” matrix <span class="math inline">\(B = HAH\)</span> (we put a quotation mark here because <span class="math inline">\(B\)</span> is no longer the inner product matrix) is not necessarily positive semi-definite.</p>
-<p>Let’s put a numeric example here to illustrate this point.</p>
-<p>Suppose we have a proximity matrix <span class="math inline">\(\Delta\)</span>:</p>
-=======
 <p>For a given distance matrix, the Euclidean condition may not hold. In the previous globe map example, the distance matrix is based on the geodesic distance instead of the Euclidean distance. Under this circumstance, the “inner product” matrix <span class="math inline">\(B = HAH\)</span> is still symmetric but will not be positive definite. As a simpler example, consider the following case</p>
 <div class="example">
 <p><span id="exm:non-euc" class="example"><strong>Example 4.4  (Non Euclidean Distances) </strong></span>Suppose we have a distance matrix <span class="math inline">\(\Delta\)</span>:</p>
->>>>>>> linear_development
 <p>Given the matrix:
 <span class="math display">\[
 \Delta = \begin{pmatrix} 0 &amp; 1 &amp; 1 &amp; 2 \\ 1 &amp; 0 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 0 &amp; 1 \\ 2 &amp; 1 &amp; 1&amp; 0 \end{pmatrix}
 \]</span></p>
-<<<<<<< HEAD
-<pre><code>##      [,1] [,2] [,3]
-## [1,]    0    1    3
-## [2,]    1    0    1
-## [3,]    3    1    0</code></pre>
-<p>Obviously, matrix <span class="math inline">\(\Delta\)</span> does not satisfy Triangle Inequality, so it’s not a Euclidean distance matrix (even not a distance matrix actually)</p>
-=======
 <pre><code>##      [,1] [,2] [,3] [,4]
 ## [1,]    0    1    1    2
 ## [2,]    1    1    0    1
 ## [3,]    1    1    0    1
 ## [4,]    2    1    1    0</code></pre>
->>>>>>> linear_development
 <ol style="list-style-type: lower-roman">
 <li>Compute matrix <span class="math inline">\(A\)</span> as:
 <span class="math display">\[
 A = -\frac{1}{2} \Delta^2
 \]</span></li>
 </ol>
-<<<<<<< HEAD
-<pre><code>##      [,1] [,2] [,3]
-## [1,]  0.0 -0.5 -4.5
-## [2,] -0.5  0.0 -0.5
-## [3,] -4.5 -0.5  0.0</code></pre>
-=======
 <pre><code>##      [,1] [,2] [,3] [,4]
 ## [1,]  0.0 -0.5 -0.5 -2.0
 ## [2,] -0.5 -0.5  0.0 -0.5
 ## [3,] -0.5 -0.5  0.0 -0.5
 ## [4,] -2.0 -0.5 -0.5  0.0</code></pre>
->>>>>>> linear_development
 <ol start="2" style="list-style-type: lower-roman">
 <li>Compute matrix <span class="math inline">\(B\)</span> using:
 <span class="math display">\[
@@ -1658,32 +1504,6 @@ Where <span class="math inline">\(I\)</span> is the identity matrix and <span cl
 B = H A H
 \]</span></li>
 </ol>
-<<<<<<< HEAD
-<pre><code>##            [,1]       [,2]       [,3]
-## [1,]  2.1111111  0.2777778 -2.3888889
-## [2,]  0.2777778 -0.5555556  0.2777778
-## [3,] -2.3888889  0.2777778  2.1111111</code></pre>
-<ol start="3" style="list-style-type: lower-roman">
-<li>Finally, perform an eigen-decomposition on matrix <span class="math inline">\(B\)</span>.</li>
-</ol>
-<pre><code>## [1]  4.500000e+00 -1.221245e-15 -8.333333e-01</code></pre>
-<pre><code>##               [,1]      [,2]       [,3]
-## [1,]  7.071068e-01 0.5773503  0.4082483
-## [2,]  2.220446e-16 0.5773503 -0.8164966
-## [3,] -7.071068e-01 0.5773503  0.4082483</code></pre>
-<p>Here, we have a negative eigenvalue <span class="math inline">\(-\frac{5}{6}\)</span>. This is because the original proximity matrix <span class="math inline">\(\Delta\)</span> is not a distance matrix.</p>
-<p><strong>Handle Negative Eigenvalues</strong></p>
-<ol style="list-style-type: lower-roman">
-<li><p><strong>non-symetric issue:</strong> There are cases where the proximity matrix <span class="math inline">\(\Delta\)</span> is not symmetric (though it rarely happens in classical scaling scenario). Usually we set <span class="math inline">\(\Delta \leftarrow \Delta + \Delta^T\)</span>. In that way, we manually make <span class="math inline">\(\Delta\)</span> symmetric.</p></li>
-<li><p>When there exist some negative eigenvalues in the inner product matrix <span class="math inline">\(B\)</span>, we usually have two options to deal with it.</p></li>
-</ol>
-<ol style="list-style-type: lower-alpha">
-<li><p>Inflate the original proximity matrix <span class="math inline">\(\Delta\)</span> by a small constant factor <span class="math inline">\(c\)</span>, i.e., <span class="math inline">\(\Delta_{ij} \leftarrow \Delta_{ij} + c, \; \text{if} \; i \neq j\)</span>. In this way, we can deal with the violence of <strong>Triangular Inequality</strong>.</p></li>
-<li><p>If there exist several negative eigenvalues with small absolute value (compared to the largest several positive eigenvalues), and there are more positive eigenvalues than our prior estimation (the dimension of the original configuration), we may just pick the largest <span class="math inline">\(t\)</span> eigenvalues and eliminate the rest.</p></li>
-</ol>
-<p><strong>Global City Distance case revisit</strong></p>
-<p>We can also consider the previous global city distance matrix example. Plot the scree plot of the inner product matrix.</p>
-=======
 <pre><code>##         [,1]    [,2]    [,3]    [,4]
 ## [1,]  0.9375  0.1875 -0.0625 -1.0625
 ## [2,]  0.0625 -0.1875  0.0625  0.0625
@@ -1706,27 +1526,10 @@ B = H A H
 </ol>
 <div class="example">
 <p><span id="exm:cities-2" class="example"><strong>Example 4.5  (Global Cities Revisited) </strong></span>We can also consider the previous global city distance matrix example. Plot the scree plot of the inner product matrix.</p>
->>>>>>> linear_development
-<p><img src="_main_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 <p>We find that the first three eigenvalues are much larger than the rest, so we assume that the dimension of the original configuration is 3, which also complies to our knowledge about global map.</p>
 </div>
-<div id="duality-of-pca-and-classical-scaling" class="section level4 hasAnchor" number="4.4.2.3">
-<h4><span class="header-section-number">4.4.2.3</span> Duality of PCA and Classical Scaling<a href="sec-mds.html#duality-of-pca-and-classical-scaling" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>You may have already observed that Classical Scaling is actually equivalent to PCA to some extent. Cox states that “there is a duality between a principals components analysis and classical MDS where dissimilarities are given by Euclidean distance”<span class="citation">[<a href="#ref-Cox_MDS">8</a>]</span>.</p>
-<p>Given the matrix expression of the original configuration <span class="math inline">\(\mathbf{X} \in \mathbb{R}^{N \times k}\)</span>. Recall that PCA is attained by finding the eigen-vectors of the covariance matrix <span class="math inline">\(\frac{1}{N-1} (HX)^T (HX)\)</span>, where <span class="math inline">\(H\)</span> is the centering matrix. Suppose the <span class="math inline">\(k\)</span> eigen-vectors are <span class="math inline">\(\vec{w}_1, \vec{w}_2, \dots, \vec{w}_k\)</span>, and the corresponding eigenvalues are <span class="math inline">\(\mu_1, \mu_2, \dots,\mu_k\)</span>. Then <span class="math inline">\(HX=YW^T\)</span>, where <span class="math inline">\(W=(\vec{w}_1 | \vec{w}_2 | \dots | \vec{w}_N)\)</span> represents PC Loadings, and <span class="math inline">\(Y\)</span> represents PC Scores.</p>
-<p>While MDS is attained by first converting <span class="math inline">\(X\)</span> into distance matrix, here, Euclidean distance. In classical MDS algorithm, we convert the Euclidean distance matrix into the inner product matrix <span class="math inline">\(B=(HX)(HX)^T\)</span>. then we find the eigen-vectors of <span class="math inline">\(B\)</span> — call the eigen-vectors <span class="math inline">\(\vec{\nu}_1, \vec{\nu}_2, \dots, \vec{\nu}_N\)</span>, and eigenvalues <span class="math inline">\(\lambda_1, \lambda_2, \dots, \lambda_N\)</span>.</p>
-<p>Recall what you have learnt in Linear Algebra. The eigenvalues of <span class="math inline">\(XX^T\)</span> are the same as those for <span class="math inline">\(X^TX\)</span>, together with an extra n-p zero eigenvalues. So, for <span class="math inline">\(i &lt; p\)</span>, <span class="math inline">\(\mu_i = \lambda_i\)</span>. So the first <span class="math inline">\(t\)</span> PC scores give the t-dimensional configuration for Classical Scaling. <strong>Choosing the number of dimensionality <span class="math inline">\(t\)</span> of the original configuration is equivalent to choosing the number of principal components to keep</strong></p>
-<p>Furthermore, we have shown that <span class="math inline">\(HX=YW^T\)</span>, then <span class="math inline">\(B=(HX)(HX)^T=YW^TWY^T=YY^T\)</span>, this means <strong>PC scores are the exact solutions for Classical Scaling!</strong></p>
-<p>As a result, classical MDS has the same strengths and weaknesses of PCA.</p>
 </div>
-<<<<<<< HEAD
-</div>
-<div id="metric-mds" class="section level3 hasAnchor" number="4.4.3">
-<h3><span class="header-section-number">4.4.3</span> Metric MDS<a href="sec-mds.html#metric-mds" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-</div>
-<div id="nonmetric-mds" class="section level3 hasAnchor" number="4.4.4">
-<h3><span class="header-section-number">4.4.4</span> Nonmetric MDS<a href="sec-mds.html#nonmetric-mds" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-=======
 <div id="duality-of-pca-and-classical-scaling" class="section level4 hasAnchor" number="4.4.2.2">
 <h4><span class="header-section-number">4.4.2.2</span> Duality of PCA and Classical Scaling<a href="sec-mds.html#duality-of-pca-and-classical-scaling" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>You may have already observed that Classical Scaling is actually equivalent to PCA to some extent. Cox states that “there is a duality between a principals components analysis and classical MDS where dissimilarities are given by Euclidean distance”<span class="citation">[<a href="#ref-Cox_MDS">9</a>]</span>. In particular, this duality arises when the distance matrix is generated by computing Euclidean distances of vectors <span class="math inline">\(\vec{x}_1,\dots,\vec{x}_N\)</span>.</p>
@@ -1743,19 +1546,23 @@ B = H A H
 where the weights <span class="math inline">\(W_{ij}\ge 0\)</span> have different conventions which prioritize the preservation of certain distances in the original coordinates. Heuristically, you can think of <span class="math inline">\(\left(\|\vec{y}_i-\vec{y}_j\|^2 - \Delta_{ij}\right)^2\)</span> as measuring how far the lower-dimensional Euclidean distances <span class="math inline">\(\|\vec{y}_i-\vec{y}_j\|\)</span> deviate from the specified original distance <span class="math inline">\(\Delta_{ij}\)</span>. Importantly, there is no closed form expression for <span class="math inline">\(\vec{y}_1,\dots,\vec{y}_N\)</span> which minimize <span class="math inline">\(S\)</span> so gradient based optimization methods are typically used in practice. When the desired dimension is unknown, one can estimate different <span class="math inline">\(\vec{y}_1,\dots,\vec{y}_N\)</span> in different dimensions and compare the optimal stress as a data driven method for choosing the dimensionality.</p>
 <p>A important method of metric MDS is the Sammon mapping which takes <span class="math inline">\(W_{ij} \propto \frac{1}{\Delta_{ij}}\)</span>. Thus, if <span class="math inline">\(\Delta_{ij} \gg \Delta_{k\ell}\)</span> it follows that <span class="math inline">\(W_{ij} \ll W_{k\ell}\)</span> and we may infer that the Sammon mapping places a greater emphasis on the preservation of small distances! Briefly, we show the results of the Sammon mapping applied to the global cities data.</p>
 <div class="example">
-<p><span id="exm:sammon-cities" class="example"><strong>Example 4.6  (Sammon mapping and global cities) </strong></span>First, we show the minimal Sammon stress at each dimension.
-<img src="_main_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<p><span id="exm:sammon-cities" class="example"><strong>Example 4.6  (Sammon mapping and global cities) </strong></span>First, we show the minimal Sammon stress at each dimension.</p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-32"></span>
+<img src="_main_files/figure-html/unnamed-chunk-32-1.png" alt="Sammon stress for Global Cities Data" width="672" />
+<p class="caption">
+Figure 4.5: Sammon stress for Global Cities Data
+</p>
+</div>
 <pre><code>## A marker object has been specified, but markers is not in the mode
 ## Adding markers to the mode...</code></pre>
-<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-3c3374cfd72b0bb03ce2" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-3c3374cfd72b0bb03ce2">{"x":{"visdat":{"1656c3e94f26a":["function () ","plotlyVisDat"]},"cur_data":"1656c3e94f26a","attrs":{"1656c3e94f26a":{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":{},"y":{},"z":{},"marker":{"size":5,"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"]},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","inherit":true},"1656c3e94f26a.1":{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":{},"y":{},"z":{},"marker":{"size":5,"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"]},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"text","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"","zeroline":false,"showline":false,"showticklabels":false,"showgrid":true},"yaxis":{"title":"","zeroline":false,"showline":false,"showticklabels":false,"showgrid":true},"zaxis":{"title":"","zeroline":false,"showline":false,"showticklabels":false,"showgrid":true}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":[4950.955730358537,-462.03536035919461,6525.2851987110271,590.64344489832445,-2719.9618460833753,7530.5193913832227,-5834.7803481307064,-5464.2208195534322,-148.10918322746326,4318.0539811301223,-5822.2859810860627,-2649.8620936867301,-6803.3099146690283,-2030.4494707564759,-3252.2464792939004,7528.9808823571211,-1376.2215429635808,5119.0444109715982],"y":[-663.35810994702501,7250.539977415302,-282.12008849794381,-7303.6991669675808,2415.0889757367613,-1917.7478739380272,-4674.5453485104881,-2078.2657396700274,2377.6071895768782,2660.2767554071879,-2139.8084434239049,2739.7142210238339,3052.8886044461069,3670.2148020928162,-5725.7826529828717,1573.0176447583096,1997.0746018699729,-2951.0953483892986],"z":[2131.5388049989656,-5517.108917390944,909.91817682716248,-1480.5585499660349,2787.8300478794408,-6787.679882933885,-1933.9612068734441,1019.5178930524233,3277.9975523013213,2051.450855825055,618.86747272905825,2694.008718172654,-5820.1546843184888,2441.1895048890806,-269.6584122862634,-868.30989491992659,3273.0788819763006,1472.0336400375263],"marker":{"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"],"size":5,"line":{"color":"rgba(31,119,180,1)"}},"type":"scatter3d","mode":"markers","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":[4950.955730358537,-462.03536035919461,6525.2851987110271,590.64344489832445,-2719.9618460833753,7530.5193913832227,-5834.7803481307064,-5464.2208195534322,-148.10918322746326,4318.0539811301223,-5822.2859810860627,-2649.8620936867301,-6803.3099146690283,-2030.4494707564759,-3252.2464792939004,7528.9808823571211,-1376.2215429635808,5119.0444109715982],"y":[-663.35810994702501,7250.539977415302,-282.12008849794381,-7303.6991669675808,2415.0889757367613,-1917.7478739380272,-4674.5453485104881,-2078.2657396700274,2377.6071895768782,2660.2767554071879,-2139.8084434239049,2739.7142210238339,3052.8886044461069,3670.2148020928162,-5725.7826529828717,1573.0176447583096,1997.0746018699729,-2951.0953483892986],"z":[2131.5388049989656,-5517.108917390944,909.91817682716248,-1480.5585499660349,2787.8300478794408,-6787.679882933885,-1933.9612068734441,1019.5178930524233,3277.9975523013213,2051.450855825055,618.86747272905825,2694.008718172654,-5820.1546843184888,2441.1895048890806,-269.6584122862634,-868.30989491992659,3273.0788819763006,1472.0336400375263],"marker":{"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"],"size":5,"line":{"color":"rgba(255,127,14,1)"}},"type":"scatter3d","mode":"text+markers","error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-96eca9652e344064cd06" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-96eca9652e344064cd06">{"x":{"visdat":{"178b96a41c746":["function () ","plotlyVisDat"]},"cur_data":"178b96a41c746","attrs":{"178b96a41c746":{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":{},"y":{},"z":{},"marker":{"size":5,"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"]},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","inherit":true},"178b96a41c746.1":{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":{},"y":{},"z":{},"marker":{"size":5,"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"]},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"text","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"","zeroline":false,"showline":false,"showticklabels":false,"showgrid":true},"yaxis":{"title":"","zeroline":false,"showline":false,"showticklabels":false,"showgrid":true},"zaxis":{"title":"","zeroline":false,"showline":false,"showticklabels":false,"showgrid":true}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":[4950.955730358537,-462.03536035919461,6525.2851987110271,590.64344489832445,-2719.9618460833753,7530.5193913832227,-5834.7803481307064,-5464.2208195534322,-148.10918322746326,4318.0539811301223,-5822.2859810860627,-2649.8620936867301,-6803.3099146690283,-2030.4494707564759,-3252.2464792939004,7528.9808823571211,-1376.2215429635808,5119.0444109715982],"y":[-663.35810994702501,7250.539977415302,-282.12008849794381,-7303.6991669675808,2415.0889757367613,-1917.7478739380272,-4674.5453485104881,-2078.2657396700274,2377.6071895768782,2660.2767554071879,-2139.8084434239049,2739.7142210238339,3052.8886044461069,3670.2148020928162,-5725.7826529828717,1573.0176447583096,1997.0746018699729,-2951.0953483892986],"z":[2131.5388049989656,-5517.108917390944,909.91817682716248,-1480.5585499660349,2787.8300478794408,-6787.679882933885,-1933.9612068734441,1019.5178930524233,3277.9975523013213,2051.450855825055,618.86747272905825,2694.008718172654,-5820.1546843184888,2441.1895048890806,-269.6584122862634,-868.30989491992659,3273.0788819763006,1472.0336400375263],"marker":{"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"],"size":5,"line":{"color":"rgba(31,119,180,1)"}},"type":"scatter3d","mode":"markers","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"text":["Beijing","Cape Town","Hong Kong","Honolulu","London","Melbourne","Mexico City","Montreal","Moscow","New Delhi","New York","Paris","Rio","Rome","S.F.","Singapore","Stockholm","Tokyo"],"x":[4950.955730358537,-462.03536035919461,6525.2851987110271,590.64344489832445,-2719.9618460833753,7530.5193913832227,-5834.7803481307064,-5464.2208195534322,-148.10918322746326,4318.0539811301223,-5822.2859810860627,-2649.8620936867301,-6803.3099146690283,-2030.4494707564759,-3252.2464792939004,7528.9808823571211,-1376.2215429635808,5119.0444109715982],"y":[-663.35810994702501,7250.539977415302,-282.12008849794381,-7303.6991669675808,2415.0889757367613,-1917.7478739380272,-4674.5453485104881,-2078.2657396700274,2377.6071895768782,2660.2767554071879,-2139.8084434239049,2739.7142210238339,3052.8886044461069,3670.2148020928162,-5725.7826529828717,1573.0176447583096,1997.0746018699729,-2951.0953483892986],"z":[2131.5388049989656,-5517.108917390944,909.91817682716248,-1480.5585499660349,2787.8300478794408,-6787.679882933885,-1933.9612068734441,1019.5178930524233,3277.9975523013213,2051.450855825055,618.86747272905825,2694.008718172654,-5820.1546843184888,2441.1895048890806,-269.6584122862634,-868.30989491992659,3273.0788819763006,1472.0336400375263],"marker":{"color":["blue","green","blue","red","black","orange","red","red","blue","blue","red","black","purple","black","red","blue","black","blue"],"size":5,"line":{"color":"rgba(255,127,14,1)"}},"type":"scatter3d","mode":"text+markers","error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <p>This stress saturates near a small value for dimensions three and up suggesting a three dimensional configuration is suitable. We show this result below. Note its similarities to the result of classical scaling (which is default initialization for the Sammon mapping optimization algorithm).</p>
 </div>
 </div>
 <div id="nonmetric-mds" class="section level3 hasAnchor" number="4.4.4">
 <h3><span class="header-section-number">4.4.4</span> Nonmetric MDS<a href="sec-mds.html#nonmetric-mds" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>To be added in the next edition.</p>
->>>>>>> linear_development
 
 </div>
 </div>
@@ -1763,11 +1570,7 @@ where the weights <span class="math inline">\(W_{ij}\ge 0\)</span> have differen
 <h3>References</h3>
 <div id="refs" class="references csl-bib-body">
 <div id="ref-Cox_MDS" class="csl-entry">
-<<<<<<< HEAD
-<div class="csl-left-margin">[8] </div><div class="csl-right-inline"><span class="smallcaps">Saul</span>, L. K. and <span class="smallcaps">Roweis</span>, S. T. (2003). <a href="https://doi.org/10.1162/153244304322972667">Think globally, fit locally: Unsupervised learning of low dimensional manifolds</a>. <strong>4</strong> 119–55.</div>
-=======
 <div class="csl-left-margin">[9] </div><div class="csl-right-inline"><span class="smallcaps">Saul</span>, L. K. and <span class="smallcaps">Roweis</span>, S. T. (2003). <a href="https://doi.org/10.1162/153244304322972667">Think globally, fit locally: Unsupervised learning of low dimensional manifolds</a>. <strong>4</strong> 119–55.</div>
->>>>>>> linear_development
 </div>
 </div>
             </section>
