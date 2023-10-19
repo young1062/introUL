@@ -25,3 +25,6 @@ Biobase
 bigmemory
 synchronicity
 NMF
+foreach
+iterators
+doParallel

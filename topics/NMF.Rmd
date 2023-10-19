@@ -44,15 +44,15 @@ for (j in 1:m){
 }
 mesh <- mesh %*% H
 scene = list(camera = list(eye = list(x = -1.5, y = -1.5, z = 1)))
-plot_ly(data.frame(x = 4*H[1,1]*c(0,1),
-                   y = 4*H[1,2]*c(0,1),
-                   z = 4*H[1,3]*c(0,1)),
+plot_ly(data.frame(x = H[1,1]*c(0,1),
+                   y = H[1,2]*c(0,1),
+                   z = H[1,3]*c(0,1)),
         x=~x, y = ~y, z = ~z,
         color = I("red"),
         name = "1st Feature") %>% add_lines() %>%
-  add_lines(data = data.frame(x = 4*H[2,1]*c(0,1),
-                       y = 4*H[2,2]*c(0,1),
-                       z = 4* H[2,3]*c(0,1)),
+  add_lines(data = data.frame(x = H[2,1]*c(0,1),
+                       y = H[2,2]*c(0,1),
+                       z = H[2,3]*c(0,1)),
             x=~x, y = ~y, z = ~z,
         color = I("black"),
         name = "2nd Feature") %>% 
@@ -133,15 +133,15 @@ For a given choice of loss, standard NMF proceeds in the following manner.
 
 Different initial conditions (ICs) will converge to different local modes; reptition over multiple differents (ICs) will help find a better overall minimizer and avoid getting a final NMF which is trapped in a poor local mode.  There is no guidance of how many ICs. Many packages default to five. More would be better but computational resources are not infinite, and finding even one mode though coordinate ascent can be slow.  
 
-The choice of $k$ is also challenging.  In prior information or other project constraints dictate a specific choice of $k$ one should use that value. However, the preceding steps can be repeated over a range of $k$. One can then compare plot the optimal loss as a function of $k$ and look for a cutoff where the error appears to saturate.  Importantly, there are no connections between the rank $k$ NMF and rank $k+1$ NMF. Unlike, PCA or SVD, one can truncate the vectors and coefficients and attain an optimal solution for a lower-dimensional representation. Thus, separate fits at each choice of $k$ must be attained through separate runs of the numerical optimization.  We show this approach applied to the one thousand eights (to save computation time) from the MNIST dataset [@mnist] using Frobenius loss with five runs per rank.
+The choice of $k$ is also challenging.  In prior information or other project constraints dictate a specific choice of $k$ one should use that value. However, the preceding steps can be repeated over a range of $k$. One can then compare plot the optimal loss as a function of $k$ and look for a cutoff where the error appears to saturate.  Importantly, there are no connections between the rank $k$ NMF and rank $k+1$ NMF. Unlike, PCA or SVD, one cannot truncate the vectors and coefficients and attain an optimal solution for a lower-dimensional representation. Thus, separate fits at each choice of $k$ must be attained through separate runs of the numerical optimization.  We show this approach applied to the first $10^3$ eights (to save computation time) from the MNIST dataset [@mnist] using Divergence loss with five runs per rank.
 
 :::{.example #mnist-nmf name="NMF applied to MNIST"}
 ```{r mnist-w-nmf, warning = FALSE}
 set.seed(185)
 load("../../Datasets/digits.Rdata")
 eights <- digits$pixels[digits$labels == 8,][1:1000,]
-mnist_nmf <- nmf(eights, rank = 1:20, method = "lee", nrun = 5)
-# plot()
+# mnist_nmf <- nmf(eights, rank = 1:30, method = "brunet", nrun = 5)
+# plot(mnist_nmf$measures$rss)
 ```
 :::
 
@@ -152,4 +152,6 @@ For a random initialization of ${\bf W}$ and ${\bf H}$ the final features found 
 #### Volume Regularized NMF
 
 #### Archetypes
+
+
 
