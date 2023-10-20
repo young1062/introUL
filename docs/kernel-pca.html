@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>3.4 Exercises | An Introduction to Unsupervised Learning</title>
+  <title>5.1 Kernel PCA | An Introduction to Unsupervised Learning</title>
   <meta name="description" content="An introductory text on the goals and methods of unsupervised learning" />
   <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="3.4 Exercises | An Introduction to Unsupervised Learning" />
+  <meta property="og:title" content="5.1 Kernel PCA | An Introduction to Unsupervised Learning" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="An introductory text on the goals and methods of unsupervised learning" />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="3.4 Exercises | An Introduction to Unsupervised Learning" />
+  <meta name="twitter:title" content="5.1 Kernel PCA | An Introduction to Unsupervised Learning" />
   
   <meta name="twitter:description" content="An introductory text on the goals and methods of unsupervised learning" />
   
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="generating-synthetic-data.html"/>
-<link rel="next" href="ch-linear.html"/>
+<link rel="prev" href="kernels-and-nonlinearity.html"/>
+<link rel="next" href="exercises-2.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -284,18 +284,45 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="exercises-1" class="section level2 hasAnchor" number="3.4">
-<h2><span class="header-section-number">3.4</span> Exercises<a href="exercises-1.html#exercises-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-
+<div id="kernel-pca" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Kernel PCA<a href="kernel-pca.html#kernel-pca" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Suppose we have a kernel <span class="math inline">\(k\)</span> and associated feature map <span class="math inline">\(\varphi\)</span>. In kernel PCA, we want to apply to PCA to the featurized data <span class="math inline">\(\varphi(\vec{x}_1),\dots,\varphi(\vec{x}_N)\)</span> rather than the original data. The idea is that by studying the featurized data, we can identify additional nonlinear structure in the features that provides a better lower-dimensional representation of the data. We have discussed three approaches to computing PC scores to data: (i) diagonalization of the sample covariance, (ii) applying SVD to the centered data, and (iii) using the duality of PCA and classical scaling.</p>
+<p>For the rbf kernel and its infinite dimensional feature map, approaches (i) and (ii) are impossible. Why? The centered data matrix of features <span class="math display">\[{\bf H}\tilde{\bf X} = {\bf H}\begin{bmatrix} \varphi(\vec{x}_1)^T \\ \vdots \\ \varphi(\vec{x}_N)^T\end{bmatrix} =\begin{bmatrix} \varphi(\vec{x}_1)^T-\bar{\varphi}^T \\ \vdots \\ \varphi(\vec{x}_N)^T-\bar{\varphi}^T\end{bmatrix} \]</span>
+has a infinite number of columns so that we cannot compute its SVD. In the above expression, <span class="math inline">\(\bar{\varphi} = \frac{1}{N} \sum_{i=1}^N \varphi(\vec{x}_i)\)</span> is the mean for the feature vectors. The associated sample covariance matrix <span class="math display">\[{\bf \Sigma}_F = \frac{1}{N} \tilde{\bf X}{\bf H}\tilde{\bf X } = \frac{1}{N} \sum_{i=1}^N \left(\varphi(\vec{x}_i) - \bar{\varphi}\right)\left(\varphi(\vec{x}_i) - \bar{\varphi}\right)^T\]</span> will have an infinite number of rows and columns so we cannot hope to diagonalize it either.</p>
+<p>Fortunately, the third option, using duality of classical scaling and PC, provides a workaround. Observe that the inner product matrix of the centered feature data <span class="math inline">\({\bf H}\tilde{\bf X} ({\bf H}\tilde{\bf X})^T\)</span> can be written in terms of the kernel since
+<span class="math display">\[{\bf H}\tilde{\bf X} ({\bf H}\tilde{\bf X})^T = {\bf H} \begin{bmatrix} \varphi(\vec{x}_1)^T \\ \vdots \\ \varphi(\vec{x}_N)^T\end{bmatrix} \begin{bmatrix} \varphi(\vec{x}_1) &amp; \dots &amp; \varphi(\vec{x}_N)\end{bmatrix} {\bf H} = {\bf H K H}\]</span>
+where <span class="math inline">\({\bf K}\)</span> has the inner products in the feature space which we can calculate using the kernel function <span class="math display">\[{\bf K}_{ij} = \varphi(\vec{x}_i)^T\varphi(\vec{x}_j) = k(\vec{x}_i,\vec{x}_j).\]</span></p>
+<p>Since <span class="math inline">\(k\)</span> is a symmetric kernel, it follows that <span class="math inline">\({\bf K}\)</span> is positive semidefinite. Using this property, one can argue that <span class="math inline">\({\bf HKH}\)</span> will also be positive semidefinite. We can use the eigendecomposition of the doubly centered kernel to compute the kernel principal component scores. Specifically, if <span class="math inline">\({\bf HKH}\)</span> rank <span class="math inline">\(r\)</span> with eigenvalues <span class="math inline">\(\lambda_1\ge \dots \ge \lambda_r &gt;0\)</span> and corresponding eigenvalues <span class="math inline">\(\vec{u}_1,\dots,\vec{u}_r \in \mathbb{R}^N\)</span>, then <span class="math inline">\({\bf HKH}\)</span> factorizes as <span class="math display">\[{\bf HKH} = \underbrace{\begin{bmatrix}\vec{u}_1 &amp; \dots &amp;\vec{u}_r\end{bmatrix} \begin{bmatrix} \lambda_1^{1/2} &amp;0 &amp;0 \\ 0&amp; \ddots &amp; 0 \\ 0 &amp;0 &amp; \lambda_r^{1/2} \end{bmatrix}}_{{\bf U\Lambda}^{1/2}} \left({\bf U\Lambda}^{1/2}\right)^T. \]</span></p>
+<p>The rows of the matrix <span class="math inline">\({\bf U\Lambda}^{1/2}\)</span> are almost the kernel PC scores. The only issue is an additional the identity <span class="math display">\[{\bf HKH} = ({\bf H}\tilde{\bf X})({\bf H}\tilde{\bf X})^T\]</span> is missing the factor of <span class="math inline">\(1/N\)</span> appearing in the covariance calculation. Accounting for this, the first <span class="math inline">\(r\)</span> non-zero kernel PC scores are the rows of the matrix <span class="math display">\[\frac{1}{\sqrt{N}} {\bf U\Lambda}^{1/2}\]</span> and the corresponding nonzero PC variances are <span class="math inline">\(\lambda_1/N,\dots,\lambda_r/N.\)</span></p>
+<p>Notably, at no point do we compute the PC loadings! However, similar to standard PCA, we use the scores for dimension reduction and the PC variances for choosing a dimension. Without the loadings, we cannot recompute the original data. Below, we show an application of kernel PCA to the helix and demonstrate its ability to identify the one-dimensional structure of the helix and its sensitivity to kernel selection and tuning.</p>
+<div class="example">
+<p><span id="exm:kpca-helix" class="example"><strong>Example 5.1  (Kernel PCA applied to the Helix) </strong></span>First, we show the kPCA variances for three different kernels and tuning parameters. The data are regularly spaced points along the helix.</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-79-1.png" width="672" /></p>
+<p>From these graphs, one would infer very different lower dimensional choices depending on the kernel and parameters. The polynomial kernel provides the most robust estimate of the one-dimensional nature of the data.</p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-80"></span>
+<img src="_main_files/figure-html/unnamed-chunk-80-1.png" alt="kPCA Variances for different Kernels" width="672" />
+<p class="caption">
+Figure 5.1: kPCA Variances for different Kernels
+</p>
 </div>
-<!-- </div> -->
+<p>Below, we show the recovered one-dimensional coordinates for the polynomial kernel with offset 1 and degree 4 shown below, which is good, but do not quite reflect the equal spaced nature of the points.</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-81-1.png" width="672" /></p>
+</div>
+<p>As the preceding example demonstrates, kernel PCA can identify nonlinear structure, but is quite sensitive to kernel selection and tuning. More advanced implementations make use of cross-validation to aid in the selection and tuning of the kernel <span class="citation">[<a href="#ref-kPCA_tuning2">11</a>]</span></p>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-kPCA_tuning2" class="csl-entry">
+<div class="csl-left-margin">[11] </div><div class="csl-right-inline"><span class="smallcaps">Mika</span>, S., <span class="smallcaps">Schölkopf</span>, B., <span class="smallcaps">Smola</span>, A., <span class="smallcaps">Müller</span>, K.-R., <span class="smallcaps">Scholz</span>, M. and <span class="smallcaps">Rätsch</span>, G. (1998). <a href="https://proceedings.neurips.cc/paper_files/paper/1998/file/226d1f15ecd35f784d2a20c3ecf56d7f-Paper.pdf">Kernel PCA and de-noising in feature spaces</a>. In <em>Advances in neural information processing systems</em> vol 11, (M. Kearns, S. Solla and D. Cohn, ed). MIT Press.</div>
+</div>
+</div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="generating-synthetic-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="ch-linear.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="kernels-and-nonlinearity.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="exercises-2.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -326,7 +353,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/02-generating_data.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/04-kernels.Rmd",
 "text": "Edit"
 },
 "history": {

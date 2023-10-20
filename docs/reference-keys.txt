@@ -29,7 +29,7 @@ fig:ribbon
 fig:ex-clusters
 def:first-pca
 exm:pca-demo-1
-fig:unnamed-chunk-16
+fig:unnamed-chunk-61
 fig:pca1
 fig:pca2
 thm:pca-eig
@@ -44,7 +44,10 @@ def:euc-dist
 exm:non-euc
 exm:cities-2
 exm:sammon-cities
-fig:unnamed-chunk-32
+fig:unnamed-chunk-77
+thm:mercer
+exm:kpca-helix
+fig:unnamed-chunk-80
 def:def-manifold
 exm:ex-manifolds
 exm:ex-non-manifold
@@ -104,6 +107,7 @@ duality-of-pca-and-classical-scaling
 metric-mds
 nonmetric-mds
 kernels-and-nonlinearity
+kernel-pca
 exercises-2
 ch-nonlinear
 background
