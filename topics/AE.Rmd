@@ -1,7 +1,7 @@
 ---
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup-ae, include=FALSE}
@@ -10,8 +10,9 @@ require("ggplot2")
 # require("tidyverse")
 # require("h2o")
 require("reticulate")
-# specify the directory of your conda environment
-use_python("/Users/alexyoung/anaconda3/bin/python3", required=TRUE)
+# specify the directory of your conda environment, you need to have python installed in order to implement keras package
+# use_python("/Users/alexyoung/anaconda3/bin/python3", required=TRUE)
+use_python("/Users/zhucenhao/venv_introUL/bin/python3", required=TRUE)
 ```
 
 ## Autoencoders (AEs)
@@ -85,7 +86,7 @@ In the broader context of machine learning and artificial intelligence, Autoenco
 
 ### Example
 
-Compared to other manifold learning methods we have introduced (ISOMAP and LLE), the implementation and parameter tuning of Autoencoders is much more complicated. We'll explore how to implement an autoencoder in R using the **Keras** library with the famous MNIST dataset. As a Neuro Network method, Autoencoders have a number of parameters, thus requiring a large dataset to train. This explains why we choose MNIST dataset here.
+Compared to other manifold learning methods we have introduced (ISOMAP and LLE), the implementation and parameter tuning of Autoencoders is much more complicated. We'll explore how to implement an autoencoder in R using the **Keras** library with the famous MNIST dataset. As a Neuro Network method, Autoencoders have a number of parameters, thus requiring a large dataset to train. This explains why we choose MNIST dataset here. 
 
 1) Load and Preprocess the Data
 ```{r}
@@ -134,29 +135,44 @@ Activation functions play a vital role in neural networks, determining the outpu
 There are several common activation functions we can choose from.
 
 1) **Sigmoid (Logistic) Function:** 
-Equation: \( f(x) = \frac{1}{1 + e^{-x}} \)
+
+Equation: $f(x) = \frac{1}{1 + e^{-x}}$
+
 Range: Between 0 and 1
+
 Pros: Smooth gradient, preventing "jumps" in output values
-Cons: Can cause vanishing gradient problems in deep networks.
+
+Cons: Can cause vanishing gradient problems in deep networks
 
 2) **Hyperbolic Tangent (tanh) Function:** 
-Equation: \( f(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}} \)
+
+Equation: $f(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$
+
 Range: Between -1 and 1
+
 Pros: Zero-centered, making it easier for the model to generalize
-Cons: Like the sigmoid, it can also lead to vanishing gradient issues.
+
+Cons: Like the sigmoid, it can also lead to vanishing gradient issues
 
 3) **Rectified Linear Unit (ReLU) Function:** 
-Equation: \( f(x) = max(0, x) \)
-Range: From 0 to infinity.
-Pros: Helps mitigate the vanishing gradient problem, leading to faster convergence.
-Cons: Neurons can sometimes "die", especially with a large learning rate.
+
+Equation: $f(x) = max(0, x)$
+
+Range: From 0 to infinity
+
+Pros: Helps mitigate the vanishing gradient problem, leading to faster convergence
+
+Cons: Neurons can sometimes "die", especially with a large learning rate
 
 4) **Softmax Function:** 
-Equation: Used primarily in the output layer of a classifier, where it turns logits into probabilities by distributing them over several classes
-Range: Produces an output vector in the range [0,1], and the sum of the probabilities will be 1.
+
+Equation:  $\sigma(z)_j = \frac{e^{z_j}}{\sum_{k=1}^{K} e^{z_k}}$ for $j = 1, ..., K$
+
+Used primarily in the output layer of a classifier, where it turns logits into probabilities by distributing them over several classes
+
+Range: Between 0 to 1
 
 Each activation function has its unique characteristics and is suitable for different kinds of tasks. The choice of an activation function depends on the specific problem at hand, the nature of the data, and the architecture of the neural network.
-
 
 
 ```{r}
@@ -190,7 +206,7 @@ The Autoencoder is trained using the training images as both inputs and targets.
 ```{r, message = FALSE}
 history <- autoencoder %>% fit(
   train_images, train_images, 
-  epochs = 20, 
+  epochs = 40, 
   batch_size = 256, 
   shuffle = TRUE,
   validation_split = 0.2,
@@ -261,6 +277,11 @@ p
 ae
 ```
 
+**Alternative Choices for the use of R packages for Autoencoders**
+
+Besides package **keras** we have used as an example, **h2o** package is also a popular package for implementing Autoencoders. Unlike h2o package has an automated machine learning (AutoML) feature, making it easy for users to train and compare multiple models. In addition, it requires less manual tuning and configuration for deep learning, making it more accessible for beginners or those not primarily focused on deep learning. You may have a try yourself if you are interested after class. <https://cran.r-project.org/web/packages/h2o/index.html> (Keep in mind that h2o is Java-based, so having Java installed is a prerequisite of using h2o package)
+
+We choose keras here because it allows the development of custom layers, loss functions, and metrics, enabling you to have a clearer understanding of the mechanism and implementation of Autoencoders. 
 
 
 

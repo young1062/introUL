@@ -1,11 +1,11 @@
 ---
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 ```{r isomap-setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, cache = TRUE)
-set.seed(1)
+set.seed(42)
 require("dimRed")
 require("energy")
 require("scatterplot3d")
@@ -264,7 +264,6 @@ Obviously, ISOMAP performs well when $K$ is small. However, as $K$ increases, th
 Consider the Swiss Roll as an illustration. This time, however, the Swiss Roll is made sparse along its horizontal direction. To the naked eye, this sparse region seems to have minimal impact on the overall manifold. Naturally, we still perceive it as a Swiss Roll.
 
 ```{r}
-set.seed(42)
 S <- rep(0,2000)
 Swiss_sparse <- matrix(NA, nrow = 2000, ncol = 3)
 for( n in 1:2000){
@@ -286,7 +285,6 @@ scatterplot3d(Swiss_sparse, color = myColorRamp(c("red","purple","blue","green",
 However, when using ISOMAP to recover the lower-dimensional feature space, complications arise, even when adjusting various tuning parameters.
 
 ```{r}
-set.seed(77)
 par(mfrow = c(2,2))
 # K = 10
 plot(embed(Swiss_sparse, "Isomap", .mute = c("message", "output"), ndim =2, knn = 10)@data@data,

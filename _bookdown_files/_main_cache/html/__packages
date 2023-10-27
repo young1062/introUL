@@ -1,25 +1,12 @@
-<<<<<<< HEAD
-scatterplot3d
-Rdimtools
 MASS
 ggplot2
 plotly
-mvtnorm
-maps
-gdata
-igraph
-threejs
-=======
-ggplot2
-plotly
-MASS
 mvtnorm
 igraph
 threejs
 scatterplot3d
 maps
 gdata
->>>>>>> main
 kernlab
 Matrix
 CVST
@@ -27,11 +14,7 @@ DRR
 dimRed
 energy
 rgl
-<<<<<<< HEAD
+Rdimtools
 princurve
 keras
 reticulate
-=======
-Rdimtools
-princurve
->>>>>>> main
