@@ -229,7 +229,7 @@ encoded_df <- as.data.frame(encoded_images)
 head(encoded_df)
 ```
 
-Using the ggplot2 package, the #D encoded images are visualized, color-coded by their true labels. This visualization can provide insights into how well the encoder has learned to cluster different digits in this reduced-dimensional space. We also compare the result of AutoEncoder with that of PCA, as shown below. 
+Using the ggplot2 package, the encoded images are visualized, color-coded by their true labels. This visualization provides insights into how well the encoder has learned to cluster different digits in this reduced-dimensional space. We also compare the result of Autoencoders with that of PCA, as shown below. 
 
 ```{r}
 library(ggplot2)
