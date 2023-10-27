@@ -250,8 +250,20 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="6.1.1" data-path="background.html"><a href="background.html#data-on-a-manifold"><i class="fa fa-check"></i><b>6.1.1</b> Data on a manifold</a></li>
 </ul></li>
-<li class="chapter" data-level="6.2" data-path="additional-methods.html"><a href="additional-methods.html"><i class="fa fa-check"></i><b>6.2</b> Additional methods</a></li>
-<li class="chapter" data-level="6.3" data-path="exercises-3.html"><a href="exercises-3.html"><i class="fa fa-check"></i><b>6.3</b> Exercises</a></li>
+<li class="chapter" data-level="6.2" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html"><i class="fa fa-check"></i><b>6.2</b> Locally Linear Embeddings (LLEs)</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#introduction"><i class="fa fa-check"></i><b>6.2.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.2.2" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#algorithm"><i class="fa fa-check"></i><b>6.2.2</b> Algorithm</a></li>
+<li class="chapter" data-level="6.2.3" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#strengths-and-weaknesses-of-lle"><i class="fa fa-check"></i><b>6.2.3</b> Strengths and Weaknesses of LLE</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html"><i class="fa fa-check"></i><b>6.3</b> Autoencoders (AEs)</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#introduction-1"><i class="fa fa-check"></i><b>6.3.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.3.2" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#algorithm-1"><i class="fa fa-check"></i><b>6.3.2</b> Algorithm</a></li>
+<li class="chapter" data-level="6.3.3" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#example"><i class="fa fa-check"></i><b>6.3.3</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="additional-methods.html"><a href="additional-methods.html"><i class="fa fa-check"></i><b>6.4</b> Additional methods</a></li>
+<li class="chapter" data-level="6.5" data-path="exercises-3.html"><a href="exercises-3.html"><i class="fa fa-check"></i><b>6.5</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="ch-clustering.html"><a href="ch-clustering.html"><i class="fa fa-check"></i><b>7</b> Clustering</a>
 <ul>
@@ -351,43 +363,43 @@ which is the sum-squared error over all observations. Using this definition of l
 </ol>
 <p>In summary, after initialization, we are continually overwriting the entries of our matrix of imputed values corresponding to observations then applyin a low-rank approximation. We stop the algorithm when the error stops decreasing or when the relative decrease in error is less than a specified threshhold <span class="math inline">\(\epsilon.\)</span> In addition to the rank <span class="math inline">\(k\)</span> and the stopping threshhold <span class="math inline">\(\epsilon\)</span> there is one other important `tuning’ parameter, the initialization. In the brief description above, we used a standard of 0, but one could also use the average of all entries in the corresponding column (average item rating) or row (average rating given by a user) or some other specification. Many more complicated recommendation systems include user and item specific initializations and adjustments but still imploy a low rank approximation somewhere in their deployment.</p>
 <p>In later updates, we show an application of this algorithm to the <a href="https://grouplens.org/datasets/movielens/10m/">Movielens 10m dataset</a> containing 10 million ratings from 72,000 viewers for 10,000 movies. To handle the size of this dataset, we use the Fast Truncated Singular Value Decomposition.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="sec-svd.html#cb12-1" tabindex="-1"></a><span class="co"># library(&quot;irlba&quot;)</span></span>
-<span id="cb12-2"><a href="sec-svd.html#cb12-2" tabindex="-1"></a><span class="co"># initialize &lt;- function(mat){</span></span>
-<span id="cb12-3"><a href="sec-svd.html#cb12-3" tabindex="-1"></a><span class="co"># # get column means ignoring NAs</span></span>
-<span id="cb12-4"><a href="sec-svd.html#cb12-4" tabindex="-1"></a><span class="co"># ave.rat &lt;- colMeans(mat,na.rm = TRUE)</span></span>
-<span id="cb12-5"><a href="sec-svd.html#cb12-5" tabindex="-1"></a><span class="co"># # fill NAs by average movie rating</span></span>
-<span id="cb12-6"><a href="sec-svd.html#cb12-6" tabindex="-1"></a><span class="co"># for(j in 1:ncol(mat)){</span></span>
-<span id="cb12-7"><a href="sec-svd.html#cb12-7" tabindex="-1"></a><span class="co">#   mat[is.na(mat[,j]),j] &lt;- ave.rat[j]</span></span>
-<span id="cb12-8"><a href="sec-svd.html#cb12-8" tabindex="-1"></a><span class="co"># }</span></span>
-<span id="cb12-9"><a href="sec-svd.html#cb12-9" tabindex="-1"></a><span class="co"># return(mat)</span></span>
-<span id="cb12-10"><a href="sec-svd.html#cb12-10" tabindex="-1"></a><span class="co"># }</span></span>
-<span id="cb12-11"><a href="sec-svd.html#cb12-11" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb12-12"><a href="sec-svd.html#cb12-12" tabindex="-1"></a><span class="co"># maxim &lt;- function(mat,k){</span></span>
-<span id="cb12-13"><a href="sec-svd.html#cb12-13" tabindex="-1"></a><span class="co"># # temp &lt;- svd(mat)</span></span>
-<span id="cb12-14"><a href="sec-svd.html#cb12-14" tabindex="-1"></a><span class="co"># temp&lt;- irlba(mat, nv = k)</span></span>
-<span id="cb12-15"><a href="sec-svd.html#cb12-15" tabindex="-1"></a><span class="co"># return(list(U = temp$u[,1:k],</span></span>
-<span id="cb12-16"><a href="sec-svd.html#cb12-16" tabindex="-1"></a><span class="co">#             D = temp$d[1:k],</span></span>
-<span id="cb12-17"><a href="sec-svd.html#cb12-17" tabindex="-1"></a><span class="co">#             V = temp$v[,1:k],</span></span>
-<span id="cb12-18"><a href="sec-svd.html#cb12-18" tabindex="-1"></a><span class="co">#             mat.hat = temp$u[,1:k] %*% diag(temp$d[1:k]) %*% t(temp$v[,1:k])))</span></span>
-<span id="cb12-19"><a href="sec-svd.html#cb12-19" tabindex="-1"></a><span class="co"># }</span></span>
-<span id="cb12-20"><a href="sec-svd.html#cb12-20" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb12-21"><a href="sec-svd.html#cb12-21" tabindex="-1"></a><span class="co"># recommender &lt;- function(mat, num_steps, k){</span></span>
-<span id="cb12-22"><a href="sec-svd.html#cb12-22" tabindex="-1"></a><span class="co"># # initialize loss function tracking</span></span>
-<span id="cb12-23"><a href="sec-svd.html#cb12-23" tabindex="-1"></a><span class="co"># loss &lt;- rep(NA,num_steps)</span></span>
-<span id="cb12-24"><a href="sec-svd.html#cb12-24" tabindex="-1"></a><span class="co"># # run EM algorithm and save loss</span></span>
-<span id="cb12-25"><a href="sec-svd.html#cb12-25" tabindex="-1"></a><span class="co"># ind.known &lt;- !is.na(mat)</span></span>
-<span id="cb12-26"><a href="sec-svd.html#cb12-26" tabindex="-1"></a><span class="co"># mat2 &lt;- initialize(mat)</span></span>
-<span id="cb12-27"><a href="sec-svd.html#cb12-27" tabindex="-1"></a><span class="co"># for (j in 1:num_steps){</span></span>
-<span id="cb12-28"><a href="sec-svd.html#cb12-28" tabindex="-1"></a><span class="co">#   mat2 &lt;- maxim(mat2,k)$mat.hat</span></span>
-<span id="cb12-29"><a href="sec-svd.html#cb12-29" tabindex="-1"></a><span class="co">#   loss[j] &lt;- sum((mat2[ind.known] - mat[ind.known])^2)</span></span>
-<span id="cb12-30"><a href="sec-svd.html#cb12-30" tabindex="-1"></a><span class="co">#   mat2[ind.known] &lt;- mat[ind.known]</span></span>
-<span id="cb12-31"><a href="sec-svd.html#cb12-31" tabindex="-1"></a><span class="co"># }</span></span>
-<span id="cb12-32"><a href="sec-svd.html#cb12-32" tabindex="-1"></a><span class="co"># return(list(loss= loss, fit = mat2))</span></span>
-<span id="cb12-33"><a href="sec-svd.html#cb12-33" tabindex="-1"></a><span class="co"># }</span></span>
-<span id="cb12-34"><a href="sec-svd.html#cb12-34" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb12-35"><a href="sec-svd.html#cb12-35" tabindex="-1"></a><span class="co"># k &lt;- 3</span></span>
-<span id="cb12-36"><a href="sec-svd.html#cb12-36" tabindex="-1"></a><span class="co"># temp &lt;- recommender(ratings,num_steps = 200, k = k)</span></span>
-<span id="cb12-37"><a href="sec-svd.html#cb12-37" tabindex="-1"></a><span class="co"># plot(temp$loss, xlab = &quot;Step&quot;, ylab = expression(ell))</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="sec-svd.html#cb6-1" tabindex="-1"></a><span class="co"># library(&quot;irlba&quot;)</span></span>
+<span id="cb6-2"><a href="sec-svd.html#cb6-2" tabindex="-1"></a><span class="co"># initialize &lt;- function(mat){</span></span>
+<span id="cb6-3"><a href="sec-svd.html#cb6-3" tabindex="-1"></a><span class="co"># # get column means ignoring NAs</span></span>
+<span id="cb6-4"><a href="sec-svd.html#cb6-4" tabindex="-1"></a><span class="co"># ave.rat &lt;- colMeans(mat,na.rm = TRUE)</span></span>
+<span id="cb6-5"><a href="sec-svd.html#cb6-5" tabindex="-1"></a><span class="co"># # fill NAs by average movie rating</span></span>
+<span id="cb6-6"><a href="sec-svd.html#cb6-6" tabindex="-1"></a><span class="co"># for(j in 1:ncol(mat)){</span></span>
+<span id="cb6-7"><a href="sec-svd.html#cb6-7" tabindex="-1"></a><span class="co">#   mat[is.na(mat[,j]),j] &lt;- ave.rat[j]</span></span>
+<span id="cb6-8"><a href="sec-svd.html#cb6-8" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb6-9"><a href="sec-svd.html#cb6-9" tabindex="-1"></a><span class="co"># return(mat)</span></span>
+<span id="cb6-10"><a href="sec-svd.html#cb6-10" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb6-11"><a href="sec-svd.html#cb6-11" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb6-12"><a href="sec-svd.html#cb6-12" tabindex="-1"></a><span class="co"># maxim &lt;- function(mat,k){</span></span>
+<span id="cb6-13"><a href="sec-svd.html#cb6-13" tabindex="-1"></a><span class="co"># # temp &lt;- svd(mat)</span></span>
+<span id="cb6-14"><a href="sec-svd.html#cb6-14" tabindex="-1"></a><span class="co"># temp&lt;- irlba(mat, nv = k)</span></span>
+<span id="cb6-15"><a href="sec-svd.html#cb6-15" tabindex="-1"></a><span class="co"># return(list(U = temp$u[,1:k],</span></span>
+<span id="cb6-16"><a href="sec-svd.html#cb6-16" tabindex="-1"></a><span class="co">#             D = temp$d[1:k],</span></span>
+<span id="cb6-17"><a href="sec-svd.html#cb6-17" tabindex="-1"></a><span class="co">#             V = temp$v[,1:k],</span></span>
+<span id="cb6-18"><a href="sec-svd.html#cb6-18" tabindex="-1"></a><span class="co">#             mat.hat = temp$u[,1:k] %*% diag(temp$d[1:k]) %*% t(temp$v[,1:k])))</span></span>
+<span id="cb6-19"><a href="sec-svd.html#cb6-19" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb6-20"><a href="sec-svd.html#cb6-20" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb6-21"><a href="sec-svd.html#cb6-21" tabindex="-1"></a><span class="co"># recommender &lt;- function(mat, num_steps, k){</span></span>
+<span id="cb6-22"><a href="sec-svd.html#cb6-22" tabindex="-1"></a><span class="co"># # initialize loss function tracking</span></span>
+<span id="cb6-23"><a href="sec-svd.html#cb6-23" tabindex="-1"></a><span class="co"># loss &lt;- rep(NA,num_steps)</span></span>
+<span id="cb6-24"><a href="sec-svd.html#cb6-24" tabindex="-1"></a><span class="co"># # run EM algorithm and save loss</span></span>
+<span id="cb6-25"><a href="sec-svd.html#cb6-25" tabindex="-1"></a><span class="co"># ind.known &lt;- !is.na(mat)</span></span>
+<span id="cb6-26"><a href="sec-svd.html#cb6-26" tabindex="-1"></a><span class="co"># mat2 &lt;- initialize(mat)</span></span>
+<span id="cb6-27"><a href="sec-svd.html#cb6-27" tabindex="-1"></a><span class="co"># for (j in 1:num_steps){</span></span>
+<span id="cb6-28"><a href="sec-svd.html#cb6-28" tabindex="-1"></a><span class="co">#   mat2 &lt;- maxim(mat2,k)$mat.hat</span></span>
+<span id="cb6-29"><a href="sec-svd.html#cb6-29" tabindex="-1"></a><span class="co">#   loss[j] &lt;- sum((mat2[ind.known] - mat[ind.known])^2)</span></span>
+<span id="cb6-30"><a href="sec-svd.html#cb6-30" tabindex="-1"></a><span class="co">#   mat2[ind.known] &lt;- mat[ind.known]</span></span>
+<span id="cb6-31"><a href="sec-svd.html#cb6-31" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb6-32"><a href="sec-svd.html#cb6-32" tabindex="-1"></a><span class="co"># return(list(loss= loss, fit = mat2))</span></span>
+<span id="cb6-33"><a href="sec-svd.html#cb6-33" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb6-34"><a href="sec-svd.html#cb6-34" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb6-35"><a href="sec-svd.html#cb6-35" tabindex="-1"></a><span class="co"># k &lt;- 3</span></span>
+<span id="cb6-36"><a href="sec-svd.html#cb6-36" tabindex="-1"></a><span class="co"># temp &lt;- recommender(ratings,num_steps = 200, k = k)</span></span>
+<span id="cb6-37"><a href="sec-svd.html#cb6-37" tabindex="-1"></a><span class="co"># plot(temp$loss, xlab = &quot;Step&quot;, ylab = expression(ell))</span></span></code></pre></div>
 </div>
 <div id="recommendation" class="section level4 hasAnchor" number="4.2.4.2">
 <h4><span class="header-section-number">4.2.4.2</span> Recommendation<a href="sec-svd.html#recommendation" class="anchor-section" aria-label="Anchor link to header"></a></h4>

@@ -100,16 +100,16 @@ In the following sections, we will review a small collection of different method
 
 
 <!-- <!-- ISOMAP --> -->
-<!-- ```{r child = 'topics/ISOMAP.Rmd'} -->
-<!-- ``` -->
+```{r child = 'topics/ISOMAP.Rmd'}
+```
 
-<!-- <!-- LLE --> -->
-<!-- ```{r child = 'topics/LLE.Rmd'} -->
-<!-- ``` -->
+<!-- LLE -->
+```{r child = 'topics/LLE.Rmd'}
+```
 
-<!-- <!-- AE --> -->
-<!-- ```{r child = 'topics/AE.Rmd'} -->
-<!-- ``` -->
+<!-- AE -->
+```{r child = 'topics/AE.Rmd'}
+```
 
 ## Additional methods
 

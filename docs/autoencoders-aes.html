@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>6.4 Additional methods | An Introduction to Unsupervised Learning</title>
+  <title>6.3 Autoencoders (AEs) | An Introduction to Unsupervised Learning</title>
   <meta name="description" content="An introductory text on the goals and methods of unsupervised learning" />
   <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="6.4 Additional methods | An Introduction to Unsupervised Learning" />
+  <meta property="og:title" content="6.3 Autoencoders (AEs) | An Introduction to Unsupervised Learning" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="An introductory text on the goals and methods of unsupervised learning" />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="6.4 Additional methods | An Introduction to Unsupervised Learning" />
+  <meta name="twitter:title" content="6.3 Autoencoders (AEs) | An Introduction to Unsupervised Learning" />
   
   <meta name="twitter:description" content="An introductory text on the goals and methods of unsupervised learning" />
   
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="autoencoders-aes.html"/>
-<link rel="next" href="exercises-3.html"/>
+<link rel="prev" href="locally-linear-embeddings-lles.html"/>
+<link rel="next" href="additional-methods.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -296,16 +296,178 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="additional-methods" class="section level2 hasAnchor" number="6.4">
-<h2><span class="header-section-number">6.4</span> Additional methods<a href="additional-methods.html#additional-methods" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="autoencoders-aes" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> Autoencoders (AEs)<a href="autoencoders-aes.html#autoencoders-aes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="introduction-1" class="section level3 hasAnchor" number="6.3.1">
+<h3><span class="header-section-number">6.3.1</span> Introduction<a href="autoencoders-aes.html#introduction-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Autoencoders, which originated from the domain of neural network research, represent a class of unsupervised deep learning models. At its core, autoencoders seek to learn a compressed, efficient representation of input data by leveraging a network structure that nonlinearly encodes the data into a lower dimension space and subsequently decodes it to reconstruct the original data. <span class="citation">[<a href="#ref-NN">17</a>]</span></p>
+<p>The typical architecture of an autoencoder comprises three main components:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Encoder</strong>: A function <span class="math inline">\(f(\vec{x})\)</span> that compresses the input <span class="math inline">\(\vec{x}\)</span> into a latent representation.</p></li>
+<li><p><strong>Latent Space</strong>: The reduced dimensionality representation, often denoted as <span class="math inline">\(\vec{z}\)</span>, where <span class="math inline">\(\vec{z} = f(\vec{x})\)</span>.</p></li>
+<li><p><strong>Decoder</strong>: A function <span class="math inline">\(g(\vec{z})\)</span> that aims to reconstruct the original input from the latent representation.</p></li>
+</ol>
+<p>The primary objective during the training phase of an autoencoder is to minimize the reconstruction error, often quantified using metrics such as Mean Squared Error (MSE) between the input data and its reconstructed counterpart. The minimization forces the model to capture salient features of the data in the latent space, thereby enabling efficient data compression, noise reduction, and feature extraction.</p>
+<p>The utility of Autoencoders has been demonstrated in a wide array of applications, from dimensionality reduction, anomaly detection, denoising, to more complex tasks such as generating new data instances. Variations and extensions of the basic Autoencoder model, including Variational Autoencoders (VAEs) <span class="citation">[<a href="#ref-VAE">18</a>]</span> and Denoising Autoencoders <span class="citation">[<a href="#ref-DenoiseAE">19</a>]</span>, have further broadened their applicability by introducing probabilistic interpretations and noise robustness, respectively.</p>
+<p>In the broader context of machine learning and artificial intelligence, Autoencoders exemplify the power of unsupervised learning paradigms, emphasizing the capability of neural networks to derive meaningful representations from data without explicit labeling.</p>
+</div>
+<div id="algorithm-1" class="section level3 hasAnchor" number="6.3.2">
+<h3><span class="header-section-number">6.3.2</span> Algorithm<a href="autoencoders-aes.html#algorithm-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="notations" class="section level4 hasAnchor" number="6.3.2.1">
+<h4><span class="header-section-number">6.3.2.1</span> Notations<a href="autoencoders-aes.html#notations" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><strong>Input</strong>
+- Dataset <span class="math inline">\(X = \{\vec{x}_1, \vec{x}_2, \dots \vec{x}_n\}\)</span> where <span class="math inline">\(\vec{x}_i\)</span> is a vectorized representation of each data sample.
+- Encoder neural network <span class="math inline">\(E\)</span> with parameters <span class="math inline">\(\theta_e\)</span> mapping inputs to latent space.
+- Decoder neural network <span class="math inline">\(D\)</span> with parameters <span class="math inline">\(\theta_d\)</span> mapping latent space back to the original space.
+- Reconstruction loss function <span class="math inline">\(L\)</span>, e.g., Mean Squared Error (MSE).</p>
+<p><strong>Output</strong>:
+- Optimized parameters <span class="math inline">\(\theta_e^*\)</span> for <span class="math inline">\(E\)</span> and <span class="math inline">\(\theta_d^*\)</span> for <span class="math inline">\(D\)</span>.</p>
+</div>
+<div id="steps-breakdown" class="section level4 hasAnchor" number="6.3.2.2">
+<h4><span class="header-section-number">6.3.2.2</span> Steps Breakdown<a href="autoencoders-aes.html#steps-breakdown" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ol style="list-style-type: decimal">
+<li><strong>Initialization</strong>:
+<ul>
+<li>Initialize encoder <span class="math inline">\(E\)</span> and decoder <span class="math inline">\(D\)</span> neural network weights using techniques like Xavier or He initialization to ensure weight variance remains controlled during training.</li>
+</ul></li>
+<li><strong>Forward Propagation</strong>:
+For each data sample <span class="math inline">\(\vec{x}_i\)</span>:
+<ul>
+<li>Use encoder <span class="math inline">\(E\)</span> to transform <span class="math inline">\(\vec{x}_i\)</span> to latent space:
+<span class="math display">\[ \vec{z}_i = E_{\theta_e}(\vec{x}_i) \]</span></li>
+<li>Use decoder <span class="math inline">\(D\)</span> to reconstruct <span class="math inline">\(\vec{x}_i\)</span> from <span class="math inline">\(\vec{z}_i\)</span>:
+<span class="math display">\[ \vec{x}^{\prime}_i = D_{\theta_d}(\vec{z}_i) \]</span></li>
+</ul></li>
+<li><strong>Loss Computation</strong>:
+<ul>
+<li>Calculate reconstruction loss for the given sample using <span class="math inline">\(L\)</span>:
+<span class="math display">\[ L_i = L(\vec{x}_i, \vec{x}^{\prime}_i) \]</span></li>
+<li>Compute average loss for the batch:
+<span class="math display">\[ L_{batch} = \frac{1}{N} \sum_{i=1}^{N} L_i \]</span>
+where <span class="math inline">\(N\)</span> is the batch size.</li>
+</ul></li>
+<li><strong>Backward Propagation</strong>:
+<ul>
+<li>Compute the gradient of <span class="math inline">\(L_{batch}\)</span> with respect to encoder and decoder parameters using back-propagation.</li>
+<li>Use gradient descent (or its variants) to update both <span class="math inline">\(\theta_e\)</span> and <span class="math inline">\(\theta_d\)</span>:
+<span class="math display">\[ \theta_e = \theta_e - \alpha \frac{\partial L_{batch}}{\partial \theta_e} \]</span>
+<span class="math display">\[ \theta_d = \theta_d - \alpha \frac{\partial L_{batch}}{\partial \theta_d} \]</span>
+where <span class="math inline">\(\alpha\)</span> is the learning rate.</li>
+</ul></li>
+<li><strong>Training Loop</strong>:
+<ul>
+<li>Execute steps 2-4 for multiple iterations (epochs) over the entire data set. Regularly shuffle the data set before each epoch to ensure IID (independent and identically distributed) property.</li>
+</ul></li>
+<li><strong>Model Retrieval</strong>:
+<ul>
+<li>Once convergence is achieved, i.e., when the reduction in <span class="math inline">\(L_{batch}\)</span> between subsequent epochs is negligible or after a pre-defined number of epochs, extract the optimized parameters <span class="math inline">\(\theta_e^*\)</span> and <span class="math inline">\(\theta_d^*\)</span>. These define the trained Autoencoder.</li>
+</ul></li>
+<li><strong>Optional Fine-tuning</strong>:
+<ul>
+<li>For better performance, further fine-tune the trained Autoencoder using techniques like early stopping based on validation loss, or introduce regularization techniques like dropout to prevent overfitting.</li>
+</ul></li>
+</ol>
+</div>
+</div>
+<div id="example" class="section level3 hasAnchor" number="6.3.3">
+<h3><span class="header-section-number">6.3.3</span> Example<a href="autoencoders-aes.html#example" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Compared to other manifold learning methods we have introduced (ISOMAP and LLE), the implementation and parameter tuning of Autoencoders is much more complicated. We’ll explore how to implement an autoencoder in R using the <strong>Keras</strong> library with the famous MNIST dataset. As a Neuro Network method, Autoencoders have a number of parameters, thus requiring a large dataset to train. This explains why we choose MNIST dataset here.</p>
+<ol style="list-style-type: decimal">
+<li>Load and Preprocess the Data</li>
+</ol>
+<p>The above code loads the MNIST dataset from <strong>keras</strong> package. mnist variable is divided into a training set and a test set, both containing the image information and label information. Since we are using Autoencoders to conduct dimensio reduction here (unsupervised learning), we only require the image information from the traing set. The train_images contains the images from the training set.</p>
+<p>For an Autoencoder to process these images, they need to be reshaped into a flat vector. This step reshapes each 28x28 image into a vector of length 784. Furthermore, to facilitate the neural network’s training, the pixel values (originally between 0 to 255) are normalized to fall between 0 and 1.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Build the Autoencoders</li>
+</ol>
+<p>The autoencoder comprises two main parts: Encoder and Decoder, as we have stated before.</p>
+<p>The Encoder starts with the input image and passes it through a dense layer with 128 neurons and ReLU activation. A dropout layer is added for regularization, reducing the risk of over-fitting. The last layer of the Encoder further compresses the data into a 2D representation.</p>
+<p><strong>Dropout Layer</strong>
+In the context of Keras, layer_dropout(rate=0.8) adds a dropout layer where there’s an 80% chance that any given neuron in the previous layer will be turned off during training for a particular update.</p>
+<p>In practice, it means that during training step, for each training iteration, <span class="math inline">\(80\%\)</span> of the neurons of the preceding layer will be randomly selected and turned off. These turned-off neurons won’t have any influence on the computation for that specific iteration. Dropout is only active during training, during testing step, all neurons will be active, and dropout won’t be applied.</p>
+<p>This step is super important, if dropout layer is not introduced, the model will be largely over-fitted. You may try this yourself.</p>
+<p><strong>Activation Function</strong></p>
+<p>Activation functions play a vital role in neural networks, determining the output of a neuron based on its input. They introduce non-linear properties into the network, enabling it to learn from the error and make adjustments, which is essential for learning complex patterns.</p>
+<p>There are several common activation functions we can choose from.</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Sigmoid (Logistic) Function:</strong>
+Equation: <span class="math inline">\(f(x) = \frac{1}{1 + e^{-x}}\)</span>
+Range: Between 0 and 1
+Pros: Smooth gradient, preventing “jumps” in output values
+Cons: Can cause vanishing gradient problems in deep networks.</p></li>
+<li><p><strong>Hyperbolic Tangent (tanh) Function:</strong>
+Equation: <span class="math inline">\(f(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}\)</span>
+Range: Between -1 and 1
+Pros: Zero-centered, making it easier for the model to generalize
+Cons: Like the sigmoid, it can also lead to vanishing gradient issues.</p></li>
+<li><p><strong>Rectified Linear Unit (ReLU) Function:</strong>
+Equation: <span class="math inline">\(f(x) = max(0, x)\)</span>
+Range: From 0 to infinity.
+Pros: Helps mitigate the vanishing gradient problem, leading to faster convergence.
+Cons: Neurons can sometimes “die”, especially with a large learning rate.</p></li>
+<li><p><strong>Softmax Function:</strong>
+Equation: Used primarily in the output layer of a classifier, where it turns logits into probabilities by distributing them over several classes
+Range: Produces an output vector in the range [0,1], and the sum of the probabilities will be 1.</p></li>
+</ol>
+<p>Each activation function has its unique characteristics and is suitable for different kinds of tasks. The choice of an activation function depends on the specific problem at hand, the nature of the data, and the architecture of the neural network.</p>
+<p>The Decoder takes the encoded 2D representation and attempts to reconstruct the original image. It uses a dense layer with 128 neurons followed by another dropout layer. The final dense layer outputs vectors of length <span class="math inline">\(784 \, (28 \times 28)\)</span>, matching the original image’s shape.</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Compile and Train Autoencoders</li>
+</ol>
+<p>Before training, the model needs to be compiled. The ‘adam’ optimizer and the ‘mean_squared_error’ loss function are chosen for this task. You may choose different loss functions according to your specific data type and objective, here MSE might be the most suitable.</p>
+<pre><code>## Model: &quot;model&quot;
+## ______________________________________________________________________________________________________________________________________________________________________________
+##  Layer (type)                                                                 Output Shape                                                         Param #                    
+## ==============================================================================================================================================================================
+##  input_1 (InputLayer)                                                         [(None, 784)]                                                        0                          
+##  dense_1 (Dense)                                                              (None, 128)                                                          100480                     
+##  dropout (Dropout)                                                            (None, 128)                                                          0                          
+##  dense (Dense)                                                                (None, 2)                                                            258                        
+##  dense_3 (Dense)                                                              (None, 128)                                                          384                        
+##  dropout_1 (Dropout)                                                          (None, 128)                                                          0                          
+##  dense_2 (Dense)                                                              (None, 784)                                                          101136                     
+## ==============================================================================================================================================================================
+## Total params: 202,258
+## Trainable params: 202,258
+## Non-trainable params: 0
+## ______________________________________________________________________________________________________________________________________________________________________________</code></pre>
+<p>The Autoencoder is trained using the training images as both inputs and targets. This is because the Autoencoder’s goal is to reconstruct its input as closely as possible.</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
+<ol start="4" style="list-style-type: decimal">
+<li>Visualize the Encoded Representations</li>
+</ol>
+<p>To visualize the 2D representations learned by the Encoder, a separate Encoder model is created. This model shares its weights with the Autoencoders’ Encoder portion. It’s then used to predict or transform the training images into their 2D encoded form.</p>
+<pre><code>## 1875/1875 - 1s - 611ms/epoch - 326us/step</code></pre>
+<pre><code>##           V1         V2
+## 1 -0.7416110  0.1885609
+## 2 -0.9478232 -0.9958997
+## 3 -0.1563427  0.0809272
+## 4  0.9999998 -0.9876159
+## 5  0.1218769  0.9474907
+## 6 -0.5887129  0.6890492</code></pre>
+<p>Using the ggplot2 package, the #D encoded images are visualized, color-coded by their true labels. This visualization can provide insights into how well the encoder has learned to cluster different digits in this reduced-dimensional space. We also compare the result of AutoEncoder with that of PCA, as shown below.</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-53-1.png" width="672" /><img src="_main_files/figure-html/unnamed-chunk-53-2.png" width="672" /></p>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-NN" class="csl-entry">
+<div class="csl-left-margin">[17] </div><div class="csl-right-inline"><span class="smallcaps">Hinton</span>, G. E. and <span class="smallcaps">Salakhutdinov</span>, R. R. (2006). <a href="https://doi.org/10.1126/science.1127647">Reducing the dimensionality of data with neural networks</a>. <em>Science</em> <strong>313</strong> 504–7.</div>
+</div>
+<div id="ref-VAE" class="csl-entry">
+<div class="csl-left-margin">[18] </div><div class="csl-right-inline"><span class="smallcaps">Kingma</span>, D. P. and <span class="smallcaps">Welling</span>, M. (2013). <a href="https://api.semanticscholar.org/CorpusID:216078090">Auto-encoding variational bayes</a>. <em>CoRR</em> <strong>abs/1312.6114</strong>.</div>
+</div>
+<div id="ref-DenoiseAE" class="csl-entry">
+<div class="csl-left-margin">[19] </div><div class="csl-right-inline"><span class="smallcaps">Vincent</span>, P., <span class="smallcaps">Larochelle</span>, H., <span class="smallcaps">Bengio</span>, Y. and <span class="smallcaps">Manzagol</span>, P.-A. (2008). <a href="https://doi.org/10.1145/1390156.1390294">Extracting and composing robust features with denoising autoencoders</a>. In ICML ’08 pp 1096–103. Association for Computing Machinery.</div>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="autoencoders-aes.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="exercises-3.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="locally-linear-embeddings-lles.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="additional-methods.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
