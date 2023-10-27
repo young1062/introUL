@@ -493,7 +493,7 @@ In the context of Keras, layer_dropout(rate=0.8) adds a dropout layer where ther
 ## 4  0.003874707 -0.9999937
 ## 5 -0.999934554  0.3062524
 ## 6  0.099140599  0.8832416</code></pre>
-<p>Using the ggplot2 package, the #D encoded images are visualized, color-coded by their true labels. This visualization can provide insights into how well the encoder has learned to cluster different digits in this reduced-dimensional space. We also compare the result of AutoEncoder with that of PCA, as shown below.</p>
+<p>Using the ggplot2 package, the encoded images are visualized, color-coded by their true labels. This visualization provides insights into how well the encoder has learned to cluster different digits in this reduced-dimensional space. We also compare the result of Autoencoders with that of PCA, as shown below.</p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="autoencoders-aes.html#cb40-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb40-2"><a href="autoencoders-aes.html#cb40-2" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
 <span id="cb40-3"><a href="autoencoders-aes.html#cb40-3" tabindex="-1"></a>labels_train <span class="ot">&lt;-</span> mnist<span class="sc">$</span>train<span class="sc">$</span>y</span>
