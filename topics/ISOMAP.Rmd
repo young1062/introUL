@@ -73,7 +73,6 @@ s <- scatterplot3js(helix, color = geoelectrics::myColorRamp(c("red","purple","b
 threejs::points3d(s, x = black_points,  color = "black", pch = '.', size = 0.15)
 ```
 
-
 There are a few different ways we could measure the distance between the two black points.  The first approach would be to ignore the helix (manifold) structure viewing them as vectors in $\mathbb{R}^3$ and directly measure their **Euclidean distance** which gives $$\|\vec{x}_1 - \vec{x}_2\| = \sqrt{2}\pi.$$  However, we also know that these points are images of the one-dimensional coordinate $z_1 = 2\pi$ and $z_2 = 4\pi$ respectively.  Thus, we could also consider the Euclidean distance of the lower-dimemsional coordinates which is $|2\pi - 4\pi| = 2\pi$, which notably differs from the Euclidean distance.  
 
 A third option is to return to the three-dimensional representation but to also account for the manifold structure when considering distance. Recall Euclidean distance gives the length of the shortest, **straightline** path connecting the two points. Instead, let's restrict ourselves to only those paths which stay on the helix (manifold).  You may correctly conclude that the curve starting at $\Psi(2\pi)$, rotating up the helix one rotation, and ending at $\Psi(4\pi)$ is the shortest such path. Fortunately, computing arc-length is relatively friendly in this example since $\Psi$ already parameterizes the path connecting these two points. The arc-length is then 

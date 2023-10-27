@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>6.3 Locally Linear Embeddings (LLEs) | An Introduction to Unsupervised Learning</title>
+  <title>6.2 Locally Linear Embeddings (LLEs) | An Introduction to Unsupervised Learning</title>
   <meta name="description" content="An introductory text on the goals and methods of unsupervised learning" />
   <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="6.3 Locally Linear Embeddings (LLEs) | An Introduction to Unsupervised Learning" />
+  <meta property="og:title" content="6.2 Locally Linear Embeddings (LLEs) | An Introduction to Unsupervised Learning" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="An introductory text on the goals and methods of unsupervised learning" />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="6.3 Locally Linear Embeddings (LLEs) | An Introduction to Unsupervised Learning" />
+  <meta name="twitter:title" content="6.2 Locally Linear Embeddings (LLEs) | An Introduction to Unsupervised Learning" />
   
   <meta name="twitter:description" content="An introductory text on the goals and methods of unsupervised learning" />
   
@@ -29,7 +29,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="isometric-feature-map-isomap.html"/>
+<link rel="prev" href="background.html"/>
 <link rel="next" href="autoencoders-aes.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -223,7 +223,14 @@ div.csl-indent {
 <li class="chapter" data-level="4.2.3" data-path="sec-svd.html"><a href="sec-svd.html#connections-with-pca"><i class="fa fa-check"></i><b>4.2.3</b> Connections with PCA</a></li>
 <li class="chapter" data-level="4.2.4" data-path="sec-svd.html"><a href="sec-svd.html#recommender-systems"><i class="fa fa-check"></i><b>4.2.4</b> Recommender Systems</a></li>
 </ul></li>
-<li class="chapter" data-level="4.3" data-path="nonnegative-matrix-factorization.html"><a href="nonnegative-matrix-factorization.html"><i class="fa fa-check"></i><b>4.3</b> Nonnegative Matrix Factorization</a></li>
+<li class="chapter" data-level="4.3" data-path="nonnegative-matrix-factorization.html"><a href="nonnegative-matrix-factorization.html"><i class="fa fa-check"></i><b>4.3</b> Nonnegative Matrix Factorization</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="nonnegative-matrix-factorization.html"><a href="nonnegative-matrix-factorization.html#interpretability-superpositions-and-positive-spans"><i class="fa fa-check"></i><b>4.3.1</b> Interpretability, Superpositions, and Positive Spans</a></li>
+<li class="chapter" data-level="4.3.2" data-path="nonnegative-matrix-factorization.html"><a href="nonnegative-matrix-factorization.html#geometric-interpretation"><i class="fa fa-check"></i><b>4.3.2</b> Geometric Interpretation</a></li>
+<li class="chapter" data-level="4.3.3" data-path="nonnegative-matrix-factorization.html"><a href="nonnegative-matrix-factorization.html#finding-an-nmf-multiplicative-updates"><i class="fa fa-check"></i><b>4.3.3</b> Finding an NMF: Multiplicative Updates</a></li>
+<li class="chapter" data-level="4.3.4" data-path="nonnegative-matrix-factorization.html"><a href="nonnegative-matrix-factorization.html#nmf-in-practice"><i class="fa fa-check"></i><b>4.3.4</b> NMF in practice</a></li>
+<li class="chapter" data-level="4.3.5" data-path="nonnegative-matrix-factorization.html"><a href="nonnegative-matrix-factorization.html#sec-nmf-ext"><i class="fa fa-check"></i><b>4.3.5</b> Regularization and Interpretability</a></li>
+</ul></li>
 <li class="chapter" data-level="4.4" data-path="sec-mds.html"><a href="sec-mds.html"><i class="fa fa-check"></i><b>4.4</b> Multidimensional Scaling</a>
 <ul>
 <li class="chapter" data-level="4.4.1" data-path="sec-mds.html"><a href="sec-mds.html#key-features-of-mds"><i class="fa fa-check"></i><b>4.4.1</b> Key features of MDS</a></li>
@@ -234,7 +241,8 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="5" data-path="kernels-and-nonlinearity.html"><a href="kernels-and-nonlinearity.html"><i class="fa fa-check"></i><b>5</b> Kernels and Nonlinearity</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="exercises-2.html"><a href="exercises-2.html"><i class="fa fa-check"></i><b>5.1</b> Exercises</a></li>
+<li class="chapter" data-level="5.1" data-path="kernel-pca.html"><a href="kernel-pca.html"><i class="fa fa-check"></i><b>5.1</b> Kernel PCA</a></li>
+<li class="chapter" data-level="5.2" data-path="exercises-2.html"><a href="exercises-2.html"><i class="fa fa-check"></i><b>5.2</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html"><i class="fa fa-check"></i><b>6</b> Manifold Learning</a>
 <ul>
@@ -242,27 +250,20 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="6.1.1" data-path="background.html"><a href="background.html#data-on-a-manifold"><i class="fa fa-check"></i><b>6.1.1</b> Data on a manifold</a></li>
 </ul></li>
-<li class="chapter" data-level="6.2" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html"><i class="fa fa-check"></i><b>6.2</b> Isometric Feature Map (ISOMAP)</a>
+<li class="chapter" data-level="6.2" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html"><i class="fa fa-check"></i><b>6.2</b> Locally Linear Embeddings (LLEs)</a>
 <ul>
-<li class="chapter" data-level="6.2.1" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#introduction"><i class="fa fa-check"></i><b>6.2.1</b> Introduction</a></li>
-<li class="chapter" data-level="6.2.2" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#key-definitions"><i class="fa fa-check"></i><b>6.2.2</b> Key Definitions</a></li>
-<li class="chapter" data-level="6.2.3" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#algorithm"><i class="fa fa-check"></i><b>6.2.3</b> Algorithm</a></li>
-<li class="chapter" data-level="6.2.4" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#limitations-of-isomap"><i class="fa fa-check"></i><b>6.2.4</b> Limitations of ISOMAP</a></li>
+<li class="chapter" data-level="6.2.1" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#introduction"><i class="fa fa-check"></i><b>6.2.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.2.2" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#algorithm"><i class="fa fa-check"></i><b>6.2.2</b> Algorithm</a></li>
+<li class="chapter" data-level="6.2.3" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#strengths-and-weaknesses-of-lle"><i class="fa fa-check"></i><b>6.2.3</b> Strengths and Weaknesses of LLE</a></li>
 </ul></li>
-<li class="chapter" data-level="6.3" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html"><i class="fa fa-check"></i><b>6.3</b> Locally Linear Embeddings (LLEs)</a>
+<li class="chapter" data-level="6.3" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html"><i class="fa fa-check"></i><b>6.3</b> Autoencoders (AEs)</a>
 <ul>
-<li class="chapter" data-level="6.3.1" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#introduction-1"><i class="fa fa-check"></i><b>6.3.1</b> Introduction</a></li>
-<li class="chapter" data-level="6.3.2" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#algorithm-1"><i class="fa fa-check"></i><b>6.3.2</b> Algorithm</a></li>
-<li class="chapter" data-level="6.3.3" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#strengths-and-weaknesses-of-lle"><i class="fa fa-check"></i><b>6.3.3</b> Strengths and Weaknesses of LLE</a></li>
+<li class="chapter" data-level="6.3.1" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#introduction-1"><i class="fa fa-check"></i><b>6.3.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.3.2" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#algorithm-1"><i class="fa fa-check"></i><b>6.3.2</b> Algorithm</a></li>
+<li class="chapter" data-level="6.3.3" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#example"><i class="fa fa-check"></i><b>6.3.3</b> Example</a></li>
 </ul></li>
-<li class="chapter" data-level="6.4" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html"><i class="fa fa-check"></i><b>6.4</b> Autoencoders (AEs)</a>
-<ul>
-<li class="chapter" data-level="6.4.1" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#introduction-2"><i class="fa fa-check"></i><b>6.4.1</b> Introduction</a></li>
-<li class="chapter" data-level="6.4.2" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#algorithm-2"><i class="fa fa-check"></i><b>6.4.2</b> Algorithm</a></li>
-<li class="chapter" data-level="6.4.3" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#example"><i class="fa fa-check"></i><b>6.4.3</b> Example</a></li>
-</ul></li>
-<li class="chapter" data-level="6.5" data-path="additional-methods.html"><a href="additional-methods.html"><i class="fa fa-check"></i><b>6.5</b> Additional methods</a></li>
-<li class="chapter" data-level="6.6" data-path="exercises-3.html"><a href="exercises-3.html"><i class="fa fa-check"></i><b>6.6</b> Exercises</a></li>
+<li class="chapter" data-level="6.4" data-path="additional-methods.html"><a href="additional-methods.html"><i class="fa fa-check"></i><b>6.4</b> Additional methods</a></li>
+<li class="chapter" data-level="6.5" data-path="exercises-3.html"><a href="exercises-3.html"><i class="fa fa-check"></i><b>6.5</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="ch-clustering.html"><a href="ch-clustering.html"><i class="fa fa-check"></i><b>7</b> Clustering</a>
 <ul>
@@ -295,26 +296,26 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="locally-linear-embeddings-lles" class="section level2 hasAnchor" number="6.3">
-<h2><span class="header-section-number">6.3</span> Locally Linear Embeddings (LLEs)<a href="locally-linear-embeddings-lles.html#locally-linear-embeddings-lles" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="introduction-1" class="section level3 hasAnchor" number="6.3.1">
-<h3><span class="header-section-number">6.3.1</span> Introduction<a href="locally-linear-embeddings-lles.html#introduction-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Locally linear embedding (LLE) is an unsupervised learning algorithm first introduced in 2000 by Sam T. Roweis and Lawrence K. Saul <span class="citation">[<a href="#ref-lle">11</a>]</span>. In the original four-page paper, the two authors introduced the LLE algorithm and demonstrated its effectiveness in dimensional reduction, manifold learning, and in handling real-world high-dimensional data. Unlike clustering methods for local dimensional reduction, LLE maps its inputs into a single global coordinate system of lower dimensionality, and its optimizations do not involve local minima. By exploiting the local symmetries of linear reconstructions, LLE is able to learn the global structure of nonlinear manifolds, such as those generated by images of faces or documents of text. Thanks to its great mathematical properties and relatively low computing cost (compared to other manifold learning methods, like ISOMAP), LLE quickly became attractive to researchers after its emergence due to its ability to deal with large amounts of high dimensional data and its non-iterative way of finding the embeddings <span class="citation">[<a href="#ref-lle_survey">12</a>]</span>. Compared to ISOMAP and some other previous manifold learning methods, LLE is computationally simpler and can give useful results on a broader range of manifolds <span class="citation">[<a href="#ref-think_globally">13</a>]</span>.</p>
+<div id="locally-linear-embeddings-lles" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> Locally Linear Embeddings (LLEs)<a href="locally-linear-embeddings-lles.html#locally-linear-embeddings-lles" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="introduction" class="section level3 hasAnchor" number="6.2.1">
+<h3><span class="header-section-number">6.2.1</span> Introduction<a href="locally-linear-embeddings-lles.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Locally linear embedding (LLE) is an unsupervised learning algorithm first introduced in 2000 by Sam T. Roweis and Lawrence K. Saul <span class="citation">[<a href="#ref-lle">12</a>]</span>. In the original four-page paper, the two authors introduced the LLE algorithm and demonstrated its effectiveness in dimensional reduction, manifold learning, and in handling real-world high-dimensional data. Unlike clustering methods for local dimensional reduction, LLE maps its inputs into a single global coordinate system of lower dimensionality, and its optimizations do not involve local minima. By exploiting the local symmetries of linear reconstructions, LLE is able to learn the global structure of nonlinear manifolds, such as those generated by images of faces or documents of text. Thanks to its great mathematical properties and relatively low computing cost (compared to other manifold learning methods, like ISOMAP), LLE quickly became attractive to researchers after its emergence due to its ability to deal with large amounts of high dimensional data and its non-iterative way of finding the embeddings <span class="citation">[<a href="#ref-lle_survey">13</a>]</span>. Compared to ISOMAP and some other previous manifold learning methods, LLE is computationally simpler and can give useful results on a broader range of manifolds <span class="citation">[<a href="#ref-think_globally">14</a>]</span>.</p>
 <p>For dimensional reduction, most methods introduced before LLE need to estimate pairwise distances between even two remote data points, no matter it is the simple Euclidean distance (classical MDS) or more sophisticated manifold distance (ISOMAP). The underlying main idea of these methods is actually finding a configuration that recovers all pairwise distances of original data points as much as possible. LLE, however, is quite different from these previous methods as it focuses on preserving <strong>locally linear relationships</strong>.</p>
 </div>
-<div id="algorithm-1" class="section level3 hasAnchor" number="6.3.2">
-<h3><span class="header-section-number">6.3.2</span> Algorithm<a href="locally-linear-embeddings-lles.html#algorithm-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="algorithm" class="section level3 hasAnchor" number="6.2.2">
+<h3><span class="header-section-number">6.2.2</span> Algorithm<a href="locally-linear-embeddings-lles.html#algorithm" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>LLE algorithm is actually built on very simple geometric intuitions. As explained in MDS Part, if we consider a small enough region on a manifold in <span class="math inline">\(D\)</span> dimensional space, in most cases, it can be regarded as a <span class="math inline">\(d\)</span> dimensional hyperplane (<span class="math inline">\(d \ll D\)</span>). LLE also makes use of this intuition and assumes that the whole manifold consist of numerous <span class="math inline">\(d\)</span>-dimensional patches that have been stitched together. Assuming that there exists sufficient data (data points are compact), it is reasonable to expect that each data point and its neighbors lie on or close to a locally linear patch of the manifold.</p>
 <p>Following this idea, LLE approximates each data point by a weighted linear combination of its neighbors and proceeds to find a lower-dimensional configuration of data points so that the linear approximations of all data points are best preserved.</p>
 <p>Specifically speaking, LLE algorithm consists of three steps. The initial step involves selecting a certain number of each data point’s nearest neighbors based on Euclidean distance. Following this, the second step calculates the optimal reconstruction weights for each point using its nearest neighbors. The final step carries out the embedding while maintaining the local geometry depicted by the reconstruction weights.</p>
-<div id="construct-neighborhood-graph" class="section level4 hasAnchor" number="6.3.2.1">
-<h4><span class="header-section-number">6.3.2.1</span> Construct Neighborhood Graph<a href="locally-linear-embeddings-lles.html#construct-neighborhood-graph" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="construct-neighborhood-graph" class="section level4 hasAnchor" number="6.2.2.1">
+<h4><span class="header-section-number">6.2.2.1</span> Construct Neighborhood Graph<a href="locally-linear-embeddings-lles.html#construct-neighborhood-graph" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>This step is actually very similar to that of ISOMAP. The process of finding neighbors in LLE is typically conducted using grouping methods like k-nearest neighbors (KNN) or selecting neighbors within a fixed radius ball (<span class="math inline">\(\epsilon\)</span>-neighborhoods), based on the Euclidean distance for each data point, in the provided data set. The KNN method is predominantly utilized for its straightforwardness and ease of implementation. The following explanations are based on KNN method.</p>
 <p>Denote <span class="math inline">\(N\)</span> data points in original <span class="math inline">\(D\)</span> dimensional space as <span class="math inline">\(\vec{x}_1, \vec{x}_2, \dots, \vec{x}_N \in \mathbb{R}^D\)</span>. For a point <span class="math inline">\(\vec{x}_i, \quad 1 \leq i \leq N\)</span>, its neighbor set is defined as <span class="math inline">\(N_i^k \subseteq \{1, 2, 3, \dots, i-1, i+1, \dots, N \}\)</span>, where <span class="math inline">\(N_i^k\)</span> can also be called as the indices of <span class="math inline">\(k\)</span> nearest neighbors of <span class="math inline">\(\vec{x}_i\)</span>. The tuning parameter <span class="math inline">\(k\)</span> is chosen small enough so that the patch around <span class="math inline">\(\vec{x}_i\)</span> is flat. However, <span class="math inline">\(k\)</span> should also be strictly larger than <span class="math inline">\(d\)</span> so as to let the algorithm work.</p>
 <p>As we can tell from these, LLE works well only if data points are dense and hopefully evenly distributed, which will be explained in detail in later examples. The parameter tuning of the appropriate number of neighbors, <span class="math inline">\(k\)</span>, faces challenges of complexity, non-linearity, and diversity of high-dimensional input samples. A larger <span class="math inline">\(k\)</span> value might cause the algorithm to overlook or even lose the local nonlinear features on the manifold. This issue is exacerbated as neighbor selection, typically based on Euclidean distance, can result in distant neighbors when considering the intrinsic geometry of the data, akin to a short circuit. Conversely, an overly small <span class="math inline">\(k\)</span> value may lead the LLE algorithm to fragment the continuous manifold into isolated local pieces, losing global characteristics.</p>
 </div>
-<div id="reconsruct-with-linear-weights" class="section level4 hasAnchor" number="6.3.2.2">
-<h4><span class="header-section-number">6.3.2.2</span> Reconsruct with Linear Weights<a href="locally-linear-embeddings-lles.html#reconsruct-with-linear-weights" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="reconsruct-with-linear-weights" class="section level4 hasAnchor" number="6.2.2.2">
+<h4><span class="header-section-number">6.2.2.2</span> Reconsruct with Linear Weights<a href="locally-linear-embeddings-lles.html#reconsruct-with-linear-weights" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>As put before, we try to reconstruct each <span class="math inline">\(\vec{x}_i\)</span> using an almost convex weighted combination of its neighbors. The respective weights of all its neighbors <span class="math inline">\(\vec{x}_j, \; j \neq i\)</span> for each <span class="math inline">\(\vec{x}_i\)</span> is quite essential in the later reconstruction of the underlying intrinsic configuration, as we consider these weights to remain invariant before and after mapping.</p>
 <p>To explain it in mathematical formulas, the approximate of <span class="math inline">\(\vec{x}_i\)</span>: <span class="math inline">\(\tilde{x}_i\)</span> is defined as <span class="math inline">\(\tilde{x}_i = \sum_{j=1}^N w_{ij} \vec{x}_j\)</span>. There are two constraints for this formula: First, <span class="math inline">\(w_{ij} \equiv 0\)</span>, if <span class="math inline">\(j \notin N_i^k\)</span> (consistent with the assumption of <span class="math inline">\(k\)</span> nearest neighbors); Second, the sum of weights for each <span class="math inline">\(\vec{x}_i\)</span> is always zero, i.e., <span class="math inline">\(\sum_{j=1}^N w_{ij}=1\)</span>.</p>
 <p>Then, the problem of finding the optimal <span class="math inline">\(w_{ij}, \; 1 \leq i,j \leq N\)</span> is equivalent to solving the following constrained Least Squares problem for <span class="math inline">\(\forall 1 \leq i \leq N\)</span>:</p>
@@ -369,14 +370,14 @@ which has the result:
 \]</span></p>
 <p><strong>Complement:</strong></p>
 <p>As discussed before, we can only proof that <span class="math inline">\(\tilde{G}_i\)</span> is positive semi-definite, however, we cannot ensure that it is positive definite, which means <span class="math inline">\(\tilde{G}_i\)</span> is not necessarily invertible. That is why we use the generalize inverse sign here. In practice, it can be done through performing SVD on <span class="math inline">\(\tilde{G}_i\)</span> and select the first few large singular values and eliminate the rest. Then when computing <span class="math inline">\(\tilde{G}^{-}_i\)</span>, just do the reciprocal of these retained singular values.</p>
-<p>Actually <span class="math inline">\(\tilde{G}_i\)</span> only has <span class="math inline">\(d\)</span> (the intrinsic original dimension if you forget) relatively large eigenvalues. The rest are either very small or zeros. So it is very likely that <span class="math inline">\(\tilde{G}_i\)</span> is singular, making the computation result highly unstable. In {<span class="citation">[<a href="#ref-think_globally">13</a>]</span>}, the authors proposed to address this issue through regularizing <span class="math inline">\(\tilde{G}_i\)</span>.</p>
+<p>Actually <span class="math inline">\(\tilde{G}_i\)</span> only has <span class="math inline">\(d\)</span> (the intrinsic original dimension if you forget) relatively large eigenvalues. The rest are either very small or zeros. So it is very likely that <span class="math inline">\(\tilde{G}_i\)</span> is singular, making the computation result highly unstable. In {<span class="citation">[<a href="#ref-think_globally">14</a>]</span>}, the authors proposed to address this issue through regularizing <span class="math inline">\(\tilde{G}_i\)</span>.</p>
 <p><span class="math display">\[
 \tilde{G}_i \leftarrow \tilde{G}_i+ \left(\frac{\Delta^2}{k}\right) \operatorname{Tr}\left(\tilde{G}_i\right) \mathbf{I}
 \]</span>
 Here <span class="math inline">\(Tr(\tilde{G}_i)\)</span> denotes the trace of <span class="math inline">\(\tilde{G}_i\)</span> and <span class="math inline">\(\Delta \ll 1\)</span>.</p>
 </div>
-<div id="embedding" class="section level4 hasAnchor" number="6.3.2.3">
-<h4><span class="header-section-number">6.3.2.3</span> Embedding<a href="locally-linear-embeddings-lles.html#embedding" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="embedding" class="section level4 hasAnchor" number="6.2.2.3">
+<h4><span class="header-section-number">6.2.2.3</span> Embedding<a href="locally-linear-embeddings-lles.html#embedding" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>In the previous step, we have recovered the optimal weight matrix</p>
 <p><span class="math display">\[
 \mathbf{W} =
@@ -416,7 +417,7 @@ where <span class="math inline">\(\mathbf{Y}=(\vec{y}_1 | \vec{y}_2 | \dots | \v
 From constraint (b), we know that columns of <span class="math inline">\(\mathbf{Y}\)</span> are orthogonal to each other. As a result, this whole problem can be simplified to finding the eigen-vectors of <span class="math inline">\(\mathbf{M}\)</span> with the smallest eigenvalues.</p>
 <p>Compute eigen-vectors with the smallest <span class="math inline">\(d+1\)</span> eigenvalues <span class="math inline">\(0=\lambda_1 \leq \lambda_2 &lt; \dots &lt; \lambda_{d+1}\)</span>, eliminate <span class="math inline">\(\mathbf{1}_N\)</span> (the first one). The remaining <span class="math inline">\(d\)</span> vectors are respectively <span class="math inline">\(\vec{v}_2, \vec{v}_3, \dots \vec{v}_{d+1} \in \mathbb{R}^N\)</span>. So <span class="math inline">\(\mathbf{Y} = (\vec{v}_2 | \vec{v}_2 | \dots | \vec{v}_{d+1})\)</span>, we successfully recover the corresponding <span class="math inline">\(\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N \in \mathbb{R}^d\)</span>.</p>
 <p><strong>An illustration of the algorithm</strong></p>
-<p>In the original paper <span class="citation">[<a href="#ref-lle">11</a>]</span>, the authors provide a very intuitive plot that summarizes the above three steps.</p>
+<p>In the original paper <span class="citation">[<a href="#ref-lle">12</a>]</span>, the authors provide a very intuitive plot that summarizes the above three steps.</p>
 <p style="text-align:center;">
 <div class="float">
 <img src="../images/lle_schematic.png" style="width:40.0%;height:40.0%" alt="LLE_illustration" />
@@ -438,10 +439,10 @@ Q(k)= \frac{\sum_{i=1}^N \left| N_i^k \cap V_i^k \right|}{Nk}
 Plot <span class="math inline">\(Q(k)\)</span> against <span class="math inline">\(k\)</span>, select <span class="math inline">\(k^{\star}\)</span> where the increase of <span class="math inline">\(Q(k)\)</span> becomes negligible.</p>
 </div>
 </div>
-<div id="strengths-and-weaknesses-of-lle" class="section level3 hasAnchor" number="6.3.3">
-<h3><span class="header-section-number">6.3.3</span> Strengths and Weaknesses of LLE<a href="locally-linear-embeddings-lles.html#strengths-and-weaknesses-of-lle" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="strengths" class="section level4 hasAnchor" number="6.3.3.1">
-<h4><span class="header-section-number">6.3.3.1</span> Strengths<a href="locally-linear-embeddings-lles.html#strengths" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="strengths-and-weaknesses-of-lle" class="section level3 hasAnchor" number="6.2.3">
+<h3><span class="header-section-number">6.2.3</span> Strengths and Weaknesses of LLE<a href="locally-linear-embeddings-lles.html#strengths-and-weaknesses-of-lle" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="strengths" class="section level4 hasAnchor" number="6.2.3.1">
+<h4><span class="header-section-number">6.2.3.1</span> Strengths<a href="locally-linear-embeddings-lles.html#strengths" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ol style="list-style-type: decimal">
 <li><strong>High Computation Efficiency</strong></li>
 </ol>
@@ -453,117 +454,26 @@ Plot <span class="math inline">\(Q(k)\)</span> against <span class="math inline"
 </ol>
 <p>There are only two parameters to tune, respectively the number of neighbors included in the map: <span class="math inline">\(k\)</span>, and the dimensional of the original configuration: <span class="math inline">\(d\)</span>. In addition, there exist clear methods to find the optimal <span class="math inline">\(k\)</span> and <span class="math inline">\(d\)</span>, as stated in the previous part. This makes LLE algorithm easy to find the optimal parameters.</p>
 </div>
-<div id="weaknesses" class="section level4 hasAnchor" number="6.3.3.2">
-<h4><span class="header-section-number">6.3.3.2</span> Weaknesses<a href="locally-linear-embeddings-lles.html#weaknesses" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="weaknesses" class="section level4 hasAnchor" number="6.2.3.2">
+<h4><span class="header-section-number">6.2.3.2</span> Weaknesses<a href="locally-linear-embeddings-lles.html#weaknesses" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ol style="list-style-type: decimal">
 <li><strong>Sensitivity to tuning parameters</strong></li>
 </ol>
 <p>The result of LLE is quite sensitive to its two control parameters: the number of neighbors <span class="math inline">\(k \,\)</span> and the dimensional of the original configuration: <span class="math inline">\(d\)</span>.</p>
 <p>Here we use the Swiss Roll example to illustrate this. LLE is optimal at <span class="math inline">\(k=45\)</span>. However, when <span class="math inline">\(k=40\)</span>, the recovered lower-dimensional configuration is wrong (Green points and yellow points overlap, which is not the case in Swiss Roll); and when we slightly increase <span class="math inline">\(k\)</span> to 50, the recovered two-dimensional expression is not necessarily a rectangle.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="locally-linear-embeddings-lles.html#cb26-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb26-2"><a href="locally-linear-embeddings-lles.html#cb26-2" tabindex="-1"></a><span class="co"># Install and load necessary packages</span></span>
-<span id="cb26-3"><a href="locally-linear-embeddings-lles.html#cb26-3" tabindex="-1"></a><span class="co"># install.packages(&quot;dimRed&quot;)</span></span>
-<span id="cb26-4"><a href="locally-linear-embeddings-lles.html#cb26-4" tabindex="-1"></a><span class="co"># install.packages(&quot;rgl&quot;)</span></span>
-<span id="cb26-5"><a href="locally-linear-embeddings-lles.html#cb26-5" tabindex="-1"></a><span class="fu">library</span>(dimRed)</span>
-<span id="cb26-6"><a href="locally-linear-embeddings-lles.html#cb26-6" tabindex="-1"></a><span class="fu">library</span>(rgl)</span>
-<span id="cb26-7"><a href="locally-linear-embeddings-lles.html#cb26-7" tabindex="-1"></a><span class="fu">library</span>(Rdimtools)</span>
-<span id="cb26-8"><a href="locally-linear-embeddings-lles.html#cb26-8" tabindex="-1"></a><span class="fu">library</span>(scatterplot3d)</span>
-<span id="cb26-9"><a href="locally-linear-embeddings-lles.html#cb26-9" tabindex="-1"></a></span>
-<span id="cb26-10"><a href="locally-linear-embeddings-lles.html#cb26-10" tabindex="-1"></a><span class="co"># Generate Swiss roll-shaped data</span></span>
-<span id="cb26-11"><a href="locally-linear-embeddings-lles.html#cb26-11" tabindex="-1"></a>S <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">2000</span>)</span>
-<span id="cb26-12"><a href="locally-linear-embeddings-lles.html#cb26-12" tabindex="-1"></a>Swiss <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> <span class="dv">2000</span>, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
-<span id="cb26-13"><a href="locally-linear-embeddings-lles.html#cb26-13" tabindex="-1"></a><span class="cf">for</span> (n <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2000</span>) {</span>
-<span id="cb26-14"><a href="locally-linear-embeddings-lles.html#cb26-14" tabindex="-1"></a>  s <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="at">min =</span> <span class="dv">3</span> <span class="sc">*</span> pi <span class="sc">/</span> <span class="dv">2</span>, <span class="at">max =</span> <span class="dv">9</span> <span class="sc">*</span> pi <span class="sc">/</span> <span class="dv">2</span>)</span>
-<span id="cb26-15"><a href="locally-linear-embeddings-lles.html#cb26-15" tabindex="-1"></a>  t <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">20</span>)</span>
-<span id="cb26-16"><a href="locally-linear-embeddings-lles.html#cb26-16" tabindex="-1"></a>  S[n] <span class="ot">&lt;-</span> s</span>
-<span id="cb26-17"><a href="locally-linear-embeddings-lles.html#cb26-17" tabindex="-1"></a>  Swiss[n, ] <span class="ot">&lt;-</span> <span class="fu">c</span>(s <span class="sc">*</span> <span class="fu">cos</span>(s), t, s <span class="sc">*</span> <span class="fu">sin</span>(s))</span>
-<span id="cb26-18"><a href="locally-linear-embeddings-lles.html#cb26-18" tabindex="-1"></a>}</span>
-<span id="cb26-19"><a href="locally-linear-embeddings-lles.html#cb26-19" tabindex="-1"></a></span>
-<span id="cb26-20"><a href="locally-linear-embeddings-lles.html#cb26-20" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
-<span id="cb26-21"><a href="locally-linear-embeddings-lles.html#cb26-21" tabindex="-1"></a><span class="fu">scatterplot3d</span>(Swiss, <span class="at">color =</span> <span class="fu">myColorRamp</span>(<span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;purple&quot;</span>,<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;green&quot;</span>,<span class="st">&quot;yellow&quot;</span>), S),</span>
-<span id="cb26-22"><a href="locally-linear-embeddings-lles.html#cb26-22" tabindex="-1"></a>               <span class="at">xlab =</span> <span class="fu">expression</span>(x[<span class="dv">1</span>]), <span class="at">ylab =</span> <span class="fu">expression</span>(x[<span class="dv">2</span>]), <span class="at">zlab =</span> <span class="fu">expression</span>(x[<span class="dv">3</span>]))</span>
-<span id="cb26-23"><a href="locally-linear-embeddings-lles.html#cb26-23" tabindex="-1"></a></span>
-<span id="cb26-24"><a href="locally-linear-embeddings-lles.html#cb26-24" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">do.lle</span>(Swiss, <span class="at">ndim =</span> <span class="dv">2</span>, <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;knn&quot;</span>,<span class="dv">40</span>))<span class="sc">$</span>Y,</span>
-<span id="cb26-25"><a href="locally-linear-embeddings-lles.html#cb26-25" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;1st Dimension&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;2nd Dimension&quot;</span>, <span class="at">main =</span> <span class="st">&quot;K=40&quot;</span>,</span>
-<span id="cb26-26"><a href="locally-linear-embeddings-lles.html#cb26-26" tabindex="-1"></a>     <span class="at">col =</span> <span class="fu">myColorRamp</span>(<span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;purple&quot;</span>,<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;green&quot;</span>,<span class="st">&quot;yellow&quot;</span>), S))</span>
-<span id="cb26-27"><a href="locally-linear-embeddings-lles.html#cb26-27" tabindex="-1"></a></span>
-<span id="cb26-28"><a href="locally-linear-embeddings-lles.html#cb26-28" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">do.lle</span>(Swiss, <span class="at">ndim =</span> <span class="dv">2</span>, <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;knn&quot;</span>,<span class="dv">45</span>))<span class="sc">$</span>Y,</span>
-<span id="cb26-29"><a href="locally-linear-embeddings-lles.html#cb26-29" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;1st Dimension&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;2nd Dimension&quot;</span>, <span class="at">main =</span> <span class="st">&quot;K=45&quot;</span>,</span>
-<span id="cb26-30"><a href="locally-linear-embeddings-lles.html#cb26-30" tabindex="-1"></a>     <span class="at">col =</span> <span class="fu">myColorRamp</span>(<span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;purple&quot;</span>,<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;green&quot;</span>,<span class="st">&quot;yellow&quot;</span>), S))</span>
-<span id="cb26-31"><a href="locally-linear-embeddings-lles.html#cb26-31" tabindex="-1"></a></span>
-<span id="cb26-32"><a href="locally-linear-embeddings-lles.html#cb26-32" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">do.lle</span>(Swiss, <span class="at">ndim =</span> <span class="dv">2</span>, <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;knn&quot;</span>,<span class="dv">50</span>))<span class="sc">$</span>Y,</span>
-<span id="cb26-33"><a href="locally-linear-embeddings-lles.html#cb26-33" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;1st Dimension&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;2nd Dimension&quot;</span>, <span class="at">main =</span> <span class="st">&quot;K=50&quot;</span>,</span>
-<span id="cb26-34"><a href="locally-linear-embeddings-lles.html#cb26-34" tabindex="-1"></a>     <span class="at">col =</span> <span class="fu">myColorRamp</span>(<span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;purple&quot;</span>,<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;green&quot;</span>,<span class="st">&quot;yellow&quot;</span>), S))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
 <ol start="2" style="list-style-type: decimal">
 <li><strong>Vulnerable to sparse or unevenly-distributed samples</strong></li>
 </ol>
 <p>The vulnerability towards sparsity and uneven distribution exists in almost all manifold learning methods, including ISOMAP, as we have illustrated in the previous section. LLE is not immune to this either. When a data set is unevenly distributed, since LLE relies on the original Euclidean distance metric, it tends to select neighbors from a singular direction where these neighbors are densely clustered. Clearly, using these selected neighbors to reconstruct the reference point results in significant redundancy in that specific direction. Concurrently, essential information from other directions or regions is not retained for the reconstruction of the reference point. As a result, these selected neighbors are inadequate for accurately representing and reconstructing the reference point. Consequently, much of the intrinsic structure and internal features will be lost after dimension reduction using LLE.</p>
 <p>We borrow the “stretched” Swiss Roll example from ISOMAP section and try LLE this time. LLE also cracks in this scenario, regardless of the chosen parameter <span class="math inline">\(k\)</span>.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="locally-linear-embeddings-lles.html#cb27-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb27-2"><a href="locally-linear-embeddings-lles.html#cb27-2" tabindex="-1"></a>S <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">2000</span>)</span>
-<span id="cb27-3"><a href="locally-linear-embeddings-lles.html#cb27-3" tabindex="-1"></a>Swiss_sparse <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> <span class="dv">2000</span>, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
-<span id="cb27-4"><a href="locally-linear-embeddings-lles.html#cb27-4" tabindex="-1"></a><span class="cf">for</span>( n <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2000</span>){</span>
-<span id="cb27-5"><a href="locally-linear-embeddings-lles.html#cb27-5" tabindex="-1"></a>    s <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="at">min =</span> <span class="dv">3</span><span class="sc">*</span>pi<span class="sc">/</span><span class="dv">2</span>, <span class="at">max =</span> <span class="dv">9</span><span class="sc">*</span>pi<span class="sc">/</span><span class="dv">2</span>)</span>
-<span id="cb27-6"><a href="locally-linear-embeddings-lles.html#cb27-6" tabindex="-1"></a>    t <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="at">min =</span> <span class="dv">0</span>,      <span class="at">max =</span> <span class="dv">60</span>)</span>
-<span id="cb27-7"><a href="locally-linear-embeddings-lles.html#cb27-7" tabindex="-1"></a>    S[n] <span class="ot">&lt;-</span> s</span>
-<span id="cb27-8"><a href="locally-linear-embeddings-lles.html#cb27-8" tabindex="-1"></a>    Swiss_sparse[n, ] <span class="ot">&lt;-</span> <span class="fu">c</span>( s<span class="sc">*</span><span class="fu">cos</span>(s), t, s<span class="sc">*</span><span class="fu">sin</span>(s) )</span>
-<span id="cb27-9"><a href="locally-linear-embeddings-lles.html#cb27-9" tabindex="-1"></a>}</span>
-<span id="cb27-10"><a href="locally-linear-embeddings-lles.html#cb27-10" tabindex="-1"></a></span>
-<span id="cb27-11"><a href="locally-linear-embeddings-lles.html#cb27-11" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
-<span id="cb27-12"><a href="locally-linear-embeddings-lles.html#cb27-12" tabindex="-1"></a><span class="fu">scatterplot3d</span>(Swiss_sparse, <span class="at">color =</span> <span class="fu">myColorRamp</span>(<span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;purple&quot;</span>,<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;green&quot;</span>,<span class="st">&quot;yellow&quot;</span>), S), <span class="at">main =</span> <span class="st">&quot;Swiss Roll with Sparse Region&quot;</span>,</span>
-<span id="cb27-13"><a href="locally-linear-embeddings-lles.html#cb27-13" tabindex="-1"></a>               <span class="at">xlab =</span> <span class="fu">expression</span>(x[<span class="dv">1</span>]), <span class="at">ylab =</span> <span class="fu">expression</span>(x[<span class="dv">2</span>]), <span class="at">zlab =</span> <span class="fu">expression</span>(x[<span class="dv">3</span>]))</span>
-<span id="cb27-14"><a href="locally-linear-embeddings-lles.html#cb27-14" tabindex="-1"></a></span>
-<span id="cb27-15"><a href="locally-linear-embeddings-lles.html#cb27-15" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">do.lle</span>(Swiss_sparse, <span class="at">ndim =</span> <span class="dv">2</span>, <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;knn&quot;</span>,<span class="dv">35</span>))<span class="sc">$</span>Y,</span>
-<span id="cb27-16"><a href="locally-linear-embeddings-lles.html#cb27-16" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;1st Dimension&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;2nd Dimension&quot;</span>, <span class="at">main =</span> <span class="st">&quot;K=35&quot;</span>,</span>
-<span id="cb27-17"><a href="locally-linear-embeddings-lles.html#cb27-17" tabindex="-1"></a>     <span class="at">col =</span> <span class="fu">myColorRamp</span>(<span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;purple&quot;</span>,<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;green&quot;</span>,<span class="st">&quot;yellow&quot;</span>), S))</span>
-<span id="cb27-18"><a href="locally-linear-embeddings-lles.html#cb27-18" tabindex="-1"></a></span>
-<span id="cb27-19"><a href="locally-linear-embeddings-lles.html#cb27-19" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">do.lle</span>(Swiss_sparse, <span class="at">ndim =</span> <span class="dv">2</span>, <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;knn&quot;</span>,<span class="dv">40</span>))<span class="sc">$</span>Y,</span>
-<span id="cb27-20"><a href="locally-linear-embeddings-lles.html#cb27-20" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;1st Dimension&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;2nd Dimension&quot;</span>, <span class="at">main =</span> <span class="st">&quot;K=40&quot;</span>,</span>
-<span id="cb27-21"><a href="locally-linear-embeddings-lles.html#cb27-21" tabindex="-1"></a>     <span class="at">col =</span> <span class="fu">myColorRamp</span>(<span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;purple&quot;</span>,<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;green&quot;</span>,<span class="st">&quot;yellow&quot;</span>), S))</span>
-<span id="cb27-22"><a href="locally-linear-embeddings-lles.html#cb27-22" tabindex="-1"></a></span>
-<span id="cb27-23"><a href="locally-linear-embeddings-lles.html#cb27-23" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">do.lle</span>(Swiss_sparse, <span class="at">ndim =</span> <span class="dv">2</span>, <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;knn&quot;</span>,<span class="dv">45</span>))<span class="sc">$</span>Y,</span>
-<span id="cb27-24"><a href="locally-linear-embeddings-lles.html#cb27-24" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;1st Dimension&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;2nd Dimension&quot;</span>, <span class="at">main =</span> <span class="st">&quot;K=45&quot;</span>,</span>
-<span id="cb27-25"><a href="locally-linear-embeddings-lles.html#cb27-25" tabindex="-1"></a>     <span class="at">col =</span> <span class="fu">myColorRamp</span>(<span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;purple&quot;</span>,<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;green&quot;</span>,<span class="st">&quot;yellow&quot;</span>), S))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
 <p>In addition, we manually create a Swiss Roll with some sparse regions and try LLE on it. From naked eye, these sparse regions won’t affect the overall manifold look. However, since LLE utilizes the local structure, it is greatly affected.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="locally-linear-embeddings-lles.html#cb28-1" tabindex="-1"></a><span class="fu">library</span>(scatterplot3d)</span>
-<span id="cb28-2"><a href="locally-linear-embeddings-lles.html#cb28-2" tabindex="-1"></a><span class="fu">library</span>(Rdimtools)</span>
-<span id="cb28-3"><a href="locally-linear-embeddings-lles.html#cb28-3" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb28-4"><a href="locally-linear-embeddings-lles.html#cb28-4" tabindex="-1"></a>S <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">2000</span>)</span>
-<span id="cb28-5"><a href="locally-linear-embeddings-lles.html#cb28-5" tabindex="-1"></a>Swiss <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="at">nrow =</span> <span class="dv">2000</span>, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
-<span id="cb28-6"><a href="locally-linear-embeddings-lles.html#cb28-6" tabindex="-1"></a><span class="cf">for</span>(n <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2000</span>){</span>
-<span id="cb28-7"><a href="locally-linear-embeddings-lles.html#cb28-7" tabindex="-1"></a>    s <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="at">min =</span> <span class="dv">3</span><span class="sc">*</span>pi<span class="sc">/</span><span class="dv">2</span>, <span class="at">max =</span> <span class="dv">9</span><span class="sc">*</span>pi<span class="sc">/</span><span class="dv">2</span>)</span>
-<span id="cb28-8"><a href="locally-linear-embeddings-lles.html#cb28-8" tabindex="-1"></a>    t <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>, <span class="at">min =</span> <span class="dv">0</span>,      <span class="at">max =</span> <span class="dv">15</span>)</span>
-<span id="cb28-9"><a href="locally-linear-embeddings-lles.html#cb28-9" tabindex="-1"></a>    S[n] <span class="ot">&lt;-</span> s</span>
-<span id="cb28-10"><a href="locally-linear-embeddings-lles.html#cb28-10" tabindex="-1"></a>    Swiss[n, ] <span class="ot">&lt;-</span> <span class="fu">c</span>( s<span class="sc">*</span><span class="fu">cos</span>(s), t, s<span class="sc">*</span><span class="fu">sin</span>(s) )</span>
-<span id="cb28-11"><a href="locally-linear-embeddings-lles.html#cb28-11" tabindex="-1"></a>}</span>
-<span id="cb28-12"><a href="locally-linear-embeddings-lles.html#cb28-12" tabindex="-1"></a></span>
-<span id="cb28-13"><a href="locally-linear-embeddings-lles.html#cb28-13" tabindex="-1"></a><span class="co"># Manually create a sparse region</span></span>
-<span id="cb28-14"><a href="locally-linear-embeddings-lles.html#cb28-14" tabindex="-1"></a>mask <span class="ot">&lt;-</span> Swiss[,<span class="dv">2</span>] <span class="sc">&gt;</span> <span class="dv">5</span> <span class="sc">&amp;</span> Swiss[,<span class="dv">2</span>] <span class="sc">&lt;</span> <span class="dv">10</span> <span class="sc">&amp;</span> Swiss[,<span class="dv">3</span>] <span class="sc">&gt;</span> <span class="sc">-</span><span class="dv">5</span> <span class="sc">&amp;</span> Swiss[,<span class="dv">3</span>] <span class="sc">&lt;</span> <span class="dv">5</span></span>
-<span id="cb28-15"><a href="locally-linear-embeddings-lles.html#cb28-15" tabindex="-1"></a>Swiss_masked <span class="ot">&lt;-</span> Swiss[<span class="sc">!</span>mask, ]</span>
-<span id="cb28-16"><a href="locally-linear-embeddings-lles.html#cb28-16" tabindex="-1"></a>S <span class="ot">&lt;-</span> S[<span class="sc">!</span>mask]</span>
-<span id="cb28-17"><a href="locally-linear-embeddings-lles.html#cb28-17" tabindex="-1"></a></span>
-<span id="cb28-18"><a href="locally-linear-embeddings-lles.html#cb28-18" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
-<span id="cb28-19"><a href="locally-linear-embeddings-lles.html#cb28-19" tabindex="-1"></a><span class="fu">scatterplot3d</span>(Swiss_masked, <span class="at">color =</span> <span class="fu">myColorRamp</span>(<span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;purple&quot;</span>,<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;green&quot;</span>,<span class="st">&quot;yellow&quot;</span>), S), <span class="at">main =</span> <span class="st">&quot;Swiss Roll with Sparse Region&quot;</span>,</span>
-<span id="cb28-20"><a href="locally-linear-embeddings-lles.html#cb28-20" tabindex="-1"></a>               <span class="at">xlab =</span> <span class="fu">expression</span>(x[<span class="dv">1</span>]), <span class="at">ylab =</span> <span class="fu">expression</span>(x[<span class="dv">2</span>]), <span class="at">zlab =</span> <span class="fu">expression</span>(x[<span class="dv">3</span>]))</span>
-<span id="cb28-21"><a href="locally-linear-embeddings-lles.html#cb28-21" tabindex="-1"></a></span>
-<span id="cb28-22"><a href="locally-linear-embeddings-lles.html#cb28-22" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">do.lle</span>(Swiss_masked, <span class="at">ndim =</span> <span class="dv">2</span>, <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;knn&quot;</span>,<span class="dv">20</span>))<span class="sc">$</span>Y,</span>
-<span id="cb28-23"><a href="locally-linear-embeddings-lles.html#cb28-23" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;1st Dimension&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;2nd Dimension&quot;</span>, <span class="at">main =</span> <span class="st">&quot;K=20&quot;</span>,</span>
-<span id="cb28-24"><a href="locally-linear-embeddings-lles.html#cb28-24" tabindex="-1"></a>     <span class="at">col =</span> <span class="fu">myColorRamp</span>(<span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;purple&quot;</span>,<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;green&quot;</span>,<span class="st">&quot;yellow&quot;</span>), S))</span>
-<span id="cb28-25"><a href="locally-linear-embeddings-lles.html#cb28-25" tabindex="-1"></a></span>
-<span id="cb28-26"><a href="locally-linear-embeddings-lles.html#cb28-26" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">do.lle</span>(Swiss_masked, <span class="at">ndim =</span> <span class="dv">2</span>, <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;knn&quot;</span>,<span class="dv">30</span>))<span class="sc">$</span>Y,</span>
-<span id="cb28-27"><a href="locally-linear-embeddings-lles.html#cb28-27" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;1st Dimension&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;2nd Dimension&quot;</span>, <span class="at">main =</span> <span class="st">&quot;K=30&quot;</span>,</span>
-<span id="cb28-28"><a href="locally-linear-embeddings-lles.html#cb28-28" tabindex="-1"></a>     <span class="at">col =</span> <span class="fu">myColorRamp</span>(<span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;purple&quot;</span>,<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;green&quot;</span>,<span class="st">&quot;yellow&quot;</span>), S))</span>
-<span id="cb28-29"><a href="locally-linear-embeddings-lles.html#cb28-29" tabindex="-1"></a></span>
-<span id="cb28-30"><a href="locally-linear-embeddings-lles.html#cb28-30" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">do.lle</span>(Swiss_masked, <span class="at">ndim =</span> <span class="dv">2</span>, <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;knn&quot;</span>,<span class="dv">50</span>))<span class="sc">$</span>Y,</span>
-<span id="cb28-31"><a href="locally-linear-embeddings-lles.html#cb28-31" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;1st Dimension&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;2nd Dimension&quot;</span>, <span class="at">main =</span> <span class="st">&quot;K=50&quot;</span>,</span>
-<span id="cb28-32"><a href="locally-linear-embeddings-lles.html#cb28-32" tabindex="-1"></a>     <span class="at">col =</span> <span class="fu">myColorRamp</span>(<span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;purple&quot;</span>,<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;green&quot;</span>,<span class="st">&quot;yellow&quot;</span>), S))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
 <ol start="3" style="list-style-type: decimal">
 <li><strong>Sensitivity to noise</strong></li>
 </ol>
-<p>LLE is super sensitive to noise. Even a small noise would cause failure in deriving low dimensional configurations. Justin Wang, et.al utilize various visualization examples to illustrate this drawback in their paper <span class="citation">[<a href="#ref-llenoise">14</a>]</span>, you may take a look if you are interested. Various algorithms have been developed to address this issue, i.e., Robustly Locally Linear Embedding (RLLE) <span class="citation">[<a href="#ref-RobustLLE">15</a>]</span>, and Locally Linear Embedding with Additive Noise (LLEAN) <span class="citation">[<a href="#ref-llenoise">14</a>]</span>. The former works well when outliers exist, while the latter has a satisfactory performance when the original points are distorted with noises.</p>
+<p>LLE is super sensitive to noise. Even a small noise would cause failure in deriving low dimensional configurations. Justin Wang, et.al utilize various visualization examples to illustrate this drawback in their paper <span class="citation">[<a href="#ref-llenoise">15</a>]</span>, you may take a look if you are interested. Various algorithms have been developed to address this issue, i.e., Robustly Locally Linear Embedding (RLLE) <span class="citation">[<a href="#ref-RobustLLE">16</a>]</span>, and Locally Linear Embedding with Additive Noise (LLEAN) <span class="citation">[<a href="#ref-llenoise">15</a>]</span>. The former works well when outliers exist, while the latter has a satisfactory performance when the original points are distorted with noises.</p>
 <!-- AE -->
 </div>
 </div>
@@ -571,19 +481,19 @@ Plot <span class="math inline">\(Q(k)\)</span> against <span class="math inline"
 <h3>References</h3>
 <div id="refs" class="references csl-bib-body">
 <div id="ref-lle" class="csl-entry">
-<div class="csl-left-margin">[11] </div><div class="csl-right-inline"><span class="smallcaps">Roweis</span>, S. T. and <span class="smallcaps">Saul</span>, L. K. (2000). <a href="https://doi.org/10.1126/science.290.5500.2323">Nonlinear dimensionality reduction by locally linear embedding</a>. <em>Science</em> <strong>290</strong> 2323–6.</div>
+<div class="csl-left-margin">[12] </div><div class="csl-right-inline"><span class="smallcaps">Roweis</span>, S. T. and <span class="smallcaps">Saul</span>, L. K. (2000). <a href="https://doi.org/10.1126/science.290.5500.2323">Nonlinear dimensionality reduction by locally linear embedding</a>. <em>Science</em> <strong>290</strong> 2323–6.</div>
 </div>
 <div id="ref-lle_survey" class="csl-entry">
-<div class="csl-left-margin">[12] </div><div class="csl-right-inline"><span class="smallcaps">Chen</span>, J. and <span class="smallcaps">Liu</span>, Y. (2011). <a href="https://doi.org/10.1007/s10462-010-9200-z">Locally linear embedding: A survey</a>. <em>Artif. Intell. Rev.</em> <strong>36</strong> 29–48.</div>
+<div class="csl-left-margin">[13] </div><div class="csl-right-inline"><span class="smallcaps">Chen</span>, J. and <span class="smallcaps">Liu</span>, Y. (2011). <a href="https://doi.org/10.1007/s10462-010-9200-z">Locally linear embedding: A survey</a>. <em>Artif. Intell. Rev.</em> <strong>36</strong> 29–48.</div>
 </div>
 <div id="ref-think_globally" class="csl-entry">
-<div class="csl-left-margin">[13] </div><div class="csl-right-inline"><span class="smallcaps">Saul</span>, L. K. and <span class="smallcaps">Roweis</span>, S. T. (2003). <a href="https://doi.org/10.1162/153244304322972667">Think globally, fit locally: Unsupervised learning of low dimensional manifolds</a>. <strong>4</strong> 119–55.</div>
+<div class="csl-left-margin">[14] </div><div class="csl-right-inline"><span class="smallcaps">Saul</span>, L. K. and <span class="smallcaps">Roweis</span>, S. T. (2003). <a href="https://doi.org/10.1162/153244304322972667">Think globally, fit locally: Unsupervised learning of low dimensional manifolds</a>. <strong>4</strong> 119–55.</div>
 </div>
 <div id="ref-llenoise" class="csl-entry">
-<div class="csl-left-margin">[14] </div><div class="csl-right-inline"><span class="smallcaps">Anon</span>. (2019). <a href="https://doi.org/10.1016/j.patrec.2019.02.030">Locally linear embedding with additive noise</a>. <em>Pattern Recognition Letters</em> <strong>123</strong> 47–52.</div>
+<div class="csl-left-margin">[15] </div><div class="csl-right-inline"><span class="smallcaps">Anon</span>. (2019). <a href="https://doi.org/10.1016/j.patrec.2019.02.030">Locally linear embedding with additive noise</a>. <em>Pattern Recognition Letters</em> <strong>123</strong> 47–52.</div>
 </div>
 <div id="ref-RobustLLE" class="csl-entry">
-<div class="csl-left-margin">[15] </div><div class="csl-right-inline"><span class="smallcaps">Chang</span>, H. and <span class="smallcaps">Yeung</span>, D.-Y. (2006). <a href="https://doi.org/10.1016/j.patcog.2005.07.011">Robust locally linear embedding</a>. <em>Pattern Recognition</em> <strong>39</strong> 1053–65.</div>
+<div class="csl-left-margin">[16] </div><div class="csl-right-inline"><span class="smallcaps">Chang</span>, H. and <span class="smallcaps">Yeung</span>, D.-Y. (2006). <a href="https://doi.org/10.1016/j.patcog.2005.07.011">Robust locally linear embedding</a>. <em>Pattern Recognition</em> <strong>39</strong> 1053–65.</div>
 </div>
 </div>
             </section>
@@ -591,7 +501,7 @@ Plot <span class="math inline">\(Q(k)\)</span> against <span class="math inline"
           </div>
         </div>
       </div>
-<a href="isometric-feature-map-isomap.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="background.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="autoencoders-aes.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>

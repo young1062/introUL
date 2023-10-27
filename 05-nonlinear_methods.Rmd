@@ -99,9 +99,9 @@ Let $\Phi:\mathbb{R}^k\to\mathbb{R}^k$ be some invertible function.  As an examp
 In the following sections, we will review a small collection of different methods which address the manifold learning problem.  This collection is by no means exhaustive so we provide a small list with associated references to conclude the chapter.
 
 
-<!-- ISOMAP -->
-```{r child = 'topics/ISOMAP.Rmd'}
-```
+<!-- <!-- <!-- ISOMAP --> --> -->
+<!-- ```{r child = 'topics/ISOMAP.Rmd'} -->
+<!-- ``` -->
 
 <!-- LLE -->
 ```{r child = 'topics/LLE.Rmd'}

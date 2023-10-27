@@ -1,21 +1,80 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+scatterplot3d
+Rdimtools
+=======
+>>>>>>> linear_development
+=======
+>>>>>>> manifold-learning-development
 MASS
 ggplot2
 plotly
 mvtnorm
+<<<<<<< HEAD
+<<<<<<< HEAD
+maps
+gdata
+igraph
+threejs
+=======
+ggplot2
+plotly
+MASS
+mvtnorm
+=======
+>>>>>>> manifold-learning-development
 igraph
 threejs
 scatterplot3d
 maps
 gdata
+<<<<<<< HEAD
+>>>>>>> main
+=======
+scatterplot3d
+maps
+gdata
+igraph
+threejs
+>>>>>>> linear_development
+=======
+>>>>>>> manifold-learning-development
 kernlab
 Matrix
 CVST
 DRR
 dimRed
+<<<<<<< HEAD
 energy
 rgl
 Rdimtools
 princurve
 keras
 reticulate
+<<<<<<< HEAD
+=======
+Rdimtools
+princurve
+>>>>>>> main
+=======
+rgl
+Rdimtools
+energy
+princurve
+keras
+registry
+rngtools
+cluster
+BiocGenerics
+Biobase
+bigmemory
+synchronicity
+NMF
+foreach
+iterators
+doParallel
+>>>>>>> linear_development
+=======
 h2o
+>>>>>>> manifold-learning-development

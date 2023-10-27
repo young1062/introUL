@@ -331,6 +331,3 @@ plot(do.lle(Swiss_masked, ndim = 2, type = c("knn",50))$Y,
 3) **Sensitivity to noise**
 
 LLE is super sensitive to noise. Even a small noise would cause failure in deriving low dimensional configurations. Justin Wang, et.al utilize various visualization examples to illustrate this drawback in their paper [@llenoise], you may take a look if you are interested. Various algorithms have been developed to address this issue, i.e., Robustly Locally Linear Embedding (RLLE) [@RobustLLE], and Locally Linear Embedding with Additive Noise (LLEAN) [@llenoise]. The former works well when outliers exist, while the latter has a satisfactory performance when the original points are distorted with noises.
-
-
-
