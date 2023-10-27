@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 ```{r isomap-setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, cache = TRUE)
 set.seed(1)
@@ -356,9 +361,6 @@ plot(embed(washer3[1:N,], "Isomap", .mute = c("message", "output"), ndim =2, knn
 
 <!--     - Alternatively, we use the eigenvalues of the inner product matrix based on the graph distances to choose a suitable cutoff for the appropriate  -->
 
-    
-    
-    
     
 
 
