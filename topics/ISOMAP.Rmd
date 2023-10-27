@@ -199,22 +199,6 @@ print(result)
 
 As mentioned before, ISOMAP can be viewed as the application of classical MDS in non-linear case. As a result, the reconstruction of $\{\vec{z}_i\}$ in the $k$ dimensional  $\mathcal{M}_1$ follows from an application of classical scaling, but we use the manifold distances estimated in the previous step. The main goal is thus to find low-dimensional coordinates which preserve the geodesic distance of the manifold in $\mathcal{M}_2$ as much as possible. 
 
-<!-- Without any additional information, there are infinite $\{\vec{z}_i\}_{i=1}^N \subset \mathbb{R}^k$ that can be viewed as the optimal solution. For some invertible function $\Phi:\mathbb{R}^k\to\mathbb{R}^k$, a new manifold mapping $\Psi \circ \Phi^{-1}$ can be constructed. $\vec{x}_i = \Psi \circ \Phi^{-1} (\Phi(\vec{z}_i))$, which proofs that $\{\Phi(\vec{z}_i)\}$ is equivalent to $\{\vec{z}_i\}$ when it comes to the reconstruction of the lower dimensional configuration. -->
-
-<!-- Without loss of generality, we assume that $\{\vec{z}_i\}$ are actually centered. So the distance matrix of $\{\vec{z}_i\}$ can be expressed as ${\bf B}={\bf Z Z}^T$, so that ${\bf B}_{ii}=||\vec{z}_i||^2_2$ and ${\bf B}_{ij}={\vec{z}_i}^T \vec{z}_j$. -->
-
-<!-- The embedding vectors $\{\hat{z}_{i}\}$ (estimate of points in lower dimensional feature space $\mathcal{M}_1$) are chosen in order to minimize the objective function: -->
-
-<!-- $$\text{argmin}_{{\bf Z}\in\mathbb{R}^{N\times k}} \|{\bf ZZ}^T - {\bf B}\|_F^2$$ -->
-
-<!-- where the entries of ${\bf B}$ are : -->
-<!-- $${\bf B}_{ij}= -\frac{1}{2} \Delta^2_{ij} + \frac{1}{d} \sum^{d}_{i=1} \Delta^2_{ij} + \frac{1}{d} \sum^{d}_{j=1} \Delta^2_{ij} - \frac{1}{2d^2} \sum^{d}_{i=1} \sum^{d}_{j=1} \Delta^2_{ij}.$$ -->
-
-<!-- In matrix form, it is actually, $B = - \frac{1}{2} H \Delta H$, where $H = I_n - \frac{1}{n} \mathbb{1} \mathbb{1}^T$. Solving this optimization is equivalent to finding the classical scaling solution in $k$ dimensions.   -->
-
-<!-- The next step is just a PCA problem. Implement eigen-decomposition on matrix ${\bf B}, $${\bf B}={\bf U \Lambda U}^T=  ({\bf U \Lambda}^{1/2} )({\bf U \Lambda}^{1/2} )^T$$, then arrange the singular value in descending order, find the first $k^{\prime}$ ones. We acquire $\Lambda_{k^{\prime}}$ and $U_{k^{\prime}}$.  -->
-<!-- $$(\hat{z}_1 | \hat{z}_2 | \dots | \hat{z}_N) = \Lambda_{k^{\prime}} U_{k^{\prime}}$$ -->
-
 Since we don't know the dimension of the underlying feature space, here $k^{\prime}$ is a tuning parameter. Usually, we use a scree plot ($k^{\prime}$ against the sum of the omitted eigenvalues ) and find the elbow point similar to the ideas discussed in the previous section on classical scaling.
 
 
@@ -345,16 +329,6 @@ plot(embed(washer3[1:N,], "Isomap", .mute = c("message", "output"), ndim =2, knn
      col = myColorRamp(c("red","purple","blue","green","yellow"), washer[,1])  )
 ```
 
-
-
-
-<!-- 3) \underline{Embedding via MDS:}  The distances found in step 2 provide a distance matrix in which each entry approximates the manifold distance.  Under the assumption that the unknown manifold map is an isometry, we can seek a lower-dimensioal collection of points which have these pairwise distance.  By default, we use classical scaling to find such a configuration.  As discussed in Chapter \@ref(sec-mds), we have a f -->
-
-<!--     - For visualization, we may typically choose a dimension (usually one, two, or three) and find the corresponding classical MDS solution. -->
-
-<!--     - Alternatively, we use the eigenvalues of the inner product matrix based on the graph distances to choose a suitable cutoff for the appropriate  -->
-
-    
 
 
 

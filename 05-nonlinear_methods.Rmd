@@ -1,7 +1,5 @@
 # Manifold Learning {#ch-nonlinear}
 
-## Background 
-
 In the previous sections, we have focused on methods which seek to approximate our data through a linear combination of feature vectors.  As we have seen, the resulting approximations live on linear (or affine) subspaces in the case of PCA and SVD and positive spans or convex combinations in the case of NMF.  While our data may exhibit some low-dimensional structure, there is no practical reason to expect such behavior to be inherently linear.   In the resulting sections, we will explore methods which consider **nonlinear** structure and assume the data reside on or near a manifold.  Such methods are referred to as nonlinear dimension reduction or manifold learning.  Critical to this discussion is the notion of a manifold.
 
 ::: {.definition #def-manifold name="Informal Definition of a Manifold"}
@@ -99,9 +97,9 @@ Let $\Phi:\mathbb{R}^k\to\mathbb{R}^k$ be some invertible function.  As an examp
 In the following sections, we will review a small collection of different methods which address the manifold learning problem.  This collection is by no means exhaustive so we provide a small list with associated references to conclude the chapter.
 
 
-<!-- <!-- <!-- ISOMAP --> --> -->
-<!-- ```{r child = 'topics/ISOMAP.Rmd'} -->
-<!-- ``` -->
+<!-- <!-- ISOMAP --> -->
+```{r child = 'topics/ISOMAP.Rmd'}
+```
 
 <!-- LLE -->
 ```{r child = 'topics/LLE.Rmd'}
