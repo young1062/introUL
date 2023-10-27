@@ -1,13 +1,17 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 scatterplot3d
 Rdimtools
 =======
 >>>>>>> linear_development
+=======
+>>>>>>> manifold-learning-development
 MASS
 ggplot2
 plotly
 mvtnorm
+<<<<<<< HEAD
 <<<<<<< HEAD
 maps
 gdata
@@ -18,11 +22,14 @@ ggplot2
 plotly
 MASS
 mvtnorm
+=======
+>>>>>>> manifold-learning-development
 igraph
 threejs
 scatterplot3d
 maps
 gdata
+<<<<<<< HEAD
 >>>>>>> main
 =======
 scatterplot3d
@@ -31,6 +38,8 @@ gdata
 igraph
 threejs
 >>>>>>> linear_development
+=======
+>>>>>>> manifold-learning-development
 kernlab
 Matrix
 CVST
@@ -39,10 +48,11 @@ dimRed
 <<<<<<< HEAD
 energy
 rgl
-<<<<<<< HEAD
+Rdimtools
 princurve
 keras
 reticulate
+<<<<<<< HEAD
 =======
 Rdimtools
 princurve
@@ -65,3 +75,6 @@ foreach
 iterators
 doParallel
 >>>>>>> linear_development
+=======
+h2o
+>>>>>>> manifold-learning-development

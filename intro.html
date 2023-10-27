@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>An Introduction to Unsupervised Learning</title>
+  <meta name="description" content="An introductory text on the goals and methods of unsupervised learning" />
+  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="An Introduction to Unsupervised Learning" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="An introductory text on the goals and methods of unsupervised learning" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="An Introduction to Unsupervised Learning" />
+  
+  <meta name="twitter:description" content="An introductory text on the goals and methods of unsupervised learning" />
+  
+
+<meta name="author" content="Alex Young and Cenhao Zhu" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="prerequisites.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Unsupervised Learning</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="prerequisites.html"><a href="prerequisites.html"><i class="fa fa-check"></i><b>1.1</b> Prerequisites</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">An Introduction to Unsupervised Learning</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">An Introduction to Unsupervised Learning</h1>
+<p class="author"><em>Alex Young and Cenhao Zhu</em></p>
+<p class="date"><em>Version 0</em></p>
+</div>
+<div id="intro" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Chapter 1</span> Introduction<a href="intro.html#intro" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Unsupervised machine learning (UL) is an overarching term for methods designed to understand the patterns and relationships within a set of <strong>unlabeled data</strong>. UL is often discussed in contrast to (semi-)supervised learning. In the latter setting(s), one is primarly concerned with prediction and classification, and the machine learning algorithms therein focus on learning the relationship between a (often high dimensional) feature vector <span class="math inline">\(\vec{x}\)</span> and an observable outcome <span class="math inline">\(y\)</span> by training on a labeled dataset <span class="math inline">\(\{(\vec{x}_i,y_i)\}_{i=1}^N\)</span>. As a concrete example, consider the MNIST dataset which contains a compendium of labeled digitized grayscale images of handwritten digits <span class="citation">[<a href="#ref-mnist">1</a>]</span>. The images themselves are the features, (<span class="math inline">\(\vec{x}\)</span>), and the identity of the digit (0 to 9) gives the label, <span class="math inline">\(y\)</span> . A supervised learning algorithm trained on the MNIST dataset would be able to classify a handwritten digit in a new grayscale image.</p>
+<p>Prediction and classification are clearly defined goals which naturally translate to many settings. As such, supervised ML has found numerous applications across diverse fields of research from healthcare and medicine to astronomy and chemistry. Given the clearly translatable goals of supervised learning, most texts on Machine Learning tend to emphasize this setting with much smaller discussion on the un- or semi-supervised setting. For example, both <em>The Elements of Statistical Learning</em> by Hastie et al <span class="citation">[<a href="#ref-esl">2</a>]</span> and <em>Modern Multivariate Statistical Techniques</em> by Izenman <span class="citation">[<a href="#ref-izenman">3</a>]</span> are wonderful texts – which were central to the early development of this book – but lean towards supervised problems.</p>
+<p>Unlike the supervised setting, however, UL algorithms are applied to datasets without (or ignoring) labels. In contrast to the MNIST example above, you can think of have of a case where one has access to a large collection of <span class="math inline">\(\vec{x}_i\)</span>, such as images, without any labels indicating the content(s) of the image. Other examples include,</p>
+<ul>
+<li>a corpus of emails without any indication of which, if any, are spam</li>
+<li>genomic data for each individual in a large population of cancer patients</li>
+<li>collections of consumer data or ratings</li>
+</ul>
+<p>Without labels, it may be difficult (particularly to students first seeing this branch of machine learning) to grasp the usefulness of UL including its applicability and what one is <em>learning</em> in practice. In this book, we hope to address this difficulty and provide readers with a clear understanding of UL by covering motivating ideas, fundamental techniques, and clear and compelling applications. For now, we’ll discuss the high-altitude view of unsupervised learning.</p>
+<p>We’ll focus on those cases where we have a collection of independent observations of (preprocessed) features stored in vectors <span class="math inline">\(\vec{x}_1,\dots,\vec{x}_N\in\mathbb{R}^d\)</span>. This setting will be formalized in <a href="#ch-prob"><strong>??</strong></a>. Broadly, UL learns patterns and similarities between the vectors which could allow us to</p>
+<ol style="list-style-type: decimal">
+<li>find subsets of the data which more similar to each other (clustering) or</li>
+<li>find simpler representations of the data which preserves important relationships (dimension reduction)</li>
+<li>identify common relationships between variables in the data (association rules)</li>
+</ol>
+<p>Each of three cases provide a simplified lens through which we can view our data, and in doing so, can open up a number of interesting possibilities.</p>
+<p>Clustering different genomic data in cancer patients could provide information to medical practitioners on which cancers exhibit common genetics signatures. Applying dimension reduction to spam emails could allow one to identify odd emails which might be spam (anomaly detection). Learning the common relationships between variables in a consumer data set opens the possibility of matching consumers which items they might enjoy (recommendation systems).</p>
+<p>The examples above are by no means exhaustive, but they do raise a few critical points.</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Where</strong> Each application above is one step in a larger data science problem. Unsupervised learning is rarely detached from a broader data science pipeline. This is a stark difference from classification and prediction which are often viewed as isolated statistical problems (though careful practitioners recognize that data collection and cleaning and the communication of results are often of equal or greater importance than analysis). Examples are provided throughout the text demonstrating where UL can be useful.</p></li>
+<li><p><strong>What</strong> One data set could be approached from one or more different perspectives. For example, one could apply dimension reduction to the cancer data to <em>visualize</em> the potentially complex data in a manner that preserves important relationships. Combining many approaches together makes unsupervised learning a powerful tool to exploratory data analysis and featurization, particularly when combined with expert level content knowledge. Choosing a UL method is linked with what we hope to learn about our data.</p></li>
+<li><p><strong>How</strong> If we want an algorithm that clusters similar vectors or provides a visualization that keeps close points together, then we should be mindful of the meaning of similarity or proximity. UL algorithms, sometimes implicitly, prioritize different relationships. We explore how these algorithms work from a geometric perspective which is a helpful intellectual scaffolding.</p></li>
+</ol>
+<p>In the remainder of this text, we focus primarily on dimension reduction (<a href="#ch-linear"><strong>??</strong></a> and <a href="#ch-nonlinear"><strong>??</strong></a>) and clustering (<a href="#ch-clustering"><strong>??</strong></a>).</p>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-mnist" class="csl-entry">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline"><span class="smallcaps">Deng</span>, L. (2012). The mnist database of handwritten digit images for machine learning research. <em>IEEE Signal Processing Magazine</em> <strong>29</strong> 141–2.</div>
+</div>
+<div id="ref-esl" class="csl-entry">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline"><span class="smallcaps">Hastie</span>, T., <span class="smallcaps">Tibshirani</span>, R. and <span class="smallcaps">Friedman</span>, J. (2001). <em>The elements of statistical learning</em>. Springer New York Inc., New York, NY, USA.</div>
+</div>
+<div id="ref-izenman" class="csl-entry">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline"><span class="smallcaps">Izenman</span>, A. J. (2008). <em>Modern multivariate statistical techniques: Regression, classification, and manifold learning</em>. Springer Publishing Company, Incorporated.</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="prerequisites.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/%s",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": false,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
