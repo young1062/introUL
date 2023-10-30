@@ -101,13 +101,17 @@ In the following sections, we will review a small collection of different method
 ```{r child = 'topics/ISOMAP.Rmd'}
 ```
 
-<!-- <!-- LLE --> -->
-<!-- ```{r child = 'topics/LLE.Rmd'} -->
-<!-- ``` -->
+<!-- LLE -->
+```{r child = 'topics/LLE.Rmd'}
+```
 
-<!-- <!-- AE --> -->
-<!-- ```{r child = 'topics/AE.Rmd'} -->
-<!-- ``` -->
+<!-- Laplacian Eigenmaps -->
+```{r child = 'topics/laplacian_eigenmaps.Rmd'}
+```
+
+<!-- AE -->
+```{r child = 'topics/AE.Rmd'}
+```
 
 ## Additional methods
 
