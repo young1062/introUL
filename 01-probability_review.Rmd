@@ -31,7 +31,7 @@ The Multivariate Gaussian distribution is also often called the Multivariate Nor
 
 For example of the MVN, first consider the two-dimensional case with $\vec{\mu} = \vec{0}$ and $${\bf \Sigma} = \begin{bmatrix}1 & p \\ p & 1\end{bmatrix}.$$  Below, we show scatterplots of $1000$ independent samples from this distribution for three different values of $p.$  We will also refer to a collection of points in $\mathbb{R}^d$ as a point cloud.  
 
-```{r, MVN_example_d2, warning = 'FALSE',message = 'FALSE', echo = FALSE}
+```{r MVN_example_d2, warning = 'FALSE',message = 'FALSE', echo = FALSE}
 set.seed(185)
 library("MASS",quietly = TRUE)
 library("plotly", quietly = TRUE)
@@ -54,7 +54,7 @@ plot_ly(samples, x = ~x1, y = ~x2, split = ~rho) %>% add_markers(size = 0.5) %>%
 For an examples in $\mathbb{R}^3$ we again consider case where $\vec{\mu}=0$ and let $${\bf \Sigma} = \begin{bmatrix}1 & p & p^2 \\ p & 1 &p \\
 p^2 &p & 1 \end{bmatrix}.$$ 
 
-```{r, MVN_example_d3, warning = 'FALSE',message = 'FALSE', echo = FALSE}
+```{r MVN_example_d3, warning = 'FALSE',message = 'FALSE', echo = FALSE}
 set.seed(185)
 d <- 3
 N <- 1000
@@ -83,7 +83,7 @@ $$f(\vec{x}) = \frac{\Gamma\left(\frac{\nu+d}{2}\right)}{\Gamma(\nu/2)\nu^{d/2}\
 
 We'll only consider a three dimensional case where the location, which determines the mode of the distribution, is $\vec{0}$ and the scale is the identity matrix.  As in the Gaussian case, changing $\vec{\mu}$ translates the point cloud and different values of ${\bf \Sigma}$ give point clouds with different shapes.  The remaining parameter to consider here is the degrees of freedom, $\nu$, which controls how spread out the samples can be.  We show results for three different choices of the degrees of freedom.  For smaller degrees of freedom, there are more points which are far from the mode at $\vec{0}$.
 
-```{r, t_example_d3, warning = 'FALSE',message = 'FALSE', echo = FALSE}
+```{r t_example_d3, warning = 'FALSE',message = 'FALSE', echo = FALSE}
 set.seed(185)
 library("mvtnorm", quietly = TRUE)
 d <- 3
