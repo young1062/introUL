@@ -1,0 +1,5 @@
+ignore_theme_config: true
+
+include:
+  - .nojekyll
+
