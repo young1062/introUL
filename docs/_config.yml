@@ -2,4 +2,5 @@ ignore_theme_config: true
 
 include:
   - .nojekyll
+  - _main_files
 
