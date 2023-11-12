@@ -11,4 +11,6 @@
 
 ### k-mediods
 
-## Spectral
+<!-- Spectral -->
+```{r child = 'topics/Spectral-Clustering.Rmd'}
+```

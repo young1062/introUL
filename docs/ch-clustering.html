@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 7 Clustering | An Introduction to Unsupervised Learning</title>
   <meta name="description" content="An introductory text on the goals and methods of unsupervised learning" />
-  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 7 Clustering | An Introduction to Unsupervised Learning" />
   <meta property="og:type" content="book" />
@@ -52,7 +52,7 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
-<script src="libs/plotly-binding-4.10.2/plotly.js"></script>
+<script src="libs/plotly-binding-4.10.3/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
@@ -251,7 +251,12 @@ div.csl-indent {
 <li class="chapter" data-level="7.3.1" data-path="ch-clustering.html"><a href="ch-clustering.html#k-means"><i class="fa fa-check"></i><b>7.3.1</b> k-means</a></li>
 <li class="chapter" data-level="7.3.2" data-path="ch-clustering.html"><a href="ch-clustering.html#k-mediods"><i class="fa fa-check"></i><b>7.3.2</b> k-mediods</a></li>
 </ul></li>
-<li class="chapter" data-level="7.4" data-path="ch-clustering.html"><a href="ch-clustering.html#spectral"><i class="fa fa-check"></i><b>7.4</b> Spectral</a></li>
+<li class="chapter" data-level="7.4" data-path="ch-clustering.html"><a href="ch-clustering.html#sec-spec-clustering"><i class="fa fa-check"></i><b>7.4</b> Spectral Clustering</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="ch-clustering.html"><a href="ch-clustering.html#introduction"><i class="fa fa-check"></i><b>7.4.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.4.2" data-path="ch-clustering.html"><a href="ch-clustering.html#algorithm"><i class="fa fa-check"></i><b>7.4.2</b> Algorithm</a></li>
+<li class="chapter" data-level="7.4.3" data-path="ch-clustering.html"><a href="ch-clustering.html#extension-of-laplacian-matrix"><i class="fa fa-check"></i><b>7.4.3</b> Extension of Laplacian Matrix</a></li>
+</ul></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -288,10 +293,198 @@ div.csl-indent {
 </div>
 <div id="k-mediods" class="section level3 hasAnchor" number="7.3.2">
 <h3><span class="header-section-number">7.3.2</span> k-mediods<a href="ch-clustering.html#k-mediods" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<!-- Spectral -->
 </div>
 </div>
-<div id="spectral" class="section level2 hasAnchor" number="7.4">
-<h2><span class="header-section-number">7.4</span> Spectral<a href="ch-clustering.html#spectral" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="sec-spec-clustering" class="section level2 hasAnchor" number="7.4">
+<h2><span class="header-section-number">7.4</span> Spectral Clustering<a href="ch-clustering.html#sec-spec-clustering" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="introduction" class="section level3 hasAnchor" number="7.4.1">
+<h3><span class="header-section-number">7.4.1</span> Introduction<a href="ch-clustering.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Spectral Clustering represents a significant leap in the evolution of clustering techniques. Distinguished from traditional methods like K-means, it excels in detecting complex structures and patterns within data. It’s based on ideas from graph theory and simple math concepts, mainly focusing on how to use information from graphs. Imagine each piece of data as a point on a graph, with lines connecting the points that are similar. Spectral Clustering uses these connections to figure out how the data should be grouped, which is especially handy when the groups are twisty or oddly shaped.</p>
+<p>The key step in Spectral Clustering is breaking down a special graph matrix (called the Laplacian matrix) to find its eigen values and eigen vectors. These eigen vectors help us see the data in a new way that makes the groups more obvious. This makes it easier to use simple grouping methods like K-means to sort the data into clusters. This approach is great for finding hidden patterns in the data.</p>
+<p>However, Spectral Clustering comes with its own challenges. Choosing the right number of groups can be tricky, and it might not work as well with very large sets of data because of the relatively large computing cost. Nevertheless, its robustness and adaptability have cemented its role across various domains, from image processing to bioinformatics.</p>
+</div>
+<div id="algorithm" class="section level3 hasAnchor" number="7.4.2">
+<h3><span class="header-section-number">7.4.2</span> Algorithm<a href="ch-clustering.html#algorithm" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li><strong>Similarity Graph Construction</strong>:</li>
+</ol>
+<p>Start by constructing a similarity graph <span class="math inline">\(G\)</span> from your data (similar to the steps in Laplacian Eigenmap section. Each data point is represented as a node in the graph.)</p>
+<p>Define the edges of the graph. There are three common ways to do this:</p>
+<ol style="list-style-type: lower-roman">
+<li><p><strong><span class="math inline">\(\epsilon\)</span>-neighborhood graph:</strong> Connect all points whose pairwise distances are smaller than <span class="math inline">\(\epsilon\)</span>.</p></li>
+<li><p><strong>K-nearest neighbors:</strong> For each point, connect it to its k nearest neighbors.</p></li>
+<li><p><strong>Fully connected graph:</strong> Connect all points with each other. Typically, the Gaussian similarity function (also known as the Radial Basis Function or RBF) is used to calculate the weights of the edges: <span class="math inline">\(w_{ij} = \exp(-\frac{||\vec{x}_i - \vec{x}_j||^2}{2\sigma^2})\)</span>, where <span class="math inline">\(\vec{x}_i\)</span> and <span class="math inline">\(\vec{x}_j\)</span> are two points in the dataset and <span class="math inline">\(\sigma\)</span> is a tuning parameter.</p></li>
+</ol>
+<p><strong>Note:</strong>It is worth noting that there exists a slight difference in the construction of similarity graph matrix compared to Laplacian Eigenmap we mentioned in manifold learning chapter. For the fully connected graph, after using Radial basis to depict all the pair-wise distances, we don’t need to set a threshold and sparsify the matrix (set some entries to zero) like we did in Laplacian Eigenmap, we just keep all the original radial basis distances.</p>
+<ol start="2" style="list-style-type: decimal">
+<li><strong>Graph Laplacian Matrix:</strong></li>
+</ol>
+<p>Similar to corresponding parts in Laplacian Eigenmap. Calculate the adjacency matrix <span class="math inline">\(W\)</span>, where <span class="math inline">\(W_{ij}\)</span> represents the weight of the edge between nodes <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>.</p>
+<p>Calculate the degree matrix <span class="math inline">\(\mathbf{D}\)</span>, which is a diagonal matrix where each diagonal element <span class="math inline">\(D_{ii}\)</span> is the sum of the weights of the edges connected to node <span class="math inline">\(i\)</span>.</p>
+<p>Compute the unnormalized Graph Laplacian matrix <span class="math inline">\(\mathbf{L}\)</span> as <span class="math inline">\(\mathbf{L} = \mathbf{D} - \mathbf{W}\)</span>.</p>
+<ol start="3" style="list-style-type: decimal">
+<li><strong>Eigen Decomposition:</strong></li>
+</ol>
+<p>Perform the eigen decomposition on the Laplacian matrix <span class="math inline">\(\mathbf{L}\)</span> to find its eigen values and eigen vectors.</p>
+<p>Calculate the degree matrix <span class="math inline">\(\mathbf{D}\)</span>, which is a diagonal matrix where each diagonal element <span class="math inline">\(\mathbf{D}_{ii}\)</span> is the sum of the weights of the edges connected to node <span class="math inline">\(i\)</span>.</p>
+<p>Compute the unnormalized Graph Laplacian matrix <span class="math inline">\(\mathbf{L}\)</span> as <span class="math inline">\(\mathbf{L} = \mathbf{D} - \mathbf{W}\)</span>.</p>
+<p><strong>Mathematical Proof behind this step</strong></p>
+<p>As we have stated in Laplacian Eigenmap section, the Graph Laplacian matrix <span class="math inline">\(L\)</span> is positive semi-definite.</p>
+<p>Given any vector <span class="math inline">\(\vec{y} \in \mathbb{R}^N\)</span></p>
+<p><span class="math display">\[
+\vec{y}^T \mathbf{L} \vec{y}=\sum_{i=1}^N \sum_{j=1}^N \mathbf{W}_{i j}\left(y_i-y_j\right)^2
+\]</span></p>
+<p>Obviously, it is non-negative. Besides, we can always find a vector <span class="math inline">\(\vec{y} = \mathbf{1}_N\)</span> that makes it zero, which means the smallest eigen value must be zero, with the corresponding eigen vector being <span class="math inline">\(\mathbf{1}\)</span>.</p>
+<p>From the above equation, we can also justify our eigen-decomposition approach in finding the number of clusters. For either <span class="math inline">\(\epsilon\)</span>-neighborhood graph or K-nearest neighbors approach, if point <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> are not connected, then <span class="math inline">\(\mathbf{W}_{ij}=0\)</span>, however, if they are connected, <span class="math inline">\(\mathbf{W}_{ij} = 1 &gt; 0\)</span>. With some careful observation, we find that as long as we set <span class="math inline">\(y_i=y_j\)</span> for <span class="math inline">\(\forall \mathbf{W}_{ij} &gt; 0\)</span>, then we are able to get zero in the above equation. Since in cluster <span class="math inline">\(\Omega_1 = \{\vec{x}_p, \dots , \vec{x}_q \}\)</span>, all the points are connected, and <span class="math inline">\(\mathbf{W}_{ij} &gt; 0 \; \forall \{\vec{x}_i, \vec{x}_j\} \in \Omega_1\)</span>, we can simply set <span class="math inline">\(y_i=1\)</span> for <span class="math inline">\(\; \forall i \in \Omega_1\)</span>, and <span class="math inline">\(y_j=0\)</span> for <span class="math inline">\(\; \forall j \notin \Omega_1\)</span>. So the eigen-vector that corresponds to cluster <span class="math inline">\(\Omega_1\)</span> is <span class="math inline">\(\vec{y}_1 = \sum \vec{e}_i \in \mathbb{R}^N, \; \forall \, i \; s.t. \vec{x}_i \in \Omega_1\)</span>, where <span class="math inline">\(\vec{e}_i\)</span> is a vector with all zero except the <span class="math inline">\(i^{th}\)</span> entry being one.</p>
+<p>So when we perform eigen decomposition on Graph Laplacian matrix <span class="math inline">\(\mathbf{L}\)</span>: <span class="math inline">\(\mathbf{L} = \mathbf{Q} \mathbf{\Lambda} \mathbf{Q}^T\)</span>. Then for <span class="math inline">\(\vec{y}\)</span> s.t. <span class="math inline">\(\vec{y}^T \mathbf{L} \vec{y}=0\)</span>, we can rewrite it as</p>
+<p><span class="math display">\[
+\vec{y}^T \mathbf{L} \vec{y} = \vec{y}^T \mathbf{Q} \mathbf{\Lambda} \mathbf{Q}^T \vec{y}
+= (\mathbf{\Lambda}^{1/2} \mathbf{Q}^T \vec{y})^T (\mathbf{\Lambda}^{1/2} \mathbf{Q}^T \vec{y})=0
+\]</span>
+As a result, we know <span class="math inline">\(\mathbf{\Lambda}^{1/2} \mathbf{Q} \vec{y} = \vec{0}\)</span>, in other words</p>
+<p><span class="math display">\[
+\mathbf{L} \vec{y} = \mathbf{Q} \mathbf{\Lambda} \mathbf{Q}^T \vec{y} = (\mathbf{Q} \mathbf{\Lambda}^{1/2})(\mathbf{\Lambda}^{1/2} \mathbf{Q}^T \vec{y}) = \vec{0}
+\]</span>
+So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-vector of <span class="math inline">\(\mathbf{L}\)</span>, with the corresponding eigen-value being zero.</p>
+<p>In reality, especially when we use Fully-connected graph, we can’t get <span class="math inline">\(k\)</span> exact zero-eigenvalues with corresponding <span class="math inline">\(k\)</span> eigenvectors. (Different clusters are not necessarily completely separate, and Fully-connected graph even allows every <span class="math inline">\(\mathbf{W}_{ij} &gt; 0\)</span>). So we will just conduct eigen decomposition and choose <span class="math inline">\(k\)</span> smallest eigenvalues together with their corresponding eigen-vectors.</p>
+<p><strong>A toy example</strong></p>
+<p>First, we’ll create the simulation data with two distinct clusters.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="ch-clustering.html#cb8-1" tabindex="-1"></a><span class="co"># Generate two clusters</span></span>
+<span id="cb8-2"><a href="ch-clustering.html#cb8-2" tabindex="-1"></a>cluster1 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="fl">1.5</span>, <span class="fl">2.5</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb8-3"><a href="ch-clustering.html#cb8-3" tabindex="-1"></a>cluster2 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="fl">4.5</span>, <span class="fl">5.5</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb8-4"><a href="ch-clustering.html#cb8-4" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">rbind</span>(cluster1, cluster2)</span></code></pre></div>
+<p>Visualize the data points to make it more intuitive.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="ch-clustering.html#cb9-1" tabindex="-1"></a><span class="fu">plot</span>(data, <span class="at">col =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;red&quot;</span>, <span class="fu">nrow</span>(cluster1)), <span class="fu">rep</span>(<span class="st">&quot;blue&quot;</span>, <span class="fu">nrow</span>(cluster2))), <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">xlab =</span> <span class="st">&quot;X-axis&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Y-axis&quot;</span>)</span>
+<span id="cb9-2"><a href="ch-clustering.html#cb9-2" tabindex="-1"></a><span class="fu">text</span>(data, <span class="at">labels =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(data), <span class="at">pos =</span> <span class="dv">4</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>)  <span class="co"># Adding labels</span></span>
+<span id="cb9-3"><a href="ch-clustering.html#cb9-3" tabindex="-1"></a><span class="fu">title</span>(<span class="st">&quot;Data Points Visualization&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p>We use the <strong><span class="math inline">\(\epsilon\)</span>-neighborhood</strong> approach to construct the similarity graph.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="ch-clustering.html#cb10-1" tabindex="-1"></a>epsilon <span class="ot">&lt;-</span> <span class="fl">1.5</span>  <span class="co"># Set epsilon value</span></span>
+<span id="cb10-2"><a href="ch-clustering.html#cb10-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(data)</span>
+<span id="cb10-3"><a href="ch-clustering.html#cb10-3" tabindex="-1"></a>similarity_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, n, n)</span>
+<span id="cb10-4"><a href="ch-clustering.html#cb10-4" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="ch-clustering.html#cb10-5" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb10-6"><a href="ch-clustering.html#cb10-6" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb10-7"><a href="ch-clustering.html#cb10-7" tabindex="-1"></a>    <span class="cf">if</span> (i <span class="sc">!=</span> j <span class="sc">&amp;&amp;</span> <span class="fu">dist</span>(<span class="fu">rbind</span>(data[i, ], data[j, ])) <span class="sc">&lt;</span> epsilon) {</span>
+<span id="cb10-8"><a href="ch-clustering.html#cb10-8" tabindex="-1"></a>      similarity_matrix[i, j] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb10-9"><a href="ch-clustering.html#cb10-9" tabindex="-1"></a>      similarity_matrix[j, i] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb10-10"><a href="ch-clustering.html#cb10-10" tabindex="-1"></a>    }</span>
+<span id="cb10-11"><a href="ch-clustering.html#cb10-11" tabindex="-1"></a>  }</span>
+<span id="cb10-12"><a href="ch-clustering.html#cb10-12" tabindex="-1"></a>}</span>
+<span id="cb10-13"><a href="ch-clustering.html#cb10-13" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="ch-clustering.html#cb10-14" tabindex="-1"></a><span class="fu">print</span>(similarity_matrix)</span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
+## [1,]    0    1    1    0    0    0
+## [2,]    1    0    1    0    0    0
+## [3,]    1    1    0    0    0    0
+## [4,]    0    0    0    0    1    1
+## [5,]    0    0    0    1    0    1
+## [6,]    0    0    0    1    1    0</code></pre>
+<p>Compute the Laplacian matrix.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="ch-clustering.html#cb12-1" tabindex="-1"></a>degree_matrix <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="fu">apply</span>(similarity_matrix, <span class="dv">1</span>, sum))</span>
+<span id="cb12-2"><a href="ch-clustering.html#cb12-2" tabindex="-1"></a>laplacian_matrix <span class="ot">&lt;-</span> degree_matrix <span class="sc">-</span> similarity_matrix</span>
+<span id="cb12-3"><a href="ch-clustering.html#cb12-3" tabindex="-1"></a><span class="fu">print</span>(laplacian_matrix)</span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
+## [1,]    2   -1   -1    0    0    0
+## [2,]   -1    2   -1    0    0    0
+## [3,]   -1   -1    2    0    0    0
+## [4,]    0    0    0    2   -1   -1
+## [5,]    0    0    0   -1    2   -1
+## [6,]    0    0    0   -1   -1    2</code></pre>
+<p>Perform eigen decomposition on the Laplacian matrix. We choose the smallest two eigenvalues here since we want to</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="ch-clustering.html#cb14-1" tabindex="-1"></a>eigen_result <span class="ot">&lt;-</span> <span class="fu">eigen</span>(laplacian_matrix)</span>
+<span id="cb14-2"><a href="ch-clustering.html#cb14-2" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="ch-clustering.html#cb14-3" tabindex="-1"></a><span class="co"># Sort eigenvalues and their corresponding eigenvectors</span></span>
+<span id="cb14-4"><a href="ch-clustering.html#cb14-4" tabindex="-1"></a>sorted_indices <span class="ot">&lt;-</span> <span class="fu">order</span>(eigen_result<span class="sc">$</span>values)</span>
+<span id="cb14-5"><a href="ch-clustering.html#cb14-5" tabindex="-1"></a>sorted_eigenvalues <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>values[sorted_indices]</span>
+<span id="cb14-6"><a href="ch-clustering.html#cb14-6" tabindex="-1"></a>sorted_eigenvectors <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>vectors[, sorted_indices]</span>
+<span id="cb14-7"><a href="ch-clustering.html#cb14-7" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="ch-clustering.html#cb14-8" tabindex="-1"></a><span class="co"># Select the smallest two eigenvalues and their corresponding eigenvectors</span></span>
+<span id="cb14-9"><a href="ch-clustering.html#cb14-9" tabindex="-1"></a>smallest_eigenvalues <span class="ot">&lt;-</span> sorted_eigenvalues[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb14-10"><a href="ch-clustering.html#cb14-10" tabindex="-1"></a>smallest_eigenvectors <span class="ot">&lt;-</span> sorted_eigenvectors[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb14-11"><a href="ch-clustering.html#cb14-11" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvalues)</span></code></pre></div>
+<pre><code>## [1] 1.776357e-15 1.776357e-15</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="ch-clustering.html#cb16-1" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvectors)</span></code></pre></div>
+<pre><code>##            [,1]       [,2]
+## [1,]  0.0000000 -0.5773503
+## [2,]  0.0000000 -0.5773503
+## [3,]  0.0000000 -0.5773503
+## [4,] -0.5773503  0.0000000
+## [5,] -0.5773503  0.0000000
+## [6,] -0.5773503  0.0000000</code></pre>
+<p>We find that the smallest two eigen-values are 0 (not exact zero here because of computational precision issue), and their corresponding eigen-vectors give us information about the clustering. The first cluster contains data point 4, 5, 6; while the second cluster contains the rest three data points 1, 2, 3.</p>
+<p>We try <strong>fully-connected graph</strong> with radial basis function to construct the adjacency matrix this time.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="ch-clustering.html#cb18-1" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="dv">1</span>  <span class="co"># Scale parameter for the RBF kernel</span></span>
+<span id="cb18-2"><a href="ch-clustering.html#cb18-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(data)</span>
+<span id="cb18-3"><a href="ch-clustering.html#cb18-3" tabindex="-1"></a>similarity_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, n, n)</span>
+<span id="cb18-4"><a href="ch-clustering.html#cb18-4" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="ch-clustering.html#cb18-5" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb18-6"><a href="ch-clustering.html#cb18-6" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb18-7"><a href="ch-clustering.html#cb18-7" tabindex="-1"></a>    <span class="cf">if</span> (i <span class="sc">!=</span> j) {</span>
+<span id="cb18-8"><a href="ch-clustering.html#cb18-8" tabindex="-1"></a>      distance <span class="ot">&lt;-</span> <span class="fu">dist</span>(<span class="fu">rbind</span>(data[i, ], data[j, ]))<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb18-9"><a href="ch-clustering.html#cb18-9" tabindex="-1"></a>      similarity_matrix[i, j] <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>gamma <span class="sc">*</span> distance)</span>
+<span id="cb18-10"><a href="ch-clustering.html#cb18-10" tabindex="-1"></a>    }</span>
+<span id="cb18-11"><a href="ch-clustering.html#cb18-11" tabindex="-1"></a>  }</span>
+<span id="cb18-12"><a href="ch-clustering.html#cb18-12" tabindex="-1"></a>}</span>
+<span id="cb18-13"><a href="ch-clustering.html#cb18-13" tabindex="-1"></a></span>
+<span id="cb18-14"><a href="ch-clustering.html#cb18-14" tabindex="-1"></a><span class="fu">print</span>(similarity_matrix)</span></code></pre></div>
+<pre><code>##              [,1]         [,2]         [,3]         [,4]         [,5]         [,6]
+## [1,] 0.000000e+00 2.865048e-01 6.065307e-01 1.522998e-08 2.172440e-10 2.289735e-11
+## [2,] 2.865048e-01 0.000000e+00 2.865048e-01 8.764248e-08 1.522998e-08 2.172440e-10
+## [3,] 6.065307e-01 2.865048e-01 0.000000e+00 3.726653e-06 8.764248e-08 1.522998e-08
+## [4,] 1.522998e-08 8.764248e-08 3.726653e-06 0.000000e+00 2.865048e-01 6.065307e-01
+## [5,] 2.172440e-10 1.522998e-08 8.764248e-08 2.865048e-01 0.000000e+00 2.865048e-01
+## [6,] 2.289735e-11 2.172440e-10 1.522998e-08 6.065307e-01 2.865048e-01 0.000000e+00</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="ch-clustering.html#cb20-1" tabindex="-1"></a>degree_matrix <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="fu">apply</span>(similarity_matrix, <span class="dv">1</span>, sum))</span>
+<span id="cb20-2"><a href="ch-clustering.html#cb20-2" tabindex="-1"></a>laplacian_matrix <span class="ot">&lt;-</span> degree_matrix <span class="sc">-</span> similarity_matrix</span>
+<span id="cb20-3"><a href="ch-clustering.html#cb20-3" tabindex="-1"></a><span class="fu">print</span>(laplacian_matrix)</span></code></pre></div>
+<pre><code>##               [,1]          [,2]          [,3]          [,4]          [,5]          [,6]
+## [1,]  8.930355e-01 -2.865048e-01 -6.065307e-01 -1.522998e-08 -2.172440e-10 -2.289735e-11
+## [2,] -2.865048e-01  5.730097e-01 -2.865048e-01 -8.764248e-08 -1.522998e-08 -2.172440e-10
+## [3,] -6.065307e-01 -2.865048e-01  8.930393e-01 -3.726653e-06 -8.764248e-08 -1.522998e-08
+## [4,] -1.522998e-08 -8.764248e-08 -3.726653e-06  8.930393e-01 -2.865048e-01 -6.065307e-01
+## [5,] -2.172440e-10 -1.522998e-08 -8.764248e-08 -2.865048e-01  5.730097e-01 -2.865048e-01
+## [6,] -2.289735e-11 -2.172440e-10 -1.522998e-08 -6.065307e-01 -2.865048e-01  8.930355e-01</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="ch-clustering.html#cb22-1" tabindex="-1"></a>eigen_result <span class="ot">&lt;-</span> <span class="fu">eigen</span>(laplacian_matrix)</span>
+<span id="cb22-2"><a href="ch-clustering.html#cb22-2" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="ch-clustering.html#cb22-3" tabindex="-1"></a><span class="co"># Sort eigenvalues and their corresponding eigenvectors</span></span>
+<span id="cb22-4"><a href="ch-clustering.html#cb22-4" tabindex="-1"></a>sorted_indices <span class="ot">&lt;-</span> <span class="fu">order</span>(eigen_result<span class="sc">$</span>values)</span>
+<span id="cb22-5"><a href="ch-clustering.html#cb22-5" tabindex="-1"></a>sorted_eigenvalues <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>values[sorted_indices]</span>
+<span id="cb22-6"><a href="ch-clustering.html#cb22-6" tabindex="-1"></a>sorted_eigenvectors <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>vectors[, sorted_indices]</span>
+<span id="cb22-7"><a href="ch-clustering.html#cb22-7" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="ch-clustering.html#cb22-8" tabindex="-1"></a><span class="co"># Select the smallest two eigenvalues and their corresponding eigenvectors</span></span>
+<span id="cb22-9"><a href="ch-clustering.html#cb22-9" tabindex="-1"></a>smallest_eigenvalues <span class="ot">&lt;-</span> sorted_eigenvalues[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb22-10"><a href="ch-clustering.html#cb22-10" tabindex="-1"></a>smallest_eigenvectors <span class="ot">&lt;-</span> sorted_eigenvectors[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb22-11"><a href="ch-clustering.html#cb22-11" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvalues)</span></code></pre></div>
+<pre><code>## [1] 2.564067e-16 2.632047e-06</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="ch-clustering.html#cb24-1" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvectors)</span></code></pre></div>
+<pre><code>##            [,1]       [,2]
+## [1,] -0.4082483  0.4082488
+## [2,] -0.4082483  0.4082494
+## [3,] -0.4082483  0.4082467
+## [4,] -0.4082483 -0.4082467
+## [5,] -0.4082483 -0.4082494
+## [6,] -0.4082483 -0.4082488</code></pre>
+<p>As we can see, this time the two smallest eigenvalues are not both zero, with one being a little bit more than zero. This has something to do with the properties of the new adjacency matrix <span class="math inline">\(\mathbf{A}\)</span>. In addition, we observe that the the two eigen-vectors are not something we expected. It seems weird at the first glance, but since <span class="math inline">\(\mathbf{L} \vec{y} = \vec{0}\)</span>, <span class="math inline">\(\vec{y} = \vec{y}_2 \pm \vec{y}_1\)</span> is also an eigen-vector with the eigen-value being zero, we are still able to recover the two clusters. This suggests us that we may do some computation ourselves after getting the eigen-vectors to recover the clustering situation.</p>
+<p>In this situation, it may seem that fully-connected graph is not as straight-forward as the other two adjacency matrix construction methods, and the result is also not as optimal. But we should realize that in real-data situation, different clusters are not totally separate, as a result, a soft-threshold can be a better choice in most situations.</p>
+</div>
+<div id="extension-of-laplacian-matrix" class="section level3 hasAnchor" number="7.4.3">
+<h3><span class="header-section-number">7.4.3</span> Extension of Laplacian Matrix<a href="ch-clustering.html#extension-of-laplacian-matrix" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The previous Laplacian matrix <span class="math inline">\(\mathbf{L}\)</span> is called unnormalized Laplacian matrix. Here we also introduce two normalized Laplacian matrix as supplementary material.</p>
+<div id="symmetric-laplacian-matrix" class="section level4 hasAnchor" number="7.4.3.1">
+<h4><span class="header-section-number">7.4.3.1</span> Symmetric Laplacian Matrix<a href="ch-clustering.html#symmetric-laplacian-matrix" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><span class="math display">\[
+\mathbf{L}^{\text{sym}} = \mathbf{I} - \mathbf{D}^{-1/2} \mathbf{W} \mathbf{D}^{-1/2}
+\]</span></p>
+<p>For every <span class="math inline">\(\vec{y} \in \mathbb{R}^N\)</span> we have</p>
+<p><span class="math display">\[
+\vec{y}^{\top} \mathbf{L}^{\text{sym}} \vec{y} = \frac{1}{2} \sum_{i,j=1}^{n} \mathbf{W}_{ij} \left( \frac{y_i}{\sqrt{d_i}} - \frac{y_j}{\sqrt{d_j}} \right)^2 .
+\]</span></p>
+<p><span class="math inline">\(d_i, d_j\)</span> are the diagonal entries of the degree matrix <span class="math inline">\(\mathbf{D}\)</span>.</p>
+</div>
+<div id="random-walk-laplacian-matrix" class="section level4 hasAnchor" number="7.4.3.2">
+<h4><span class="header-section-number">7.4.3.2</span> Random Walk Laplacian Matrix<a href="ch-clustering.html#random-walk-laplacian-matrix" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 
 <div id="refs" class="references csl-bib-body">
 <div class="csl-entry">
@@ -305,6 +498,8 @@ div.csl-indent {
 </div>
 <div class="csl-entry">
 <div class="csl-left-margin">[4] </div><div class="csl-right-inline"><span class="smallcaps">Tenenbaum</span>, J. B., <span class="smallcaps">Silva</span>, V. de and <span class="smallcaps">Langford</span>, J. C. (2000). <a href="https://doi.org/10.1126/science.290.5500.2319">A global geometric framework for nonlinear dimensionality reduction</a>. <em>Science</em> <strong>290</strong> 2319–23.</div>
+</div>
+</div>
 </div>
 </div>
 </div>

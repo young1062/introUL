@@ -90,4 +90,9 @@ center-based
 model-based
 k-means
 k-mediods
-spectral
+sec-spec-clustering
+introduction
+algorithm
+extension-of-laplacian-matrix
+symmetric-laplacian-matrix
+random-walk-laplacian-matrix
