@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 
 ## Spectral Clustering {#sec-spec-clustering}
 
@@ -28,15 +33,15 @@ Define the edges of the graph. There are three common ways to do this:
 
 2) **Graph Laplacian Matrix:**
 
-Similar to corresponding parts in Laplacian Eigenmap. Calculate the adjacency matrix $\mathbf{W}$, where $\mathbf{W}_{ij}$ represents the weight of the edge between nodes $i$ and $j$.
+Similar to corresponding parts in Laplacian Eigenmap. Calculate the adjacency matrix $W$, where $W_{ij}$ represents the weight of the edge between nodes $i$ and $j$.
 
-Calculate the degree matrix $\mathbf{D}$, which is a diagonal matrix where each diagonal element $\mathbf{D}_{ii}$ is the sum of the weights of the edges connected to node $i$.
+Calculate the degree matrix $D$, which is a diagonal matrix where each diagonal element $D_{ii}$ is the sum of the weights of the edges connected to node $i$.
 
-Compute the unnormalized Graph Laplacian matrix $\mathbf{L}$ as $\mathbf{L} = \mathbf{D} - \mathbf{W}$.
+Compute the unnormalized Graph Laplacian matrix $L$ as $L = D - W$.
 
 3) **Eigen Decomposition:**
 
-Perform the eigen decomposition on the Laplacian matrix $\mathbf{L}$ to find its eigen values and eigen vectors.
+Perform the eigen decomposition on the Laplacian matrix $L$ to find its eigen values and eigen vectors.
 
 Select $k$ smallest eigenvalues and their corresponding eigen vectors. $k$ is the number of clusters you want to identify.
 
@@ -180,26 +185,6 @@ As we can see, this time the two smallest eigenvalues are not both zero, with on
 In this situation, it may seem that fully-connected graph is not as straight-forward as the other two adjacency matrix construction methods, and the result is also not as optimal. But we should realize that in real-data situation, different clusters are not totally separate, as a result, a soft-threshold can be a better choice in most situations.
 
 
-### Extension of Laplacian Matrix
-
-The previous Laplacian matrix $\mathbf{L}$ is called unnormalized Laplacian matrix. Here we also introduce two normalized Laplacian matrix as supplementary material.
-
-#### Symmetric Laplacian Matrix
-
-$$
-\mathbf{L}^{\text{sym}} = \mathbf{I} - \mathbf{D}^{-1/2} \mathbf{W} \mathbf{D}^{-1/2}
-$$
-
-For every $\vec{y} \in \mathbb{R}^N$ we have
-
-$$
-\vec{y}^{\top} \mathbf{L}^{\text{sym}} \vec{y} = \frac{1}{2} \sum_{i,j=1}^{n} \mathbf{W}_{ij} \left( \frac{y_i}{\sqrt{d_i}} - \frac{y_j}{\sqrt{d_j}} \right)^2 .
-$$
-
-$d_i, d_j$ are the diagonal entries of the degree matrix $\mathbf{D}$. 
-
-
-#### Random Walk Laplacian Matrix
 
 
 
