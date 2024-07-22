@@ -85,6 +85,48 @@ scatterplot3js(ribbon,
 
 In both the surface is two-dimensional (if you were stand on the surface and look nearby data points, they would appear to be planar. A dimension reduction would be able to recover this two-dimensional structure which in the case of the plane corresponds to find the coefficients used to generate each point. For the ribbons, the coordinates $(s,t)$ used in the ribbon mapping would provide the simplified representation. 
 
+The previous examples have shown data in $\mathbb{R}^3$. While this is helpful of visualization, it is not representative of many modern data sources where the dimensionality is extremely high!  Suppose we want to generate data in $\mathbb{R}^d$ for some specific large $d$ which has a simpler representation in $\mathbb{R}^t$ (with $t\ll d$) that we know.  
+
+In general we can do this through a mapping, $f:\mathbb{R}^t \to \mathbb{R}^d$. (More on this idea in \ref(ch-nonlinear) later).  First generate synthetic data $\vec{x}_1',\dots,\vec{x}_N'$ then apply the map to create high dimensional observations $$\vec{x}_i = f(\vec{x}_i'), \qquad i=1,\dots,N.$$
+
+There are infinite possibilities for $f$, but there is a simple and easy to implement method. Just pad each of the original $t$ dimensional vector with $d-t$ zeros.  You can then apply any non-degenerate affine map from $\mathbb{R}^d$ to $\mathbb{R}^d$ if you would like to obscure the zeros (say for a problem set).
+
+
+::: {.example #high-d name="Mapping unit sphere in $\mathbb{R}^3$ to higher dimensions"}
+We begin be drawing sample from $\mathcal{N}(\vec{0},{\bf I}_3)$ then rescaling each vector to have length 1.
+```{r}
+N <- 500
+X <- mvrnorm(n=N, mu = rep(0,3), Sigma = diag(1,3))
+for (i in 1:N){
+  X[i,] <- X[i,]/sqrt(sum(X[i,]^2))
+}
+scatterplot3js(X,
+              xlab = expression(x[1]), ylab = expression(x[2]), zlab = expression(x[3]),
+              angle = 90,
+              pch = '.',
+              size = 0.1)
+```
+To map these data into $\mathbb{R}^{10}$, I can append 7 columns of zeros to my data matrix (equivalent to padding each vector with 7 zeros).  Below we can see the first few samples of these higher dimensional vectors.
+
+```{r}
+X <- cbind(X,matrix(0,N,ncol = 10-3))
+head(round(X,3))
+
+```
+
+One could visually inspect this data matrix and determine that there is a three dimensional representation though the spherical structure would then require plotting.  
+
+Suppose now that I have a orthonormal matrix ${\bf U}\in \mathbb{R}^{10\times 10}$. I could then multiply each 10d vector by $U$ to rotate/reflect the data thereby eliminating ones ability to find simplified structure by visual inspection alone.  Below, we apply such a mapping to the data and show a few samples.
+
+```{r}
+U <- svd(matrix(rnorm(10*10),nrow = 10))$u
+X <- X %*% t(U)
+head(round(X,3))
+```
+:::
+
+In the above example, we generated a random orthonormal matrix by applying the SVD to a random $10\times 10$ matrix with $\mathcal{N}(0,1)$ entries.  I could continue applying additional tranformations (shifts and expansions/contractions along different directions), but we will stop for now with the following important observations.  Here is a dataset which has structure we know, 2-dimensional data on a curved surface (the sphere), but we cannot determine this but looking at the data matrix or generating scatterplots of any subset of columns.  An effective way of generating data with known but hidden structure which is great to testing algorithms (and students).
+
 ### Clustered data
 
 The most straightforward way to generate clustered data is to combine realizations from separate data generating mechanisms that tend to create points in disjoint regions of $\mathbb{R}^d$.   In Figure \@ref(fig:ex-clusters), we show two different cases in $\mathbb{R}^2$. 
@@ -112,8 +154,16 @@ plot(rings, col = c(rep("blue",100),rep("red",100),rep("black",100)),
      xlab = '', ylab = '')
 ```
 
-If one did not have access to the actual data generating process (depicted by the different colors), it is still likely that they could recover the correct groupings upon visual inspection.  In general, this strategy is not tractable. Naturally, we would like an Unsupervised clustering algorithm that can learn these clusters directly from the data automatically.  As we shall see in Chapter \@ref(ch-clustering), certain algorithms which excel at grouping the data contained in disjoint ellipsoids will naturally struggle data clustering in concentric rings because the shape(s) of the different clusters matters has a major impact of the accuracy of the clustering.  
+If one did not have access to the actual data generating process (depicted by the different colors), it is still likely that they could recover the correct groupings upon visual inspection.  In general, this strategy is not tractable. Naturally, we would like an Unsupervised clustering algorithm that can learn these clusters directly from the data automatically.  As we shall see in Chapter \@ref(ch-clustering), certain algorithms will excel at grouping the data contained in disjoint ellipsoids will naturally struggle data clustering in concentric rings because the shape(s) of the different clusters matters has a major impact of the accuracy of the clustering.  
 
  
 
 ## Exercises
+
+1. Generate data on a helix in $\mathbb{R}^3$.
+
+1. Generate data on a 7 dimensional hyperplane in $\mathbb{R}^{50}$. No columns of the associated data matrix should contain all zeros.
+
+1. Generate 2 well separated spherical clusters in $\mathbb{R}^3$. What is the Euclidean distance between the two closest points in different clusters?
+
+1. Repeat problem 4 for $\mathbb{R}^{10}$ and $\mathbb{R}^{100}$. What changes did you have to make to keep the clusters well separated (at least as far apart as problem 3)?

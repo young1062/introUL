@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>6.4 Laplacian Eigenmap | An Introduction to Unsupervised Learning</title>
   <meta name="description" content="An introductory text on the goals and methods of unsupervised learning" />
-  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
 
   <meta property="og:title" content="6.4 Laplacian Eigenmap | An Introduction to Unsupervised Learning" />
   <meta property="og:type" content="book" />
@@ -51,11 +51,12 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
-<script src="libs/plotly-binding-4.10.2/plotly.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.4/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
 <link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 <script src="libs/threejs-111/three.min.js"></script>
@@ -69,7 +70,7 @@
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -197,7 +198,13 @@ div.csl-indent {
 <li class="chapter" data-level="2.4.5" data-path="linear-algebra.html"><a href="linear-algebra.html#matrix-factorizations"><i class="fa fa-check"></i><b>2.4.5</b> Matrix Factorizations</a></li>
 <li class="chapter" data-level="2.4.6" data-path="linear-algebra.html"><a href="linear-algebra.html#positive-definiteness-and-matrix-powers"><i class="fa fa-check"></i><b>2.4.6</b> Positive Definiteness and Matrix Powers</a></li>
 </ul></li>
-<li class="chapter" data-level="2.5" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i><b>2.5</b> Exercises</a></li>
+<li class="chapter" data-level="2.5" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i><b>2.5</b> Exercises</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="exercises.html"><a href="exercises.html#probability"><i class="fa fa-check"></i><b>2.5.1</b> Probability</a></li>
+<li class="chapter" data-level="2.5.2" data-path="exercises.html"><a href="exercises.html#calculus"><i class="fa fa-check"></i><b>2.5.2</b> Calculus</a></li>
+<li class="chapter" data-level="2.5.3" data-path="exercises.html"><a href="exercises.html#linear-algebra-1"><i class="fa fa-check"></i><b>2.5.3</b> Linear Algebra</a></li>
+<li class="chapter" data-level="2.5.4" data-path="exercises.html"><a href="exercises.html#hybrid-problems"><i class="fa fa-check"></i><b>2.5.4</b> Hybrid Problems</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="central-goals-and-assumptions.html"><a href="central-goals-and-assumptions.html"><i class="fa fa-check"></i><b>3</b> Central goals and assumptions</a>
 <ul>
@@ -275,13 +282,13 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="7" data-path="ch-clustering.html"><a href="ch-clustering.html"><i class="fa fa-check"></i><b>7</b> Clustering</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="hierarchical.html"><a href="hierarchical.html"><i class="fa fa-check"></i><b>7.1</b> Hierarchical</a></li>
-<li class="chapter" data-level="7.2" data-path="center-based.html"><a href="center-based.html"><i class="fa fa-check"></i><b>7.2</b> Center-based</a></li>
-<li class="chapter" data-level="7.3" data-path="model-based.html"><a href="model-based.html"><i class="fa fa-check"></i><b>7.3</b> Model-based</a>
+<li class="chapter" data-level="7.1" data-path="center-based.html"><a href="center-based.html"><i class="fa fa-check"></i><b>7.1</b> Center-based</a>
 <ul>
-<li class="chapter" data-level="7.3.1" data-path="model-based.html"><a href="model-based.html#k-means"><i class="fa fa-check"></i><b>7.3.1</b> k-means</a></li>
-<li class="chapter" data-level="7.3.2" data-path="model-based.html"><a href="model-based.html#k-mediods"><i class="fa fa-check"></i><b>7.3.2</b> k-mediods</a></li>
+<li class="chapter" data-level="7.1.1" data-path="center-based.html"><a href="center-based.html#k-means"><i class="fa fa-check"></i><b>7.1.1</b> k-means</a></li>
+<li class="chapter" data-level="7.1.2" data-path="center-based.html"><a href="center-based.html#k-mediods"><i class="fa fa-check"></i><b>7.1.2</b> k-mediods</a></li>
 </ul></li>
+<li class="chapter" data-level="7.2" data-path="hierarchical.html"><a href="hierarchical.html"><i class="fa fa-check"></i><b>7.2</b> Hierarchical</a></li>
+<li class="chapter" data-level="7.3" data-path="model-based.html"><a href="model-based.html"><i class="fa fa-check"></i><b>7.3</b> Model-based</a></li>
 <li class="chapter" data-level="7.4" data-path="spectral.html"><a href="spectral.html"><i class="fa fa-check"></i><b>7.4</b> Spectral</a></li>
 </ul></li>
 <li class="divider"></li>
@@ -308,36 +315,36 @@ div.csl-indent {
 <h2><span class="header-section-number">6.4</span> Laplacian Eigenmap<a href="laplacian-eigenmap.html#laplacian-eigenmap" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The Laplacian eigenmap <span class="citation">[<a href="#ref-laplac_eigen">19</a>]</span> is method of manifold learning with algorithmic and geometric similarities to LLEs. Like LLEs and ISOMAP, Laplacian eigenmaps make use of <span class="math inline">\(k\)</span>-nearest neighbor relationships and the solution of an eigenvalue problem to reconstruct the low-dimensional manifold. As suggested by the name, we will be using the graph Laplacian matrix and emphasize the preservation of nearby points on the manifold making Laplacian Eigenmaps a local method with a different emphasis than LLEs.</p>
 <p>The graph Laplacian is an important matrix representation of our data which we will revisit later when discussing spectral clustering. In practice, Laplacian eigenmaps use sparse version of the graph Laplacian. For now, we will briefly introduce this matrix without sparsity and an important identity relating the graph Laplacian and the loss function we will minimize when constructing our low-dimensional representation.</p>
-<p>Given data <span class="math inline">\(\vec{x}_1,\dots,\vec{x}_N\)</span>, we are going to build a weighted graph <span class="math inline">\(\mathcal{G}=(N,\mathcal{E})\)</span>, with one node per samples and weighted, undirected edges connecting the nodes. The weights, <span class="math inline">\({\bf W}_{ij}\ge 0, \, 1\le i,j\le N\)</span>, correspond to a notion of affinity, which is typically a decreasing function of their distance. Two common choices are (i) binary weights: <span class="math display">\[{\bf W}_{ij} = \begin{cases} 1  &amp; \|\vec{x}_i-\vec{x}_j\| \le \epsilon \\ 0 &amp; \text{ else} \end{cases}\]</span>
+<p>Given data <span class="math inline">\(\vec{x}_1,\dots,\vec{x}_N\)</span>, we are going to build a weighted graph <span class="math inline">\(\mathcal{G}=(V,\mathcal{E}, {\bf W})\)</span>, with one node per sample and weighted, undirected edges connecting the nodes. The weights, <span class="math inline">\({\bf W}_{ij}\ge 0, \, 1\le i,j\le N\)</span>, correspond to a notion of affinity, which is typically a decreasing function of the distance between our data. Two common choices are (i) binary weights: <span class="math display">\[{\bf W}_{ij} = \begin{cases} 1  &amp; \|\vec{x}_i-\vec{x}_j\| \le \epsilon \\ 0 &amp; \text{ else} \end{cases}\]</span>
 and (ii) weights based on the radial basis function:
 <span class="math display">\[{\bf W}_{ij} = \exp\left(-\frac{\|\vec{x}_i-\vec{x}_j\|^2}{2\sigma^2}\right). \]</span>
-The symmetric matrix <span class="math inline">\({\bf W}\)</span> is called the (weighted) adjacency matrix of the graph, <span class="math inline">\(\mathcal{G}\)</span>, encodes of all the pairwise relationships. We always set the diagonal entries of <span class="math inline">\({\bf W}\)</span> to preclude self-connections in the graph.</p>
+The symmetric matrix <span class="math inline">\({\bf W}\)</span> is called the (weighted) adjacency matrix of the graph, <span class="math inline">\(\mathcal{G}\)</span>, encodes of all the pairwise relationships. We always set the diagonal entries of <span class="math inline">\({\bf W}\)</span> to zero to preclude self-connections in the graph.</p>
 <p>From the adjacency matrix, we can compute the total affinity of each node (sample) to all other nodes (samples) by summing along the rows. Specifically, the <span class="math inline">\(i\)</span>th entry of the vector <span class="math inline">\({\bf W}\vec{1}_N\)</span>, has the total affinity of the <span class="math inline">\(i\)</span>th node (<span class="math inline">\(\vec{x}_i\)</span>) to all other nodes (data). Using these summed affinities, we then create the graph Laplacian
 <span class="math display">\[\begin{equation}
 {\bf L} = {\bf D} - {\bf W}
 \end{equation}\]</span>
-where <span class="math inline">\({\bf L}\)</span> is a diagonal matrix with entries <span class="math inline">\({\bf W}\vec{1}_N\)</span> along its diagonal. The graph Laplacian is a symmetric matrix, and while not obvious at first glance, it is also positive semidefinite thanks to the following important identity. Given any vector <span class="math inline">\(\vec{y}\in\mathbb{R}^N\)</span>,
+where <span class="math inline">\({\bf D}\)</span> is a diagonal matrix with entries <span class="math inline">\({\bf W}\vec{1}_N\)</span> along its diagonal. The graph Laplacian is a symmetric matrix, and while not obvious at first glance, it is also positive semidefinite thanks to the following important identity. Given any vector <span class="math inline">\(\vec{y}\in\mathbb{R}^N\)</span>,
 <span class="math display" id="eq:psd-gl">\[\begin{equation}
-\vec{y}^T{\bf L} \vec{y} = \sum_{i=1}^n\sum_{j=1}^N {\bf W}_{ij} (y_i-y_j)^2
+\vec{y}^T{\bf L} \vec{y} = \frac{1}{2} \sum_{i=1}^n\sum_{j=1}^N {\bf W}_{ij} (y_i-y_j)^2
 \tag{6.2}
 \end{equation}\]</span>
-However, it is not full rank. The preceding equality shows that <span class="math inline">\(\vec{1}\)</span> is an eigenvector with eigenvalue 0.</p>
+However, it is not full rank. The previous equation shows that <span class="math inline">\(\vec{1}\)</span> is an eigenvector with eigenvalue 0.</p>
 <p>In the previous statement we can view the entries of vector <span class="math inline">\(\vec{y}\)</span> as <span class="math inline">\(N\)</span> separate scalars. However, we can also extend the preceding expression to include Euclidean distances between vectors <span class="math inline">\(\vec{y}_1,\dots,\vec{y}_N\in\mathbb{R}^t\)</span> to give the following important expression
 <span class="math display">\[\begin{equation}
-\sum_{i=1}^N\sum_{j=1}^N {\bf W}_{ij} \|\vec{y}_i-\vec{y}_j\|^2 = tr\left({\bf Y}^T{\bf LY}\right)
+\sum_{i=1}^N\sum_{j=1}^N {\bf W}_{ij} \|\vec{y}_i-\vec{y}_j\|^2 = \frac{1}{2}tr\left({\bf Y}^T{\bf LY}\right)
 \end{equation}\]</span>
-where <span class="math inline">\({\bf Y}_\in\mathbb{R}^{N\times t}\)</span> has rows <span class="math inline">\(\vec{y}_1^T,\dots,\vec{y}_N^T.\)</span> We will return to this identity and its implications for Laplacian Eigenmaps after discussing the algorithmic details of the method</p>
+where <span class="math inline">\({\bf Y}\in\mathbb{R}^{N\times t}\)</span> has rows <span class="math inline">\(\vec{y}_1^T,\dots,\vec{y}_N^T.\)</span> We will return to this identity and its implications for Laplacian Eigenmaps after discussing the algorithmic details of the method</p>
 <div id="algorithm-2" class="section level3 hasAnchor" number="6.4.1">
 <h3><span class="header-section-number">6.4.1</span> Algorithm<a href="laplacian-eigenmap.html#algorithm-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="compute-neighbor-relationships" class="section level4 hasAnchor" number="6.4.1.1">
 <h4><span class="header-section-number">6.4.1.1</span> Compute neighbor relationships<a href="laplacian-eigenmap.html#compute-neighbor-relationships" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>Fix either a number of nearest neighbors <span class="math inline">\(k &gt; 0\)</span> or maximum distance <span class="math inline">\(\epsilon &gt; 0\)</span>. If using <span class="math inline">\(\epsilon\)</span>, then <span class="math inline">\(\vec{x}_i\)</span> and <span class="math inline">\(\vec{x}_j\)</span> (correspondingly nodes <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> in the graph) are neighbors if <span class="math inline">\(\|\vec{x}_i-\vec{x}_j\| \le \epsilon\)</span>. Alternatively, if using the nearest neighbor parameter <span class="math inline">\(k\)</span>, then we consider <span class="math inline">\(\vec{x}_i,\vec{x})j\)</span> to be neighbors if <span class="math inline">\(\vec{x}_i\)</span> is one the <span class="math inline">\(k\)</span> closest points to <span class="math inline">\(\vec{x}_j\)</span> <strong>and</strong> <span class="math inline">\(\vec{x}_j\)</span> is one of the <span class="math inline">\(k\)</span> closest points to <span class="math inline">\(\vec{x}_i.\)</span> The construction of neigbhors, like the use of pairwise distance alone, results in symmetric neighbor relationship. We then connect nodes <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> with an edge if <span class="math inline">\(\vec{x}_i\)</span> and <span class="math inline">\(\vec{x}_j\)</span> are neighbors.</p>
+<p>Fix either a number of nearest neighbors <span class="math inline">\(k &gt; 0\)</span> or maximum distance <span class="math inline">\(\epsilon &gt; 0\)</span>. If using <span class="math inline">\(\epsilon\)</span>, then <span class="math inline">\(\vec{x}_i\)</span> and <span class="math inline">\(\vec{x}_j\)</span> (correspondingly nodes <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> in the graph) are neighbors if <span class="math inline">\(\|\vec{x}_i-\vec{x}_j\| \le \epsilon\)</span>. Alternatively, if using the nearest neighbor parameter <span class="math inline">\(k\)</span>, then we consider <span class="math inline">\(\vec{x}_i,\vec{x}_j\)</span> to be neighbors if <span class="math inline">\(\vec{x}_i\)</span> is one the <span class="math inline">\(k\)</span> closest points to <span class="math inline">\(\vec{x}_j\)</span> <strong>and</strong> <span class="math inline">\(\vec{x}_j\)</span> is one of the <span class="math inline">\(k\)</span> closest points to <span class="math inline">\(\vec{x}_i.\)</span> The construction of neighbors, like the use of pairwise distance alone, results in symmetric neighbor relationship. We then connect nodes <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> with an edge if <span class="math inline">\(\vec{x}_i\)</span> and <span class="math inline">\(\vec{x}_j\)</span> are neighbors.</p>
 </div>
 <div id="compute-weights-and-build-graph-laplacian" class="section level4 hasAnchor" number="6.4.1.2">
 <h4><span class="header-section-number">6.4.1.2</span> Compute weights and build graph Laplacian<a href="laplacian-eigenmap.html#compute-weights-and-build-graph-laplacian" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Nodes which are not connected immediately receive an edge weight equal to zero. For all connected nodes, we compute the edge weight <span class="math display">\[{\bf W}_{ij} = \exp\left(-\frac{\|\vec{x}_i-\vec{x}_j\|^2}{2\sigma^2}\right).\]</span>
-Here we have shown weights based on the radial basis function, which is motivated by theoretical connections to the heat kernel and an approximation of the Laplacian on the manifold <span class="math inline">\(\mathcal{X}\)</span> <span class="citation">[<a href="#ref-laplac_eigen">19</a>]</span>. However, as mentioned above other weighting schemes can be used including binary weights or any positive function <span class="math inline">\(g(\vec{x},\vec{y})\ge 0\)</span>.</p>
-<p>When <span class="math inline">\(k\)</span> or <span class="math inline">\(\epsilon\)</span> are small, which is typically the case in practice, the adjacency matrix <span class="math inline">\({\bf W}\)</span> will be sparse (most entries equal to 0). From this adjacency matrix, we then construct the graph Laplacian as above. The graph Laplacian built from these weights will also be sparse. By preserving only those connections between nearest points, we have only maintained the pairwise, local relationships on the manifold. We will now use <span class="math inline">\({\bf L}\)</span> to construct a lower-dimensional representation of the data.</p>
+Here we have shown weights based on the radial basis function, which is motivated by theoretical connections to the heat kernel and an approximation of the Laplacian on the manifold <span class="math inline">\(\mathcal{X}\)</span> <span class="citation">[<a href="#ref-laplac_eigen">19</a>]</span>. As such, this method is the default in most implementation of Laplacian eigenmaps. The parameter <span class="math inline">\(\sigma^2\)</span> does require tuning which can have a large impact on the performance of the algorithm.</p>
+<p>When <span class="math inline">\(k\)</span> or <span class="math inline">\(\epsilon\)</span> are small, which is typically the case in practice, the (weighted) adjacency matrix <span class="math inline">\({\bf W}\)</span> will be sparse (most entries equal to 0). From this adjacency matrix, we then construct the graph Laplacian as above. The graph Laplacian built from these weights will also be sparse. By preserving only those connections between nearest points, we have only maintained the pairwise, local relationships on the manifold. We will now use <span class="math inline">\({\bf L}\)</span> to construct a lower-dimensional representation of the data.</p>
 </div>
 <div id="solve-generalized-eigenvalue-problem" class="section level4 hasAnchor" number="6.4.1.3">
 <h4><span class="header-section-number">6.4.1.3</span> Solve generalized eigenvalue problem<a href="laplacian-eigenmap.html#solve-generalized-eigenvalue-problem" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -345,8 +352,8 @@ Here we have shown weights based on the radial basis function, which is motivate
 <span class="math display">\[\begin{equation}
 \mathcal{L}(\vec{y}_1,\dots,\vec{y}_N) = \sum_{i=1}^N\sum_{j=1}^N {\bf W}_{ij} \|\vec{y}_i-\vec{y}_j\|^2.
 \end{equation}\]</span>
-This loss function is most sensitive to large pairwise distance <span class="math inline">\(\|\vec{y}_i-\vec{y}_j\|\)</span> when <span class="math inline">\({\bf W}_{ij}\)</span> is also large (our original data were close). Thus, minimizing the preceding penalty prioritizes keeping <span class="math inline">\(\vec{y}_i\)</span> and <span class="math inline">\(\vec{y}_j\)</span> close when <span class="math inline">\(\vec{x}_i\)</span> and <span class="math inline">\(\vec{x}_j\)</span> a high affinity (weight). As a result, Laplacian eigenmaps emphasize local geometry.</p>
-<p>Vectors <span class="math inline">\(\vec{y}_1,\dots,\vec{y}_N\)</span> which minimizes this loss function is not unique. First, there is an issue of translation. To address this issue, we will add a constraint that $ {}$ is a centered data matrix, i.e. <span class="math inline">\({\bf Y}^T{\bf D}\vec{1} = \vec{0}\)</span>. We can view the matrix <span class="math inline">\({\bf DY}\)</span> as a reweighting of the data matrix <span class="math inline">\({\bf Y}\)</span> with higher weights <span class="math inline">\({\bf D}_{ii}\)</span> for data <span class="math inline">\(\vec{x}_i\)</span> which were closer to more points. Here <span class="math inline">\({\bf D}\)</span> is the diagonal matrix used in the definition of the graph Laplacian.</p>
+This loss function is most sensitive to large pairwise distance <span class="math inline">\(\|\vec{y}_i-\vec{y}_j\|\)</span> when <span class="math inline">\({\bf W}_{ij}\)</span> is also large (our original data were close). Thus, minimizing the preceding penalty prioritizes keeping <span class="math inline">\(\vec{y}_i\)</span> and <span class="math inline">\(\vec{y}_j\)</span> close when <span class="math inline">\(\vec{x}_i\)</span> and <span class="math inline">\(\vec{x}_j\)</span> have a high affinity (weight). As a result, Laplacian eigenmaps emphasize local geometry.</p>
+<p>Vectors <span class="math inline">\(\vec{y}_1,\dots,\vec{y}_N\)</span> which minimizes this loss function are not unique. First, there is an issue of translation. To address this issue, we will add a constraint that $ {}$ is a centered data matrix, i.e. <span class="math inline">\({\bf Y}^T{\bf D}\vec{1} = \vec{0}\)</span>. We can view the matrix <span class="math inline">\({\bf DY}\)</span> as a reweighting of the data matrix <span class="math inline">\({\bf Y}\)</span> with higher weights <span class="math inline">\({\bf D}_{ii}\)</span> for data <span class="math inline">\(\vec{x}_i\)</span> which were closer to more points. Here <span class="math inline">\({\bf D}\)</span> is the diagonal matrix used in the definition of the graph Laplacian. Note that <span class="math display">\[{\bf DY} = \begin{bmatrix} {\bf D}_{11} \vec{y}_1^T \\ \vdots \\ {\bf D}_{NN}\vec{y}_N\end{bmatrix}.\]</span> Requiring <span class="math inline">\({\bf DY}\)</span> to be centered results in configurations where those points with highest affinity a constrained close to the origin in our lower dimensional representation.</p>
 <p>However, solving the optimization problem with this modified centering constraint is still ill-posed, namely we could take <span class="math inline">\(\vec{y}_1=\dots=\vec{y}_N = \vec{0}\)</span> giving a configuration which is collapsed onto the origin. In fact, given any configuration <span class="math inline">\(\vec{y}_1,\dots,\vec{y}_N\)</span> we could decrease the loss by rescaling all of our data by some constant scalar scalar <span class="math inline">\(0 &lt; c &lt; 1\)</span> since <span class="math inline">\({\bf D}(c{\bf Y}) = c {\bf DY}\)</span> will still be centered. To address this scaling issue and give a meaningful <span class="math inline">\(t\)</span>-dimensional configuration, we also add the constraint <span class="math inline">\({\bf Y}^T {\bf D Y} = {\bf I}_t\)</span>. This constraint eliminates the collapse of the <span class="math inline">\(t\)</span>-dimensional configuration onto a <span class="math inline">\(t-1\)</span> dimensional hyperplane, and in particular eliminates the cases where the <span class="math inline">\(1-\)</span>dimensional configuration collapses onto a point.</p>
 <p>Thus, we seek a data matrix <span class="math inline">\({\bf Y}\in\mathbb{R}^{N\times t}\)</span> solving the following constrained optimization problem
 <span class="math display">\[\begin{equation}
@@ -360,20 +367,20 @@ To solve this problem, we first introduce the change of variable <span class="ma
 \end{equation}\]</span>
 We can minimize this equation by making use of the eigenvalues and eigenvectors of the (symmetric) normalized graph Laplacian
 <span class="math display">\[{\bf L}_{sym} = {\bf I} - {\bf D}^{-1/2}{\bf W}{\bf D}^{-1/2}.\]</span></p>
-<p>Importantly, note that <span class="math inline">\({\bf L}_{sym}\)</span> is symmetric. Furthemore, it is positive semidefinite since it can be viewed as the graph Laplacian of a graph with weights <span class="math inline">\({\bf W}_{ij}/\sqrt{{\bf D}_{ii}{\bf D}_{jj}}\)</span> thus subject to the identity <a href="laplacian-eigenmap.html#eq:psd-gl">(6.2)</a>. Thus, it is diagonalizable with orthonormal eigenvectors <span class="math inline">\(\vec{v}_1,\dots,\vec{v}_N\in\mathbb{R}^N\)</span> and associated nonnegative eigenvalues $ _1 _N$ which we list in <strong>increasing order</strong> in this case. This leads to the first important observation</p>
+<p>Importantly, note that <span class="math inline">\({\bf L}_{sym}\)</span> is symmetric. Furthemore, it is positive semidefinite since it can be viewed as the graph Laplacian of a graph with weights <span class="math inline">\({\bf W}_{ij}/\sqrt{{\bf D}_{ii}{\bf D}_{jj}}\)</span> thus subject to the identity <a href="laplacian-eigenmap.html#eq:psd-gl">(6.2)</a>. Thus, it is diagonalizable with orthonormal eigenvectors <span class="math inline">\(\vec{v}_1,\dots,\vec{v}_N\in\mathbb{R}^N\)</span> and associated nonnegative eigenvalues <span class="math inline">\(\lambda_1 \le \dots \le \lambda_N\)</span> which we list in <strong>increasing order</strong> in this case. This leads to the first important observation</p>
 <ol style="list-style-type: decimal">
 <li>We could use any <span class="math inline">\(t\)</span> of these vectors as the columns of <span class="math inline">\(\tilde{Y}\)</span> and immediately satisfy the constraint <span class="math inline">\(\tilde{\bf Y}^T\tilde{\bf Y} = {\bf I}.\)</span></li>
 </ol>
-<p>However, we have an additional constraint and the minimization to consider. Note that <span class="math inline">\(\vec{1}_N\)</span> is an eigenvector of original graph Laplacian with eigenvalue <span class="math inline">\(0\)</span>. Thus, <span class="math inline">\({\bf L}_{sym}\)</span> also has eigenvalue 0 with associated eigenvector <span class="math inline">\(\vec{v}_1 \propto {\bf D}^{1/2}\vec{1}\)</span> since
+<p>However, we have an additional constraint and the minimization to consider. Note that <span class="math inline">\(\vec{1}_N\)</span> is an eigenvector of original graph Laplacian with eigenvalue <span class="math inline">\(0\)</span>. Thus, <span class="math inline">\({\bf L}_{sym}\)</span> also has eigenvalue 0 with associated eigenvector <span class="math inline">\(\vec{v}_1 = {\bf D}^{1/2}\vec{1}\)</span> since
 <span class="math display">\[{\bf L}_{sym} ({\bf D}^{1/2}\vec{1}) ={\bf D}^{-1/2}({\bf D}^{1/2} - {\bf W D}^{-1/2}){\bf D}^{1/2}\vec{1} = {\bf D}^{-1/2}({\bf D}-{\bf W})\vec{1} = {\bf D}^{-1/2} {\bf L}\vec{1} = \vec{0}.\]</span> As a result, all other eigenvectors of <span class="math inline">\({\bf L}_{sym}\)</span> must be orthogonal to <span class="math inline">\(\vec{v}_1 = {\bf D}^{1/2}\vec{1}.\)</span></p>
 <ol start="2" style="list-style-type: decimal">
-<li>This suggests that if we drop the first eigenvector associated with eigenvalue <span class="math inline">\(\lambda_1 = 0\)</span> and use <span class="math inline">\(t\)</span> the remaining eigenvectors of <span class="math inline">\({\bf L}_{sym}\)</span> as the columns of <span class="math inline">\(\tilde{Y}\)</span> we will satisfy the constraint $^T {}^{1/2} = .</li>
+<li>This suggests that if we drop the first eigenvector associated with eigenvalue <span class="math inline">\(\lambda_1  = 0\)</span> and use <span class="math inline">\(t\)</span> the remaining eigenvectors of <span class="math inline">\({\bf L}_{sym}\)</span> as the columns of <span class="math inline">\(\tilde{\bf Y}\)</span> we will satisfy the constraint <span class="math inline">\(\tilde{\bf Y}^T {\bf D}^{1/2}\vec{1} = \vec{0}.\)</span></li>
 </ol>
-<p>The finaly observation is that we should choose the eigenvectors to minimize the objective. Specifically,</p>
+<p>The finaly observation is that we should choose the eigenvectors to minimize the objective.</p>
 <ol start="3" style="list-style-type: decimal">
-<li>we make use of the eigenvalues themselve and take <span class="math display">\[\tilde{Y} = \begin{bmatrix} \vec{v}_2 &amp; \dots &amp; \vec{v}_{t+1} \end{bmatrix}\]</span> so that <span class="math display">\[tr\left( \tilde{\bf Y}^T{\bf L}_{sym}\tilde{\bf Y}\right) = \lambda_2+\dots+\lambda_{t+1}\]</span> is minimizes</li>
+<li>We make use of the eigenvalues themselves and take <span class="math display">\[\tilde{Y} = \begin{bmatrix} \vec{v}_2 &amp; \dots &amp; \vec{v}_{t+1} \end{bmatrix}\]</span> so that <span class="math display">\[tr\left( \tilde{\bf Y}^T{\bf L}_{sym}\tilde{\bf Y}\right) = \lambda_2+\dots+\lambda_{t+1}\]</span> is minimized.</li>
 </ol>
-<p>After undoing the change of variables, we take use the rows of <span class="math display">\[{\bf Y} = {\bf D}^{1/2}\tilde{\bf Y}\in \mathbb{R}^{N\times t}\]</span>
+<p>After undoing the change of variables, we take use the rows of <span class="math display">\[{\bf Y} = {\bf D}^{-1/2}\tilde{\bf Y}\in \mathbb{R}^{N\times t}\]</span>
 as our <span class="math inline">\(t\)</span>-dimensional configuration.</p>
 <!-- AE -->
 </div>

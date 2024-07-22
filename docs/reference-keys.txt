@@ -26,10 +26,11 @@ exm:hyperplane
 fig:hyperplane
 exm:ribbon-manifold
 fig:ribbon
+exm:high-d
 fig:ex-clusters
 def:first-pca
 exm:pca-demo-1
-fig:unnamed-chunk-21
+fig:unnamed-chunk-51
 fig:pca1
 fig:pca2
 thm:pca-eig
@@ -44,10 +45,10 @@ def:euc-dist
 exm:non-euc
 exm:cities-2
 exm:sammon-cities
-fig:unnamed-chunk-37
+fig:unnamed-chunk-87
 thm:mercer
 exm:kpca-helix
-fig:unnamed-chunk-40
+fig:unnamed-chunk-107
 def:def-manifold
 exm:ex-manifolds
 exm:ex-non-manifold
@@ -56,6 +57,7 @@ exm:ex-swiss-w-noise
 exm:ex-helix-distance
 eq:def-manifold-dist
 eq:psd-gl
+exm:cluster-what
 intro
 prerequisites
 ch-prob
@@ -74,6 +76,10 @@ eigenvalue-decomposition
 singular-value-decomposition
 positive-definiteness-and-matrix-powers
 exercises
+probability
+calculus
+linear-algebra-1
+hybrid-problems
 central-goals-and-assumptions
 dimension-reduction-and-manifold-learning
 clustering
@@ -142,9 +148,9 @@ example
 additional-methods
 exercises-3
 ch-clustering
-hierarchical
 center-based
-model-based
 k-means
 k-mediods
+hierarchical
+model-based
 spectral
