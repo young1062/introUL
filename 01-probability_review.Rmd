@@ -1,6 +1,18 @@
 # Mathematical Background and Notation {#ch-prob}
 
-This text assumes a familiarity with probability theory, multivariable calculus, and linear algebra consistent with what one would see in an undergraduate course.  In this chapter, we will identify common notation and review the most important prerequisite material.
+This text assumes a familiarity with probability theory, multivariable calculus, and linear algebra consistent with what one would see in an undergraduate course.  The most important concepts are
+
+    Probability: 
+        Major concepts: mean, covariance, correlation, (in)dependence
+        Minor concepts: likelihood functions, conditional expectation, parametric distributions (e.g. Gaussian)
+    Linear Algebra
+        Major concepts: interpretations of matrix-vector and matrix-matrix multiplication, spans, bases, matrix decompositions
+        Minor concepts: orthonormal transformations, vector and matrix norms
+    Multivariable calculus: 
+        Major concepts: gradients (computation and interpretation), optimization with and without constraints
+        Minor concepts: multivariate Taylor expansions, determing properties of local optima via Hessian matrix
+        
+    In this chapter, we will identify common notation and review the most important prerequisite material. 
 
 ## Important notation
 
@@ -573,7 +585,11 @@ $$\vec{\mu} = \begin{pmatrix}
 ### Hybrid Problems
   
 
+1. Consider the data matrix $${\bf X} = \begin{bmatrix} 2 & 3 \\ 4 & 5\\ 6& 7 \\ 8 & 9 \end{bmatrix}.$$
 
+    a. Compute the sample mean of the data.
+    b. Provide the centered data matrix.
+    c. Compute the sample covariance matrix of ${\bf X}.$
     
 
 

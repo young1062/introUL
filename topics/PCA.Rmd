@@ -306,7 +306,7 @@ where ${\bf Y}\in \mathbb{R}^{N\times d}$ is a matrix of PC scores and ${\bf W}$
 
 #### Geometric interpretation of PCA
 
-We have begun with an $N\times d$ data matrix ${\bf X}$ and now we have an $N\times d$ matrix of PCA scores ${\bf Y}$. One may be inclined to ask: where is the dimension reduction?  To answer this question, let's first consider the sample covariance matrix of the PCA scores, which one can show is diagonal
+We have begun with an $N\times d$ data matrix ${\bf X}$ and now we have an $N\times d$ matrix of PCA scores ${\bf Y}$. One may be inclined to ask: where is the dimension reduction?  To answer this question, let's first consider the sample covariance matrix of the PCA scores, which one can show (see exercises) is diagonal
 \begin{equation}
 \hat{\bf \Sigma}_Y = 
 \begin{bmatrix}
@@ -315,6 +315,8 @@ We have begun with an $N\times d$ data matrix ${\bf X}$ and now we have an $N\ti
 && \lambda_d
 \end{bmatrix}
 \end{equation}
+
+<!--Since all of the off-diagonal entries of the covariance matrix are 0, we may conclude that the columns of ${\bf Y}$ have sample covariance/correlation which is zero, indicating they are uncorrelated. Furthermore, the variances are -->
 
 
 

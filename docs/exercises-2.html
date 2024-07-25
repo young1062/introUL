@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>5.2 Exercises | An Introduction to Unsupervised Learning</title>
+  <title>4.5 Exercises | An Introduction to Unsupervised Learning</title>
   <meta name="description" content="An introductory text on the goals and methods of unsupervised learning" />
   <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="5.2 Exercises | An Introduction to Unsupervised Learning" />
+  <meta property="og:title" content="4.5 Exercises | An Introduction to Unsupervised Learning" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="An introductory text on the goals and methods of unsupervised learning" />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="5.2 Exercises | An Introduction to Unsupervised Learning" />
+  <meta name="twitter:title" content="4.5 Exercises | An Introduction to Unsupervised Learning" />
   
   <meta name="twitter:description" content="An introductory text on the goals and methods of unsupervised learning" />
   
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="kernel-pca.html"/>
-<link rel="next" href="ch-nonlinear.html"/>
+<link rel="prev" href="sec-mds.html"/>
+<link rel="next" href="kernels-and-nonlinearity.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -245,11 +245,12 @@ div.csl-indent {
 <li class="chapter" data-level="4.4.3" data-path="sec-mds.html"><a href="sec-mds.html#metric-mds"><i class="fa fa-check"></i><b>4.4.3</b> Metric MDS</a></li>
 <li class="chapter" data-level="4.4.4" data-path="sec-mds.html"><a href="sec-mds.html#nonmetric-mds"><i class="fa fa-check"></i><b>4.4.4</b> Nonmetric MDS</a></li>
 </ul></li>
+<li class="chapter" data-level="4.5" data-path="exercises-2.html"><a href="exercises-2.html"><i class="fa fa-check"></i><b>4.5</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="kernels-and-nonlinearity.html"><a href="kernels-and-nonlinearity.html"><i class="fa fa-check"></i><b>5</b> Kernels and Nonlinearity</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="kernel-pca.html"><a href="kernel-pca.html"><i class="fa fa-check"></i><b>5.1</b> Kernel PCA</a></li>
-<li class="chapter" data-level="5.2" data-path="exercises-2.html"><a href="exercises-2.html"><i class="fa fa-check"></i><b>5.2</b> Exercises</a></li>
+<li class="chapter" data-level="5.2" data-path="exercises-3.html"><a href="exercises-3.html"><i class="fa fa-check"></i><b>5.2</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html"><i class="fa fa-check"></i><b>6</b> Manifold Learning</a>
 <ul>
@@ -278,7 +279,7 @@ div.csl-indent {
 <li class="chapter" data-level="6.5.3" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#example"><i class="fa fa-check"></i><b>6.5.3</b> Example</a></li>
 </ul></li>
 <li class="chapter" data-level="6.6" data-path="additional-methods.html"><a href="additional-methods.html"><i class="fa fa-check"></i><b>6.6</b> Additional methods</a></li>
-<li class="chapter" data-level="6.7" data-path="exercises-3.html"><a href="exercises-3.html"><i class="fa fa-check"></i><b>6.7</b> Exercises</a></li>
+<li class="chapter" data-level="6.7" data-path="exercises-4.html"><a href="exercises-4.html"><i class="fa fa-check"></i><b>6.7</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="ch-clustering.html"><a href="ch-clustering.html"><i class="fa fa-check"></i><b>7</b> Clustering</a>
 <ul>
@@ -311,8 +312,131 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="exercises-2" class="section level2 hasAnchor" number="5.2">
-<h2><span class="header-section-number">5.2</span> Exercises<a href="exercises-2.html#exercises-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="exercises-2" class="section level2 hasAnchor" number="4.5">
+<h2><span class="header-section-number">4.5</span> Exercises<a href="exercises-2.html#exercises-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li><p>Suppose a data matrix <span class="math inline">\({\bf X}\in\mathbb{R}^{N\times d}\)</span> has principal component scores <span class="math inline">\({\bf Y}\in\mathbb{R}^{N\times d}\)</span>, principal component loading matrix <span class="math inline">\({\bf W}\in\mathbb{R}^{d\times d}\)</span>, and principal component variances <span class="math inline">\(\lambda_1,\dots,\lambda_d\)</span>. Show that the sample covariance of the PCA scores, <span class="math inline">\({\bf Y}\)</span>, is diagonal.</p></li>
+<li><p>Consider the data matrix <span class="math display">\[{\bf X} = \begin{bmatrix} 2 &amp; 3 \\ 4 &amp; 5\\ 6&amp; 7 \\ 8 &amp; 9 \end{bmatrix}.\]</span></p>
+<ol style="list-style-type: lower-alpha">
+<li>Compute the principal component scores, variances, and loadings of <span class="math inline">\({\bf X}.\)</span></li>
+<li>Does <span class="math inline">\({\bf X}\)</span> exhibit lower dimensional structure? If so, describe it.</li>
+</ol></li>
+<li><p>Given a dataset with outliers:
+<span class="math display">\[
+\mathbf{X} = \begin{bmatrix}
+1 &amp; 2 \\
+2 &amp; 4 \\
+3 &amp; 6 \\
+4 &amp; 8 \\
+100 &amp; 200
+\end{bmatrix}
+\]</span></p>
+<ol style="list-style-type: lower-alpha">
+<li>Center the data.</li>
+<li>Compute the covariance matrix.</li>
+<li>Perform PCA and identify the principal component scores, loadings, and variances.</li>
+<li>Discuss how outliers affect PCA and suggest ways to handle them.</li>
+</ol></li>
+<li><p>Consider a dataset:
+<span class="math display">\[
+\mathbf{X} = \begin{bmatrix}
+1 &amp; 100 \\
+2 &amp; 200 \\
+3 &amp; 300 \\
+4 &amp; 400
+\end{bmatrix}
+\]</span></p>
+<ol style="list-style-type: lower-alpha">
+<li>Center the data.</li>
+<li>Compute the covariance matrix.</li>
+<li>Perform PCA and find the principal components.</li>
+<li>Discuss the importance of feature scaling in PCA.</li>
+</ol></li>
+<li><p>Given a nonlinear dataset:
+<span class="math display">\[\mathbf{X} = \begin{bmatrix}
+1 &amp; 1 \\
+2 &amp; 4 \\
+3 &amp; 9 \\
+4 &amp; 16 \\
+5 &amp; 25
+\end{bmatrix}\]</span></p>
+<ol style="list-style-type: lower-alpha">
+<li>Center the data.</li>
+<li>Compute the covariance matrix.</li>
+<li>Perform PCA and identify the principal components.</li>
+<li>Discuss the limitations of PCA for nonlinear datasets and suggest alternative methods.</li>
+</ol></li>
+<li><p>Load the Iris dataset and standardize the features.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Perform PCA on the standardized data.</li>
+<li>Plot the cumulative explained variance as a function of the number of principal components.</li>
+<li>Choose the number of principal components that explain at least 95% of the variance.</li>
+<li>Project the data onto the chosen principal components and visualize the results.</li>
+<li>Discuss the results and the effectiveness of PCA in reducing the dimensionality of the dataset.</li>
+</ol></li>
+<li><p>Suppose <span class="math display">\[\vec{x}=(x_1,x_2)^T \sim \mathcal{N}\left(\begin{bmatrix} 0\\ 0\end{bmatrix},
+\begin{bmatrix}1 &amp; \rho \\ \rho &amp; 1\end{bmatrix}\right),\]</span> i.e. random vector <span class="math inline">\(\vec{x}\)</span> follows a multivariate normal distribution with mean <span class="math inline">\(\vec{0}\)</span> and covariance <span class="math inline">\(\Sigma_X = \begin{bmatrix}1 &amp; \rho \\ \rho &amp; 1\end{bmatrix}\)</span>. Let <span class="math inline">\(w = \frac{\sqrt{2}}{2}(x_1+x_2)\)</span> and <span class="math inline">\(z = \frac{\sqrt{2}}{2}(x_1-x_2).\)</span> Find the joint distribution of <span class="math inline">\((w,z)^T\)</span>. Hint: linear combinations of normal random variables are also normal.</p></li>
+<li><p>Consider a data matrix <span class="math inline">\(X \in \mathbb{R}^{N\times d}\)</span> with centered columns so that the sample covariance matrix is
+<span class="math display">\[\hat{\Sigma} = \frac{X^TX}{N}.\]</span>
+Assume <span class="math inline">\(\hat{\Sigma}\)</span> has eigenvalues <span class="math inline">\(\lambda_1 &gt; \lambda_2 &gt;\dots &gt; \lambda_d &gt;0\)</span> with orthonormal eigenvectors <span class="math inline">\(\vec{w_1},\dots,\vec{w}_d.\)</span></p>
+<ol style="list-style-type: lower-alpha">
+<li><p>If <span class="math inline">\(X^{(1)} = X - X\vec{w}_1\vec{w}_1^T\)</span> is the data matrix where each row has had its component in the direction of <span class="math inline">\(\vec{w}_1\)</span> removed, show that <span class="math display">\[\hat{\Sigma}^{(1)} = \frac{{X^{(1)}}^T X^{(1)}}{N} = \hat{\Sigma} - \lambda_1 \vec{w}_1\vec{w}_1^T.\]</span></p></li>
+<li><p>Show that <span class="math inline">\(\hat{\Sigma}\)</span> can be written in the form <span class="math inline">\(\hat{\Sigma} = \sum_{j=1}^d \lambda_j \vec{w}_j\vec{w}_j^T.\)</span></p></li>
+</ol></li>
+<li><p>For <span class="math inline">\(k &lt; d\)</span>, let <span class="math inline">\(\vec{q}_1,\dots,\vec{q}_k\in\mathbb{R}^d\)</span> be fixed orthonormal vectors. Suppose <span class="math inline">\(a_1,\dots,a_k\)</span> are independent Gaussian random variables with mean zero and variances <span class="math inline">\(\lambda_1&gt;\dots&gt;\lambda_k\)</span> respectively. Let <span class="math display">\[\vec{x} = a_1\vec{q}_1+\dots+a_k+\vec{q}_k + \vec{\epsilon}\]</span> where <span class="math inline">\(\vec{\epsilon}\sim\mathcal{N}(\vec{0},\sigma^2{\bf I})\)</span> is independent of <span class="math inline">\(a_1,\dots,a_k\)</span></p>
+<ol style="list-style-type: lower-alpha">
+<li>Find the mean and covariance of <span class="math inline">\({\bf X}\)</span>.</li>
+<li>Find the eigenvalues and eigenvectors of <span class="math inline">\({\bf \Sigma}\)</span>.<br />
+</li>
+<li>For <span class="math inline">\(d = 10\)</span> and $k=3 and let <span class="math inline">\(\lambda_1 = 25,\, \lambda_2 = 9,\,\lambda_3 = 4\)</span> and <span class="math inline">\(\sigma^2=1\)</span>. Generate 100 independent realizations of <span class="math inline">\(\vec{x}\)</span> and compute the principal component loadings and variances. How do these compare to your results from b.</li>
+<li>Repeat c. for <span class="math inline">\(10^4\)</span> samples. How have the results changed?</li>
+</ol></li>
+<li><p>Let <span class="math inline">\(\vec{x}_1,\dots,\vec{x}_N\)</span> be vectors in <span class="math inline">\(\mathbb{R}^d\)</span>. Assume a PCA of these data has loadings <span class="math inline">\(\vec{w}_1,\dots,\vec{w}_d\)</span> with associated variances <span class="math inline">\(\lambda_1 \ge \dots \ge \lambda_d \ge 0.\)</span> Let <span class="math inline">\(U\)</span> be a <span class="math inline">\(d\times d\)</span> orthonormal matrix and set <span class="math inline">\(\vec{y}_i = U\vec{x}_i.\)</span> Find expressions for the principal component loadings and variance of <span class="math inline">\(\vec{y}_1,\dots,\vec{y}_N\)</span> in terms of <span class="math inline">\(U\)</span>, <span class="math inline">\(\vec{w}_1,\dots,\vec{w}_d\)</span> and <span class="math inline">\(\lambda_1,\dots,\lambda_d.\)</span></p></li>
+<li><p>Load the <em>mtcar</em> dataset containing 11 observations from 32 cars.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Show the principal component loadings and a biplot of the first and second PC components.</p></li>
+<li><p>Rescale the mpg (miles per gallon) data to feet per gallon, i.e. <em>mtcars$mpg &lt;- 5280</em>mtcars$mpg.* Rerun PCA on these modified data and show the loadings and biplot.</p></li>
+<li><p>What is the first loading capturing? Explain this result.</p></li>
+<li><p>Rerun the results using the empirical correlation matrix by setting the option <em>scale = TRUE</em> in the prcomp command. Compare this result with part (a)</p></li>
+</ol></li>
+<li><p>Consider the helix data shown below from two different directions.</p></li>
+</ol>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-14"></span>
+<img src="_main_files/figure-html/unnamed-chunk-14-1.png" alt="Helix data" width="672" />
+<p class="caption">
+Figure 4.6: Helix data
+</p>
+</div>
+<ol style="list-style-type: lower-alpha">
+<li><p>What is the dimension of the shape formed by these data?</p></li>
+<li><p>Compute the three principal component variances and show them below.</p></li>
+<li><p>Do the principal component variances reflect the dimension of the data? Why or why not?</p></li>
+</ol>
+<ol style="list-style-type: decimal">
+<li>Consider a dataset with three features:
+<span class="math display">\[ \mathbf{X} = \begin{bmatrix}
+2 &amp; 0 &amp; 1 \\
+3 &amp; 2 &amp; 2 \\
+4 &amp; 4 &amp; 3 \\
+5 &amp; 6 &amp; 4 \\
+6 &amp; 8 &amp; 5
+\end{bmatrix}\]</span></li>
+</ol>
+<ol style="list-style-type: lower-alpha">
+<li>Center the data by subtracting the mean of each feature.</li>
+<li>Compute the covariance matrix of the centered data.</li>
+<li>Find the eigenvalues and eigenvectors of the covariance matrix.</li>
+<li>Project the data onto the first two principal components.</li>
+<li>Visualize the original data and the projected data in a 2D plot.</li>
+<li>Discuss how PCA can help in reducing the dimensionality of the data while preserving important information.</li>
+</ol>
+<ol style="list-style-type: decimal">
+<li><p>The dataset <em>simplex10</em> contains samples generated from the probability simplex in <span class="math inline">\(\mathbb{R}^{10}\)</span>. (This means all entries nonnegative and each random vector has entries which sum to one.)</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Run PCA, SVD, and NMF on these data and compare the results. In particular, what lower dimensional structure, if any, do these methods indicate?</p></li>
+<li><p>Why do the results differ?</p></li>
+</ol></li>
+</ol>
 
 </div>
 <!-- </div> -->
@@ -321,8 +445,8 @@ div.csl-indent {
           </div>
         </div>
       </div>
-<a href="kernel-pca.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="ch-nonlinear.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="sec-mds.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="kernels-and-nonlinearity.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -353,7 +477,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/young1062/introUL04-kernels.Rmd",
+"link": "https://github.com/young1062/introUL03-linear_methods.Rmd",
 "text": "Edit"
 },
 "history": {

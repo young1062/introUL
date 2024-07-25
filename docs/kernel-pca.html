@@ -30,7 +30,7 @@
   
   
 <link rel="prev" href="kernels-and-nonlinearity.html"/>
-<link rel="next" href="exercises-2.html"/>
+<link rel="next" href="exercises-3.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -245,11 +245,12 @@ div.csl-indent {
 <li class="chapter" data-level="4.4.3" data-path="sec-mds.html"><a href="sec-mds.html#metric-mds"><i class="fa fa-check"></i><b>4.4.3</b> Metric MDS</a></li>
 <li class="chapter" data-level="4.4.4" data-path="sec-mds.html"><a href="sec-mds.html#nonmetric-mds"><i class="fa fa-check"></i><b>4.4.4</b> Nonmetric MDS</a></li>
 </ul></li>
+<li class="chapter" data-level="4.5" data-path="exercises-2.html"><a href="exercises-2.html"><i class="fa fa-check"></i><b>4.5</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="kernels-and-nonlinearity.html"><a href="kernels-and-nonlinearity.html"><i class="fa fa-check"></i><b>5</b> Kernels and Nonlinearity</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="kernel-pca.html"><a href="kernel-pca.html"><i class="fa fa-check"></i><b>5.1</b> Kernel PCA</a></li>
-<li class="chapter" data-level="5.2" data-path="exercises-2.html"><a href="exercises-2.html"><i class="fa fa-check"></i><b>5.2</b> Exercises</a></li>
+<li class="chapter" data-level="5.2" data-path="exercises-3.html"><a href="exercises-3.html"><i class="fa fa-check"></i><b>5.2</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html"><i class="fa fa-check"></i><b>6</b> Manifold Learning</a>
 <ul>
@@ -278,7 +279,7 @@ div.csl-indent {
 <li class="chapter" data-level="6.5.3" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#example"><i class="fa fa-check"></i><b>6.5.3</b> Example</a></li>
 </ul></li>
 <li class="chapter" data-level="6.6" data-path="additional-methods.html"><a href="additional-methods.html"><i class="fa fa-check"></i><b>6.6</b> Additional methods</a></li>
-<li class="chapter" data-level="6.7" data-path="exercises-3.html"><a href="exercises-3.html"><i class="fa fa-check"></i><b>6.7</b> Exercises</a></li>
+<li class="chapter" data-level="6.7" data-path="exercises-4.html"><a href="exercises-4.html"><i class="fa fa-check"></i><b>6.7</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="ch-clustering.html"><a href="ch-clustering.html"><i class="fa fa-check"></i><b>7</b> Clustering</a>
 <ul>
@@ -324,16 +325,16 @@ where <span class="math inline">\({\bf K}\)</span> has the inner products in the
 <p>Notably, at no point do we compute the PC loadings! However, similar to standard PCA, we use the scores for dimension reduction and the PC variances for choosing a dimension. Without the loadings, we cannot recompute the original data. Below, we show an application of kernel PCA to the helix and demonstrate its ability to identify the one-dimensional structure of the helix and its sensitivity to kernel selection and tuning.</p>
 <div class="example">
 <p><span id="exm:kpca-helix" class="example"><strong>Example 5.1  (Kernel PCA applied to the Helix) </strong></span>First, we show the kPCA variances for three different kernels and tuning parameters. The data are regularly spaced points along the helix.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-106-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-99-1.png" width="672" /></p>
 <p>From these graphs, one would infer very different lower dimensional choices depending on the kernel and parameters. The polynomial kernel provides the most robust estimate of the one-dimensional nature of the data.</p>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-107"></span>
-<img src="_main_files/figure-html/unnamed-chunk-107-1.png" alt="kPCA Variances for different Kernels" width="672" />
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-100"></span>
+<img src="_main_files/figure-html/unnamed-chunk-100-1.png" alt="kPCA Variances for different Kernels" width="672" />
 <p class="caption">
 Figure 5.1: kPCA Variances for different Kernels
 </p>
 </div>
 <p>Below, we show the recovered one-dimensional coordinates for the polynomial kernel with offset 1 and degree 4 shown below, which is good, but do not quite reflect the equal spaced nature of the points.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-108-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-101-1.png" width="672" /></p>
 </div>
 <p>As the preceding example demonstrates, kernel PCA can identify nonlinear structure, but is quite sensitive to kernel selection and tuning. More advanced implementations make use of cross-validation to aid in the selection and tuning of the kernel <span class="citation">[<a href="#ref-kPCA_tuning2">11</a>]</span>.</p>
 </div>
@@ -349,7 +350,7 @@ Figure 5.1: kPCA Variances for different Kernels
         </div>
       </div>
 <a href="kernels-and-nonlinearity.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="exercises-2.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="exercises-3.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

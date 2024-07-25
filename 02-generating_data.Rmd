@@ -89,7 +89,8 @@ The previous examples have shown data in $\mathbb{R}^3$. While this is helpful o
 
 In general we can do this through a mapping, $f:\mathbb{R}^t \to \mathbb{R}^d$. (More on this idea in \ref(ch-nonlinear) later).  First generate synthetic data $\vec{x}_1',\dots,\vec{x}_N'$ then apply the map to create high dimensional observations $$\vec{x}_i = f(\vec{x}_i'), \qquad i=1,\dots,N.$$
 
-There are infinite possibilities for $f$, but there is a simple and easy to implement method. Just pad each of the original $t$ dimensional vector with $d-t$ zeros.  You can then apply any non-degenerate affine map from $\mathbb{R}^d$ to $\mathbb{R}^d$ if you would like to obscure the zeros (say for a problem set).
+There are infinite possibilities for $f$, but for now, we will focus on affine mappings. For a matrix ${\bf A}\in\mathbb{R}^{d\times t}$ and vector $\vec{b}\in\mathbb{R}^d$, the affine function $$
+f(\vec{x}') = {\bf A}\vec{x}' + \vec{b}$$ maps vectors in $\mathbb{R}^t$ to points in $\mathbb{R}^d.$ Properties of this mapping with depend on the columns of ${\bf A}$. For example, if the columns are orthonormal, then Euclidean distances between corresponding pairs of vectors will be the same in the low and high dimensional spaces.
 
 
 ::: {.example #high-d name="Mapping unit sphere in $\mathbb{R}^3$ to higher dimensions"}
@@ -106,20 +107,11 @@ scatterplot3js(X,
               pch = '.',
               size = 0.1)
 ```
-To map these data into $\mathbb{R}^{10}$, I can append 7 columns of zeros to my data matrix (equivalent to padding each vector with 7 zeros).  Below we can see the first few samples of these higher dimensional vectors.
+
+Below, we apply the affine mapping when the columns of ${\bf A}$ are orthonormal and $\vec{b}= \vec{0}$ and show a few samples.
 
 ```{r}
-X <- cbind(X,matrix(0,N,ncol = 10-3))
-head(round(X,3))
-
-```
-
-One could visually inspect this data matrix and determine that there is a three dimensional representation though the spherical structure would then require plotting.  
-
-Suppose now that I have a orthonormal matrix ${\bf U}\in \mathbb{R}^{10\times 10}$. I could then multiply each 10d vector by $U$ to rotate/reflect the data thereby eliminating ones ability to find simplified structure by visual inspection alone.  Below, we apply such a mapping to the data and show a few samples.
-
-```{r}
-U <- svd(matrix(rnorm(10*10),nrow = 10))$u
+U <- svd(matrix(rnorm(10*10),nrow = 10))$u[,1:3]
 X <- X %*% t(U)
 head(round(X,3))
 ```
@@ -156,7 +148,28 @@ plot(rings, col = c(rep("blue",100),rep("red",100),rep("black",100)),
 
 If one did not have access to the actual data generating process (depicted by the different colors), it is still likely that they could recover the correct groupings upon visual inspection.  In general, this strategy is not tractable. Naturally, we would like an Unsupervised clustering algorithm that can learn these clusters directly from the data automatically.  As we shall see in Chapter \@ref(ch-clustering), certain algorithms will excel at grouping the data contained in disjoint ellipsoids will naturally struggle data clustering in concentric rings because the shape(s) of the different clusters matters has a major impact of the accuracy of the clustering.  
 
- 
+In both examples above a two step sampling procedure was used to generate the observations in different clusters.  First, a latent cluster *label* was generated. Then based on that label, an associated data point was created.  Below we show an example which generates data in one of two spirals.  For sample $i$, we first draw $z_i\sim Ber(1/2)$. Then if $z_i=0$, we randomly generate $x_i$ in the first spiral, otherwise we generate $x_i$ in the second. 
+
+::: {.example name="Intertwined spirals"}
+```{r}
+# define functions for different spirals
+spiral1 <- function(u){c(u*cos(3*u),u*sin(3*u))}
+spiral2 <- function(u){c(u*cos(3*(u+pi)),u*sin(3*(u+pi)))}
+# sample latent cluster assignments
+z <- sample(c(0,1),size = 1e3,prob = c(1/2,1/2),replace = T)
+
+# generate spirals based on labels
+X <- matrix(NA,nrow = N,ncol = 2)
+for (i in 1:N){ 
+  if (z[i]==0)
+    X[i,] <- spiral1(runif(1,0.5,3))
+  else
+    X[i,] <- spiral2(runif(1,0.5,3))
+}
+#plot
+plot(X, col = c("blue","red")[z+1], xlab =expression(x[1]),ylab =expression(x[2]))
+```
+:::
 
 ## Exercises
 
