@@ -29,11 +29,12 @@ fig:ribbon
 fig:ex-clusters
 def:first-pca
 exm:pca-demo-1
-fig:unnamed-chunk-19
+fig:unnamed-chunk-32
 fig:pca1
 fig:pca2
 thm:pca-eig
 cor:pca-all
+thm:pca-opt
 thm:svd-frob
 fig:nmf-ex
 def:pos-span
@@ -78,7 +79,7 @@ clustered-data
 exercises-1
 ch-linear
 sec-pca
-derivation-1-iterative-projections
+derivation-using-iterative-projections
 geometric-interpretation-of-vecw_1
 additional-principal-components
 geometric-interpretation-of-pca

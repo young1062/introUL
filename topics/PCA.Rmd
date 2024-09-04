@@ -22,11 +22,11 @@ Principal component analysis (PCA) is arguably the first method for dimension re
 
 There are number of different but equivalent derivations of PCA including the minimization of least squares error, covariance decompositions, and low rank approximations.  We'll revisit these ideas later, but first, let's discuss PCA through a geometrically motivated lens via a method called iterative projections.
 
-### Derivation 1: Iterative Projections
+### Derivation using Iterative Projections
 
 We begin with a data matrix $${\bf X} = \begin{bmatrix} \vec{x}_1^T\\ \vdots \\\vec{x}_N^T\end{bmatrix} \in\mathbb{R}^{N\times d}.$$  Let's begin with an example of dimension reduction where we'll seek to replace each vector $\vec{x}_1,\dots,\vec{x}_N$ with corresponding scalars $y_1,\dots,y_N$ which preserve as much of the variability between these vectors as possible.  To formalize this idea, let's introduce a few assumptions.
 
-First, we'll assume the data $\vec{x}_1,\dots,\vec{x}_N$ are centered.  This is not a requirement, but it will simplify the analysis later.  We'll discuss how to account for this centering step later, but for now assume $\bar{x} = \vec{0}$ so that ${\bf HX} = {\bf X}$.  More importantly, let's assume that each $y_i$ is derived in the same way. Specifically, let $y_i = \vec{x}_i^T \vec{w}$ for some common vector $\vec{w}$.  Thus, we can view each one-dimensional representation as a dot product of the corresponding observed vector with the same vector $\vec{w}.$  We can compactly write this expression as $$\vec{y} = \begin{bmatrix}y_1\\ \vdots \\ y_n \end{bmatrix}=\begin{bmatrix}\vec{x}_1^T \vec{w} \\ \vdots \\ \vec{x}_N^T \vec{w}\end{bmatrix} = {\bf X} \vec{w}.$$
+First, we'll assume the data $\vec{x}_1,\dots,\vec{x}_N$ are centered.  To be fair, assumption may be too strong a word.  Rather, it's a first step in preprocessing that will simplify the analysis later.  We'll discuss how to account for this centering step later, but for now assume $\bar{x} = \vec{0}$ so that ${\bf HX} = {\bf X}$.  More importantly, let's assume that each $y_i$ is constructed in the same way. Specifically, let $y_i = \vec{x}_i^T \vec{w}$ for some common vector $\vec{w}$.  Thus, we can view each one-dimensional representation as a dot product of the corresponding observed vector with the same vector $\vec{w}.$  We can compactly write this expression as $$\vec{y} = \begin{bmatrix}y_1\\ \vdots \\ y_n \end{bmatrix}=\begin{bmatrix}\vec{x}_1^T \vec{w} \\ \vdots \\ \vec{x}_N^T \vec{w}\end{bmatrix} = {\bf X} \vec{w}.$$
 
 
 How do we choose $\vec{w}$?  We would like differences in the scalars $y_1,\dots,y_N$ to reflect differences in the vectors $\vec{x}_1,\dots,\vec{x}_N$ so having $y_1,\dots,y_N$ spread out is a natural goal. Thus, if $\vec{x}_i$ and $\vec{x}_j$ are far apart then so will $y_i$ and $y_j$. To do this, we'll try to maximize the sample variance of the $y$'s. The sample variance $$\frac{1}{N} \sum_{i=1}^N (y_i - \bar{y})^2 = \frac{1}{N}\sum_{i=1}^N(\vec{x}_i^T \vec{w} - \bar{y})^2$$ 
@@ -34,7 +34,7 @@ will depend on our choice of $\vec{w}$.  In the previous expression,
 $$\bar{y} = \frac{1}{N} y_i = \frac{1}{N}\sum_{i=1}^N \vec{x}_i^T \vec{w} = \frac{1}{N}\vec{1}^T{\bf X}\vec{w}$$
 is the sample mean of $y_1,\dots,y_N.$  Importantly, since we have assumed that $\vec{x}_1,\dots,\vec{x}_N$ are centered, it follows that $\bar{y}=0$ and the sample variance of $y_1,\dots,y_N$ simplifies to $$\frac{1}{N}\sum_{i=1}^N(\vec{x}_i^T \vec{w})^2 = \frac{1}{N}\sum_{i=1}^N y_i^2 = \frac{1}{N} \|y\|^2 = \frac{1}{N}\vec{y}^T\vec{y}.$$
 
-We can write the above expression more compactly. Using the identity $\vec{y} = {\bf X}\vec{w}$, we want to choose $\vec{w}$ to maximize $$\frac{1}{N}\vec{y}^T\vec{y} = \frac{1}{N}({\bf X}\vec{w})^T{\bf X}\vec{w} = \frac{1}{N}\vec{w}^T{\bf X}^T{\bf X}\vec{w} = \vec{w}^T\left(\frac{{\bf X}^T{\bf X}}{N}\right)\vec{w}.$$  Since we have assumed that ${\bf X}$ is centered it follows that ${\bf X}^T{\bf X}/N$ is the sample covariance matrix $\hat{\bf \Sigma}$! Thus, we want to make $\vec{w}^T\hat{\bf \Sigma} \vec{w}$ as large as possible.
+We can write the above in terms of ${\bf X}$ and $\vec{w}$. Using the identity $\vec{y} = {\bf X}\vec{w}$, we want to choose $\vec{w}$ to maximize $$\frac{1}{N}\vec{y}^T\vec{y} = \frac{1}{N}({\bf X}\vec{w})^T{\bf X}\vec{w} = \frac{1}{N}\vec{w}^T{\bf X}^T{\bf X}\vec{w} = \vec{w}^T\left(\frac{{\bf X}^T{\bf X}}{N}\right)\vec{w}.$$  Since we have assumed that ${\bf X}$ is centered it follows that ${\bf X}^T{\bf X}/N$ is the sample covariance matrix $\hat{\bf \Sigma}$! Thus, we want to make $\vec{w}^T\hat{\bf \Sigma} \vec{w}$ as large as possible.
 
 Naturally, we could increase the entries in $\vec{w}$ and increase the above expression without bound. To make the maximization problem well posed, we will restrict $\vec{w}$ to be unit-length under the Euclidean norm so that $\|\vec{w}\|=1.$  We now have a constrained optimization problem which gives rise to the first **principal component loading**.
 
@@ -306,7 +306,11 @@ where ${\bf Y}\in \mathbb{R}^{N\times d}$ is a matrix of PC scores and ${\bf W}$
 
 #### Geometric interpretation of PCA
 
-We have begun with an $N\times d$ data matrix ${\bf X}$ and now we have an $N\times d$ matrix of PCA scores ${\bf Y}$. One may be inclined to ask: where is the dimension reduction?  To answer this question, let's first consider the sample covariance matrix of the PCA scores, which one can show is diagonal
+We began with an $N\times d$ data matrix ${\bf X}$ and now we have an $N\times d$ matrix of PCA scores ${\bf Y}$. One may be inclined to ask: where is the dimension reduction?  To answer this question, let's revisit some important features of the scores and loadings.
+
+First, since the loadings $\vec{w}_1,\dots,\vec{w}_d$ are orthonormal vectors in $\mathbb{R}^d$, they naturally form a basis!  The PCA scores are then the coordinates of our data in the basis $\{\vec{w}_1,\dots,\vec{w}_d\}$. Specifically, ${\bf Y}_{ij}$ for $j=1,\dots,d$ are the coordinates for (centered) vector $\vec{x}_i$ since $$\vec{x}_i = {\bf Y}_{i1}\vec{w}_1+\cdots+ {\bf Y}_{id}\vec{w}_d.$$
+
+The dimension reduction comes in from an important observations about the PCA scores (aka coordinate). Consider the sample covariance matrix of the PCA scores, which one can show is diagonal (see exercises)
 \begin{equation}
 \hat{\bf \Sigma}_Y = 
 \begin{bmatrix}
@@ -315,6 +319,34 @@ We have begun with an $N\times d$ data matrix ${\bf X}$ and now we have an $N\ti
 && \lambda_d
 \end{bmatrix}
 \end{equation}
+
+There are two important perspectives on the using PCA scores.  First, the diagonality of the PCA scores indicates that in the new basis, $\{\vec{w}_1,\dots,\vec{w}_d\}$, the coordinates are i) uncorrelated and ii) ordered in decreasing variance.  As a result, if we want to construct a $k < d$ dimensional representation our data that minimizes the loss in variability, we should use the first $k$ PCA scores.  
+
+Secondly, we can use the first $k$ scores to build approximations,
+$$\vec{x}_i \approx \hat{x}_i = {\bf Y}_{i1}\vec{w}_1+\cdots + {\bf Y}_{ik} \vec{w}_k, \qquad i=1,\dots, N.$$ How good is this approximation?  Optimal, in a squared loss sense, thanks to the following theorem.
+
+::: {.theorem #pca-opt}
+Fix $k<d.$ Given any $k$-dimensional linear subspace of $\mathbb{R}^d$, denoted $\mathcal{V}$, let $\text{proj}_\mathcal{V}(\vec{x})$ denote the orthogonal projection of $\vec{x}$ onto \mathcal{V}, then $$\frac{1}{N}\sum_{i=1}^N \|\vec{x}_i - \text{proj}_\mathcal{V}(\vec{x}_i)\|^2 \ge \lambda_{k+1}+\cdots+\lambda_d$$
+where $\lambda_{k+1},\cdots,\lambda_d$ are the last $(d-k)$ principal component variances of $\vec{x}_1,\dots,\vec{x}_N$.  
+
+Furthermore, if $\lambda_k > \lambda_{k+1}$, then $\text{span}\{\vec{w}_1,\dots,\vec{w}_k\}$ is the unique $k$-dimensional linear subspace for which $$\frac{1}{N}\sum_{i=1}^N \|\vec{x}_i - \text{proj}_\mathcal{V}(\vec{x}_i)\|^2 = \lambda_{k+1}+\cdots+\lambda_d.$$
+:::
+
+A few notes on the above theorem to add some clarity.  First, note that $$\hat{x}_i = {\bf Y}_{i1}\vec{w}_1+\cdots + {\bf Y}_{ik} \vec{w}_k$$ is the orthogonal projection of $\vec{x}_i$ onto $\text{span}\{\vec{w}_1,\dots,\vec{w}_k\}$ so that $$\vec{x}_i - \text{proj}_{\text{span}\{\vec{w}_1,\dots,\vec{w}_k\}}(\vec{x}_i) = {\bf Y}_{i,k+1}\vec{w}_{k+1}+\cdots+{\bf Y}_{id}\vec{w}_d.$$ Using this identity and the properties of the PCA scores allows one to verify the equality at the end of the theorem (see exercises).  
+
+The requirement that $\lambda_k\ge \lambda_{k+1}$ is necessary for uniqueness.  If $\lambda_k = \lambda_{k+1}$ then the subspace $\text{span}\{\vec{w}_1,\dots,\vec{w}_{k-1},\vec{w}_{k+1}\}$ would offer an equally good approximation.  Fortunately, it is rare that two (nonzero) PCA scores are equal in practice so we rarely have to worry about this issue. In short, PCA learns the $k$-dimensional linear subspace which best approximates the original data on average!
+
+In all of the previous analysis, we have been operating under the assumption that our data is centered, e.g. $\bar{x}=\vec{0}$ --  an preprocessign step that made our analysis easier and is done in practice to avoid potential issue with numerical linear albegra. We can recover all of the nice geometric intuition when working with uncentered data by adding the sample mean back to the approximation and shifting our focus to affine subspaces, which look just like linear subspaces which have been translated by some constant shift away from the origin.
+
+::: {.corollary $pca-opt-aff}
+Given any $k$-dimensional affine subspace $\mathcal{A}\subset\mathbb{R}^d$
+$$\frac{1}{N}\sum_{i=1}^N \|\vec{x}_i - \text{proj}_\mathcal{A}(\vec{x}_i)\|^2 \ge \lambda_{k+1}+\cdots+\lambda_d$$ with equality (assuming $\lambda_k>\lambda_{k+1}$) if and only if $\mathcal{A} = \bar{x} + \text{span}\{\vec{w}_1,\dots,\vec{w}_k\}.$
+:::
+
+Note the set $\bar{x} + \text{span}\{\vec{w}_1,\dots,\vec{w}_k\}$ is the set of all vectors $$\{\vec{v}\in\mathbb{R}^d:\,\vec{v}-\bar{x} \in \text{span}\{\vec{w}_1,\dots,\vec{w}_k\}\}$$, i.e. the optimal $k$-dimensional hyperplane found after centering if translated by $\bat{x}$.  In this case, the optimal approximation of our data is $$\vec{x}_i \approx \bar{x} + {\bf Y}_{i1}\vec{w}_1+\cdots + {\bf Y}_{ik}\vec{w}_k.$$
+
+
+
 
 
 

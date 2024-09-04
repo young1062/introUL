@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>6.4 Autoencoders (AEs) | An Introduction to Unsupervised Learning</title>
   <meta name="description" content="An introductory text on the goals and methods of unsupervised learning" />
-  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
   <meta property="og:title" content="6.4 Autoencoders (AEs) | An Introduction to Unsupervised Learning" />
   <meta property="og:type" content="book" />
@@ -51,11 +51,12 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
-<script src="libs/plotly-binding-4.10.2/plotly.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.4/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
 <link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 <script src="libs/threejs-111/three.min.js"></script>
@@ -69,7 +70,7 @@
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -214,7 +215,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="4.1" data-path="sec-pca.html"><a href="sec-pca.html"><i class="fa fa-check"></i><b>4.1</b> Principal Component Analysis</a>
 <ul>
-<li class="chapter" data-level="4.1.1" data-path="sec-pca.html"><a href="sec-pca.html#derivation-1-iterative-projections"><i class="fa fa-check"></i><b>4.1.1</b> Derivation 1: Iterative Projections</a></li>
+<li class="chapter" data-level="4.1.1" data-path="sec-pca.html"><a href="sec-pca.html#derivation-using-iterative-projections"><i class="fa fa-check"></i><b>4.1.1</b> Derivation using Iterative Projections</a></li>
 </ul></li>
 <li class="chapter" data-level="4.2" data-path="sec-svd.html"><a href="sec-svd.html"><i class="fa fa-check"></i><b>4.2</b> Singular Value Decomposition</a>
 <ul>
@@ -367,59 +368,59 @@ Using a method like gradient descent or one of its variants (e.g., Adam, RMSProp
 </div>
 <div id="example" class="section level3 hasAnchor" number="6.4.3">
 <h3><span class="header-section-number">6.4.3</span> Example<a href="autoencoders-aes.html#example" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="autoencoders-aes.html#cb30-1" tabindex="-1"></a><span class="co"># # keras provides an interface to the Keras deep learning library in Python</span></span>
-<span id="cb30-2"><a href="autoencoders-aes.html#cb30-2" tabindex="-1"></a><span class="co"># library(keras)</span></span>
-<span id="cb30-3"><a href="autoencoders-aes.html#cb30-3" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb30-4"><a href="autoencoders-aes.html#cb30-4" tabindex="-1"></a><span class="co"># # load the Minst dataset</span></span>
-<span id="cb30-5"><a href="autoencoders-aes.html#cb30-5" tabindex="-1"></a><span class="co"># mnist &lt;- dslabs::read_mnist(</span></span>
-<span id="cb30-6"><a href="autoencoders-aes.html#cb30-6" tabindex="-1"></a><span class="co">#   path = NULL,</span></span>
-<span id="cb30-7"><a href="autoencoders-aes.html#cb30-7" tabindex="-1"></a><span class="co">#   download = FALSE,</span></span>
-<span id="cb30-8"><a href="autoencoders-aes.html#cb30-8" tabindex="-1"></a><span class="co">#   destdir = tempdir(),</span></span>
-<span id="cb30-9"><a href="autoencoders-aes.html#cb30-9" tabindex="-1"></a><span class="co">#   url = &quot;https://www2.harvardx.harvard.edu/courses/IDS_08_v2_03/&quot;,</span></span>
-<span id="cb30-10"><a href="autoencoders-aes.html#cb30-10" tabindex="-1"></a><span class="co">#   keep.files = TRUE</span></span>
-<span id="cb30-11"><a href="autoencoders-aes.html#cb30-11" tabindex="-1"></a><span class="co"># )</span></span>
-<span id="cb30-12"><a href="autoencoders-aes.html#cb30-12" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb30-13"><a href="autoencoders-aes.html#cb30-13" tabindex="-1"></a><span class="co"># x_train &lt;- mnist$train$images</span></span>
-<span id="cb30-14"><a href="autoencoders-aes.html#cb30-14" tabindex="-1"></a><span class="co"># x_test &lt;- mnist$test$images</span></span></code></pre></div>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="autoencoders-aes.html#cb31-1" tabindex="-1"></a><span class="co"># # Reshape the data and normalize</span></span>
-<span id="cb31-2"><a href="autoencoders-aes.html#cb31-2" tabindex="-1"></a><span class="co"># gc()</span></span>
-<span id="cb31-3"><a href="autoencoders-aes.html#cb31-3" tabindex="-1"></a><span class="co"># library(reticulate)</span></span>
-<span id="cb31-4"><a href="autoencoders-aes.html#cb31-4" tabindex="-1"></a><span class="co"># x_train &lt;- array_reshape(x_train, c(nrow(x_train), 784))</span></span>
-<span id="cb31-5"><a href="autoencoders-aes.html#cb31-5" tabindex="-1"></a><span class="co"># x_test &lt;- array_reshape(x_test, c(nrow(x_test), 784))</span></span>
-<span id="cb31-6"><a href="autoencoders-aes.html#cb31-6" tabindex="-1"></a><span class="co"># x_train &lt;- x_train / 255</span></span>
-<span id="cb31-7"><a href="autoencoders-aes.html#cb31-7" tabindex="-1"></a><span class="co"># x_test &lt;- x_test / 255</span></span></code></pre></div>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="autoencoders-aes.html#cb32-1" tabindex="-1"></a><span class="co"># encoding_dim &lt;- 32  # for compression</span></span>
-<span id="cb32-2"><a href="autoencoders-aes.html#cb32-2" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb32-3"><a href="autoencoders-aes.html#cb32-3" tabindex="-1"></a><span class="co"># input_img &lt;- layer_input(shape = c(784))</span></span>
-<span id="cb32-4"><a href="autoencoders-aes.html#cb32-4" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb32-5"><a href="autoencoders-aes.html#cb32-5" tabindex="-1"></a><span class="co"># # Encoder layers</span></span>
-<span id="cb32-6"><a href="autoencoders-aes.html#cb32-6" tabindex="-1"></a><span class="co"># encoded &lt;- layer_dense(input_img, encoding_dim, activation = &#39;relu&#39;)</span></span>
-<span id="cb32-7"><a href="autoencoders-aes.html#cb32-7" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb32-8"><a href="autoencoders-aes.html#cb32-8" tabindex="-1"></a><span class="co"># # Decoder layers</span></span>
-<span id="cb32-9"><a href="autoencoders-aes.html#cb32-9" tabindex="-1"></a><span class="co"># decoded &lt;- layer_dense(encoded, 784, activation = &#39;sigmoid&#39;)</span></span>
-<span id="cb32-10"><a href="autoencoders-aes.html#cb32-10" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb32-11"><a href="autoencoders-aes.html#cb32-11" tabindex="-1"></a><span class="co"># # Create the autoencoder model</span></span>
-<span id="cb32-12"><a href="autoencoders-aes.html#cb32-12" tabindex="-1"></a><span class="co"># autoencoder &lt;- keras_model(input_img, decoded)</span></span></code></pre></div>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="autoencoders-aes.html#cb33-1" tabindex="-1"></a><span class="co"># autoencoder %&gt;% fit(</span></span>
-<span id="cb33-2"><a href="autoencoders-aes.html#cb33-2" tabindex="-1"></a><span class="co">#   x_train, x_train,</span></span>
-<span id="cb33-3"><a href="autoencoders-aes.html#cb33-3" tabindex="-1"></a><span class="co">#   epochs = 50,</span></span>
-<span id="cb33-4"><a href="autoencoders-aes.html#cb33-4" tabindex="-1"></a><span class="co">#   batch_size = 256,</span></span>
-<span id="cb33-5"><a href="autoencoders-aes.html#cb33-5" tabindex="-1"></a><span class="co">#   shuffle = TRUE,</span></span>
-<span id="cb33-6"><a href="autoencoders-aes.html#cb33-6" tabindex="-1"></a><span class="co">#   validation_data = list(x_test, x_test)</span></span>
-<span id="cb33-7"><a href="autoencoders-aes.html#cb33-7" tabindex="-1"></a><span class="co"># )</span></span></code></pre></div>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="autoencoders-aes.html#cb34-1" tabindex="-1"></a><span class="co"># # Get the reconstructed images</span></span>
-<span id="cb34-2"><a href="autoencoders-aes.html#cb34-2" tabindex="-1"></a><span class="co"># decoded_imgs &lt;- autoencoder %&gt;% predict(x_test)</span></span>
-<span id="cb34-3"><a href="autoencoders-aes.html#cb34-3" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb34-4"><a href="autoencoders-aes.html#cb34-4" tabindex="-1"></a><span class="co"># # Display the original and reconstructed images</span></span>
-<span id="cb34-5"><a href="autoencoders-aes.html#cb34-5" tabindex="-1"></a><span class="co"># par(mfrow=c(2,10), mai=c(0.2, 0.2, 0.2, 0.2))</span></span>
-<span id="cb34-6"><a href="autoencoders-aes.html#cb34-6" tabindex="-1"></a><span class="co"># for (i in 1:10) {</span></span>
-<span id="cb34-7"><a href="autoencoders-aes.html#cb34-7" tabindex="-1"></a><span class="co">#   # Original</span></span>
-<span id="cb34-8"><a href="autoencoders-aes.html#cb34-8" tabindex="-1"></a><span class="co">#   img &lt;- array_reshape(x_test[i,], c(28, 28))</span></span>
-<span id="cb34-9"><a href="autoencoders-aes.html#cb34-9" tabindex="-1"></a><span class="co">#   image(1:28, 1:28, img, col = gray((0:255)/255), xaxt = &#39;n&#39;, yaxt = &#39;n&#39;, main = &quot;Original&quot;)</span></span>
-<span id="cb34-10"><a href="autoencoders-aes.html#cb34-10" tabindex="-1"></a><span class="co">#   # Reconstruction</span></span>
-<span id="cb34-11"><a href="autoencoders-aes.html#cb34-11" tabindex="-1"></a><span class="co">#   img &lt;- array_reshape(decoded_imgs[i,], c(28, 28))</span></span>
-<span id="cb34-12"><a href="autoencoders-aes.html#cb34-12" tabindex="-1"></a><span class="co">#   image(1:28, 1:28, img, col = gray((0:255)/255), xaxt = &#39;n&#39;, yaxt = &#39;n&#39;, main = &quot;Reconstructed&quot;)</span></span>
-<span id="cb34-13"><a href="autoencoders-aes.html#cb34-13" tabindex="-1"></a><span class="co"># }</span></span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="autoencoders-aes.html#cb25-1" tabindex="-1"></a><span class="co"># # keras provides an interface to the Keras deep learning library in Python</span></span>
+<span id="cb25-2"><a href="autoencoders-aes.html#cb25-2" tabindex="-1"></a><span class="co"># library(keras)</span></span>
+<span id="cb25-3"><a href="autoencoders-aes.html#cb25-3" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb25-4"><a href="autoencoders-aes.html#cb25-4" tabindex="-1"></a><span class="co"># # load the Minst dataset</span></span>
+<span id="cb25-5"><a href="autoencoders-aes.html#cb25-5" tabindex="-1"></a><span class="co"># mnist &lt;- dslabs::read_mnist(</span></span>
+<span id="cb25-6"><a href="autoencoders-aes.html#cb25-6" tabindex="-1"></a><span class="co">#   path = NULL,</span></span>
+<span id="cb25-7"><a href="autoencoders-aes.html#cb25-7" tabindex="-1"></a><span class="co">#   download = FALSE,</span></span>
+<span id="cb25-8"><a href="autoencoders-aes.html#cb25-8" tabindex="-1"></a><span class="co">#   destdir = tempdir(),</span></span>
+<span id="cb25-9"><a href="autoencoders-aes.html#cb25-9" tabindex="-1"></a><span class="co">#   url = &quot;https://www2.harvardx.harvard.edu/courses/IDS_08_v2_03/&quot;,</span></span>
+<span id="cb25-10"><a href="autoencoders-aes.html#cb25-10" tabindex="-1"></a><span class="co">#   keep.files = TRUE</span></span>
+<span id="cb25-11"><a href="autoencoders-aes.html#cb25-11" tabindex="-1"></a><span class="co"># )</span></span>
+<span id="cb25-12"><a href="autoencoders-aes.html#cb25-12" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb25-13"><a href="autoencoders-aes.html#cb25-13" tabindex="-1"></a><span class="co"># x_train &lt;- mnist$train$images</span></span>
+<span id="cb25-14"><a href="autoencoders-aes.html#cb25-14" tabindex="-1"></a><span class="co"># x_test &lt;- mnist$test$images</span></span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="autoencoders-aes.html#cb26-1" tabindex="-1"></a><span class="co"># # Reshape the data and normalize</span></span>
+<span id="cb26-2"><a href="autoencoders-aes.html#cb26-2" tabindex="-1"></a><span class="co"># gc()</span></span>
+<span id="cb26-3"><a href="autoencoders-aes.html#cb26-3" tabindex="-1"></a><span class="co"># library(reticulate)</span></span>
+<span id="cb26-4"><a href="autoencoders-aes.html#cb26-4" tabindex="-1"></a><span class="co"># x_train &lt;- array_reshape(x_train, c(nrow(x_train), 784))</span></span>
+<span id="cb26-5"><a href="autoencoders-aes.html#cb26-5" tabindex="-1"></a><span class="co"># x_test &lt;- array_reshape(x_test, c(nrow(x_test), 784))</span></span>
+<span id="cb26-6"><a href="autoencoders-aes.html#cb26-6" tabindex="-1"></a><span class="co"># x_train &lt;- x_train / 255</span></span>
+<span id="cb26-7"><a href="autoencoders-aes.html#cb26-7" tabindex="-1"></a><span class="co"># x_test &lt;- x_test / 255</span></span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="autoencoders-aes.html#cb27-1" tabindex="-1"></a><span class="co"># encoding_dim &lt;- 32  # for compression</span></span>
+<span id="cb27-2"><a href="autoencoders-aes.html#cb27-2" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb27-3"><a href="autoencoders-aes.html#cb27-3" tabindex="-1"></a><span class="co"># input_img &lt;- layer_input(shape = c(784))</span></span>
+<span id="cb27-4"><a href="autoencoders-aes.html#cb27-4" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb27-5"><a href="autoencoders-aes.html#cb27-5" tabindex="-1"></a><span class="co"># # Encoder layers</span></span>
+<span id="cb27-6"><a href="autoencoders-aes.html#cb27-6" tabindex="-1"></a><span class="co"># encoded &lt;- layer_dense(input_img, encoding_dim, activation = &#39;relu&#39;)</span></span>
+<span id="cb27-7"><a href="autoencoders-aes.html#cb27-7" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb27-8"><a href="autoencoders-aes.html#cb27-8" tabindex="-1"></a><span class="co"># # Decoder layers</span></span>
+<span id="cb27-9"><a href="autoencoders-aes.html#cb27-9" tabindex="-1"></a><span class="co"># decoded &lt;- layer_dense(encoded, 784, activation = &#39;sigmoid&#39;)</span></span>
+<span id="cb27-10"><a href="autoencoders-aes.html#cb27-10" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb27-11"><a href="autoencoders-aes.html#cb27-11" tabindex="-1"></a><span class="co"># # Create the autoencoder model</span></span>
+<span id="cb27-12"><a href="autoencoders-aes.html#cb27-12" tabindex="-1"></a><span class="co"># autoencoder &lt;- keras_model(input_img, decoded)</span></span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="autoencoders-aes.html#cb28-1" tabindex="-1"></a><span class="co"># autoencoder %&gt;% fit(</span></span>
+<span id="cb28-2"><a href="autoencoders-aes.html#cb28-2" tabindex="-1"></a><span class="co">#   x_train, x_train,</span></span>
+<span id="cb28-3"><a href="autoencoders-aes.html#cb28-3" tabindex="-1"></a><span class="co">#   epochs = 50,</span></span>
+<span id="cb28-4"><a href="autoencoders-aes.html#cb28-4" tabindex="-1"></a><span class="co">#   batch_size = 256,</span></span>
+<span id="cb28-5"><a href="autoencoders-aes.html#cb28-5" tabindex="-1"></a><span class="co">#   shuffle = TRUE,</span></span>
+<span id="cb28-6"><a href="autoencoders-aes.html#cb28-6" tabindex="-1"></a><span class="co">#   validation_data = list(x_test, x_test)</span></span>
+<span id="cb28-7"><a href="autoencoders-aes.html#cb28-7" tabindex="-1"></a><span class="co"># )</span></span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="autoencoders-aes.html#cb29-1" tabindex="-1"></a><span class="co"># # Get the reconstructed images</span></span>
+<span id="cb29-2"><a href="autoencoders-aes.html#cb29-2" tabindex="-1"></a><span class="co"># decoded_imgs &lt;- autoencoder %&gt;% predict(x_test)</span></span>
+<span id="cb29-3"><a href="autoencoders-aes.html#cb29-3" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb29-4"><a href="autoencoders-aes.html#cb29-4" tabindex="-1"></a><span class="co"># # Display the original and reconstructed images</span></span>
+<span id="cb29-5"><a href="autoencoders-aes.html#cb29-5" tabindex="-1"></a><span class="co"># par(mfrow=c(2,10), mai=c(0.2, 0.2, 0.2, 0.2))</span></span>
+<span id="cb29-6"><a href="autoencoders-aes.html#cb29-6" tabindex="-1"></a><span class="co"># for (i in 1:10) {</span></span>
+<span id="cb29-7"><a href="autoencoders-aes.html#cb29-7" tabindex="-1"></a><span class="co">#   # Original</span></span>
+<span id="cb29-8"><a href="autoencoders-aes.html#cb29-8" tabindex="-1"></a><span class="co">#   img &lt;- array_reshape(x_test[i,], c(28, 28))</span></span>
+<span id="cb29-9"><a href="autoencoders-aes.html#cb29-9" tabindex="-1"></a><span class="co">#   image(1:28, 1:28, img, col = gray((0:255)/255), xaxt = &#39;n&#39;, yaxt = &#39;n&#39;, main = &quot;Original&quot;)</span></span>
+<span id="cb29-10"><a href="autoencoders-aes.html#cb29-10" tabindex="-1"></a><span class="co">#   # Reconstruction</span></span>
+<span id="cb29-11"><a href="autoencoders-aes.html#cb29-11" tabindex="-1"></a><span class="co">#   img &lt;- array_reshape(decoded_imgs[i,], c(28, 28))</span></span>
+<span id="cb29-12"><a href="autoencoders-aes.html#cb29-12" tabindex="-1"></a><span class="co">#   image(1:28, 1:28, img, col = gray((0:255)/255), xaxt = &#39;n&#39;, yaxt = &#39;n&#39;, main = &quot;Reconstructed&quot;)</span></span>
+<span id="cb29-13"><a href="autoencoders-aes.html#cb29-13" tabindex="-1"></a><span class="co"># }</span></span></code></pre></div>
 </div>
 </div>
             </section>
