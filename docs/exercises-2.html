@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>4.5 Exercises | An Introduction to Unsupervised Learning</title>
   <meta name="description" content="An introductory text on the goals and methods of unsupervised learning" />
-  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
   <meta property="og:title" content="4.5 Exercises | An Introduction to Unsupervised Learning" />
   <meta property="og:type" content="book" />
@@ -221,7 +221,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="4.1" data-path="sec-pca.html"><a href="sec-pca.html"><i class="fa fa-check"></i><b>4.1</b> Principal Component Analysis</a>
 <ul>
-<li class="chapter" data-level="4.1.1" data-path="sec-pca.html"><a href="sec-pca.html#derivation-1-iterative-projections"><i class="fa fa-check"></i><b>4.1.1</b> Derivation 1: Iterative Projections</a></li>
+<li class="chapter" data-level="4.1.1" data-path="sec-pca.html"><a href="sec-pca.html#derivation-using-iterative-projections"><i class="fa fa-check"></i><b>4.1.1</b> Derivation using Iterative Projections</a></li>
 </ul></li>
 <li class="chapter" data-level="4.2" data-path="sec-svd.html"><a href="sec-svd.html"><i class="fa fa-check"></i><b>4.2</b> Singular Value Decomposition</a>
 <ul>
@@ -315,6 +315,7 @@ div.csl-indent {
 <div id="exercises-2" class="section level2 hasAnchor" number="4.5">
 <h2><span class="header-section-number">4.5</span> Exercises<a href="exercises-2.html#exercises-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ol style="list-style-type: decimal">
+<li><p>Show that the PCA scores are centered.</p></li>
 <li><p>Suppose a data matrix <span class="math inline">\({\bf X}\in\mathbb{R}^{N\times d}\)</span> has principal component scores <span class="math inline">\({\bf Y}\in\mathbb{R}^{N\times d}\)</span>, principal component loading matrix <span class="math inline">\({\bf W}\in\mathbb{R}^{d\times d}\)</span>, and principal component variances <span class="math inline">\(\lambda_1,\dots,\lambda_d\)</span>. Show that the sample covariance of the PCA scores, <span class="math inline">\({\bf Y}\)</span>, is diagonal.</p></li>
 <li><p>Consider the data matrix <span class="math display">\[{\bf X} = \begin{bmatrix} 2 &amp; 3 \\ 4 &amp; 5\\ 6&amp; 7 \\ 8 &amp; 9 \end{bmatrix}.\]</span></p>
 <ol style="list-style-type: lower-alpha">
@@ -436,6 +437,17 @@ Figure 4.6: Helix data
 <li><p>Run PCA, SVD, and NMF on these data and compare the results. In particular, what lower dimensional structure, if any, do these methods indicate?</p></li>
 <li><p>Why do the results differ?</p></li>
 </ol></li>
+<li><p>Show that the Frobenius norm of a matrix is the square of the sum of its squared singular values. You may use the helpful identity <span class="math inline">\(\|{\bf A}\|_F^2 = tr({\bf AA}^T)}\)</span></p></li>
+</ol>
+<p>Given a non-negative matrix:
+<span class="math display">\[\mathbf{X} = \begin{bmatrix}
+5 &amp; 4 &amp; 2 \\
+4 &amp; 5 &amp; 3 \\
+2 &amp; 3 &amp; 5
+\end{bmatrix}\]</span></p>
+<ol style="list-style-type: lower-alpha">
+<li>Factorize <span class="math inline">\(\mathbf{V}\)</span> with different ranks (e.g., <span class="math inline">\(r = 1\)</span>, <span class="math inline">\(r = 2\)</span>, and <span class="math inline">\(r = 3\)</span>).</li>
+<li>Discuss how to choose the appropriate rank for NMF in practice.</li>
 </ol>
 
 </div>

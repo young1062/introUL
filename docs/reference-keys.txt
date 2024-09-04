@@ -36,6 +36,7 @@ fig:pca1
 fig:pca2
 thm:pca-eig
 cor:pca-all
+thm:pca-opt
 thm:svd-frob
 fig:nmf-ex
 def:pos-span
@@ -91,7 +92,7 @@ clustered-data
 exercises-1
 ch-linear
 sec-pca
-derivation-1-iterative-projections
+derivation-using-iterative-projections
 geometric-interpretation-of-vecw_1
 additional-principal-components
 geometric-interpretation-of-pca

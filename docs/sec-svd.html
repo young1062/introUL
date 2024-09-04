@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>4.2 Singular Value Decomposition | An Introduction to Unsupervised Learning</title>
   <meta name="description" content="An introductory text on the goals and methods of unsupervised learning" />
-  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
   <meta property="og:title" content="4.2 Singular Value Decomposition | An Introduction to Unsupervised Learning" />
   <meta property="og:type" content="book" />
@@ -221,7 +221,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="4.1" data-path="sec-pca.html"><a href="sec-pca.html"><i class="fa fa-check"></i><b>4.1</b> Principal Component Analysis</a>
 <ul>
-<li class="chapter" data-level="4.1.1" data-path="sec-pca.html"><a href="sec-pca.html#derivation-1-iterative-projections"><i class="fa fa-check"></i><b>4.1.1</b> Derivation 1: Iterative Projections</a></li>
+<li class="chapter" data-level="4.1.1" data-path="sec-pca.html"><a href="sec-pca.html#derivation-using-iterative-projections"><i class="fa fa-check"></i><b>4.1.1</b> Derivation using Iterative Projections</a></li>
 </ul></li>
 <li class="chapter" data-level="4.2" data-path="sec-svd.html"><a href="sec-svd.html"><i class="fa fa-check"></i><b>4.2</b> Singular Value Decomposition</a>
 <ul>
@@ -337,7 +337,7 @@ minimizes the average squared Euclidean distance over all vectors. In matrix not
 where <span class="math inline">\(\vec{z}_1^T, \dots,\vec{z}_N^T\)</span> denote the rows of <span class="math inline">\({\bf Z}\)</span>.</p>
 <p>Solving this constrained minimization problem may appear difficult, but the answer is obtainable directly from the SVD of <span class="math inline">\({\bf X}\)</span> due to the following theorem.</p>
 <div class="theorem">
-<p><span id="thm:svd-frob" class="theorem"><strong>Theorem 4.2  (Best Rank $k$ Approximation) </strong></span>Suppose matrix <span class="math inline">\({\bf X}\in\mathbb{R}^{N\times d}\)</span> has singular value decomposition <span class="math display">\[{\bf X} = {\bf US V}^T\]</span> with singular values <span class="math display">\[\sigma_1\ge\dots \ge \sigma_{\min\{N,d\}}.\]</span> Then
+<p><span id="thm:svd-frob" class="theorem"><strong>Theorem 4.3  (Best Rank $k$ Approximation) </strong></span>Suppose matrix <span class="math inline">\({\bf X}\in\mathbb{R}^{N\times d}\)</span> has singular value decomposition <span class="math display">\[{\bf X} = {\bf US V}^T\]</span> with singular values <span class="math display">\[\sigma_1\ge\dots \ge \sigma_{\min\{N,d\}}.\]</span> Then
 1) For any rank <span class="math inline">\(k\)</span> matrix <span class="math inline">\({\bf Z}\in\mathbb{R}^{N\times d}\)</span>, <span class="math display">\[\|{\bf X}-{\bf Z}\|_F \ge \sigma_{k+1}^2 + \dots + \sigma_{\min\{N,d\}}^2\]</span>
 2) The rank <span class="math inline">\(k\)</span> matrix attained by keeping the first <span class="math inline">\(k\)</span> left singular vectors, right singular vectors, and singular values of the SVD of <span class="math inline">\({\bf X}\)</span> attains this minimum. Specifically, if <span class="math inline">\(\vec{u}_1,\dots,\vec{u}_k\)</span> are the first <span class="math inline">\(k\)</span> left singular vectors and <span class="math inline">\(\vec{v}_1,\dots,\vec{v}_k\)</span> are the first <span class="math inline">\(k\)</span> right singular vectors then
 <span class="math display">\[\begin{equation}
