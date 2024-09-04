@@ -3,16 +3,17 @@ title: "An Introduction to Unsupervised Learning"
 author: "Alex Young and Cenhao Zhu"
 date: "Version 0"
 documentclass: book
-bibliography: [book.bib, packages.bib]
-csl: the-annals-of-statistics.csl
+bibliography:
+- book.bib
+- packages.bib
+csl: "the-annals-of-statistics.csl"
 url: https://https://young1062.github.io/introUL/
-# cover-image: path to the social sharing image like images/cover.jpg
 description: |
   An introductory text on the goals and methods of unsupervised learning
 link-citations: yes
-number_sections: true
+number_sections: yes
 config:
-    toc_depth: 0
+  toc_depth: 0
 ---
 
 # Introduction {#intro}

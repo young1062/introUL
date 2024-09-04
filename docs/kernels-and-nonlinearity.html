@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="sec-mds.html"/>
-<link rel="next" href="exercises-2.html"/>
+<link rel="prev" href="exercises-2.html"/>
+<link rel="next" href="kernel-pca.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -198,7 +198,13 @@ div.csl-indent {
 <li class="chapter" data-level="2.4.5" data-path="linear-algebra.html"><a href="linear-algebra.html#matrix-factorizations"><i class="fa fa-check"></i><b>2.4.5</b> Matrix Factorizations</a></li>
 <li class="chapter" data-level="2.4.6" data-path="linear-algebra.html"><a href="linear-algebra.html#positive-definiteness-and-matrix-powers"><i class="fa fa-check"></i><b>2.4.6</b> Positive Definiteness and Matrix Powers</a></li>
 </ul></li>
-<li class="chapter" data-level="2.5" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i><b>2.5</b> Exercises</a></li>
+<li class="chapter" data-level="2.5" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i><b>2.5</b> Exercises</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="exercises.html"><a href="exercises.html#probability"><i class="fa fa-check"></i><b>2.5.1</b> Probability</a></li>
+<li class="chapter" data-level="2.5.2" data-path="exercises.html"><a href="exercises.html#calculus"><i class="fa fa-check"></i><b>2.5.2</b> Calculus</a></li>
+<li class="chapter" data-level="2.5.3" data-path="exercises.html"><a href="exercises.html#linear-algebra-1"><i class="fa fa-check"></i><b>2.5.3</b> Linear Algebra</a></li>
+<li class="chapter" data-level="2.5.4" data-path="exercises.html"><a href="exercises.html#hybrid-problems"><i class="fa fa-check"></i><b>2.5.4</b> Hybrid Problems</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="central-goals-and-assumptions.html"><a href="central-goals-and-assumptions.html"><i class="fa fa-check"></i><b>3</b> Central goals and assumptions</a>
 <ul>
@@ -239,17 +245,16 @@ div.csl-indent {
 <li class="chapter" data-level="4.4.3" data-path="sec-mds.html"><a href="sec-mds.html#metric-mds"><i class="fa fa-check"></i><b>4.4.3</b> Metric MDS</a></li>
 <li class="chapter" data-level="4.4.4" data-path="sec-mds.html"><a href="sec-mds.html#nonmetric-mds"><i class="fa fa-check"></i><b>4.4.4</b> Nonmetric MDS</a></li>
 </ul></li>
+<li class="chapter" data-level="4.5" data-path="exercises-2.html"><a href="exercises-2.html"><i class="fa fa-check"></i><b>4.5</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="kernels-and-nonlinearity.html"><a href="kernels-and-nonlinearity.html"><i class="fa fa-check"></i><b>5</b> Kernels and Nonlinearity</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="exercises-2.html"><a href="exercises-2.html"><i class="fa fa-check"></i><b>5.1</b> Exercises</a></li>
+<li class="chapter" data-level="5.1" data-path="kernel-pca.html"><a href="kernel-pca.html"><i class="fa fa-check"></i><b>5.1</b> Kernel PCA</a></li>
+<li class="chapter" data-level="5.2" data-path="exercises-3.html"><a href="exercises-3.html"><i class="fa fa-check"></i><b>5.2</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html"><i class="fa fa-check"></i><b>6</b> Manifold Learning</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>6.1</b> Background</a>
-<ul>
-<li class="chapter" data-level="6.1.1" data-path="background.html"><a href="background.html#data-on-a-manifold"><i class="fa fa-check"></i><b>6.1.1</b> Data on a manifold</a></li>
-</ul></li>
+<li class="chapter" data-level="6.1" data-path="data-on-a-manifold.html"><a href="data-on-a-manifold.html"><i class="fa fa-check"></i><b>6.1</b> Data on a manifold</a></li>
 <li class="chapter" data-level="6.2" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html"><i class="fa fa-check"></i><b>6.2</b> Isometric Feature Map (ISOMAP)</a>
 <ul>
 <li class="chapter" data-level="6.2.1" data-path="isometric-feature-map-isomap.html"><a href="isometric-feature-map-isomap.html#introduction"><i class="fa fa-check"></i><b>6.2.1</b> Introduction</a></li>
@@ -263,24 +268,28 @@ div.csl-indent {
 <li class="chapter" data-level="6.3.2" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#algorithm-1"><i class="fa fa-check"></i><b>6.3.2</b> Algorithm</a></li>
 <li class="chapter" data-level="6.3.3" data-path="locally-linear-embeddings-lles.html"><a href="locally-linear-embeddings-lles.html#strengths-and-weaknesses-of-lle"><i class="fa fa-check"></i><b>6.3.3</b> Strengths and Weaknesses of LLE</a></li>
 </ul></li>
-<li class="chapter" data-level="6.4" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html"><i class="fa fa-check"></i><b>6.4</b> Autoencoders (AEs)</a>
+<li class="chapter" data-level="6.4" data-path="laplacian-eigenmap.html"><a href="laplacian-eigenmap.html"><i class="fa fa-check"></i><b>6.4</b> Laplacian Eigenmap</a>
 <ul>
-<li class="chapter" data-level="6.4.1" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#introduction-2"><i class="fa fa-check"></i><b>6.4.1</b> Introduction</a></li>
-<li class="chapter" data-level="6.4.2" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#algorithm-2"><i class="fa fa-check"></i><b>6.4.2</b> Algorithm</a></li>
-<li class="chapter" data-level="6.4.3" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#example"><i class="fa fa-check"></i><b>6.4.3</b> Example</a></li>
+<li class="chapter" data-level="6.4.1" data-path="laplacian-eigenmap.html"><a href="laplacian-eigenmap.html#algorithm-2"><i class="fa fa-check"></i><b>6.4.1</b> Algorithm</a></li>
 </ul></li>
-<li class="chapter" data-level="6.5" data-path="additional-methods.html"><a href="additional-methods.html"><i class="fa fa-check"></i><b>6.5</b> Additional methods</a></li>
-<li class="chapter" data-level="6.6" data-path="exercises-3.html"><a href="exercises-3.html"><i class="fa fa-check"></i><b>6.6</b> Exercises</a></li>
+<li class="chapter" data-level="6.5" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html"><i class="fa fa-check"></i><b>6.5</b> Autoencoders (AEs)</a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#introduction-2"><i class="fa fa-check"></i><b>6.5.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.5.2" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#algorithm-3"><i class="fa fa-check"></i><b>6.5.2</b> Algorithm</a></li>
+<li class="chapter" data-level="6.5.3" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#example"><i class="fa fa-check"></i><b>6.5.3</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="additional-methods.html"><a href="additional-methods.html"><i class="fa fa-check"></i><b>6.6</b> Additional methods</a></li>
+<li class="chapter" data-level="6.7" data-path="exercises-4.html"><a href="exercises-4.html"><i class="fa fa-check"></i><b>6.7</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="ch-clustering.html"><a href="ch-clustering.html"><i class="fa fa-check"></i><b>7</b> Clustering</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="hierarchical.html"><a href="hierarchical.html"><i class="fa fa-check"></i><b>7.1</b> Hierarchical</a></li>
-<li class="chapter" data-level="7.2" data-path="center-based.html"><a href="center-based.html"><i class="fa fa-check"></i><b>7.2</b> Center-based</a></li>
-<li class="chapter" data-level="7.3" data-path="model-based.html"><a href="model-based.html"><i class="fa fa-check"></i><b>7.3</b> Model-based</a>
+<li class="chapter" data-level="7.1" data-path="center-based.html"><a href="center-based.html"><i class="fa fa-check"></i><b>7.1</b> Center-based</a>
 <ul>
-<li class="chapter" data-level="7.3.1" data-path="model-based.html"><a href="model-based.html#k-means"><i class="fa fa-check"></i><b>7.3.1</b> k-means</a></li>
-<li class="chapter" data-level="7.3.2" data-path="model-based.html"><a href="model-based.html#k-mediods"><i class="fa fa-check"></i><b>7.3.2</b> k-mediods</a></li>
+<li class="chapter" data-level="7.1.1" data-path="center-based.html"><a href="center-based.html#k-means"><i class="fa fa-check"></i><b>7.1.1</b> k-means</a></li>
+<li class="chapter" data-level="7.1.2" data-path="center-based.html"><a href="center-based.html#k-mediods"><i class="fa fa-check"></i><b>7.1.2</b> k-mediods</a></li>
 </ul></li>
+<li class="chapter" data-level="7.2" data-path="hierarchical.html"><a href="hierarchical.html"><i class="fa fa-check"></i><b>7.2</b> Hierarchical</a></li>
+<li class="chapter" data-level="7.3" data-path="model-based.html"><a href="model-based.html"><i class="fa fa-check"></i><b>7.3</b> Model-based</a></li>
 <li class="chapter" data-level="7.4" data-path="spectral.html"><a href="spectral.html"><i class="fa fa-check"></i><b>7.4</b> Spectral</a></li>
 </ul></li>
 <li class="divider"></li>
@@ -305,14 +314,62 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="kernels-and-nonlinearity" class="section level1 hasAnchor" number="5">
 <h1><span class="header-section-number">Chapter 5</span> Kernels and Nonlinearity<a href="kernels-and-nonlinearity.html#kernels-and-nonlinearity" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>The techniques considered in the previous chapter (PCA, NMF, SVD, and classical Scaling) are ill suited to identify nonlinear structure and dependence in data. If we wish to most efficiently reduce dimensions without loss of information, we will need techniques which incorporate nonlinear structure. One can expand a data matrix by including specific nonlinear relationships then apply PCA or SVD but there are numerous problems with this approach. In particular, which relationships does one choose to include? Even including simple quadratic or cubic terms (features) can result in a data matrix with a massive increase in the number of columns. Even when the original dimensionality of the data is moderate, the including of polynomial terms can quickly result in a data matrix of nonlinear features with an untenable number of columns which can make application of the linear methods we have discussed much more computationally demanding to implement.</p>
+<p>Kernels are a important class of functions which can be used to <code>kernelize</code> the methods we have discussed before. In theory, these kernelized versions of the linear methods we have discussed can identify and use nonlinear structure for better dimensionality reduction while circumventing the issue of higher dimensional <code>featurized</code> data. This approach follows from an application of the so called ’kernel trick` which we now discuss.</p>
+<p>Briefly, a kernel is a function <span class="math display">\[k:\mathbb{R}^d\times \mathbb{R}^d \to \mathbb{R}\]</span> which has an associated feature space, <span class="math inline">\(\mathcal{H}\)</span> and (implicity defined, possibly nonlinear) feature mapping <span class="math inline">\(\varphi:\mathcal{R}^d \to \mathcal{H}\)</span> such that inner products in the feature space, denoted <span class="math inline">\(\langle \varphi(\vec{x}), \varphi(\vec{y})\rangle_{\mathcal{H}}\)</span> can be obtained through an evaluation of the kernel, namely
+<span class="math display">\[\begin{equation}
+k(\vec{x},\vec{y}) = \langle \varphi(\vec{x}), \varphi(\vec{y})\rangle_{\mathcal{H}}
+\end{equation}\]</span></p>
+<p>Any method which can be expressed involving inner products can be kernelized by replacing terms of the form <span class="math inline">\(\vec{x}^T_i\vec{x}_j\)</span> with the quantity <span class="math inline">\(k(\vec{x}_i,\vec{x}_j)\)</span>. Thus, we are replacing inner products of our original <span class="math inline">\(d\)</span>-dimensional data with inner products in the associated feature space <span class="math inline">\(\mathcal{H}\)</span>. Importantly, if we only need inner products, we never need to explicitly compute the feature map <span class="math inline">\(\varphi\)</span> for any of our data! At first glance this connection may seem minor, but by using kernels we can turn many linear techniques into nonlinear methods including PCA, SVD, support vector machines, linear regression, and many others.</p>
+<p>There are some limits though. Not every choice of <span class="math inline">\(k\)</span> has an associated feature space. A function is only a kernel if it satisfies Mercer’s Condition.</p>
+<div class="theorem">
+<p><span id="thm:mercer" class="theorem"><strong>Theorem 5.1  (Mercer's Condition) </strong></span>A function <span class="math display">\[k:\mathbb{R}^d\times \mathbb{R}^d \to \mathbb{R}\]</span> has a an associated feature space <span class="math inline">\(\mathcal{H}\)</span> and feature mapping <span class="math inline">\(\varphi:\mathbb{R}^d \to \mathcal{H}\)</span> such that <span class="math display">\[k(\vec{x},\vec{y}) = \langle \varphi(\vec{x}), \varphi(\vec{y})\rangle_{\mathcal{H}}, \qquad \forall \vec{x},\vec{y}\in\mathbb{R}^d\]</span>
+if and only if for any <span class="math inline">\(N \in \{1,2,\dots\}\)</span> and <span class="math inline">\(\vec{x}_1,\dots,\vec{x}_N\in\mathbb{R}^d\)</span> the kernel matrix <span class="math inline">\({\bf K}\in \mathbb{R}^{N}\)</span> with entries <span class="math inline">\({\bf K}_{ij} = k(\vec{x}_i,\vec{x}_j)\)</span> is positive semidefinite. Equivalently, it must be the case that <span class="math display">\[\int_{\mathbb{R}^d}\int_{\mathbb{R}^d} g(\vec{x})g(\vec{y}) k(\vec{x},\vec{y}) d\vec{x}d\vec{y} \ge 0\]</span> whenever <span class="math inline">\(\int_{\mathbb{R}^2}[g(\vec{x})]d\vec{x}&lt;\infty.\)</span></p>
+</div>
+<p>We will only consider symmetric functions such that <span class="math inline">\(k(\vec{x},\vec{y}) = k(\vec{y},\vec{x})\)</span> for all <span class="math inline">\(\vec{x},\vec{y}\in\mathbb{R}^d\)</span>. It may not be immediately obvious if a symmetric function satisfies Mercer’s condition, but there are many known examples. A few are shown in the following table.</p>
+<table>
+<colgroup>
+<col width="17%" />
+<col width="28%" />
+<col width="54%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Equation</th>
+<th>Tuning Parameters</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Radial Basis Function</td>
+<td><span class="math inline">\(k(\vec{x},\vec{y} = \exp\left(-\sigma\|\vec{x}-\vec{y}\|^2\right)\)</span></td>
+<td>Scale <span class="math inline">\(\sigma &gt;0\)</span></td>
+</tr>
+<tr class="even">
+<td>Laplace</td>
+<td><span class="math inline">\(k(\vec{x},\vec{y} = \exp\left(-\sigma\|\vec{x}-\vec{y}\|\right)\)</span></td>
+<td>Scale <span class="math inline">\(\sigma &gt;0\)</span></td>
+</tr>
+<tr class="odd">
+<td>Polynomial</td>
+<td><span class="math inline">\(k(\vec{x},\vec{y}) = (c+ \vec{x}^T\vec{y})^d\)</span></td>
+<td>Offset <span class="math inline">\(c &gt;0\)</span>, Degree <span class="math inline">\(d \in \mathbb{N}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>The radial basis function (rbf) is the most commonly used kernel and has an associated feature space <span class="math inline">\(\mathcal{H}\)</span> which is infinite dimensional! The associated feature map <span class="math inline">\(\varphi\)</span> for the rbf kernel is
+<span class="math display">\[\varphi(\vec{x}) = e^{-\sigma\|\vec{x}\|^2}\left(a_{\ell_0}^{(0)}, a_{1}^{(1)},\dots,a_{\ell_1}^{(1)}, a_{1}^{(2)},\dots, a_{\ell_2}^{(2)},\dots \right)\]</span>
+where <span class="math inline">\(\ell_j = \binom{d+j-1}{j}\)</span> and <span class="math inline">\(a_\ell^{(j)} = \frac{(2\sigma)^{j/2}x_1^{\eta_1}\dots x^{\eta_d}}{\sqrt{\eta_1!\dots\eta_d!}}\)</span> when <span class="math inline">\(\eta_1+\dots+\eta_d = j.\)</span> The preceding expression is quite cumbersome, but there is one important point to emphasize. Every possible polynomial combination of the coordinates of <span class="math inline">\(\vec{x}\)</span> appears in some coordinate of <span class="math inline">\(\varphi(\vec{x})\)</span> (though higher order terms are shrunk by the factorial factors in the denominator of <span class="math inline">\(a_\ell^{(j)}\)</span>). Thus, the rbf kernel is associated with a very expressive feature space which makes it a potent but dangerous choice since risks overfitting. To explore these details more, let’s discuss one very important application of kernels in unsupervised learning.</p>
+<!-- kernel PCA -->
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="sec-mds.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="exercises-2.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="exercises-2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="kernel-pca.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -343,7 +400,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/04-kernels.Rmd",
+"link": "https://github.com/young1062/introUL04-kernels.Rmd",
 "text": "Edit"
 },
 "history": {

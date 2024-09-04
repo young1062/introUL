@@ -15,3 +15,162 @@
 <!-- MDS -->
 ```{r child = 'topics/classic-MDS.Rmd'}
 ```
+
+## Exercises
+
+1. Show that the PCA scores are centered.
+
+1. Suppose a data matrix ${\bf X}\in\mathbb{R}^{N\times d}$ has principal component scores ${\bf Y}\in\mathbb{R}^{N\times d}$, principal component loading matrix ${\bf W}\in\mathbb{R}^{d\times d}$, and principal component variances $\lambda_1,\dots,\lambda_d$. Show that the sample covariance of the PCA scores, ${\bf Y}$, is diagonal.
+
+1. Consider the data matrix $${\bf X} = \begin{bmatrix} 2 & 3 \\ 4 & 5\\ 6& 7 \\ 8 & 9 \end{bmatrix}.$$ 
+    a. Compute the principal component scores, variances, and loadings of ${\bf X}.$
+    b. Does ${\bf X}$ exhibit lower dimensional structure? If so, describe it.
+    
+1.  Given a dataset with outliers:
+\[
+\mathbf{X} = \begin{bmatrix}
+1 & 2 \\
+2 & 4 \\
+3 & 6 \\
+4 & 8 \\
+100 & 200
+\end{bmatrix}
+\]
+
+    a. Center the data.
+    b. Compute the covariance matrix.
+    c. Perform PCA and identify the principal component scores, loadings, and variances.
+    d. Discuss how outliers affect PCA and suggest ways to handle them.
+
+
+1. Consider a dataset:
+\[
+\mathbf{X} = \begin{bmatrix}
+1 & 100 \\
+2 & 200 \\
+3 & 300 \\
+4 & 400
+\end{bmatrix}
+\]
+
+    a. Center the data.
+    b. Compute the covariance matrix.
+    c. Perform PCA and find the principal components.
+    d. Discuss the importance of feature scaling in PCA.
+
+
+
+1. Given a nonlinear dataset:
+$$\mathbf{X} = \begin{bmatrix}
+1 & 1 \\
+2 & 4 \\
+3 & 9 \\
+4 & 16 \\
+5 & 25
+\end{bmatrix}$$
+
+    a. Center the data.
+    b. Compute the covariance matrix.
+    c. Perform PCA and identify the principal components.
+    d. Discuss the limitations of PCA for nonlinear datasets and suggest alternative methods.
+
+    
+1. Load the Iris dataset and standardize the features.
+    a. Perform PCA on the standardized data.
+    b. Plot the cumulative explained variance as a function of the number of principal components.
+    c. Choose the number of principal components that explain at least 95\% of the variance.
+    d. Project the data onto the chosen principal components and visualize the results.
+    e. Discuss the results and the effectiveness of PCA in reducing the dimensionality of the dataset.
+
+1. Suppose $$\vec{x}=(x_1,x_2)^T \sim \mathcal{N}\left(\begin{bmatrix} 0\\ 0\end{bmatrix},
+\begin{bmatrix}1 & \rho \\ \rho & 1\end{bmatrix}\right),$$ i.e. random vector $\vec{x}$ follows a multivariate normal distribution with mean $\vec{0}$ and covariance  $\Sigma_X = \begin{bmatrix}1 & \rho \\ \rho & 1\end{bmatrix}$. Let $w = \frac{\sqrt{2}}{2}(x_1+x_2)$ and $z = \frac{\sqrt{2}}{2}(x_1-x_2).$  Find the joint distribution of $(w,z)^T$. Hint: linear combinations of normal random variables are also normal.
+
+1. Consider a data matrix $X \in \mathbb{R}^{N\times d}$ with centered columns so that the sample covariance matrix is
+\[\hat{\Sigma} = \frac{X^TX}{N}.\]
+Assume $\hat{\Sigma}$ has eigenvalues $\lambda_1 > \lambda_2 >\dots > \lambda_d >0$ with orthonormal eigenvectors $\vec{w_1},\dots,\vec{w}_d.$ 
+  
+    a. If $X^{(1)} = X - X\vec{w}_1\vec{w}_1^T$ is the data matrix where each row has had its component in the direction of $\vec{w}_1$ removed, show that \[\hat{\Sigma}^{(1)} = \frac{{X^{(1)}}^T X^{(1)}}{N} = \hat{\Sigma} - \lambda_1 \vec{w}_1\vec{w}_1^T.\]
+
+    b. Show that $\hat{\Sigma}$ can be written in the form $\hat{\Sigma} = \sum_{j=1}^d \lambda_j \vec{w}_j\vec{w}_j^T.$
+    
+1. For $k < d$, let $\vec{q}_1,\dots,\vec{q}_k\in\mathbb{R}^d$ be fixed orthonormal vectors.  Suppose $a_1,\dots,a_k$ are independent Gaussian random variables with mean zero and variances $\lambda_1>\dots>\lambda_k$ respectively.  Let $$\vec{x} = a_1\vec{q}_1+\dots+a_k+\vec{q}_k + \vec{\epsilon}$$ where $\vec{\epsilon}\sim\mathcal{N}(\vec{0},\sigma^2{\bf I})$ is independent of $a_1,\dots,a_k$
+
+    a. Find the mean and covariance of ${\bf X}$.
+    b. Find the eigenvalues and eigenvectors of ${\bf \Sigma}$.  
+    c. For $d = 10$ and $k=3 and let $\lambda_1 = 25,\, \lambda_2 = 9,\,\lambda_3 = 4$ and $\sigma^2=1$.  Generate 100 independent realizations of $\vec{x}$ and compute the principal component loadings and variances. How do these compare to your results from b.
+    d. Repeat c. for $10^4$ samples.  How have the results changed?
+
+
+
+1. Let $\vec{x}_1,\dots,\vec{x}_N$ be vectors in $\mathbb{R}^d$. Assume a PCA of these data has loadings $\vec{w}_1,\dots,\vec{w}_d$ with associated variances $\lambda_1 \ge \dots \ge \lambda_d \ge 0.$ Let $U$ be a $d\times d$ orthonormal matrix and set $\vec{y}_i = U\vec{x}_i.$ Find expressions for the principal component loadings and variance of $\vec{y}_1,\dots,\vec{y}_N$ in terms of $U$, $\vec{w}_1,\dots,\vec{w}_d$ and $\lambda_1,\dots,\lambda_d.$
+
+1. Load the *mtcar* dataset containing 11 observations from 32 cars.  
+
+    a. Show the principal component loadings and a biplot of the first and second PC components.
+    
+    b.  Rescale the mpg (miles per gallon) data to feet per gallon, i.e. *mtcars\$mpg <- 5280*mtcars\$mpg.*  Rerun PCA on these modified data and show the loadings and biplot.
+    
+    c.  What is the first loading capturing? Explain this result. 
+    
+    d. Rerun the results using the empirical correlation matrix by setting the option *scale = TRUE* in the prcomp command.  Compare this result with part (a)
+    
+    
+    
+
+1. Consider the helix data shown below from two different directions.
+
+```{r, echo = FALSE, fig.cap = "Helix data", fig.fullwidth=TRUE}
+helix <- read.csv("data/helix.csv",header = TRUE)
+par(mfrow = c(1,2))
+scatterplot3d(x = helix[,1],
+              y = helix[,2],
+              z = helix[,3],
+              xlab = expression("x"[1]), ylab = expression("x"[2]), zlab = expression("x"[3]))
+scatterplot3d(x = helix[,1],
+              y = helix[,3],
+              z = helix[,2],
+              xlab = expression("x"[1]), ylab = expression("x"[3]), zlab = expression("x"[2]))
+```
+
+
+a. What is the dimension of the shape formed by these data? 
+
+b. Compute the three principal component variances and show them below.
+
+c. Do the principal component variances reflect the dimension of the data?  Why or why not?
+
+
+1. Consider a dataset with three features:
+$$ \mathbf{X} = \begin{bmatrix}
+2 & 0 & 1 \\
+3 & 2 & 2 \\
+4 & 4 & 3 \\
+5 & 6 & 4 \\
+6 & 8 & 5
+\end{bmatrix}$$
+
+  a. Center the data by subtracting the mean of each feature.
+  b. Compute the covariance matrix of the centered data.
+  c. Find the eigenvalues and eigenvectors of the covariance matrix.
+  e. Project the data onto the first two principal components.
+  f. Visualize the original data and the projected data in a 2D plot.
+  g. Discuss how PCA can help in reducing the dimensionality of the data while preserving important information.
+
+    
+1. The dataset *simplex10* contains samples generated from the probability simplex in $\mathbb{R}^{10}$. (This means all entries nonnegative and each random vector has entries which sum to one.)
+
+    a. Run PCA, SVD, and NMF on these data and compare the results. In particular, what lower dimensional structure, if any, do these methods indicate?
+    
+    b. Why do the results differ?
+    
+1. Show that the Frobenius norm of a matrix is the square of the sum of its squared singular values. You may use the helpful identity $\|{\bf A}\|_F^2 = tr({\bf AA}^T)}$
+
+Given a non-negative matrix:
+$$\mathbf{X} = \begin{bmatrix}
+5 & 4 & 2 \\
+4 & 5 & 3 \\
+2 & 3 & 5
+\end{bmatrix}$$
+
+a. Factorize \(\mathbf{V}\) with different ranks (e.g., \(r = 1\), \(r = 2\), and \(r = 3\)).
+b. Discuss how to choose the appropriate rank for NMF in practice.

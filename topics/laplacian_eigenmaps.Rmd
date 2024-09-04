@@ -1,0 +1,98 @@
+
+```{r, include=FALSE}
+myColorRamp <- function(colors, values) {
+    v <- (values - min(values))/diff(range(values))
+    x <- colorRamp(colors)(v)
+    rgb(x[,1], x[,2], x[,3], maxColorValue = 255)
+}
+```
+
+## Laplacian Eigenmap
+
+The Laplacian eigenmap [@laplac_eigen] is method of manifold learning with algorithmic and geometric similarities to LLEs.  Like LLEs and ISOMAP, Laplacian eigenmaps make use of $k$-nearest neighbor relationships and the solution of an eigenvalue problem to reconstruct the low-dimensional manifold.  As suggested by the name, we will be using the graph Laplacian matrix and emphasize the preservation of nearby points on the manifold making Laplacian Eigenmaps a local method with a different emphasis than LLEs. 
+
+The graph Laplacian is an important matrix representation of our data which we will revisit later when discussing spectral clustering.  In practice, Laplacian eigenmaps use sparse version of the graph Laplacian. For now, we will briefly introduce this matrix without sparsity and an important identity relating the graph Laplacian and the loss function we will minimize when constructing our low-dimensional representation.
+
+Given data $\vec{x}_1,\dots,\vec{x}_N$, we are going to build a weighted graph $\mathcal{G}=(V,\mathcal{E}, {\bf W})$, with one node per sample and weighted, undirected edges connecting the nodes. The weights, ${\bf W}_{ij}\ge 0, \, 1\le i,j\le N$,  correspond to a notion of affinity, which is typically a decreasing function of the distance between our data. Two common choices are (i) binary weights: $${\bf W}_{ij} = \begin{cases} 1  & \|\vec{x}_i-\vec{x}_j\| \le \epsilon \\ 0 & \text{ else} \end{cases}$$
+and (ii) weights based on the radial basis function:
+$${\bf W}_{ij} = \exp\left(-\frac{\|\vec{x}_i-\vec{x}_j\|^2}{2\sigma^2}\right). $$
+The symmetric matrix ${\bf W}$ is called the (weighted) adjacency matrix of the graph, $\mathcal{G}$, encodes of all the pairwise relationships. We always set the diagonal entries of ${\bf W}$ to zero to preclude self-connections in the graph.
+
+From the adjacency matrix, we can compute the total affinity of each node (sample) to all other nodes (samples) by summing along the rows.  Specifically, the $i$th entry of the vector ${\bf W}\vec{1}_N$, has the total affinity of the $i$th node ($\vec{x}_i$) to all other nodes (data).  Using these summed affinities, we then create the graph Laplacian
+\begin{equation}
+{\bf L} = {\bf D} - {\bf W}
+\end{equation}
+where ${\bf D}$ is a diagonal matrix with entries ${\bf W}\vec{1}_N$ along its diagonal.  The graph Laplacian is a symmetric matrix, and while not obvious at first glance, it is also positive semidefinite thanks to the following important identity.  Given any vector $\vec{y}\in\mathbb{R}^N$,
+\begin{equation}
+\vec{y}^T{\bf L} \vec{y} = \frac{1}{2} \sum_{i=1}^n\sum_{j=1}^N {\bf W}_{ij} (y_i-y_j)^2
+(\#eq:psd-gl)
+\end{equation}
+However, it is not full rank. The previous equation shows that $\vec{1}$ is an eigenvector with eigenvalue 0.
+
+
+In the previous statement we can view the entries of vector $\vec{y}$ as $N$ separate scalars.  However, we can also extend the preceding expression to include Euclidean distances between vectors $\vec{y}_1,\dots,\vec{y}_N\in\mathbb{R}^t$ to give the following important expression
+\begin{equation}
+\sum_{i=1}^N\sum_{j=1}^N {\bf W}_{ij} \|\vec{y}_i-\vec{y}_j\|^2 = \frac{1}{2}tr\left({\bf Y}^T{\bf LY}\right)
+\end{equation}
+where ${\bf Y}\in\mathbb{R}^{N\times t}$ has rows $\vec{y}_1^T,\dots,\vec{y}_N^T.$  We will return to this identity and its implications for Laplacian Eigenmaps after discussing the algorithmic details of the method
+
+### Algorithm
+
+#### Compute neighbor relationships
+
+Fix either a number of nearest neighbors $k > 0$ or maximum distance $\epsilon > 0$.  If using $\epsilon$, then $\vec{x}_i$ and $\vec{x}_j$ (correspondingly nodes $i$ and $j$ in the graph) are neighbors if $\|\vec{x}_i-\vec{x}_j\| \le \epsilon$. Alternatively, if using the nearest neighbor parameter $k$, then we consider $\vec{x}_i,\vec{x}_j$ to be neighbors if $\vec{x}_i$ is one the $k$ closest points to $\vec{x}_j$ **and** $\vec{x}_j$ is one of the $k$ closest points to $\vec{x}_i.$  The construction of neighbors, like the use of pairwise distance alone, results in symmetric neighbor relationship.  We then connect nodes $i$ and $j$ with an edge if $\vec{x}_i$ and $\vec{x}_j$ are neighbors.
+
+#### Compute weights and build graph Laplacian
+
+Nodes which are not connected immediately receive an edge weight equal to zero.  For all connected nodes, we compute the edge weight $${\bf W}_{ij} = \exp\left(-\frac{\|\vec{x}_i-\vec{x}_j\|^2}{2\sigma^2}\right).$$
+Here we have shown weights based on the radial basis function, which is motivated by theoretical connections to the heat kernel and an approximation of the Laplacian on the manifold $\mathcal{X}$ [@laplac_eigen]. As such, this method is the default in most implementation of Laplacian eigenmaps.  The parameter $\sigma^2$ does require tuning which can have a large impact on the performance of the algorithm.
+
+When $k$ or $\epsilon$ are small, which is typically the case in practice, the (weighted) adjacency matrix ${\bf W}$ will be sparse (most entries equal to 0).   From this adjacency matrix, we then construct the graph Laplacian as above. The graph Laplacian built from these weights will also be sparse. By preserving only those connections between nearest points, we have only maintained the pairwise, local relationships on the manifold.  We will now use ${\bf L}$ to construct a lower-dimensional representation of the data.
+
+#### Solve generalized eigenvalue problem
+
+Consider the loss function
+\begin{equation}
+\mathcal{L}(\vec{y}_1,\dots,\vec{y}_N) = \sum_{i=1}^N\sum_{j=1}^N {\bf W}_{ij} \|\vec{y}_i-\vec{y}_j\|^2. 
+\end{equation}
+This loss function is most sensitive to large pairwise distance $\|\vec{y}_i-\vec{y}_j\|$ when ${\bf W}_{ij}$ is also large (our original data were close).  Thus, minimizing the preceding penalty prioritizes keeping $\vec{y}_i$ and $\vec{y}_j$ close when $\vec{x}_i$ and $\vec{x}_j$ have a high affinity (weight). As a result, Laplacian eigenmaps emphasize local geometry.
+
+Vectors $\vec{y}_1,\dots,\vec{y}_N$ which minimizes this loss function are not unique.  First, there is an issue of translation. To address this issue, we will add a constraint that $ {\bf D Y}$ is a centered data matrix, i.e. ${\bf Y}^T{\bf D}\vec{1} = \vec{0}$. We can view the matrix ${\bf DY}$ as a reweighting of the data matrix ${\bf Y}$ with higher weights ${\bf D}_{ii}$ for data $\vec{x}_i$ which were closer to more points.  Here ${\bf D}$ is the diagonal matrix used in the definition of the graph Laplacian.  Note that $${\bf DY} = \begin{bmatrix} {\bf D}_{11} \vec{y}_1^T \\ \vdots \\ {\bf D}_{NN}\vec{y}_N\end{bmatrix}.$$ Requiring ${\bf DY}$ to be centered results in configurations where those points with highest affinity a constrained close to the origin in our lower dimensional representation.
+
+However, solving the optimization problem with this modified centering constraint is still ill-posed, namely we could take $\vec{y}_1=\dots=\vec{y}_N = \vec{0}$ giving a configuration which is collapsed onto the origin.  In fact, given any configuration $\vec{y}_1,\dots,\vec{y}_N$ we could decrease the loss by rescaling all of our data by some constant scalar scalar $0 < c < 1$ since ${\bf D}(c{\bf Y}) = c {\bf DY}$ will still be centered.    To address this scaling issue and give a meaningful $t$-dimensional configuration, we also add the constraint ${\bf Y}^T {\bf D Y} = {\bf I}_t$. This constraint eliminates the collapse of the $t$-dimensional configuration onto a $t-1$ dimensional hyperplane, and in particular eliminates the cases where the $1-$dimensional configuration collapses onto a point.  
+
+Thus, we seek a data matrix ${\bf Y}\in\mathbb{R}^{N\times t}$ solving the following constrained optimization problem 
+\begin{equation}
+\argmin_{{\bf Y}^T {\bf D Y} = {\bf I}_t, {\bf Y}^T{\bf D}\vec{1}^T = \vec{0} } = tr({\bf Y}^T {\bf L Y}).
+\end{equation}
+To solve this problem, we first introduce the change of variable $\tilde{\bf Y} = {\bf D}^{1/2}{\bf Y}$ so that the constraints become 
+$${\bf Y}^T{\bf  D}\vec{1}^T = ({\bf D}^{1/2} {\bf Y})^T{\bf D}^{1/2}\vec{1}^T = \tilde{\bf Y}^T {\bf D}^{1/2} \vec{1}^T = \vec{0}$$ and  
+$${\bf Y}^T{\bf D Y}= {\bf Y}^T{\bf D}^{1/2} {\bf D}^{1/2}{\bf Y} = ({\bf D}^{1/2}{\bf Y})^T  ({\bf D}^{1/2}{\bf Y}) = \tilde{\bf Y}^T\tilde{\bf Y} = {\bf I}$$ implying that the columns of $\tilde{\bf Y}$ are orthonormal  After the change of variable, our optimization problem becomes 
+\begin{equation}
+\argmin_{\tilde{\bf Y}^T\tilde{\bf Y} = {\bf I}_t, \tilde{\bf Y}^{1/2} {\bf D}^{1/2}\vec{1} = \vec{0} } tr\left(\tilde{\bf Y}^T {\bf D}^{-1/2}{\bf L}{\bf D}^{-1/2}\tilde{\bf Y} \right).
+\end{equation}
+We can minimize this equation by making use of the eigenvalues and eigenvectors of the (symmetric) normalized graph Laplacian
+$${\bf L}_{sym} = {\bf I} - {\bf D}^{-1/2}{\bf W}{\bf D}^{-1/2}.$$  
+
+Importantly, note that ${\bf L}_{sym}$ is symmetric. Furthemore, it is positive semidefinite since it can be viewed as the graph Laplacian of a graph with weights ${\bf W}_{ij}/\sqrt{{\bf D}_{ii}{\bf D}_{jj}}$ thus subject to the identity \@ref(eq:psd-gl).  Thus, it is diagonalizable with orthonormal eigenvectors $\vec{v}_1,\dots,\vec{v}_N\in\mathbb{R}^N$ and associated nonnegative eigenvalues $\lambda_1 \le \dots \le \lambda_N$ which we list in **increasing order** in this case.  This leads to the first important observation
+
+
+1) We could use any $t$ of these vectors as the columns of $\tilde{Y}$ and immediately satisfy the constraint $\tilde{\bf Y}^T\tilde{\bf Y} = {\bf I}.$ 
+
+However, we have an additional constraint and the minimization to consider. Note that $\vec{1}_N$ is an eigenvector of original graph Laplacian with eigenvalue $0$. Thus, ${\bf L}_{sym}$ also has eigenvalue 0 with associated eigenvector $\vec{v}_1 = {\bf D}^{1/2}\vec{1}$ since 
+$${\bf L}_{sym} ({\bf D}^{1/2}\vec{1}) ={\bf D}^{-1/2}({\bf D}^{1/2} - {\bf W D}^{-1/2}){\bf D}^{1/2}\vec{1} = {\bf D}^{-1/2}({\bf D}-{\bf W})\vec{1} = {\bf D}^{-1/2} {\bf L}\vec{1} = \vec{0}.$$ As a result, all other eigenvectors of ${\bf L}_{sym}$ must be orthogonal to $\vec{v}_1 = {\bf D}^{1/2}\vec{1}.$
+
+2) This suggests that if we drop the first eigenvector associated with eigenvalue $\lambda_1  = 0$ and use $t$ the remaining eigenvectors of ${\bf L}_{sym}$ as the columns of $\tilde{\bf Y}$ we will satisfy the constraint $\tilde{\bf Y}^T {\bf D}^{1/2}\vec{1} = \vec{0}.$  
+
+The finaly observation is that we should choose the eigenvectors to minimize the objective.   
+
+3) We make use of the eigenvalues themselves and take $$\tilde{Y} = \begin{bmatrix} \vec{v}_2 & \dots & \vec{v}_{t+1} \end{bmatrix}$$ so that $$tr\left( \tilde{\bf Y}^T{\bf L}_{sym}\tilde{\bf Y}\right) = \lambda_2+\dots+\lambda_{t+1}$$ is minimized.
+
+After undoing the change of variables, we take use the rows of $${\bf Y} = {\bf D}^{-1/2}\tilde{\bf Y}\in \mathbb{R}^{N\times t}$$
+as our $t$-dimensional configuration.  
+
+
+
+
+
+

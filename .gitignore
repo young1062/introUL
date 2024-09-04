@@ -14,9 +14,7 @@
 .rdx
 .rdb
 data
-<<<<<<< HEAD
-*cache*
-=======
 *cache*
 .Rproj.user
->>>>>>> aa6a19348ad3d5375107e4902caecb69dfb07196
+
+

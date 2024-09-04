@@ -306,11 +306,13 @@ where ${\bf Y}\in \mathbb{R}^{N\times d}$ is a matrix of PC scores and ${\bf W}$
 
 #### Geometric interpretation of PCA
 
+<<<<<<< HEAD
 We began with an $N\times d$ data matrix ${\bf X}$ and now we have an $N\times d$ matrix of PCA scores ${\bf Y}$. One may be inclined to ask: where is the dimension reduction?  To answer this question, let's revisit some important features of the scores and loadings.
 
 First, since the loadings $\vec{w}_1,\dots,\vec{w}_d$ are orthonormal vectors in $\mathbb{R}^d$, they naturally form a basis!  The PCA scores are then the coordinates of our data in the basis $\{\vec{w}_1,\dots,\vec{w}_d\}$. Specifically, ${\bf Y}_{ij}$ for $j=1,\dots,d$ are the coordinates for (centered) vector $\vec{x}_i$ since $$\vec{x}_i = {\bf Y}_{i1}\vec{w}_1+\cdots+ {\bf Y}_{id}\vec{w}_d.$$
 
 The dimension reduction comes in from an important observations about the PCA scores (aka coordinate). Consider the sample covariance matrix of the PCA scores, which one can show is diagonal (see exercises)
+
 \begin{equation}
 \hat{\bf \Sigma}_Y = 
 \begin{bmatrix}
@@ -319,6 +321,7 @@ The dimension reduction comes in from an important observations about the PCA sc
 && \lambda_d
 \end{bmatrix}
 \end{equation}
+
 
 There are two important perspectives on the using PCA scores.  First, the diagonality of the PCA scores indicates that in the new basis, $\{\vec{w}_1,\dots,\vec{w}_d\}$, the coordinates are i) uncorrelated and ii) ordered in decreasing variance.  As a result, if we want to construct a $k < d$ dimensional representation our data that minimizes the loss in variability, we should use the first $k$ PCA scores.  
 
@@ -343,9 +346,7 @@ Given any $k$-dimensional affine subspace $\mathcal{A}\subset\mathbb{R}^d$
 $$\frac{1}{N}\sum_{i=1}^N \|\vec{x}_i - \text{proj}_\mathcal{A}(\vec{x}_i)\|^2 \ge \lambda_{k+1}+\cdots+\lambda_d$$ with equality (assuming $\lambda_k>\lambda_{k+1}$) if and only if $\mathcal{A} = \bar{x} + \text{span}\{\vec{w}_1,\dots,\vec{w}_k\}.$
 :::
 
-Note the set $\bar{x} + \text{span}\{\vec{w}_1,\dots,\vec{w}_k\}$ is the set of all vectors $$\{\vec{v}\in\mathbb{R}^d:\,\vec{v}-\bar{x} \in \text{span}\{\vec{w}_1,\dots,\vec{w}_k\}\}$$, i.e. the optimal $k$-dimensional hyperplane found after centering if translated by $\bat{x}$.  In this case, the optimal approximation of our data is $$\vec{x}_i \approx \bar{x} + {\bf Y}_{i1}\vec{w}_1+\cdots + {\bf Y}_{ik}\vec{w}_k.$$
-
-
+Note the set $\bar{x} + \text{span}\{\vec{w}_1,\dots,\vec{w}_k\}$ is the set of all vectors $$\{\vec{v}\in\mathbb{R}^d:\,\vec{v}-\bar{x} \in \text{span}\{\vec{w}_1,\dots,\vec{w}_k\}\},$$ i.e. the optimal $k$-dimensional hyperplane found after centering if translated by $\hat{x}$.  In this case, the optimal approximation of our data is $$\vec{x}_i \approx \bar{x} + {\bf Y}_{i1}\vec{w}_1+\cdots + {\bf Y}_{ik}\vec{w}_k.$$
 
 
 
