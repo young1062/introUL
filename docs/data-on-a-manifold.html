@@ -222,6 +222,7 @@ div.csl-indent {
 <li class="chapter" data-level="4.1" data-path="sec-pca.html"><a href="sec-pca.html"><i class="fa fa-check"></i><b>4.1</b> Principal Component Analysis</a>
 <ul>
 <li class="chapter" data-level="4.1.1" data-path="sec-pca.html"><a href="sec-pca.html#derivation-using-iterative-projections"><i class="fa fa-check"></i><b>4.1.1</b> Derivation using Iterative Projections</a></li>
+<li class="chapter" data-level="4.1.2" data-path="sec-pca.html"><a href="sec-pca.html#pca-in-practice"><i class="fa fa-check"></i><b>4.1.2</b> PCA in Practice</a></li>
 </ul></li>
 <li class="chapter" data-level="4.2" data-path="sec-svd.html"><a href="sec-svd.html"><i class="fa fa-check"></i><b>4.2</b> Singular Value Decomposition</a>
 <ul>
@@ -319,7 +320,7 @@ div.csl-indent {
 <p><span id="exm:ex-swiss-roll" class="example"><strong>Example 6.3  (Mapping to the Swiss Roll) </strong></span>Let <span class="math inline">\(A = (\pi/2,9\pi/2)\times (0,15)\)</span>. We define the map <span class="math inline">\(\Psi:A\to \mathbb{R}^3\)</span> as follows
 <span class="math display">\[\Psi(\vec{z}) = \Psi(z_1,z_2) = \begin{bmatrix} z_1\sin(z_1) \\ z_1\cos(z_1) \\ z_2 \end{bmatrix}\]</span>
 Below we show <span class="math inline">\(N=10^4\)</span> samples which are drawn uniformly from <span class="math inline">\(A\)</span>. We then show the resulting observations after applying map <span class="math inline">\(\Psi\)</span> to each sample.
-<img src="_main_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<img src="_main_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
 </div>
 <p>We may also consider the more complicated case where the observations are corrupted by additive noise. In this setting, the typical assumption is that the noise follows after the manifold map so that our data are <span class="math display">\[\vec{x}_i = \Psi(\vec{z}_i) + \vec{\epsilon}_i, \qquad i = 1,\dots, N\]</span> for some noise vectors <span class="math inline">\(\{\vec{\epsilon}_i\}_{i=1,\dots,N}.\)</span></p>
 <div class="example">
