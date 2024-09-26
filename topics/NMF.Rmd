@@ -9,13 +9,17 @@ In both PCA and SVD, we learn data-drive orthonormal feature vectors which we ca
 
 For NMF, we focus on cases where ${\bf X}$ is an $N\times d$ data matrix with the added condition that its entries are nonnegative. Notationally, we write ${\bf X}\in\mathbb{R}_{\ge 0}^{N\times d}$ to indicate it is composed of nonnegative real values.  The nonnegativity condition is a natural constraint for many experimental data sets, but we are also going to impose a similar constraint on our feature vectors and coefficients.  More specifically, for a specific rank $k$, we seek a coefficient matrix ${\bf W}\in\mathbb{R}_{\ge 0}^{N\times k}$ and feature matrix ${\bf H}\in \mathbb{R}^{k\times d}_{\ge 0}$ such that ${\bf WH}$ is as close to ${\bf X}$ as possible. The nonnegativity constraint on the elements of ${\bf W}$ and ${\bf H}$ implies that ${\bf WH}\in\mathbb{R}_{\ge 0}^{N\times d}$. There are many different measures of proximity that one may use in NMF which are greater than zero and equal to zero if and only if ${\bf X}={\bf WH}$.  The most common measures are 
 
-- Frobenius norm: $\|{\bf X}-\hat{\bf X}\|_F.$
+- Frobenius norm: $\|{\bf X}-{\bf WH}\|_F.$
 
-- Divergence: $D({\bf X} \| \hat{\bf X}) = \sum_{i=1}^N\sum_{j=1}^d \left[{\bf X}_{ij} \log \frac{{\bf X}_{ij}}{\hat{\bf X}_{ij}} + \hat{\bf X}_{ij} - {\bf X}_{ij}\right]$
+- Divergence: $D({\bf X} \| {\bf WH}) = \sum_{i=1}^N\sum_{j=1}^d \left[{\bf X}_{ij} \log \frac{{\bf X}_{ij}}{({\bf WH})_{ij}} + ({\bf WH})_{ij} - {\bf X}_{ij}\right]$
 
 - Itakura-Saito Divergence: $$D_{IS}({\bf X}, {\bf WH}) = \sum_{i=1}^N\sum_{j=1}^d \left[\frac{{\bf X}_{ij}}{({\bf WH})_{ij}} - \log\frac{{\bf X}_{ij}}{({\bf WH})_{ij}} -1  \right]$$
 
-These loss functions emphasize different features of the data and are often coupled with additional penalties or assumptions on the elements of ${\bf W}$ and ${\bf H}$ which we will discuss at the end of the section.  For now, let us focus on the primary motivation of NMF, which is to create more interpretable feature vectors (the rows of ${\bf H}$).
+These loss functions emphasize and prioritize different features of the data and are often coupled with additional penalties or assumptions on the elements of ${\bf W}$ and ${\bf H}$ which we will discuss at the end of the section.  
+
+
+
+For now, let us focus on the primary motivation of NMF, which is to create more interpretable feature vectors (the rows of ${\bf H}$).
 
 ### Interpretability, Superpositions, and Positive Spans
 
@@ -77,7 +81,7 @@ In the motivating example above, our data live in the positive span of the two f
 
 Thus, we may view NMF as a restricted version of PCA or SVD where we have moved from spans to positive spans.  This seemingly small change gives rise to some big problems.  Even in this simple case above we have a uniqueness problem.  Up to sign changes and ordering, the feature vectors in PCA and SVD were unique. However, we can find two alternative vectors $\vec{h}_1'$ and $\vec{h}_2'$ which still give a exact NMF.  There are trivial cases. First, one can change ordering ($\vec{h}_1' =\vec{h}_2$ and $\vec{h}_2' = \vec{h}_1$) which we avoid in PCA and SVD by assuming the corresponding singular values of PC variances are listed in decreasaing order.  Secondly, we could rescale by setting $\vec{h}_1' = c\vec{h}_1$ and rescaling the corresponding coefficients by a factor of $1/c$ for some $c > 0$ which PCA and SVD avoid by fixing feature vectors to have unit length. The ordering issue is a labeling concern and may be ignored, whereas the rescaling issue can be addressed by adding constraints on the length of the feature vectors.
 
-A third and far more subtle issue occurs because we do not enforce orthogonality.  In \@ref[fig:nmf-ex], imagine that the feature vectors are the arms of a folding fan.  We could change the angle between our feature vectors by opening or closing the arms of the fan.  So long as we do not close the fan too much (and leave our data outside the positive span) or open them too much (so that feature vectors have negative entries), we can still find a perfect reconstruction.  This `folding fan' issue can be addressed through additional penalties which we discuss in \@ref{sec-nmf-ext}, but uniqueness cannot be eliminated entirely. Thus, we seek **an** NMF for our data rather than **the** NMF.
+A third and far more subtle issue occurs because we do not enforce orthogonality.  In \@ref[fig:nmf-ex], imagine that the feature vectors are the arms of a folding fan.  We could change the angle between our feature vectors by opening or closing the arms of the fan.  So long as we do not close the fan too much (and leave our data outside the positive span) or open them too much (so that feature vectors have negative entries), we can still find a perfect reconstruction.  This `folding fan' issue can be addressed through additional penalties which we discuss in \@ref{sec-nmf-ext}, but nonuniqueness cannot be eliminated entirely. Thus, we seek **an** NMF for our data rather than **the** NMF.
 
 ### Finding an NMF: Multiplicative Updates
 \DeclareMathOperator*{\argmin}{arg\,min}
@@ -133,25 +137,146 @@ For a given choice of loss, standard NMF proceeds in the following manner.
 
 Different initial conditions (ICs) will converge to different local modes; reptition over multiple differents (ICs) will help find a better overall minimizer and avoid getting a final NMF which is trapped in a poor local mode.  There is no guidance of how many ICs. Many packages default to five. More would be better but computational resources are not infinite, and finding even one mode though coordinate ascent can be slow.  
 
-The choice of $k$ is also challenging.  In prior information or other project constraints dictate a specific choice of $k$ one should use that value. However, the preceding steps can be repeated over a range of $k$. One can then compare plot the optimal loss as a function of $k$ and look for a cutoff where the error appears to saturate.  Importantly, there are no connections between the rank $k$ NMF and rank $k+1$ NMF. Unlike, PCA or SVD, one cannot truncate the vectors and coefficients and attain an optimal solution for a lower-dimensional representation. Thus, separate fits at each choice of $k$ must be attained through separate runs of the numerical optimization.  We show this approach applied to the first $10^3$ eights (to save computation time) from the MNIST dataset [@mnist] using Divergence loss with five runs per rank.
+The choice of $k$ is also challenging.  In prior information or other project constraints dictate a specific choice of $k$ one should use that value. However, the preceding steps can be repeated over a range of $k$. One can then compare plot the optimal loss as a function of $k$ and look for a cutoff where the error appears to saturate.  Importantly, there are no connections between the rank $k$ NMF and rank $k+1$ NMF. Unlike, PCA or SVD, one cannot truncate the vectors and coefficients and attain an optimal solution for a lower-dimensional representation. Thus, separate fits at each choice of $k$ must be attained through separate runs of the numerical optimization.  
 
 :::{.example #mnist-nmf name="NMF applied to MNIST"}
-```{r mnist-w-nmf, warning = FALSE}
+As an example, we show NMF applied to the first $100$ eights (to save computation time) from the MNIST dataset [@mnist] using Divergence with five runs per rank. Below we fit separate NMFs for ranks 1 through 25 with 5 random initializations per fit.  Optimal divergence as a function of rank is shown below.
+
+
+```{r mnist-w-nmf, warning = FALSE, echo = FALSE}
 set.seed(185)
 load("../../Datasets/digits.Rdata")
-eights <- digits$pixels[digits$labels == 8,][1:1000,]
-# mnist_nmf <- nmf(eights, rank = 1:30, method = "brunet", nrun = 5)
-# plot(mnist_nmf$measures$rss)
+eights <- digits$pixels[digits$labels == 8,][1:100,] 
+zero_col <- which(colSums(eights) == 0)
+eights_min_zero <- eights[,-zero_col]
+
+mnist_nmf <- nmf(eights_min_zero, rank = 1:25, 
+                 method = "brunet", nrun = 5)
+plot(mnist_nmf$measures$residuals, xlab = "Rank", ylab = "Divergence")
+```
+
+There is no clear elbow like feature in the plot that would clearly suggest an optimal rank between 1 and 25. If we select a rank 4 NMF, we do get interpretable 8-like images as our feature images(vectors) shown below.
+
+
+```{r, echo = F}
+k <- 4
+H <- matrix(0,nrow = k, ncol = ncol(eights))
+H[,-zero_col] <- mnist_nmf$fit$'4'@fit@H
+par(mar=c(1,1,1,1))
+par(mfrow = c(k/2,2))
+for (j in 1:k){
+  image(matrix(H[j,],nrow = 28),
+        xaxt = 'n', yaxt = 'n')
+}
+```
+
+Compare this to the less 8-like images found using the features given by a rank 4 approximation from SVD.
+
+```{r, echo = F, message =F}
+k <- 4
+mnist_svd <- svd(eights_min_zero, nv = k)
+H <- matrix(0,nrow = k, ncol = ncol(eights))
+H[,-zero_col] <- t(mnist_svd$v)
+par(mar=c(1,1,1,1))
+par(mfrow = c(k/2,2))
+for (j in 1:k){
+  image(matrix(H[j,],nrow = 28),
+        xaxt = 'n', yaxt = 'n')
+}
 ```
 :::
 
 ### Regularization and Interpretability {#sec-nmf-ext}
 
-For a random initialization of ${\bf W}$ and ${\bf H}$ the final features found by NMF may not look like our original data quite like our original data, which is contrary to our original goal of finding features which are more comparable to the data. Many extensions of NMF address this issue through the inclusion of additional penalties on the elements of ${\bf W}$ or ${\bf H}$ which induce sparsity and/or constrain the features to be more similar to the data.  In practice, it is insufficient to apply penalties which depend on the scaling of ${\bf W}$ or ${\bf H}$ as these can typically be made arbitrarily small by increasing corresponding elements of ${\bf H}$ or ${\bf W}$ respectively.  Thus, any penalty which depends on the scaling of one matrix often includes additional constraints on the other.
+For a random initialization, the values of ${\bf W}$ and ${\bf H}$ obtained when the multiplicative rules are run to convergence not resemble the original data, which is contrary to our original goal of finding features which are more comparable to the data. More specifically, the feature vectors $\vec{h}_1,\dots,\vec{h}_k$ which are superimposed to approximate the observations may appear quite different from the observations themselves.  Many extensions of NMF address this issue through the inclusion of additional penalties on the elements of ${\bf W}$ or ${\bf H}$ which induce sparsity in the coefficients ${\bf W}$ and/or constrain the features to be more similar to the data.  In practice, it is insufficient to apply penalties which depend solely on the scaling of either ${\bf W}$ or ${\bf H}$ as these can typically be made arbitrarily small by increasing corresponding elements of ${\bf H}$ or ${\bf W}$ respectively.  Thus, any penalty which depends on the scaling of one matrix often includes additional constraints or penalties on the other.
 
-#### Volume Regularized NMF
+Briefly, we discuss two version which are constructed to generate features which strongly mimic the original observations.
 
 #### Archetypes
 
+Before discussing Archetypal Analysis, we need an additional geometric idea.
+
+:::{.def #conv name="Convex Hull"}
+Given a set of vectors $\mathcal{H}=\{\vec{h}_1,\dots,\vec{h}_k\}\subset\mathbb{R}^d$, the convex hull of $\mathcal{H}$ is the set 
+$$\text{conv}(\mathcal{H}) = \{b_1\vec{h}_1+\cdots + b_k \vec{h}_k: b_1,\dots,b_k \ge 0,\, c_1+\dots+c_k = 1\}$$
+:::
+
+The weights in the above definition are constrained to be positive, similar to the definition of positive span, but with the added constraint that they sum to one.  Thus, for a set of vectors $\mathcal{H}$
+
+$$\text{conv}(\mathcal{H}) \subset \Gamma(\mathcal{H}) \subset \text{span}(\mathcal{H}).$$
+An example of a convex hull (shown in grey) of set of vectors (points in red) in $\mathbb{R}^2$ is shown below.  Imagine wrapping a string around the set of points and pulling it tight.  Everything on/within the loop is in the convex hull. An analogous interpretation holds in higher dimensions using a "sheet" rather than a string.
+
+```{r, echo = F}
+df <- data.frame(x= mnist_nmf$fit$'2'@fit@W[,1],
+                 y= mnist_nmf$fit$'2'@fit@W[,2])
+hull <- df %>%
+  slice(chull(x, y))
+# Define the scatterplot
+p <- ggplot(df, aes(x, y)) + geom_point(shape = 21, color = "red") + xlab("") + ylab("")
+
+# Overlay the convex hull
+p + geom_polygon(data = hull, alpha = 0.5)
+```
+
+Importantly, we can view the coefficient $c_1,\dots,c_k$ as defining (probability) weights. Thus, every point in the convex hull of ${\bf H}$ is a weighted average of the vectors in $\mathcal{H}$ and one then expects any point in the convex hull of $\mathcal{H}$ to resemble the vectors in $\mathcal{H}$.   In archetypal analysis [@arch], we add the constraint that the features (row of ${\bf H}$) are themselves elements in the convex hull of the original data so that ${\bf H}= {\bf B X}$ where ${\bf B}\in\mathbb{R}_{\ge 0}^{k\times N}$ must satisfy the constraint ${\bf B}\vec{1}_N = \vec{1}_k$. 
+
+Under this setup, we then want to solve the following constrained optimization problem
+$$\argmin_{{\bf W}\in \mathbb{R}_{\ge 0}^{N\times k},\,{\bf B}\in\mathbb{R}_{\ge 0}^{k\times N}, {\bf B}\vec{1}_N = \vec{1}_k}\| {\bf X}- {\bf WBX}\|_F.$$
+
+The rows of ${\bf BX}$, called archetypes, reside are typically extremal in the sense that they reside on the boundary of the convex hull of the data.  We show them below for a rank four approximation to the eights.
+
+```{r, echo = F}
+library(archetypes)
+eights_aa <- archetypes(eights_min_zero,k=4)
+H <- matrix(0,nrow = k, ncol = ncol(eights))
+H[,-zero_col] <- eights_aa$archetypes
+par(mar=c(1,1,1,1))
+par(mfrow = c(k/2,2))
+for (j in 1:k){
+  image(matrix(H[j,],nrow = 28),
+        xaxt = 'n', yaxt = 'n')
+}
+```
+
+#### Volume Regularized NMF
+
+Much like Archetype Analysis, Volume regularized NMF creates feature vectors which resemble the observation through a more geometric approach [@vrnmf1,@vrnmf2].  Suppose that we are seeking a rank $k$ approximation of data in $d$ dimensions with $k<d$.  If the vectors $\vec{h}_1,\dots,\vec{h}_k$ are affinely independent, i.e. they don't live on a hyperplane of dimension less than $k$, then the volume of the convex of hall of the vectors is given by the following formula
+$$\text{vol}\left(\text{conv}(\{\vec{h}_1,\dots,\vec{h}_k\})\right) = \frac{\sqrt{\text{det}(\tilde{\bf H}\tilde{\bf H}^T})}{(k-1)!}$$
+where $$\tilde{\bf H} = \begin{bmatrix} \vec{h}_1^T-\vec{h}_k^T \\ \vdots \\ \vec{h}_{k-1}^T-\vec{h}_k^T\end{bmatrix} \in \mathbb{R}^{(k-1)\times d}.$$
+An extension of this result is that for linearly independent vectors $\vec{h}_1,\dots,\vec{h}_k$, the volume of the convex hull of the vectors $\vec{0},\vec{h}_1,\dots,\vec{h}_k$ can be computed directly from our feature matrix ${\bf H}$, i.e. $$\text{vol}\left(\text{conv}(\{0,\vec{h}_1,\dots,\vec{h}_k\})\right) = \frac{\sqrt{det({\bf H}{\bf H}^T})}{(k)!}.$$  
+
+One brief aside on the notion of volume here that is not typically made clear in the related literature. When $k < d$, the convex hull of $\vec{0},\vec{h}_1,\dots,\vec{h}_k$ is contained in a $k$-dimensional hyperplane.  Thus, its $d$-dimensional volume must be zero.  When we talk of the volume of a convex hull, we instead mean its $k$-dimensional volume.  As an example, consider the case of a single vector $\vec{h}_1$ in $\mathbb{R}^3.$ The convex hull of $\vec{0},\vec{h_1}$ is the line segment from the origin to $\vec{h}_1$.  Line segments have zero 3-dimensional volume, but they do have length (1-dimensional volume).  In this case, the 1-dimensional volume of the convex hull is the length of the line segment, e.g. $\|\vec{h}_1\|$.
+
+Incorporating a penalty on the volume of the convex hull of the feature vectors gives rise to the  aptly named volume-regularized NMF
+$$\argmin_{{\bf W}_\in\mathbb{R}_{\ge 0}^{N\times k}, {\bf W}\vec{1}_N = \vec{1}_k, {\bf H}\in \mathbb{R}_{\ge 0}^{k\times d}} \|{\bf X}-{\bf WH}\|_F^2 + \lambda \sqrt{\text{det}({\bf HH}^T)}$$
+here the constraint ${\bf W}\vec{1}_N = \vec{1}_k$ requiring that the rows of ${\bf W}$ sum to one prevents an arbitrarily shrinkage of the feature vectors towards zero.  In some numerical implementation, this constraint is relaxed so that the sum of the rows of ${\bf W}$ are bounded above by one.  The value $\lambda$ is tuning parameter that must be specified by the user to balance goodness of fit vs minimal volume.  Below we show the results of volume regularized NMF applied to the subset of the eights data studied above.
 
 
+```{r, echo = F, message =F}
+library(vrnmf)
+k<-4
+volp <- vol_preprocess(eights_min_zero)
+test <- volnmf_main(volp, n.comp = k,n.iter = 200,verbose = F, wvol = 0.5)
+H <- matrix(0,nrow = k, ncol = ncol(eights))
+H[,-zero_col] <- t(test$C)
+par(mar=c(1,1,1,1))
+par(mfrow = c(k/2,2))
+for (j in 1:k){
+  image(matrix(H[j,],nrow = 28),
+        xaxt = 'n', yaxt = 'n')
+}
+```
+
+### NMF and Maximum Likelihood Estimation
+
+Throughout this section we have focused on the geometric aspects of NMF, but there are parallel statistical perspectives based on maximum likelihood estimation.  For example, consider the model $${\bf X}_{ij} \mid ({\bf WH}_{ij}) \sim \mathcal{N}\left(({\bf WH}_{ij},\sigma^2\right), \qquad 1\le i\le N, 1\le j\le d$$
+with the additional assumption that the observations in ${\bf X}$ are conditionally independent given $({\bf WH})$ and that ${\bf WH}$ is low-rank.  Under this framework the likelihood of the data is then 
+$$\mathcal{L}({\bf X}\mid{\bf WH}) \propto \prod_{i=1}^N\prod_{j=1}^d \exp\left(-\frac{({\bf X}_{ij}-({\bf WH}_{ij}))^2}{\sigma^2}\right)$$ which has log-likelihood
+$$\log \mathcal{L}({\bf X}\mid{\bf WH}) = -\frac{1}{\sigma^2}\prod_{i=1}^N\prod_{j=1}^d ({\bf X}_{ij}-({\bf WH}_{ij}))^2 = -\frac{1}{\sigma^2}\|{\bf X}-{\bf WH}\|_F^2.$$
+Thus, minimizing the Frobenius norm is equivalent to maximizing the likelihood in this normal model with homoskedastic errors.  
+
+Similarly, divergence arises from a Poisson model $${\bf X}_{ij} \mid {\bf WH}_{ij} \sim \text{Pois}\left(({\bf WH})_{ij}\right)$$ again with a low rank structure for ${\bf WH}$ and the conditional independence assumption on the entries of ${\bf X}$ given ${\bf WH}$.  
+
+The IS divergence again uses conditional independence and a low rank structure for ${\bf WH}$ under the assumption of multiplicative Gamma distributed errors with mean one, i.e. 
+$${\bf X}_{ij} \mid {\bf WH}_{ij} = ({\bf WH})_{ij} e_{ij}, \, e_{ij} \sim \text{Gamma}(\alpha,\beta)$$
+with $\alpha/\beta = 1$. See [@is_div] for additional details.
