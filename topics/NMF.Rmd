@@ -96,7 +96,7 @@ Thus, we may may make use of the chain rule to conclude that
 \begin{align*}
 \frac{\partial }{\partial {\bf W}_{ij}} D({bf X}\| {\bf WH}) &= \frac{\partial }{\partial {\bf W}_{ij}}\sum_{st} \left({\bf X}_{st} \log(({\bf X})_{st}) - {\bf X}_{st} \log(({\bf WH})_{st}) + ({\bf WH})_st - ({\bf X})_{st}\right)\\
 &=\frac{\partial }{\partial {\bf W}_{ij}}\sum_{st} \left(- {\bf X}_{st} \log(({\bf WH})_{st}) + ({\bf WH})_{st} \right) \\
-&=\sum_{st}\left(\frac{{\bf X}_{st}}{({\bf WH}_{st})} + 1\right)\frac{\partial ({\bf WH})_{st}}{\partial ({\bf WH})_{ij}} \\
+&=\sum_{st}\left(\frac{{\bf X}_{st}}{({\bf WH}_{st})} + 1\right)\frac{\partial ({\bf WH})_{st}}{\partial {\bf W}_{ij}} \\
 &=\sum_{t=1}^d \left(-\frac{{\bf X}_{it}}{({\bf WH}_{it})} + 1\right){\bf H}_{jt}.
 \end{align*}
 A similar calculation gives

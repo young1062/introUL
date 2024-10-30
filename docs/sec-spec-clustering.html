@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>7.5 Spectral Clustering | An Introduction to Unsupervised Learning</title>
+  <title>7.2 Spectral Clustering | An Introduction to Unsupervised Learning</title>
   <meta name="description" content="An introductory text on the goals and methods of unsupervised learning" />
-  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="7.5 Spectral Clustering | An Introduction to Unsupervised Learning" />
+  <meta property="og:title" content="7.2 Spectral Clustering | An Introduction to Unsupervised Learning" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="An introductory text on the goals and methods of unsupervised learning" />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="7.5 Spectral Clustering | An Introduction to Unsupervised Learning" />
+  <meta name="twitter:title" content="7.2 Spectral Clustering | An Introduction to Unsupervised Learning" />
   
   <meta name="twitter:description" content="An introductory text on the goals and methods of unsupervised learning" />
   
@@ -29,7 +29,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="spectral.html"/>
+<link rel="prev" href="center-based-clustering.html"/>
 
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -198,7 +198,13 @@ div.csl-indent {
 <li class="chapter" data-level="2.4.5" data-path="linear-algebra.html"><a href="linear-algebra.html#matrix-factorizations"><i class="fa fa-check"></i><b>2.4.5</b> Matrix Factorizations</a></li>
 <li class="chapter" data-level="2.4.6" data-path="linear-algebra.html"><a href="linear-algebra.html#positive-definiteness-and-matrix-powers"><i class="fa fa-check"></i><b>2.4.6</b> Positive Definiteness and Matrix Powers</a></li>
 </ul></li>
-<li class="chapter" data-level="2.5" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i><b>2.5</b> Exercises</a></li>
+<li class="chapter" data-level="2.5" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i><b>2.5</b> Exercises</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="exercises.html"><a href="exercises.html#probability"><i class="fa fa-check"></i><b>2.5.1</b> Probability</a></li>
+<li class="chapter" data-level="2.5.2" data-path="exercises.html"><a href="exercises.html#calculus"><i class="fa fa-check"></i><b>2.5.2</b> Calculus</a></li>
+<li class="chapter" data-level="2.5.3" data-path="exercises.html"><a href="exercises.html#linear-algebra-1"><i class="fa fa-check"></i><b>2.5.3</b> Linear Algebra</a></li>
+<li class="chapter" data-level="2.5.4" data-path="exercises.html"><a href="exercises.html#hybrid-problems"><i class="fa fa-check"></i><b>2.5.4</b> Hybrid Problems</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="central-goals-and-assumptions.html"><a href="central-goals-and-assumptions.html"><i class="fa fa-check"></i><b>3</b> Central goals and assumptions</a>
 <ul>
@@ -215,7 +221,8 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="4.1" data-path="sec-pca.html"><a href="sec-pca.html"><i class="fa fa-check"></i><b>4.1</b> Principal Component Analysis</a>
 <ul>
-<li class="chapter" data-level="4.1.1" data-path="sec-pca.html"><a href="sec-pca.html#derivation-1-iterative-projections"><i class="fa fa-check"></i><b>4.1.1</b> Derivation 1: Iterative Projections</a></li>
+<li class="chapter" data-level="4.1.1" data-path="sec-pca.html"><a href="sec-pca.html#derivation-using-iterative-projections"><i class="fa fa-check"></i><b>4.1.1</b> Derivation using Iterative Projections</a></li>
+<li class="chapter" data-level="4.1.2" data-path="sec-pca.html"><a href="sec-pca.html#pca-in-practice"><i class="fa fa-check"></i><b>4.1.2</b> PCA in Practice</a></li>
 </ul></li>
 <li class="chapter" data-level="4.2" data-path="sec-svd.html"><a href="sec-svd.html"><i class="fa fa-check"></i><b>4.2</b> Singular Value Decomposition</a>
 <ul>
@@ -231,6 +238,7 @@ div.csl-indent {
 <li class="chapter" data-level="4.3.3" data-path="nonnegative-matrix-factorization.html"><a href="nonnegative-matrix-factorization.html#finding-an-nmf-multiplicative-updates"><i class="fa fa-check"></i><b>4.3.3</b> Finding an NMF: Multiplicative Updates</a></li>
 <li class="chapter" data-level="4.3.4" data-path="nonnegative-matrix-factorization.html"><a href="nonnegative-matrix-factorization.html#nmf-in-practice"><i class="fa fa-check"></i><b>4.3.4</b> NMF in practice</a></li>
 <li class="chapter" data-level="4.3.5" data-path="nonnegative-matrix-factorization.html"><a href="nonnegative-matrix-factorization.html#sec-nmf-ext"><i class="fa fa-check"></i><b>4.3.5</b> Regularization and Interpretability</a></li>
+<li class="chapter" data-level="4.3.6" data-path="nonnegative-matrix-factorization.html"><a href="nonnegative-matrix-factorization.html#nmf-and-maximum-likelihood-estimation"><i class="fa fa-check"></i><b>4.3.6</b> NMF and Maximum Likelihood Estimation</a></li>
 </ul></li>
 <li class="chapter" data-level="4.4" data-path="sec-mds.html"><a href="sec-mds.html"><i class="fa fa-check"></i><b>4.4</b> Multidimensional Scaling</a>
 <ul>
@@ -239,11 +247,12 @@ div.csl-indent {
 <li class="chapter" data-level="4.4.3" data-path="sec-mds.html"><a href="sec-mds.html#metric-mds"><i class="fa fa-check"></i><b>4.4.3</b> Metric MDS</a></li>
 <li class="chapter" data-level="4.4.4" data-path="sec-mds.html"><a href="sec-mds.html#nonmetric-mds"><i class="fa fa-check"></i><b>4.4.4</b> Nonmetric MDS</a></li>
 </ul></li>
+<li class="chapter" data-level="4.5" data-path="exercises-2.html"><a href="exercises-2.html"><i class="fa fa-check"></i><b>4.5</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="kernels-and-nonlinearity.html"><a href="kernels-and-nonlinearity.html"><i class="fa fa-check"></i><b>5</b> Kernels and Nonlinearity</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="kernel-pca.html"><a href="kernel-pca.html"><i class="fa fa-check"></i><b>5.1</b> Kernel PCA</a></li>
-<li class="chapter" data-level="5.2" data-path="exercises-2.html"><a href="exercises-2.html"><i class="fa fa-check"></i><b>5.2</b> Exercises</a></li>
+<li class="chapter" data-level="5.2" data-path="exercises-3.html"><a href="exercises-3.html"><i class="fa fa-check"></i><b>5.2</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html"><i class="fa fa-check"></i><b>6</b> Manifold Learning</a>
 <ul>
@@ -272,22 +281,24 @@ div.csl-indent {
 <li class="chapter" data-level="6.5.3" data-path="autoencoders-aes.html"><a href="autoencoders-aes.html#example"><i class="fa fa-check"></i><b>6.5.3</b> Example</a></li>
 </ul></li>
 <li class="chapter" data-level="6.6" data-path="additional-methods.html"><a href="additional-methods.html"><i class="fa fa-check"></i><b>6.6</b> Additional methods</a></li>
-<li class="chapter" data-level="6.7" data-path="exercises-3.html"><a href="exercises-3.html"><i class="fa fa-check"></i><b>6.7</b> Exercises</a></li>
+<li class="chapter" data-level="6.7" data-path="exercises-4.html"><a href="exercises-4.html"><i class="fa fa-check"></i><b>6.7</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="ch-clustering.html"><a href="ch-clustering.html"><i class="fa fa-check"></i><b>7</b> Clustering</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="center-based.html"><a href="center-based.html"><i class="fa fa-check"></i><b>7.1</b> Center-based</a>
+<li class="chapter" data-level="7.1" data-path="center-based-clustering.html"><a href="center-based-clustering.html"><i class="fa fa-check"></i><b>7.1</b> Center-Based Clustering</a>
 <ul>
-<li class="chapter" data-level="7.1.1" data-path="center-based.html"><a href="center-based.html#k-means"><i class="fa fa-check"></i><b>7.1.1</b> k-means</a></li>
-<li class="chapter" data-level="7.1.2" data-path="center-based.html"><a href="center-based.html#k-mediods"><i class="fa fa-check"></i><b>7.1.2</b> k-mediods</a></li>
+<li class="chapter" data-level="7.1.1" data-path="center-based-clustering.html"><a href="center-based-clustering.html#key-points"><i class="fa fa-check"></i><b>7.1.1</b> Key Points</a></li>
+<li class="chapter" data-level="7.1.2" data-path="center-based-clustering.html"><a href="center-based-clustering.html#k-means-clustering"><i class="fa fa-check"></i><b>7.1.2</b> <span class="math inline">\(k\)</span>-Means Clustering</a></li>
+<li class="chapter" data-level="7.1.3" data-path="center-based-clustering.html"><a href="center-based-clustering.html#k-center-clustering"><i class="fa fa-check"></i><b>7.1.3</b> <span class="math inline">\(k\)</span>-Center Clustering</a></li>
+<li class="chapter" data-level="7.1.4" data-path="center-based-clustering.html"><a href="center-based-clustering.html#selecting-number-of-clusters"><i class="fa fa-check"></i><b>7.1.4</b> Selecting Number of Clusters</a></li>
+<li class="chapter" data-level="7.1.5" data-path="center-based-clustering.html"><a href="center-based-clustering.html#alternative-methods-for-choosing-k"><i class="fa fa-check"></i><b>7.1.5</b> Alternative Methods for Choosing <span class="math inline">\(k\)</span></a></li>
+<li class="chapter" data-level="7.1.6" data-path="center-based-clustering.html"><a href="center-based-clustering.html#comparison-of-clustering-algorithms"><i class="fa fa-check"></i><b>7.1.6</b> Comparison of Clustering Algorithms</a></li>
+<li class="chapter" data-level="7.1.7" data-path="center-based-clustering.html"><a href="center-based-clustering.html#example-in-r"><i class="fa fa-check"></i><b>7.1.7</b> Example in R</a></li>
 </ul></li>
-<li class="chapter" data-level="7.2" data-path="hierarchical.html"><a href="hierarchical.html"><i class="fa fa-check"></i><b>7.2</b> Hierarchical</a></li>
-<li class="chapter" data-level="7.3" data-path="model-based.html"><a href="model-based.html"><i class="fa fa-check"></i><b>7.3</b> Model-based</a></li>
-<li class="chapter" data-level="7.4" data-path="spectral.html"><a href="spectral.html"><i class="fa fa-check"></i><b>7.4</b> Spectral</a></li>
-<li class="chapter" data-level="7.5" data-path="sec-spec-clustering.html"><a href="sec-spec-clustering.html"><i class="fa fa-check"></i><b>7.5</b> Spectral Clustering</a>
+<li class="chapter" data-level="7.2" data-path="sec-spec-clustering.html"><a href="sec-spec-clustering.html"><i class="fa fa-check"></i><b>7.2</b> Spectral Clustering</a>
 <ul>
-<li class="chapter" data-level="7.5.1" data-path="sec-spec-clustering.html"><a href="sec-spec-clustering.html#introduction-3"><i class="fa fa-check"></i><b>7.5.1</b> Introduction</a></li>
-<li class="chapter" data-level="7.5.2" data-path="sec-spec-clustering.html"><a href="sec-spec-clustering.html#algorithm-4"><i class="fa fa-check"></i><b>7.5.2</b> Algorithm</a></li>
+<li class="chapter" data-level="7.2.1" data-path="sec-spec-clustering.html"><a href="sec-spec-clustering.html#introduction-3"><i class="fa fa-check"></i><b>7.2.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2.2" data-path="sec-spec-clustering.html"><a href="sec-spec-clustering.html#algorithm-4"><i class="fa fa-check"></i><b>7.2.2</b> Algorithm</a></li>
 </ul></li>
 </ul></li>
 <li class="divider"></li>
@@ -310,43 +321,35 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="sec-spec-clustering" class="section level2 hasAnchor" number="7.5">
-<h2><span class="header-section-number">7.5</span> Spectral Clustering<a href="sec-spec-clustering.html#sec-spec-clustering" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="introduction-3" class="section level3 hasAnchor" number="7.5.1">
-<h3><span class="header-section-number">7.5.1</span> Introduction<a href="sec-spec-clustering.html#introduction-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Spectral Clustering represents a significant leap in the evolution of clustering techniques. Distinguished from traditional methods like K-means, it excels in detecting complex structures and patterns within data. It’s based on ideas from graph theory and simple math concepts, mainly focusing on how to use information from graphs. Imagine each piece of data as a point on a graph, with lines connecting the points that are similar. Spectral Clustering uses these connections to figure out how the data should be grouped, which is especially handy when the groups are twisty or oddly shaped.</p>
+<div id="sec-spec-clustering" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> Spectral Clustering<a href="sec-spec-clustering.html#sec-spec-clustering" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="introduction-3" class="section level3 hasAnchor" number="7.2.1">
+<h3><span class="header-section-number">7.2.1</span> Introduction<a href="sec-spec-clustering.html#introduction-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Spectral Clustering represents a significant leap in the evolution of clustering techniques. Distinguished from traditional methods like K-means, it excels in detecting complex structures and patterns within data. It’s based on ideas from graph theory and simple math concepts, mainly focusing on how to use information from graphs. Imagine each piece of data as a point on a graph, with lines connecting the points that are similar. Spectral Clustering uses these connections to figure out how the data should be grouped, which is especially handy when the groups are twisted or oddly shaped.</p>
 <p>The key step in Spectral Clustering is breaking down a special graph matrix (called the Laplacian matrix) to find its eigen values and eigen vectors. These eigen vectors help us see the data in a new way that makes the groups more obvious. This makes it easier to use simple grouping methods like K-means to sort the data into clusters. This approach is great for finding hidden patterns in the data.</p>
 <p>However, Spectral Clustering comes with its own challenges. Choosing the right number of groups can be tricky, and it might not work as well with very large sets of data because of the relatively large computing cost. Nevertheless, its robustness and adaptability have cemented its role across various domains, from image processing to bioinformatics.</p>
 </div>
-<div id="algorithm-4" class="section level3 hasAnchor" number="7.5.2">
-<h3><span class="header-section-number">7.5.2</span> Algorithm<a href="sec-spec-clustering.html#algorithm-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="algorithm-4" class="section level3 hasAnchor" number="7.2.2">
+<h3><span class="header-section-number">7.2.2</span> Algorithm<a href="sec-spec-clustering.html#algorithm-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ol style="list-style-type: decimal">
-<li><strong>Similarity Graph Construction</strong>:</li>
-</ol>
-<p>Start by constructing a similarity graph <span class="math inline">\(G\)</span> from your data (similar to the steps in Laplacian Eigenmap section. Each data point is represented as a node in the graph.)</p>
+<li><p><strong>Similarity Graph Construction</strong>: Start by constructing a similarity graph <span class="math inline">\(G\)</span> from your data (similar to the steps in Laplacian Eigenmap section. Each data point is represented as a node in the graph.)</p>
 <p>Define the edges of the graph. There are three common ways to do this:</p>
 <ol style="list-style-type: lower-roman">
 <li><p><strong><span class="math inline">\(\epsilon\)</span>-neighborhood graph:</strong> Connect all points whose pairwise distances are smaller than <span class="math inline">\(\epsilon\)</span>.</p></li>
 <li><p><strong>K-nearest neighbors:</strong> For each point, connect it to its k nearest neighbors.</p></li>
 <li><p><strong>Fully connected graph:</strong> Connect all points with each other. Typically, the Gaussian similarity function (also known as the Radial Basis Function or RBF) is used to calculate the weights of the edges: <span class="math inline">\(w_{ij} = \exp(-\frac{||\vec{x}_i - \vec{x}_j||^2}{2\sigma^2})\)</span>, where <span class="math inline">\(\vec{x}_i\)</span> and <span class="math inline">\(\vec{x}_j\)</span> are two points in the dataset and <span class="math inline">\(\sigma\)</span> is a tuning parameter.</p></li>
+</ol></li>
 </ol>
 <p><strong>Note:</strong>It is worth noting that there exists a slight difference in the construction of similarity graph matrix compared to Laplacian Eigenmap we mentioned in manifold learning chapter. For the fully connected graph, after using Radial basis to depict all the pair-wise distances, we don’t need to set a threshold and sparsify the matrix (set some entries to zero) like we did in Laplacian Eigenmap, we just keep all the original radial basis distances.</p>
 <ol start="2" style="list-style-type: decimal">
-<li><strong>Graph Laplacian Matrix:</strong></li>
+<li><p><strong>Graph Laplacian Matrix:</strong> Similar to corresponding parts in Laplacian Eigenmap. Calculate the adjacency matrix <span class="math inline">\(W\)</span>, where <span class="math inline">\(W_{ij}\)</span> represents the weight of the edge between nodes <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>. Calculate the degree matrix <span class="math inline">\(D\)</span>, which is a diagonal matrix where each diagonal element <span class="math inline">\(D_{ii}\)</span> is the sum of the weights of the edges connected to node <span class="math inline">\(i\)</span>. Compute the unnormalized Graph Laplacian matrix <span class="math inline">\(L\)</span> as <span class="math inline">\(L = D - W\)</span>.</p></li>
+<li><p><strong>Eigen Decomposition:</strong> Perform the eigen decomposition on the Laplacian matrix <span class="math inline">\(L\)</span> to find its eigenvalues and eigenvectors. Select <span class="math inline">\(k\)</span> smallest eigenvalues and their corresponding eigen vectors. <span class="math inline">\(k\)</span> is the number of clusters you want to identify.</p></li>
 </ol>
-<p>Similar to corresponding parts in Laplacian Eigenmap. Calculate the adjacency matrix <span class="math inline">\(W\)</span>, where <span class="math inline">\(W_{ij}\)</span> represents the weight of the edge between nodes <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>.</p>
-<p>Calculate the degree matrix <span class="math inline">\(D\)</span>, which is a diagonal matrix where each diagonal element <span class="math inline">\(D_{ii}\)</span> is the sum of the weights of the edges connected to node <span class="math inline">\(i\)</span>.</p>
-<p>Compute the unnormalized Graph Laplacian matrix <span class="math inline">\(L\)</span> as <span class="math inline">\(L = D - W\)</span>.</p>
-<ol start="3" style="list-style-type: decimal">
-<li><strong>Eigen Decomposition:</strong></li>
-</ol>
-<p>Perform the eigen decomposition on the Laplacian matrix <span class="math inline">\(L\)</span> to find its eigen values and eigen vectors.</p>
-<p>Select <span class="math inline">\(k\)</span> smallest eigenvalues and their corresponding eigen vectors. <span class="math inline">\(k\)</span> is the number of clusters you want to identify.</p>
 <p><strong>Mathematical Proof behind this step</strong></p>
 <p>As we have stated in Laplacian Eigenmap section, the Graph Laplacian matrix <span class="math inline">\(L\)</span> is positive semi-definite.</p>
 <p>Given any vector <span class="math inline">\(\vec{y} \in \mathbb{R}^N\)</span></p>
 <p><span class="math display">\[
-\vec{y}^T \mathbf{L} \vec{y}=\sum_{i=1}^N \sum_{j=1}^N \mathbf{W}_{i j}\left(y_i-y_j\right)^2
+\vec{y}^T \mathbf{L} \vec{y}=\frac{1}{2}\sum_{i=1}^N \sum_{j=1}^N \mathbf{W}_{i j}\left(y_i-y_j\right)^2
 \]</span></p>
 <p>Obviously, it is non-negative. Besides, we can always find a vector <span class="math inline">\(\vec{y} = \mathbf{1}_N\)</span> that makes it zero, which means the smallest eigen value must be zero, with the corresponding eigen vector being <span class="math inline">\(\mathbf{1}\)</span>.</p>
 <p>From the above equation, we can also justify our eigen-decomposition approach in finding the number of clusters. For either <span class="math inline">\(\epsilon\)</span>-neighborhood graph or K-nearest neighbors approach, if point <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> are not connected, then <span class="math inline">\(\mathbf{W}_{ij}=0\)</span>, however, if they are connected, <span class="math inline">\(\mathbf{W}_{ij} = 1 &gt; 0\)</span>. With some careful observation, we find that as long as we set <span class="math inline">\(y_i=y_j\)</span> for <span class="math inline">\(\forall \mathbf{W}_{ij} &gt; 0\)</span>, then we are able to get zero in the above equation. Since in cluster <span class="math inline">\(\Omega_1 = \{\vec{x}_p, \dots , \vec{x}_q \}\)</span>, all the points are connected, and <span class="math inline">\(\mathbf{W}_{ij} &gt; 0 \; \forall \{\vec{x}_i, \vec{x}_j\} \in \Omega_1\)</span>, we can simply set <span class="math inline">\(y_i=1\)</span> for <span class="math inline">\(\; \forall i \in \Omega_1\)</span>, and <span class="math inline">\(y_j=0\)</span> for <span class="math inline">\(\; \forall j \notin \Omega_1\)</span>. So the eigen-vector that corresponds to cluster <span class="math inline">\(\Omega_1\)</span> is <span class="math inline">\(\vec{y}_1 = \sum \vec{e}_i \in \mathbb{R}^N, \; \forall \, i \; s.t. \vec{x}_i \in \Omega_1\)</span>, where <span class="math inline">\(\vec{e}_i\)</span> is a vector with all zero except the <span class="math inline">\(i^{th}\)</span> entry being one.</p>
@@ -363,30 +366,30 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 <p>In reality, especially when we use Fully-connected graph, we can’t get <span class="math inline">\(k\)</span> exact zero-eigenvalues with corresponding <span class="math inline">\(k\)</span> eigenvectors. (Different clusters are not necessarily completely separate, and Fully-connected graph even allows every <span class="math inline">\(\mathbf{W}_{ij} &gt; 0\)</span>). So we will just conduct eigen decomposition and choose <span class="math inline">\(k\)</span> smallest eigenvalues together with their corresponding eigen-vectors.</p>
 <p><strong>A toy example</strong></p>
 <p>First, we’ll create the simulation data with two distinct clusters.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="sec-spec-clustering.html#cb41-1" tabindex="-1"></a><span class="co"># Generate two clusters</span></span>
-<span id="cb41-2"><a href="sec-spec-clustering.html#cb41-2" tabindex="-1"></a>cluster1 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="fl">1.5</span>, <span class="fl">2.5</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb41-3"><a href="sec-spec-clustering.html#cb41-3" tabindex="-1"></a>cluster2 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="fl">4.5</span>, <span class="fl">5.5</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb41-4"><a href="sec-spec-clustering.html#cb41-4" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">rbind</span>(cluster1, cluster2)</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="sec-spec-clustering.html#cb48-1" tabindex="-1"></a><span class="co"># Generate two clusters</span></span>
+<span id="cb48-2"><a href="sec-spec-clustering.html#cb48-2" tabindex="-1"></a>cluster1 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="fl">1.5</span>, <span class="fl">2.5</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb48-3"><a href="sec-spec-clustering.html#cb48-3" tabindex="-1"></a>cluster2 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="fl">4.5</span>, <span class="fl">5.5</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb48-4"><a href="sec-spec-clustering.html#cb48-4" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">rbind</span>(cluster1, cluster2)</span></code></pre></div>
 <p>Visualize the data points to make it more intuitive.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="sec-spec-clustering.html#cb42-1" tabindex="-1"></a><span class="fu">plot</span>(data, <span class="at">col =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;red&quot;</span>, <span class="fu">nrow</span>(cluster1)), <span class="fu">rep</span>(<span class="st">&quot;blue&quot;</span>, <span class="fu">nrow</span>(cluster2))), <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">xlab =</span> <span class="st">&quot;X-axis&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Y-axis&quot;</span>)</span>
-<span id="cb42-2"><a href="sec-spec-clustering.html#cb42-2" tabindex="-1"></a><span class="fu">text</span>(data, <span class="at">labels =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(data), <span class="at">pos =</span> <span class="dv">4</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>)  <span class="co"># Adding labels</span></span>
-<span id="cb42-3"><a href="sec-spec-clustering.html#cb42-3" tabindex="-1"></a><span class="fu">title</span>(<span class="st">&quot;Data Points Visualization&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="sec-spec-clustering.html#cb49-1" tabindex="-1"></a><span class="fu">plot</span>(data, <span class="at">col =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;red&quot;</span>, <span class="fu">nrow</span>(cluster1)), <span class="fu">rep</span>(<span class="st">&quot;blue&quot;</span>, <span class="fu">nrow</span>(cluster2))), <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">xlab =</span> <span class="st">&quot;X-axis&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Y-axis&quot;</span>)</span>
+<span id="cb49-2"><a href="sec-spec-clustering.html#cb49-2" tabindex="-1"></a><span class="fu">text</span>(data, <span class="at">labels =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(data), <span class="at">pos =</span> <span class="dv">4</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>)  <span class="co"># Adding labels</span></span>
+<span id="cb49-3"><a href="sec-spec-clustering.html#cb49-3" tabindex="-1"></a><span class="fu">title</span>(<span class="st">&quot;Data Points Visualization&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-202-1.png" width="672" /></p>
 <p>We use the <strong><span class="math inline">\(\epsilon\)</span>-neighborhood</strong> approach to construct the similarity graph.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="sec-spec-clustering.html#cb43-1" tabindex="-1"></a>epsilon <span class="ot">&lt;-</span> <span class="fl">1.5</span>  <span class="co"># Set epsilon value</span></span>
-<span id="cb43-2"><a href="sec-spec-clustering.html#cb43-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(data)</span>
-<span id="cb43-3"><a href="sec-spec-clustering.html#cb43-3" tabindex="-1"></a>similarity_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, n, n)</span>
-<span id="cb43-4"><a href="sec-spec-clustering.html#cb43-4" tabindex="-1"></a></span>
-<span id="cb43-5"><a href="sec-spec-clustering.html#cb43-5" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb43-6"><a href="sec-spec-clustering.html#cb43-6" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb43-7"><a href="sec-spec-clustering.html#cb43-7" tabindex="-1"></a>    <span class="cf">if</span> (i <span class="sc">!=</span> j <span class="sc">&amp;&amp;</span> <span class="fu">dist</span>(<span class="fu">rbind</span>(data[i, ], data[j, ])) <span class="sc">&lt;</span> epsilon) {</span>
-<span id="cb43-8"><a href="sec-spec-clustering.html#cb43-8" tabindex="-1"></a>      similarity_matrix[i, j] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb43-9"><a href="sec-spec-clustering.html#cb43-9" tabindex="-1"></a>      similarity_matrix[j, i] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb43-10"><a href="sec-spec-clustering.html#cb43-10" tabindex="-1"></a>    }</span>
-<span id="cb43-11"><a href="sec-spec-clustering.html#cb43-11" tabindex="-1"></a>  }</span>
-<span id="cb43-12"><a href="sec-spec-clustering.html#cb43-12" tabindex="-1"></a>}</span>
-<span id="cb43-13"><a href="sec-spec-clustering.html#cb43-13" tabindex="-1"></a></span>
-<span id="cb43-14"><a href="sec-spec-clustering.html#cb43-14" tabindex="-1"></a><span class="fu">print</span>(similarity_matrix)</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="sec-spec-clustering.html#cb50-1" tabindex="-1"></a>epsilon <span class="ot">&lt;-</span> <span class="fl">1.5</span>  <span class="co"># Set epsilon value</span></span>
+<span id="cb50-2"><a href="sec-spec-clustering.html#cb50-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(data)</span>
+<span id="cb50-3"><a href="sec-spec-clustering.html#cb50-3" tabindex="-1"></a>similarity_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, n, n)</span>
+<span id="cb50-4"><a href="sec-spec-clustering.html#cb50-4" tabindex="-1"></a></span>
+<span id="cb50-5"><a href="sec-spec-clustering.html#cb50-5" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb50-6"><a href="sec-spec-clustering.html#cb50-6" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb50-7"><a href="sec-spec-clustering.html#cb50-7" tabindex="-1"></a>    <span class="cf">if</span> (i <span class="sc">!=</span> j <span class="sc">&amp;&amp;</span> <span class="fu">dist</span>(<span class="fu">rbind</span>(data[i, ], data[j, ])) <span class="sc">&lt;</span> epsilon) {</span>
+<span id="cb50-8"><a href="sec-spec-clustering.html#cb50-8" tabindex="-1"></a>      similarity_matrix[i, j] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb50-9"><a href="sec-spec-clustering.html#cb50-9" tabindex="-1"></a>      similarity_matrix[j, i] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb50-10"><a href="sec-spec-clustering.html#cb50-10" tabindex="-1"></a>    }</span>
+<span id="cb50-11"><a href="sec-spec-clustering.html#cb50-11" tabindex="-1"></a>  }</span>
+<span id="cb50-12"><a href="sec-spec-clustering.html#cb50-12" tabindex="-1"></a>}</span>
+<span id="cb50-13"><a href="sec-spec-clustering.html#cb50-13" tabindex="-1"></a></span>
+<span id="cb50-14"><a href="sec-spec-clustering.html#cb50-14" tabindex="-1"></a><span class="fu">print</span>(similarity_matrix)</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
 ## [1,]    0    1    1    0    0    0
 ## [2,]    1    0    1    0    0    0
@@ -395,9 +398,9 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 ## [5,]    0    0    0    1    0    1
 ## [6,]    0    0    0    1    1    0</code></pre>
 <p>Compute the Laplacian matrix.</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="sec-spec-clustering.html#cb45-1" tabindex="-1"></a>degree_matrix <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="fu">apply</span>(similarity_matrix, <span class="dv">1</span>, sum))</span>
-<span id="cb45-2"><a href="sec-spec-clustering.html#cb45-2" tabindex="-1"></a>laplacian_matrix <span class="ot">&lt;-</span> degree_matrix <span class="sc">-</span> similarity_matrix</span>
-<span id="cb45-3"><a href="sec-spec-clustering.html#cb45-3" tabindex="-1"></a><span class="fu">print</span>(laplacian_matrix)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="sec-spec-clustering.html#cb52-1" tabindex="-1"></a>degree_matrix <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="fu">apply</span>(similarity_matrix, <span class="dv">1</span>, sum))</span>
+<span id="cb52-2"><a href="sec-spec-clustering.html#cb52-2" tabindex="-1"></a>laplacian_matrix <span class="ot">&lt;-</span> degree_matrix <span class="sc">-</span> similarity_matrix</span>
+<span id="cb52-3"><a href="sec-spec-clustering.html#cb52-3" tabindex="-1"></a><span class="fu">print</span>(laplacian_matrix)</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
 ## [1,]    2   -1   -1    0    0    0
 ## [2,]   -1    2   -1    0    0    0
@@ -406,19 +409,19 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 ## [5,]    0    0    0   -1    2   -1
 ## [6,]    0    0    0   -1   -1    2</code></pre>
 <p>Perform eigen decomposition on the Laplacian matrix. We choose the smallest two eigenvalues here since we want to</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="sec-spec-clustering.html#cb47-1" tabindex="-1"></a>eigen_result <span class="ot">&lt;-</span> <span class="fu">eigen</span>(laplacian_matrix)</span>
-<span id="cb47-2"><a href="sec-spec-clustering.html#cb47-2" tabindex="-1"></a></span>
-<span id="cb47-3"><a href="sec-spec-clustering.html#cb47-3" tabindex="-1"></a><span class="co"># Sort eigenvalues and their corresponding eigenvectors</span></span>
-<span id="cb47-4"><a href="sec-spec-clustering.html#cb47-4" tabindex="-1"></a>sorted_indices <span class="ot">&lt;-</span> <span class="fu">order</span>(eigen_result<span class="sc">$</span>values)</span>
-<span id="cb47-5"><a href="sec-spec-clustering.html#cb47-5" tabindex="-1"></a>sorted_eigenvalues <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>values[sorted_indices]</span>
-<span id="cb47-6"><a href="sec-spec-clustering.html#cb47-6" tabindex="-1"></a>sorted_eigenvectors <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>vectors[, sorted_indices]</span>
-<span id="cb47-7"><a href="sec-spec-clustering.html#cb47-7" tabindex="-1"></a></span>
-<span id="cb47-8"><a href="sec-spec-clustering.html#cb47-8" tabindex="-1"></a><span class="co"># Select the smallest two eigenvalues and their corresponding eigenvectors</span></span>
-<span id="cb47-9"><a href="sec-spec-clustering.html#cb47-9" tabindex="-1"></a>smallest_eigenvalues <span class="ot">&lt;-</span> sorted_eigenvalues[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
-<span id="cb47-10"><a href="sec-spec-clustering.html#cb47-10" tabindex="-1"></a>smallest_eigenvectors <span class="ot">&lt;-</span> sorted_eigenvectors[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
-<span id="cb47-11"><a href="sec-spec-clustering.html#cb47-11" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvalues)</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="sec-spec-clustering.html#cb54-1" tabindex="-1"></a>eigen_result <span class="ot">&lt;-</span> <span class="fu">eigen</span>(laplacian_matrix)</span>
+<span id="cb54-2"><a href="sec-spec-clustering.html#cb54-2" tabindex="-1"></a></span>
+<span id="cb54-3"><a href="sec-spec-clustering.html#cb54-3" tabindex="-1"></a><span class="co"># Sort eigenvalues and their corresponding eigenvectors</span></span>
+<span id="cb54-4"><a href="sec-spec-clustering.html#cb54-4" tabindex="-1"></a>sorted_indices <span class="ot">&lt;-</span> <span class="fu">order</span>(eigen_result<span class="sc">$</span>values)</span>
+<span id="cb54-5"><a href="sec-spec-clustering.html#cb54-5" tabindex="-1"></a>sorted_eigenvalues <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>values[sorted_indices]</span>
+<span id="cb54-6"><a href="sec-spec-clustering.html#cb54-6" tabindex="-1"></a>sorted_eigenvectors <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>vectors[, sorted_indices]</span>
+<span id="cb54-7"><a href="sec-spec-clustering.html#cb54-7" tabindex="-1"></a></span>
+<span id="cb54-8"><a href="sec-spec-clustering.html#cb54-8" tabindex="-1"></a><span class="co"># Select the smallest two eigenvalues and their corresponding eigenvectors</span></span>
+<span id="cb54-9"><a href="sec-spec-clustering.html#cb54-9" tabindex="-1"></a>smallest_eigenvalues <span class="ot">&lt;-</span> sorted_eigenvalues[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb54-10"><a href="sec-spec-clustering.html#cb54-10" tabindex="-1"></a>smallest_eigenvectors <span class="ot">&lt;-</span> sorted_eigenvectors[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb54-11"><a href="sec-spec-clustering.html#cb54-11" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvalues)</span></code></pre></div>
 <pre><code>## [1] 1.776357e-15 1.776357e-15</code></pre>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="sec-spec-clustering.html#cb49-1" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvectors)</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="sec-spec-clustering.html#cb56-1" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvectors)</span></code></pre></div>
 <pre><code>##            [,1]       [,2]
 ## [1,]  0.0000000 -0.5773503
 ## [2,]  0.0000000 -0.5773503
@@ -428,20 +431,20 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 ## [6,] -0.5773503  0.0000000</code></pre>
 <p>We find that the smallest two eigen-values are 0 (not exact zero here because of computational precision issue), and their corresponding eigen-vectors give us information about the clustering. The first cluster contains data point 4, 5, 6; while the second cluster contains the rest three data points 1, 2, 3.</p>
 <p>We try <strong>fully-connected graph</strong> with radial basis function to construct the adjacency matrix this time.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="sec-spec-clustering.html#cb51-1" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="dv">1</span>  <span class="co"># Scale parameter for the RBF kernel</span></span>
-<span id="cb51-2"><a href="sec-spec-clustering.html#cb51-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(data)</span>
-<span id="cb51-3"><a href="sec-spec-clustering.html#cb51-3" tabindex="-1"></a>similarity_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, n, n)</span>
-<span id="cb51-4"><a href="sec-spec-clustering.html#cb51-4" tabindex="-1"></a></span>
-<span id="cb51-5"><a href="sec-spec-clustering.html#cb51-5" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb51-6"><a href="sec-spec-clustering.html#cb51-6" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb51-7"><a href="sec-spec-clustering.html#cb51-7" tabindex="-1"></a>    <span class="cf">if</span> (i <span class="sc">!=</span> j) {</span>
-<span id="cb51-8"><a href="sec-spec-clustering.html#cb51-8" tabindex="-1"></a>      distance <span class="ot">&lt;-</span> <span class="fu">dist</span>(<span class="fu">rbind</span>(data[i, ], data[j, ]))<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb51-9"><a href="sec-spec-clustering.html#cb51-9" tabindex="-1"></a>      similarity_matrix[i, j] <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>gamma <span class="sc">*</span> distance)</span>
-<span id="cb51-10"><a href="sec-spec-clustering.html#cb51-10" tabindex="-1"></a>    }</span>
-<span id="cb51-11"><a href="sec-spec-clustering.html#cb51-11" tabindex="-1"></a>  }</span>
-<span id="cb51-12"><a href="sec-spec-clustering.html#cb51-12" tabindex="-1"></a>}</span>
-<span id="cb51-13"><a href="sec-spec-clustering.html#cb51-13" tabindex="-1"></a></span>
-<span id="cb51-14"><a href="sec-spec-clustering.html#cb51-14" tabindex="-1"></a><span class="fu">print</span>(similarity_matrix)</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="sec-spec-clustering.html#cb58-1" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="dv">1</span>  <span class="co"># Scale parameter for the RBF kernel</span></span>
+<span id="cb58-2"><a href="sec-spec-clustering.html#cb58-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(data)</span>
+<span id="cb58-3"><a href="sec-spec-clustering.html#cb58-3" tabindex="-1"></a>similarity_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, n, n)</span>
+<span id="cb58-4"><a href="sec-spec-clustering.html#cb58-4" tabindex="-1"></a></span>
+<span id="cb58-5"><a href="sec-spec-clustering.html#cb58-5" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb58-6"><a href="sec-spec-clustering.html#cb58-6" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb58-7"><a href="sec-spec-clustering.html#cb58-7" tabindex="-1"></a>    <span class="cf">if</span> (i <span class="sc">!=</span> j) {</span>
+<span id="cb58-8"><a href="sec-spec-clustering.html#cb58-8" tabindex="-1"></a>      distance <span class="ot">&lt;-</span> <span class="fu">dist</span>(<span class="fu">rbind</span>(data[i, ], data[j, ]))<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb58-9"><a href="sec-spec-clustering.html#cb58-9" tabindex="-1"></a>      similarity_matrix[i, j] <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>gamma <span class="sc">*</span> distance)</span>
+<span id="cb58-10"><a href="sec-spec-clustering.html#cb58-10" tabindex="-1"></a>    }</span>
+<span id="cb58-11"><a href="sec-spec-clustering.html#cb58-11" tabindex="-1"></a>  }</span>
+<span id="cb58-12"><a href="sec-spec-clustering.html#cb58-12" tabindex="-1"></a>}</span>
+<span id="cb58-13"><a href="sec-spec-clustering.html#cb58-13" tabindex="-1"></a></span>
+<span id="cb58-14"><a href="sec-spec-clustering.html#cb58-14" tabindex="-1"></a><span class="fu">print</span>(similarity_matrix)</span></code></pre></div>
 <pre><code>##              [,1]         [,2]         [,3]         [,4]         [,5]         [,6]
 ## [1,] 0.000000e+00 2.865048e-01 6.065307e-01 1.522998e-08 2.172440e-10 2.289735e-11
 ## [2,] 2.865048e-01 0.000000e+00 2.865048e-01 8.764248e-08 1.522998e-08 2.172440e-10
@@ -449,9 +452,9 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 ## [4,] 1.522998e-08 8.764248e-08 3.726653e-06 0.000000e+00 2.865048e-01 6.065307e-01
 ## [5,] 2.172440e-10 1.522998e-08 8.764248e-08 2.865048e-01 0.000000e+00 2.865048e-01
 ## [6,] 2.289735e-11 2.172440e-10 1.522998e-08 6.065307e-01 2.865048e-01 0.000000e+00</code></pre>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="sec-spec-clustering.html#cb53-1" tabindex="-1"></a>degree_matrix <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="fu">apply</span>(similarity_matrix, <span class="dv">1</span>, sum))</span>
-<span id="cb53-2"><a href="sec-spec-clustering.html#cb53-2" tabindex="-1"></a>laplacian_matrix <span class="ot">&lt;-</span> degree_matrix <span class="sc">-</span> similarity_matrix</span>
-<span id="cb53-3"><a href="sec-spec-clustering.html#cb53-3" tabindex="-1"></a><span class="fu">print</span>(laplacian_matrix)</span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="sec-spec-clustering.html#cb60-1" tabindex="-1"></a>degree_matrix <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="fu">apply</span>(similarity_matrix, <span class="dv">1</span>, sum))</span>
+<span id="cb60-2"><a href="sec-spec-clustering.html#cb60-2" tabindex="-1"></a>laplacian_matrix <span class="ot">&lt;-</span> degree_matrix <span class="sc">-</span> similarity_matrix</span>
+<span id="cb60-3"><a href="sec-spec-clustering.html#cb60-3" tabindex="-1"></a><span class="fu">print</span>(laplacian_matrix)</span></code></pre></div>
 <pre><code>##               [,1]          [,2]          [,3]          [,4]          [,5]          [,6]
 ## [1,]  8.930355e-01 -2.865048e-01 -6.065307e-01 -1.522998e-08 -2.172440e-10 -2.289735e-11
 ## [2,] -2.865048e-01  5.730097e-01 -2.865048e-01 -8.764248e-08 -1.522998e-08 -2.172440e-10
@@ -459,19 +462,19 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 ## [4,] -1.522998e-08 -8.764248e-08 -3.726653e-06  8.930393e-01 -2.865048e-01 -6.065307e-01
 ## [5,] -2.172440e-10 -1.522998e-08 -8.764248e-08 -2.865048e-01  5.730097e-01 -2.865048e-01
 ## [6,] -2.289735e-11 -2.172440e-10 -1.522998e-08 -6.065307e-01 -2.865048e-01  8.930355e-01</code></pre>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="sec-spec-clustering.html#cb55-1" tabindex="-1"></a>eigen_result <span class="ot">&lt;-</span> <span class="fu">eigen</span>(laplacian_matrix)</span>
-<span id="cb55-2"><a href="sec-spec-clustering.html#cb55-2" tabindex="-1"></a></span>
-<span id="cb55-3"><a href="sec-spec-clustering.html#cb55-3" tabindex="-1"></a><span class="co"># Sort eigenvalues and their corresponding eigenvectors</span></span>
-<span id="cb55-4"><a href="sec-spec-clustering.html#cb55-4" tabindex="-1"></a>sorted_indices <span class="ot">&lt;-</span> <span class="fu">order</span>(eigen_result<span class="sc">$</span>values)</span>
-<span id="cb55-5"><a href="sec-spec-clustering.html#cb55-5" tabindex="-1"></a>sorted_eigenvalues <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>values[sorted_indices]</span>
-<span id="cb55-6"><a href="sec-spec-clustering.html#cb55-6" tabindex="-1"></a>sorted_eigenvectors <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>vectors[, sorted_indices]</span>
-<span id="cb55-7"><a href="sec-spec-clustering.html#cb55-7" tabindex="-1"></a></span>
-<span id="cb55-8"><a href="sec-spec-clustering.html#cb55-8" tabindex="-1"></a><span class="co"># Select the smallest two eigenvalues and their corresponding eigenvectors</span></span>
-<span id="cb55-9"><a href="sec-spec-clustering.html#cb55-9" tabindex="-1"></a>smallest_eigenvalues <span class="ot">&lt;-</span> sorted_eigenvalues[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
-<span id="cb55-10"><a href="sec-spec-clustering.html#cb55-10" tabindex="-1"></a>smallest_eigenvectors <span class="ot">&lt;-</span> sorted_eigenvectors[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
-<span id="cb55-11"><a href="sec-spec-clustering.html#cb55-11" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvalues)</span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="sec-spec-clustering.html#cb62-1" tabindex="-1"></a>eigen_result <span class="ot">&lt;-</span> <span class="fu">eigen</span>(laplacian_matrix)</span>
+<span id="cb62-2"><a href="sec-spec-clustering.html#cb62-2" tabindex="-1"></a></span>
+<span id="cb62-3"><a href="sec-spec-clustering.html#cb62-3" tabindex="-1"></a><span class="co"># Sort eigenvalues and their corresponding eigenvectors</span></span>
+<span id="cb62-4"><a href="sec-spec-clustering.html#cb62-4" tabindex="-1"></a>sorted_indices <span class="ot">&lt;-</span> <span class="fu">order</span>(eigen_result<span class="sc">$</span>values)</span>
+<span id="cb62-5"><a href="sec-spec-clustering.html#cb62-5" tabindex="-1"></a>sorted_eigenvalues <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>values[sorted_indices]</span>
+<span id="cb62-6"><a href="sec-spec-clustering.html#cb62-6" tabindex="-1"></a>sorted_eigenvectors <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>vectors[, sorted_indices]</span>
+<span id="cb62-7"><a href="sec-spec-clustering.html#cb62-7" tabindex="-1"></a></span>
+<span id="cb62-8"><a href="sec-spec-clustering.html#cb62-8" tabindex="-1"></a><span class="co"># Select the smallest two eigenvalues and their corresponding eigenvectors</span></span>
+<span id="cb62-9"><a href="sec-spec-clustering.html#cb62-9" tabindex="-1"></a>smallest_eigenvalues <span class="ot">&lt;-</span> sorted_eigenvalues[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb62-10"><a href="sec-spec-clustering.html#cb62-10" tabindex="-1"></a>smallest_eigenvectors <span class="ot">&lt;-</span> sorted_eigenvectors[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb62-11"><a href="sec-spec-clustering.html#cb62-11" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvalues)</span></code></pre></div>
 <pre><code>## [1] 2.564067e-16 2.632047e-06</code></pre>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="sec-spec-clustering.html#cb57-1" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvectors)</span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="sec-spec-clustering.html#cb64-1" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvectors)</span></code></pre></div>
 <pre><code>##            [,1]       [,2]
 ## [1,] -0.4082483  0.4082488
 ## [2,] -0.4082483  0.4082494
@@ -505,49 +508,67 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 <div class="csl-left-margin">[7] </div><div class="csl-right-inline"><span class="smallcaps">Hotelling</span>, H. (1933). Analysis of a complex of statistical variables into principal components. <em>Journal of educational psychology</em> <strong>24</strong> 417.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[8] </div><div class="csl-right-inline"><span class="smallcaps">Lee</span>, D. and <span class="smallcaps">Seung</span>, H. S. (2000). <a href="https://proceedings.neurips.cc/paper_files/paper/2000/file/f9d1152547c0bde01830b7e8bd60024c-Paper.pdf">Algorithms for non-negative matrix factorization</a>. In <em>Advances in neural information processing systems</em> vol 13, (T. Leen, T. Dietterich and V. Tresp, ed). MIT Press.</div>
+<div class="csl-left-margin">[8] </div><div class="csl-right-inline"><span class="smallcaps">Donoho</span>, D., <span class="smallcaps">Gavish</span>, M. and <span class="smallcaps">Romanov</span>, E. (2023). <a href="https://doi.org/10.1214/22-AOS2232"><span class="nocase">ScreeNOT: Exact MSE-optimal singular value thresholding in correlated noise</span></a>. <em>The Annals of Statistics</em> <strong>51</strong> 122–48.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[9] </div><div class="csl-right-inline"><span class="smallcaps">Saul</span>, L. K. and <span class="smallcaps">Roweis</span>, S. T. (2003). <a href="https://doi.org/10.1162/153244304322972667">Think globally, fit locally: Unsupervised learning of low dimensional manifolds</a>. <strong>4</strong> 119–55.</div>
+<div class="csl-left-margin">[9] </div><div class="csl-right-inline"><span class="smallcaps">Cattell</span>, R. B. (1966). <a href="https://doi.org/10.1207/s15327906mbr0102\_10">The scree test for the number of factors</a>. <em>Multivariate Behavioral Research</em> <strong>1</strong> 245–76.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[10] </div><div class="csl-right-inline"><span class="smallcaps">Alam</span>, M. A. and <span class="smallcaps">Fukumizu</span>, K. (2014). <a href="https://doi.org/10.3844/jcssp.2014.1139.1150">Hyperparameter selection in kernel principal component analysis</a>. <em>Journal of Computer Science</em> <strong>10</strong> 1139–50.</div>
+<div class="csl-left-margin">[10] </div><div class="csl-right-inline"><span class="smallcaps">Lee</span>, D. and <span class="smallcaps">Seung</span>, H. S. (2000). <a href="https://proceedings.neurips.cc/paper_files/paper/2000/file/f9d1152547c0bde01830b7e8bd60024c-Paper.pdf">Algorithms for non-negative matrix factorization</a>. In <em>Advances in neural information processing systems</em> vol 13, (T. Leen, T. Dietterich and V. Tresp, ed). MIT Press.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[11] </div><div class="csl-right-inline"><span class="smallcaps">Mika</span>, S., <span class="smallcaps">Schölkopf</span>, B., <span class="smallcaps">Smola</span>, A., <span class="smallcaps">Müller</span>, K.-R., <span class="smallcaps">Scholz</span>, M. and <span class="smallcaps">Rätsch</span>, G. (1998). <a href="https://proceedings.neurips.cc/paper_files/paper/1998/file/226d1f15ecd35f784d2a20c3ecf56d7f-Paper.pdf">Kernel PCA and de-noising in feature spaces</a>. In <em>Advances in neural information processing systems</em> vol 11, (M. Kearns, S. Solla and D. Cohn, ed). MIT Press.</div>
+<div class="csl-left-margin">[11] </div><div class="csl-right-inline"><span class="smallcaps">Cutler</span>, A. and <span class="smallcaps">Breiman</span>, L. (1994). <a href="http://www.jstor.org/stable/1269949">Archetypal analysis</a>. <em>Technometrics</em> <strong>36</strong> 338–47.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[12] </div><div class="csl-right-inline"><span class="smallcaps">Tenenbaum</span>, J. B., <span class="smallcaps">Silva</span>, V. de and <span class="smallcaps">Langford</span>, J. C. (2000). <a href="https://doi.org/10.1126/science.290.5500.2319">A global geometric framework for nonlinear dimensionality reduction</a>. <em>Science</em> <strong>290</strong> 2319–23.</div>
+<div class="csl-left-margin">[12] </div><div class="csl-right-inline"><span class="smallcaps">Lin</span>, C.-H., <span class="smallcaps">Ma</span>, W.-K., <span class="smallcaps">Li</span>, W.-C., <span class="smallcaps">Chi</span>, C.-Y. and <span class="smallcaps">Ambikapathi</span>, A. (2014). <a href="https://doi.org/10.1109/TGRS.2015.2424719">Identifiability of the simplex volume minimization criterion for blind hyperspectral unmixing: The no pure-pixel case</a>. <em>IEEE Transactions on Geoscience and Remote Sensing</em> <strong>53</strong>.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[13] </div><div class="csl-right-inline"><span class="smallcaps">Bernstein</span>, M., <span class="smallcaps">Silva</span>, V., <span class="smallcaps">Langford</span>, J. and <span class="smallcaps">Tenenbaum</span>, J. (2001). Graph approximations to geodesics on embedded manifolds.</div>
+<div class="csl-left-margin">[13] </div><div class="csl-right-inline"><span class="smallcaps">Fu</span>, X., <span class="smallcaps">Ma</span>, W.-K., <span class="smallcaps">Huang</span>, K. and <span class="smallcaps">Sidiropoulos</span>, N. D. (2015). <a href="https://doi.org/10.1109/TSP.2015.2404577">Blind separation of quasi-stationary sources: Exploiting convex geometry in covariance domain</a>. <em>IEEE Transactions on Signal Processing</em> <strong>63</strong> 1–1.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[14] </div><div class="csl-right-inline"><span class="smallcaps">Roweis</span>, S. T. and <span class="smallcaps">Saul</span>, L. K. (2000). <a href="https://doi.org/10.1126/science.290.5500.2323">Nonlinear dimensionality reduction by locally linear embedding</a>. <em>Science</em> <strong>290</strong> 2323–6.</div>
+<div class="csl-left-margin">[14] </div><div class="csl-right-inline"><span class="smallcaps">Févotte</span>, C., <span class="smallcaps">Bertin</span>, N. and <span class="smallcaps">Durrieu</span>, J.-L. (2009). <a href="https://doi.org/10.1162/neco.2008.04-08-771">Nonnegative matrix factorization with the itakura-saito divergence: With application to music analysis</a>. <em>Neural Computation</em> <strong>21</strong> 793–830.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[15] </div><div class="csl-right-inline"><span class="smallcaps">Chen</span>, J. and <span class="smallcaps">Liu</span>, Y. (2011). <a href="https://doi.org/10.1007/s10462-010-9200-z">Locally linear embedding: A survey</a>. <em>Artif. Intell. Rev.</em> <strong>36</strong> 29–48.</div>
+<div class="csl-left-margin">[15] </div><div class="csl-right-inline"><span class="smallcaps">Saul</span>, L. K. and <span class="smallcaps">Roweis</span>, S. T. (2003). <a href="https://doi.org/10.1162/153244304322972667">Think globally, fit locally: Unsupervised learning of low dimensional manifolds</a>. <strong>4</strong> 119–55.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[16] </div><div class="csl-right-inline"><span class="smallcaps">Saul</span>, L. K. and <span class="smallcaps">Roweis</span>, S. T. (2003). <a href="https://doi.org/10.1162/153244304322972667">Think globally, fit locally: Unsupervised learning of low dimensional manifolds</a>. <strong>4</strong> 119–55.</div>
+<div class="csl-left-margin">[16] </div><div class="csl-right-inline"><span class="smallcaps">Alam</span>, M. A. and <span class="smallcaps">Fukumizu</span>, K. (2014). <a href="https://doi.org/10.3844/jcssp.2014.1139.1150">Hyperparameter selection in kernel principal component analysis</a>. <em>Journal of Computer Science</em> <strong>10</strong> 1139–50.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[17] </div><div class="csl-right-inline"><span class="smallcaps">Anon</span>. (2019). <a href="https://doi.org/10.1016/j.patrec.2019.02.030">Locally linear embedding with additive noise</a>. <em>Pattern Recognition Letters</em> <strong>123</strong> 47–52.</div>
+<div class="csl-left-margin">[17] </div><div class="csl-right-inline"><span class="smallcaps">Mika</span>, S., <span class="smallcaps">Schölkopf</span>, B., <span class="smallcaps">Smola</span>, A., <span class="smallcaps">Müller</span>, K.-R., <span class="smallcaps">Scholz</span>, M. and <span class="smallcaps">Rätsch</span>, G. (1998). <a href="https://proceedings.neurips.cc/paper_files/paper/1998/file/226d1f15ecd35f784d2a20c3ecf56d7f-Paper.pdf">Kernel PCA and de-noising in feature spaces</a>. In <em>Advances in neural information processing systems</em> vol 11, (M. Kearns, S. Solla and D. Cohn, ed). MIT Press.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[18] </div><div class="csl-right-inline"><span class="smallcaps">Chang</span>, H. and <span class="smallcaps">Yeung</span>, D.-Y. (2006). <a href="https://doi.org/10.1016/j.patcog.2005.07.011">Robust locally linear embedding</a>. <em>Pattern Recognition</em> <strong>39</strong> 1053–65.</div>
+<div class="csl-left-margin">[18] </div><div class="csl-right-inline"><span class="smallcaps">Tenenbaum</span>, J. B., <span class="smallcaps">Silva</span>, V. de and <span class="smallcaps">Langford</span>, J. C. (2000). <a href="https://doi.org/10.1126/science.290.5500.2319">A global geometric framework for nonlinear dimensionality reduction</a>. <em>Science</em> <strong>290</strong> 2319–23.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[19] </div><div class="csl-right-inline"><span class="smallcaps">Belkin</span>, M. and <span class="smallcaps">Niyogi</span>, P. (2001). <a href="https://proceedings.neurips.cc/paper_files/paper/2001/file/f106b7f99d2cb30c3db1c3cc0fde9ccb-Paper.pdf">Laplacian eigenmaps and spectral techniques for embedding and clustering</a>. In <em>Advances in neural information processing systems</em> vol 14, (T. Dietterich, S. Becker and Z. Ghahramani, ed). MIT Press.</div>
+<div class="csl-left-margin">[19] </div><div class="csl-right-inline"><span class="smallcaps">Bernstein</span>, M., <span class="smallcaps">Silva</span>, V., <span class="smallcaps">Langford</span>, J. and <span class="smallcaps">Tenenbaum</span>, J. (2001). Graph approximations to geodesics on embedded manifolds.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[20] </div><div class="csl-right-inline"><span class="smallcaps">Hinton</span>, G. E. and <span class="smallcaps">Salakhutdinov</span>, R. R. (2006). <a href="https://doi.org/10.1126/science.1127647">Reducing the dimensionality of data with neural networks</a>. <em>Science</em> <strong>313</strong> 504–7.</div>
+<div class="csl-left-margin">[20] </div><div class="csl-right-inline"><span class="smallcaps">Roweis</span>, S. T. and <span class="smallcaps">Saul</span>, L. K. (2000). <a href="https://doi.org/10.1126/science.290.5500.2323">Nonlinear dimensionality reduction by locally linear embedding</a>. <em>Science</em> <strong>290</strong> 2323–6.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[21] </div><div class="csl-right-inline"><span class="smallcaps">Kingma</span>, D. P. and <span class="smallcaps">Welling</span>, M. (2013). <a href="https://api.semanticscholar.org/CorpusID:216078090">Auto-encoding variational bayes</a>. <em>CoRR</em> <strong>abs/1312.6114</strong>.</div>
+<div class="csl-left-margin">[21] </div><div class="csl-right-inline"><span class="smallcaps">Chen</span>, J. and <span class="smallcaps">Liu</span>, Y. (2011). <a href="https://doi.org/10.1007/s10462-010-9200-z">Locally linear embedding: A survey</a>. <em>Artif. Intell. Rev.</em> <strong>36</strong> 29–48.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[22] </div><div class="csl-right-inline"><span class="smallcaps">Vincent</span>, P., <span class="smallcaps">Larochelle</span>, H., <span class="smallcaps">Bengio</span>, Y. and <span class="smallcaps">Manzagol</span>, P.-A. (2008). <a href="https://doi.org/10.1145/1390156.1390294">Extracting and composing robust features with denoising autoencoders</a>. In ICML ’08 pp 1096–103. Association for Computing Machinery.</div>
+<div class="csl-left-margin">[22] </div><div class="csl-right-inline"><span class="smallcaps">Saul</span>, L. K. and <span class="smallcaps">Roweis</span>, S. T. (2003). <a href="https://doi.org/10.1162/153244304322972667">Think globally, fit locally: Unsupervised learning of low dimensional manifolds</a>. <strong>4</strong> 119–55.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[23] </div><div class="csl-right-inline"><span class="smallcaps">Anon</span>. (2019). <a href="https://doi.org/10.1016/j.patrec.2019.02.030">Locally linear embedding with additive noise</a>. <em>Pattern Recognition Letters</em> <strong>123</strong> 47–52.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[24] </div><div class="csl-right-inline"><span class="smallcaps">Chang</span>, H. and <span class="smallcaps">Yeung</span>, D.-Y. (2006). <a href="https://doi.org/10.1016/j.patcog.2005.07.011">Robust locally linear embedding</a>. <em>Pattern Recognition</em> <strong>39</strong> 1053–65.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[25] </div><div class="csl-right-inline"><span class="smallcaps">Belkin</span>, M. and <span class="smallcaps">Niyogi</span>, P. (2001). <a href="https://proceedings.neurips.cc/paper_files/paper/2001/file/f106b7f99d2cb30c3db1c3cc0fde9ccb-Paper.pdf">Laplacian eigenmaps and spectral techniques for embedding and clustering</a>. In <em>Advances in neural information processing systems</em> vol 14, (T. Dietterich, S. Becker and Z. Ghahramani, ed). MIT Press.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[26] </div><div class="csl-right-inline"><span class="smallcaps">Hinton</span>, G. E. and <span class="smallcaps">Salakhutdinov</span>, R. R. (2006). <a href="https://doi.org/10.1126/science.1127647">Reducing the dimensionality of data with neural networks</a>. <em>Science</em> <strong>313</strong> 504–7.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[27] </div><div class="csl-right-inline"><span class="smallcaps">Kingma</span>, D. P. and <span class="smallcaps">Welling</span>, M. (2013). <a href="https://api.semanticscholar.org/CorpusID:216078090">Auto-encoding variational bayes</a>. <em>CoRR</em> <strong>abs/1312.6114</strong>.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[28] </div><div class="csl-right-inline"><span class="smallcaps">Vincent</span>, P., <span class="smallcaps">Larochelle</span>, H., <span class="smallcaps">Bengio</span>, Y. and <span class="smallcaps">Manzagol</span>, P.-A. (2008). <a href="https://doi.org/10.1145/1390156.1390294">Extracting and composing robust features with denoising autoencoders</a>. In ICML ’08 pp 1096–103. Association for Computing Machinery.</div>
 </div>
 </div>
 </div>
@@ -558,7 +579,7 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
           </div>
         </div>
       </div>
-<a href="spectral.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="center-based-clustering.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
     </div>
   </div>
@@ -590,7 +611,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/young1062/introULSpectral-Clustering.Rmd",
+"link": "https://github.com/young1062/introUL06-clustering.Rmd",
 "text": "Edit"
 },
 "history": {

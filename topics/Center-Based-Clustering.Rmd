@@ -1,0 +1,82 @@
+## Center-Based Clustering
+
+**Goal**: Group `N` observations into clusters of similar points.
+
+### Key Points
+
+1. Unlike hierarchical clustering, the number of clusters (`k`) must be specified in advance.
+2. \( k \)-means clustering does not result from splitting clusters in a hierarchical fashion.
+3. Objective: Define clusters and iteratively optimize cluster centers.
+
+### \( k \)-Means Clustering
+
+The \( k \)-means clustering objective aims to minimize the sum of squared Euclidean distances:
+
+$$
+J = \sum_{i=1}^k \sum_{x_j \in C_i} ||x_j - \mu_i||^2
+$$
+
+where \( \mu_i \) is the mean of points in cluster \( C_i \).
+
+#### Characteristics
+- Emphasis on minimizing large errors.
+- Sensitive to outliers.
+
+### \( k \)-Center Clustering
+
+Objective: Minimize the maximum distance between any data point and its center:
+
+$$
+\min \max_{x \in C_i} d(x, \mu_i)
+$$
+
+This approach does not yield a closed-form solution.
+
+#### \( k \)-Median and \( k \)-Medoid Clustering
+
+Here, the center of each cluster is the data point closest to all others in that cluster.
+
+#### Characteristics
+- Less sensitive to outliers.
+- Emphasis on larger distances, unlike \( k \)-means.
+
+#### Algorithm: Lloyd's Algorithm for \( k \)-Means
+
+1. **Initialize**: Choose initial centers.
+2. **Cluster Assignment**: Assign each point to the nearest center.
+3. **Center Update**: Recompute cluster centers based on current assignments.
+4. **Repeat** steps 2-3 until convergence.
+
+### Selecting Number of Clusters
+
+An informal approach uses a **scree plot** (elbow method) to determine the optimal number of clusters based on objective function values.
+
+#### Objective Function
+
+$$
+J = \sum_{i=1}^k \sum_{x_j \in C_i} d(x_j, \mu_i)
+$$
+
+Choose \( k \) to maximize the ratio of between-group to within-group variance.
+
+### Alternative Methods for Choosing \( k \)
+
+- Use the **elbow plot** to observe the diminishing returns of increasing \( k \).
+- Calculate the **Calinski-Harabasz index** for assessing clustering appropriateness.
+
+### Comparison of Clustering Algorithms
+
+- **Gaussian Mixture Models** and **Isotropic Gaussian Clustering** can correctly identify cluster structure in datasets with well-defined cluster covariance.
+- **Hierarchical Clustering** is preferable in non-convex cluster scenarios (e.g., spiral or concentric structures).
+
+### Example in R
+
+```{r}
+# Example of k-means clustering in R
+set.seed(123)
+data <- matrix(rnorm(100), ncol=2)
+kmeans_result <- kmeans(data, centers=3)
+plot(data, col=kmeans_result$cluster)
+points(kmeans_result$centers, col=1:3, pch=8, cex=2)
+```
+

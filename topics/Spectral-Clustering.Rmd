@@ -1,14 +1,8 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
-
 ## Spectral Clustering {#sec-spec-clustering}
 
 ### Introduction
 
-Spectral Clustering represents a significant leap in the evolution of clustering techniques. Distinguished from traditional methods like K-means, it excels in detecting complex structures and patterns within data. It's based on ideas from graph theory and simple math concepts, mainly focusing on how to use information from graphs. Imagine each piece of data as a point on a graph, with lines connecting the points that are similar. Spectral Clustering uses these connections to figure out how the data should be grouped, which is especially handy when the groups are twisty or oddly shaped.
+Spectral Clustering represents a significant leap in the evolution of clustering techniques. Distinguished from traditional methods like K-means, it excels in detecting complex structures and patterns within data. It's based on ideas from graph theory and simple math concepts, mainly focusing on how to use information from graphs. Imagine each piece of data as a point on a graph, with lines connecting the points that are similar. Spectral Clustering uses these connections to figure out how the data should be grouped, which is especially handy when the groups are twisted or oddly shaped.
 
 The key step in Spectral Clustering is breaking down a special graph matrix (called the Laplacian matrix) to find its eigen values and eigen vectors. These eigen vectors help us see the data in a new way that makes the groups more obvious. This makes it easier to use simple grouping methods like K-means to sort the data into clusters. This approach is great for finding hidden patterns in the data.
 
@@ -17,33 +11,21 @@ However, Spectral Clustering comes with its own challenges. Choosing the right n
 
 ### Algorithm
 
-1) **Similarity Graph Construction**:
+1) **Similarity Graph Construction**: Start by constructing a similarity graph $G$ from your data (similar to the steps in Laplacian Eigenmap section. Each data point is represented as a node in the graph.)
 
-Start by constructing a similarity graph $G$ from your data (similar to the steps in Laplacian Eigenmap section. Each data point is represented as a node in the graph.)
-
-Define the edges of the graph. There are three common ways to do this:
-
-  i) **$\epsilon$-neighborhood graph:** Connect all points whose pairwise distances are smaller than  $\epsilon$.
-
-  ii) **K-nearest neighbors:** For each point, connect it to its k nearest neighbors.
+    Define the edges of the graph. There are three common ways to do this:
     
-  iii) **Fully connected graph:** Connect all points with each other. Typically, the Gaussian similarity function (also known as the Radial Basis Function or RBF) is used to calculate the weights of the edges: $w_{ij} = \exp(-\frac{||\vec{x}_i - \vec{x}_j||^2}{2\sigma^2})$, where $\vec{x}_i$ and $\vec{x}_j$ are two points in the dataset and $\sigma$ is a tuning parameter.
+      i) **$\epsilon$-neighborhood graph:** Connect all points whose pairwise distances are smaller than  $\epsilon$.
+    
+      ii) **K-nearest neighbors:** For each point, connect it to its k nearest neighbors.
+        
+      iii) **Fully connected graph:** Connect all points with each other. Typically, the Gaussian similarity function (also known as the Radial Basis Function or RBF) is used to calculate the weights of the edges: $w_{ij} = \exp(-\frac{||\vec{x}_i - \vec{x}_j||^2}{2\sigma^2})$, where $\vec{x}_i$ and $\vec{x}_j$ are two points in the dataset and $\sigma$ is a tuning parameter.
   
 **Note:**It is worth noting that there exists a slight difference in the construction of similarity graph matrix compared to Laplacian Eigenmap we mentioned in manifold learning chapter. For the fully connected graph, after using Radial basis to depict all the pair-wise distances, we don't need to set a threshold and sparsify the matrix (set some entries to zero) like we did in Laplacian Eigenmap, we just keep all the original radial basis distances.
 
-2) **Graph Laplacian Matrix:**
+2) **Graph Laplacian Matrix:** Similar to corresponding parts in Laplacian Eigenmap. Calculate the adjacency matrix $W$, where $W_{ij}$ represents the weight of the edge between nodes $i$ and $j$. Calculate the degree matrix $D$, which is a diagonal matrix where each diagonal element $D_{ii}$ is the sum of the weights of the edges connected to node $i$. Compute the unnormalized Graph Laplacian matrix $L$ as $L = D - W$.
 
-Similar to corresponding parts in Laplacian Eigenmap. Calculate the adjacency matrix $W$, where $W_{ij}$ represents the weight of the edge between nodes $i$ and $j$.
-
-Calculate the degree matrix $D$, which is a diagonal matrix where each diagonal element $D_{ii}$ is the sum of the weights of the edges connected to node $i$.
-
-Compute the unnormalized Graph Laplacian matrix $L$ as $L = D - W$.
-
-3) **Eigen Decomposition:**
-
-Perform the eigen decomposition on the Laplacian matrix $L$ to find its eigen values and eigen vectors.
-
-Select $k$ smallest eigenvalues and their corresponding eigen vectors. $k$ is the number of clusters you want to identify.
+3) **Eigen Decomposition:** Perform the eigen decomposition on the Laplacian matrix $L$ to find its eigenvalues and eigenvectors. Select $k$ smallest eigenvalues and their corresponding eigen vectors. $k$ is the number of clusters you want to identify.
 
 **Mathematical Proof behind this step**
 
@@ -52,7 +34,7 @@ As we have stated in Laplacian Eigenmap section, the Graph Laplacian matrix $L$ 
 Given any vector $\vec{y} \in \mathbb{R}^N$
 
 $$
-\vec{y}^T \mathbf{L} \vec{y}=\sum_{i=1}^N \sum_{j=1}^N \mathbf{W}_{i j}\left(y_i-y_j\right)^2
+\vec{y}^T \mathbf{L} \vec{y}=\frac{1}{2}\sum_{i=1}^N \sum_{j=1}^N \mathbf{W}_{i j}\left(y_i-y_j\right)^2
 $$
 
 Obviously, it is non-negative. Besides, we can always find a vector $\vec{y} = \mathbf{1}_N$ that makes it zero, which means the smallest eigen value must be zero, with the corresponding eigen vector being $\mathbf{1}$. 

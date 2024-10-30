@@ -27,17 +27,16 @@ plot(data3, xlab = '', ylab = '', main = "Case 3")
 ```
 :::
 
-## Center-based 
-
-### k-means
-
-### k-mediods
-
-## Hierarchical 
+<!-- Center based clustering -->
+```{r child = 'topics/Center-Based-Clustering.Rmd'}
+```
 
 
+<!-- Hierarchical -->  
 
-## Model-based 
+<!-- Model based -->
 
+<!-- Spectral Clustering -->
 
-## Spectral
+```{r child = 'topics/Spectral-Clustering.Rmd'}
+```

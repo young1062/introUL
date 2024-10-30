@@ -285,14 +285,21 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="7" data-path="ch-clustering.html"><a href="ch-clustering.html"><i class="fa fa-check"></i><b>7</b> Clustering</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="center-based.html"><a href="center-based.html"><i class="fa fa-check"></i><b>7.1</b> Center-based</a>
+<li class="chapter" data-level="7.1" data-path="center-based-clustering.html"><a href="center-based-clustering.html"><i class="fa fa-check"></i><b>7.1</b> Center-Based Clustering</a>
 <ul>
-<li class="chapter" data-level="7.1.1" data-path="center-based.html"><a href="center-based.html#k-means"><i class="fa fa-check"></i><b>7.1.1</b> k-means</a></li>
-<li class="chapter" data-level="7.1.2" data-path="center-based.html"><a href="center-based.html#k-mediods"><i class="fa fa-check"></i><b>7.1.2</b> k-mediods</a></li>
+<li class="chapter" data-level="7.1.1" data-path="center-based-clustering.html"><a href="center-based-clustering.html#key-points"><i class="fa fa-check"></i><b>7.1.1</b> Key Points</a></li>
+<li class="chapter" data-level="7.1.2" data-path="center-based-clustering.html"><a href="center-based-clustering.html#k-means-clustering"><i class="fa fa-check"></i><b>7.1.2</b> <span class="math inline">\(k\)</span>-Means Clustering</a></li>
+<li class="chapter" data-level="7.1.3" data-path="center-based-clustering.html"><a href="center-based-clustering.html#k-center-clustering"><i class="fa fa-check"></i><b>7.1.3</b> <span class="math inline">\(k\)</span>-Center Clustering</a></li>
+<li class="chapter" data-level="7.1.4" data-path="center-based-clustering.html"><a href="center-based-clustering.html#selecting-number-of-clusters"><i class="fa fa-check"></i><b>7.1.4</b> Selecting Number of Clusters</a></li>
+<li class="chapter" data-level="7.1.5" data-path="center-based-clustering.html"><a href="center-based-clustering.html#alternative-methods-for-choosing-k"><i class="fa fa-check"></i><b>7.1.5</b> Alternative Methods for Choosing <span class="math inline">\(k\)</span></a></li>
+<li class="chapter" data-level="7.1.6" data-path="center-based-clustering.html"><a href="center-based-clustering.html#comparison-of-clustering-algorithms"><i class="fa fa-check"></i><b>7.1.6</b> Comparison of Clustering Algorithms</a></li>
+<li class="chapter" data-level="7.1.7" data-path="center-based-clustering.html"><a href="center-based-clustering.html#example-in-r"><i class="fa fa-check"></i><b>7.1.7</b> Example in R</a></li>
 </ul></li>
-<li class="chapter" data-level="7.2" data-path="hierarchical.html"><a href="hierarchical.html"><i class="fa fa-check"></i><b>7.2</b> Hierarchical</a></li>
-<li class="chapter" data-level="7.3" data-path="model-based.html"><a href="model-based.html"><i class="fa fa-check"></i><b>7.3</b> Model-based</a></li>
-<li class="chapter" data-level="7.4" data-path="spectral.html"><a href="spectral.html"><i class="fa fa-check"></i><b>7.4</b> Spectral</a></li>
+<li class="chapter" data-level="7.2" data-path="sec-spec-clustering.html"><a href="sec-spec-clustering.html"><i class="fa fa-check"></i><b>7.2</b> Spectral Clustering</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="sec-spec-clustering.html"><a href="sec-spec-clustering.html#introduction-3"><i class="fa fa-check"></i><b>7.2.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2.2" data-path="sec-spec-clustering.html"><a href="sec-spec-clustering.html#algorithm-4"><i class="fa fa-check"></i><b>7.2.2</b> Algorithm</a></li>
+</ul></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -380,12 +387,12 @@ where <span class="math inline">\({\bf H} = {\bf I} - \frac{1}{N} \vec{1} \vec{1
 <p>To conclude this section, we compare the sample mean and covariance matrix computed from random draws from the <span class="math inline">\(MVN\)</span> distribution.</p>
 <div class="example">
 <p><span id="exm:mvn-draws" class="example"><strong>Example 2.3  (Draws from the MVN) </strong></span>We draw <span class="math inline">\(N=100\)</span> samples from the <span class="math inline">\(\mathcal{N}(\vec{0}, {\bf \Sigma})\)</span> distribution where <span class="math display">\[{\bf \Sigma}=\begin{bmatrix}1 &amp; 0 &amp; 0 \\ 0 &amp;4 &amp; 0 \\ 0&amp;0&amp;9\end{bmatrix}\]</span>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="expectation-mean-and-covariance.html#cb2-1" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">100</span></span>
-<span id="cb2-2"><a href="expectation-mean-and-covariance.html#cb2-2" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(<span class="at">n=</span>N, <span class="at">mu =</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">3</span>), <span class="at">Sigma =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">9</span>)<span class="sc">*</span><span class="fu">diag</span>(<span class="dv">3</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="expectation-mean-and-covariance.html#cb1-1" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb1-2"><a href="expectation-mean-and-covariance.html#cb1-2" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(<span class="at">n=</span>N, <span class="at">mu =</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">3</span>), <span class="at">Sigma =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">9</span>)<span class="sc">*</span><span class="fu">diag</span>(<span class="dv">3</span>))</span></code></pre></div>
 <p>To compute the sample mean and sample covariance, we implement <a href="expectation-mean-and-covariance.html#eq:def-sample-mean">(2.3)</a> and <a href="expectation-mean-and-covariance.html#eq:def-sample-covariance">(2.4)</a>.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="expectation-mean-and-covariance.html#cb3-1" tabindex="-1"></a>xbar <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">/</span>N) <span class="sc">*</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> <span class="fu">rep</span>(<span class="dv">1</span>,N)</span>
-<span id="cb3-2"><a href="expectation-mean-and-covariance.html#cb3-2" tabindex="-1"></a>H <span class="ot">&lt;-</span> <span class="fu">diag</span>(N) <span class="sc">-</span> (<span class="dv">1</span><span class="sc">/</span>N)<span class="sc">*</span><span class="fu">matrix</span>(<span class="dv">1</span>,<span class="at">nrow =</span> N, <span class="at">ncol =</span> N)</span>
-<span id="cb3-3"><a href="expectation-mean-and-covariance.html#cb3-3" tabindex="-1"></a>S <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">/</span>N) <span class="sc">*</span>  <span class="fu">t</span>(H <span class="sc">%*%</span> X) <span class="sc">%*%</span> (H <span class="sc">%*%</span> X) </span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="expectation-mean-and-covariance.html#cb2-1" tabindex="-1"></a>xbar <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">/</span>N) <span class="sc">*</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> <span class="fu">rep</span>(<span class="dv">1</span>,N)</span>
+<span id="cb2-2"><a href="expectation-mean-and-covariance.html#cb2-2" tabindex="-1"></a>H <span class="ot">&lt;-</span> <span class="fu">diag</span>(N) <span class="sc">-</span> (<span class="dv">1</span><span class="sc">/</span>N)<span class="sc">*</span><span class="fu">matrix</span>(<span class="dv">1</span>,<span class="at">nrow =</span> N, <span class="at">ncol =</span> N)</span>
+<span id="cb2-3"><a href="expectation-mean-and-covariance.html#cb2-3" tabindex="-1"></a>S <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">/</span>N) <span class="sc">*</span>  <span class="fu">t</span>(H <span class="sc">%*%</span> X) <span class="sc">%*%</span> (H <span class="sc">%*%</span> X) </span></code></pre></div>
 <p>The results are shown below (rounded to three decimal places)
 <span class="math display">\[\bar{x} = \begin{bmatrix}
 0.008 \\ 0.078 \\ -0.239
