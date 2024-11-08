@@ -199,16 +199,16 @@ summary(autoencoder)
 The Autoencoder is trained using the training images as both inputs and targets. This is because the Autoencoder's goal is to reconstruct its input as closely as possible.
 
 ```{r, message = FALSE}
-history <- autoencoder %>% fit(
-  train_images, train_images, 
-  epochs = 40, 
-  batch_size = 256, 
-  shuffle = TRUE,
-  validation_split = 0.2,
-  getOption("keras.fit_verbose", default = 0)
-)
-
-plot(history)
+# history <- autoencoder %>% fit(
+#   train_images, train_images, 
+#   epochs = 40, 
+#   batch_size = 256, 
+#   shuffle = TRUE,
+#   validation_split = 0.2,
+#   getOption("keras.fit_verbose", default = 0)
+# )
+# 
+# plot(history)
 ```
 
 4) Visualize the Encoded Representations

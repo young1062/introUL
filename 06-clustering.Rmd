@@ -1,6 +1,6 @@
 # Clustering {#ch-clustering}
 
-We now turn to clustering, which is the branch of UL focused on partitioning our data into subgroups of similar observations.  Hereafter, we use the terms clusters and subgroups interchangably.  There are naturally a number of questions which arise including:
+We now turn to clustering, which is the branch of UL focused on partitioning our data into subgroups of similar observations.  Hereafter, we use the terms clusters and subgroups interchangeably.  There are naturally a number of questions which arise including:
 
 i) how many clusters (if any) exist?
 ii) what do we mean by similar observations?
@@ -27,16 +27,27 @@ plot(data3, xlab = '', ylab = '', main = "Case 3")
 ```
 :::
 
+The questions posed above can be reasonably answered based on the figures but will not be so easy in high dimensions.  We'll explore these questions and discuss data driven ways to estimate the appropriate number of cluster **for a specific algorithm** in the following sections.  
+The is one main commonality (and associated set of notation) that will persist throughout this section.  The ultimate goal of clustering is to separate data $\vec{x}_1,\dots,\vec{x}_N$ into $k$ groups. The choice of $k$ is critical in clustering.  Some algorithms proceed by iteratively merging observations until only $k$ clusters remain (hierarchical methods). Others (center- and model-based and spectral methods) treat clustering as a partitioning problem, where each element of the partition corresponds to a pre-specified number of clusters. Algorithm dependent methods for choosing $k$ can be used for deciding optimal number of clusters without a priori knowledge.
+
+
 <!-- Center based clustering -->
 ```{r child = 'topics/Center-Based-Clustering.Rmd'}
 ```
 
 
 <!-- Hierarchical -->  
+<!-- # ```{r child = 'topics/Hierarchical-Clustering.Rmd'} -->
+<!-- # ``` -->
 
 <!-- Model based -->
+<!-- # ```{r child = 'topics/Model-Based-Clustering.Rmd'} -->
+<!-- # ``` -->
 
 <!-- Spectral Clustering -->
 
-```{r child = 'topics/Spectral-Clustering.Rmd'}
-```
+<!-- # ```{r child = 'topics/Spectral-Clustering.Rmd'} -->
+<!-- # ``` -->
+
+<!-- Clustering comparisons and metrics -->
+

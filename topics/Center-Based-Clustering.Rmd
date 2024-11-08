@@ -1,82 +1,342 @@
 ## Center-Based Clustering
 
-**Goal**: Group `N` observations into clusters of similar points.
+```{r, echo = F}
+library("MASS")
+library("ggplot2")
+set.seed(209)
+N <- 200
+rho <- 0.1
+shift <- (runif(N) < 0.5) + (runif(N) < 0.5)
+data1 <- as.data.frame(mvrnorm(N, mu = c(0,0), Sigma = 0.5*matrix(c(1,rho,rho,1),nrow = 2)) + 
+                         diag((shift == 1))%*% matrix(c(2.5,3),nrow = N, ncol = 2, byrow = T) +
+                         diag((shift == 2))%*% matrix(c(-1.5,3),nrow = N, ncol = 2, byrow = T))
+data1$clus <- shift
+N<- 400
+data2 <- matrix(rnorm(N*2), nrow = N)
+rad <- 1 + (runif(N) < 0.5) + (runif(N) < 0.5)
+data2 <- as.data.frame(diag(rad) %*% diag(1/sqrt(diag(data2 %*% t(data2)))) %*% data2 + mvrnorm(n=N, mu= c(0,0),Sigma = 0.005*diag(1,2)))
+data2$clus <- as.character(rad)
+# c1 <- ggplot(data1, aes(x = V1, y = V2)) + geom_point() +
+#   theme(axis.title = element_blank(),
+#         axis.text = element_blank()) +
+#   ggtitle("Example 1")
+# c2 <- ggplot(data2, aes(x = V1, y = V2)) + geom_point() +
+#   theme(axis.title = element_blank(),
+#         axis.text = element_blank()) +
+#   ggtitle("Example 2")
+# grid.arrange(c1,c2,nrow = 1)
+```
 
-### Key Points
+Center-based clustering algorithms are typically formulated as optimization problems.  Throughout this section we'll use, $C_1,\dots,C_k \subset \{\vec{x}_1,\dots,\vec{x}_N\}$ to denote the partitioning of our data into clusters. As such, $C_i\cap C_j,\, i\ne j$ and $C_1\cup\cdots C_k = \{\vec{x}_1,\dots,\vec{x}_N\}.$  If $\vec{x}_i,\vec{x}_j \in C_\ell$ then we will say that $\vec{x}_i,\vec{x}_j$ are in cluster $\ell.$ Importantly, for each cluster we will also have an associated center points, denoted $\vec{c}_1,\dots,\vec{c}_k$ respectively.  A point $\vec{x}_i$ is in cluster $\ell$ of $\vec{c}_\ell$ is the closest center to $\vec{x}_i$ under our chosen notion of distance/dissimilarity.  To find a clustering of our data, we minimize a loss function dependent on the partition and/or the set of centers.  
 
-1. Unlike hierarchical clustering, the number of clusters (`k`) must be specified in advance.
-2. \( k \)-means clustering does not result from splitting clusters in a hierarchical fashion.
-3. Objective: Define clusters and iteratively optimize cluster centers.
+We will begin with $k$-means, the most well known method in this class of clustering algorithms (and perhaps all of clustering). In many ways, $k$-means is to clustering what PCA is to dimension reduction: a default algorithm used as a first step of analysis.   Additional methods of center-based clustering include $k$-center and $k$-medoids, which we'll discuss later. Importantly, in all of these methods, the user pre-specifies a desired number of clusters, and the algorithms proceed to find an (approximately) optimal clustering.  When the number of clusters in unknown, separate runs of an algorithm can be run for a range of cluster numbers.  Post-processing techniques to compare different clusterings can then be used to find an `optimal' number of clusters.
 
-### \( k \)-Means Clustering
 
-The \( k \)-means clustering objective aims to minimize the sum of squared Euclidean distances:
+### $k$-means
 
-$$
-J = \sum_{i=1}^k \sum_{x_j \in C_i} ||x_j - \mu_i||^2
-$$
+Given a partitioning $C_1,\dots,C_k$, we define the intracluster variation in cluster $\ell$ to be
+$$V(C_\ell) = \frac{1}{2|C_\ell|} \sum_{\vec{x}_i,\vec{x}_j \in C_\ell} \|\vec{x}_i-\vec{x}_j\|^2$$
 
-where \( \mu_i \) is the mean of points in cluster \( C_i \).
+be the average squared Euclidean distance between all observations in cluster $\ell$. Here $|C_\ell|$ is the number of samples in cluster $\ell$. If $V(C_\ell)$ is small, all points within the cluster are close together, which indicates high similarity as measured by squared Euclidean distance.  
 
-#### Characteristics
-- Emphasis on minimizing large errors.
-- Sensitive to outliers.
+In $k$-means, we want all clusters to have small intracluster variation so a natural loss function is the sum of all intracluster variations
+$$L_{kmeans}(C_1,\dots,C_k) = \sum_{\ell=1}^k V(C_\ell).$$
+With a little algebra, one can show that $$V(C_\ell) = \sum_{\vec{x}_i\in C_\ell} \|\vec{x}_i-\vec{\mu}_\ell\|^2$$ where $\vec{\mu}_\ell = \frac{1}{|C_\ell|}\sum_{\vec{x}_i \in C_\ell}$ is the sample mean of points in cluster $\ell.$  Thus, the $k$ means loss function simplifies to $$T_{kmeans}(C_1,\dots,C_k) = \sum_{\ell=1}^k \sum_{\vec{x}_i \in C_\ell}\|\vec{x}_i-\vec{\mu}_\ell\|^2.$$  
 
-### \( k \)-Center Clustering
+Before we turn to algorithms for minimizing , let's highlight a few potential issues with $k$-means.  Like PCA, $k$-means relies on squared Euclidean distance, thus it is sensitive to outliers and imbalances in scale. These issues can be ameliorated with standardization (and potentially, the removal of outliers). However, the choice of squared Euclidean distance implicitly emphasizes a specific type of cluster shape: spheres.  As will we will show with example later, $k$-means works well when the clusters are spherical in shape and/or far apart as measured by Euclidean distance.  More complicated structure can be quite vexing for $k$-means.  
 
-Objective: Minimize the maximum distance between any data point and its center:
+### $k$-center and $k$-medoids 
 
-$$
-\min \max_{x \in C_i} d(x, \mu_i)
-$$
+In $k$-center and $k$-medoids, we require the cluster centers to be data points as opposed to sample means of data.  Note that a given choice of centers $\vec{c}_1,\dots,\vec{c}_k \subset \{\vec{x}_1,\dots,\vec{x}_N\}$ implies a partition where we take $$C_\ell = \left\{\vec{x}_i: \|\vec{x}_i-\vec{c}_\ell\| < \|\vec{x}_i - \vec{c}_j\|, j\ne \ell\right\}.$$ Using this fact, we can specify the loss function for $k$-center and $k$-medoids clustering.
 
-This approach does not yield a closed-form solution.
+\begin{align*}
+L_{k-center}(\vec{c}_1,\dots,\vec{c}_k) &= \max_{\ell=1,\dots,k} \max_{x_i \in C_\ell} \|\vec{x}_i - \vec{c}_\ell\| \\
+L_{k-center}(\vec{c}_1,\dots,\vec{c}_k) &= \sum_{\ell=1,\dots,k} \sum_{x_i \in C_\ell} \|\vec{x}_i - \vec{c}_\ell\|
+\end{align*}
+In the preceding expression we have used (non-squared) Euclidean distance, which immediately makes these algorithms less sensitive to outliers and scale imbalance compared to $k$-means. Furthermore, alternative distance/dissimilarity measures can be used instead of Euclidean distance which adds an additional level of flexibility.  In fact, we do not even need to original data in practice to implement the $k$-center or $k$-medoids.  A distance matrix alone is sufficient.  
 
-#### \( k \)-Median and \( k \)-Medoid Clustering
+Unfortunately, squared Euclidean distance has the added advantage of being much faster to implement in practice.  
 
-Here, the center of each cluster is the data point closest to all others in that cluster.
 
-#### Characteristics
-- Less sensitive to outliers.
-- Emphasis on larger distances, unlike \( k \)-means.
+### Minimizing clustering loss functions
 
-#### Algorithm: Lloyd's Algorithm for \( k \)-Means
+For any of the three preceding methods, we want to find an optimal partitioning and/or set of centers which minimize their associated loss.  One naive approach would be to search or all possible partitioning of our data into $k$ clusters ($k$-means) or all possible choices of $k$ center points from our data, but one can imagine how computationally unfeasible this approach becomes for even moderate amounts of data. Instead, we will turn to greedy, iterative algorithms which converge to (locally) optimal solutions.  The standard approach for $k$-means is based on Lloyd's algorithm with a special initialization to avoid convergence to local minima. Later versions of this text will discuss greedy approaches for $k$-center and the standard partitioning around medians (PAM) algorithm for $k$-medoids. 
 
-1. **Initialize**: Choose initial centers.
+#### Lloyd's Algorithm for $k$-Means
+
+1. **Initialize**: Choose initial centers randomly from the data.
 2. **Cluster Assignment**: Assign each point to the nearest center.
 3. **Center Update**: Recompute cluster centers based on current assignments.
 4. **Repeat** steps 2-3 until convergence.
 
-### Selecting Number of Clusters
+:::{.example name="Lloyd's algorithm and Iris Data}
+In this example, we'll consider the three dimensional **iris** data.  For visualization, we'll plot the first two PC.  Centers will be outlined in black. 
 
-An informal approach uses a **scree plot** (elbow method) to determine the optimal number of clusters based on objective function values.
+```{r iris-cluster, echo = F}
+ir.pc <- prcomp(iris[,-5])
+set.seed(109)
+findcenters <- function(data,lab,K){
+    centers <- matrix(NA, nrow = length(unique(lab)), ncol = ncol(data))
+    for (j in 1:K){
+      centers[j,] <- colMeans(data[lab == j, ])
+    }
+    return(centers)
+}
+findnearest <- function(sample, centers){
+    Ds <- rep(NA, nrow(centers))
+    for (j in 1:nrow(centers)){
+      Ds[j] <- sum((sample - centers[j,])^2)
+    }
+    return(which.min(Ds))
+}
+mykmeans <- function(data, K, init, iter){
+  clus <- matrix(NA,  nrow = nrow(data), ncol = iter)
+  centers <- findcenters(data,init, K)
+  for (i in 1:iter){
+    for (j in 1:nrow(data)){
+      clus[j,i] <- findnearest(data[j,],centers)
+    }
+    centers <- findcenters(data, clus[,i],K)
+  }
+  return(clus)  
+}
+# iterate lloyds to get clus
+init <- sample(1:3, size = nrow(iris), replace = T)
+out <- mykmeans(iris[,-5], K = 3, init = init, iter = 4)
+# help to convert means to PC frame
+clus2meansPC <- function(data, lab){
+  data.pc <- prcomp(data)
+  K <- length(unique(lab))
+  centers <- (findcenters(data,lab,K) - matrix(data.pc$center, nrow = K, ncol = ncol(data), byrow = T))%*%data.pc$rotation
+  return(as.data.frame(centers))
+}
+#generate plots
+# data 
+pd <- ggplot(as.data.frame(ir.pc$x), aes(x=PC1, y=PC2)) + geom_point(size = 2) +
+  theme(legend.position = 'none',
+        title =element_text(size=16, face='bold')) +
+  xlab(element_blank()) +
+  ylab(element_blank()) +
+  ggtitle("Data")
 
-#### Objective Function
+# ICs
+M <- clus2meansPC(iris[,-5], init)
+colnames(M) <- c("PC1","PC2","PC3","PC4")
+p0 <- ggplot(as.data.frame(ir.pc$x), aes(x=PC1, y=PC2, colour = as.factor(init))) + geom_point(size = 2) +
+  theme(legend.position = 'none',
+        title =element_text(size=16, face='bold')) +
+  xlab(element_blank()) +
+  ylab(element_blank()) +
+  ggtitle("init") +
+  geom_point(data = M, aes(x=PC1,y=PC2,
+                           colour= as.factor(c(1,2,3)), 
+                           fill  = as.factor(c(1,2,3)),
+                           shape = as.factor(c(1,2,3))),
+             colour = "black",
+             size = 5,
+             pch = 21,
+             alpha = 0.75)
 
-$$
-J = \sum_{i=1}^k \sum_{x_j \in C_i} d(x_j, \mu_i)
-$$
+# 1st Iter
+M <- clus2meansPC(iris[,-5], out[,1])
+colnames(M) <- c("PC1","PC2","PC3","PC4")
+p1 <- ggplot(as.data.frame(ir.pc$x), aes(x=PC1, y=PC2, colour = as.factor(out[,1]))) + geom_point(size = 2) +
+  theme(legend.position = 'none',
+        title =element_text(size=16, face='bold')) +
+  xlab(element_blank()) +
+  ylab(element_blank()) +
+  ggtitle("iter = 1") +
+  geom_point(data = M, aes(x=PC1,y=PC2,
+                           colour= as.factor(c(1,2,3)), 
+                           fill  = as.factor(c(1,2,3)),
+                           shape = as.factor(c(1,2,3))),
+             colour = "black",
+             size = 5,
+             pch = 21,
+             alpha = 0.75)
+# 2 Iter
+M <- clus2meansPC(iris[,-5], out[,2])
+colnames(M) <- c("PC1","PC2","PC3","PC4")
+p2 <- ggplot(as.data.frame(ir.pc$x), aes(x=PC1, y=PC2, colour = as.factor(out[,2]))) + geom_point(size = 2) +
+  theme(legend.position = 'none',
+        title =element_text(size=16, face='bold')) +
+  xlab(element_blank()) +
+  ylab(element_blank()) +
+  ggtitle("iter = 2") +
+  geom_point(data = M, aes(x=PC1,y=PC2,
+                           colour= as.factor(c(1,2,3)), 
+                           fill  = as.factor(c(1,2,3)),
+                           shape = as.factor(c(1,2,3))),
+             colour = "black",
+             size = 5,
+             pch = 21,
+             alpha = 0.75)
+# 3 Iter
+M <- clus2meansPC(iris[,-5], out[,3])
+colnames(M) <- c("PC1","PC2","PC3","PC4")
+p3 <- ggplot(as.data.frame(ir.pc$x), aes(x=PC1, y=PC2, colour = as.factor(out[,3]))) + geom_point(size = 2) +
+  theme(legend.position = 'none',
+        title =element_text(size=16, face='bold')) +
+  xlab(element_blank()) +
+  ylab(element_blank()) +
+  ggtitle("iter = 3") +
+  geom_point(data = M, aes(x=PC1,y=PC2,
+                           colour= as.factor(c(1,2,3)), 
+                           fill  = as.factor(c(1,2,3)),
+                           shape = as.factor(c(1,2,3))),
+             colour = "black",
+             size = 5,
+             pch = 21,
+             alpha = 0.75)
+# 4 Iter
+M <- clus2meansPC(iris[,-5], out[,4])
+colnames(M) <- c("PC1","PC2","PC3","PC4")
+p4 <- ggplot(as.data.frame(ir.pc$x), aes(x=PC1, y=PC2, colour = as.factor(out[,4]))) + geom_point(size = 2) +
+  theme(legend.position = 'none',
+        title =element_text(size=16, face='bold')) +
+  xlab(element_blank()) +
+  ylab(element_blank()) +
+  ggtitle("iter = 4") +
+  geom_point(data = M, aes(x=PC1,y=PC2,
+                           colour= as.factor(c(1,2,3)), 
+                           fill  = as.factor(c(1,2,3)),
+                           shape = as.factor(c(1,2,3))),
+             colour = "black",
+             size = 5,
+             pch = 21,
+             alpha = 0.75)
+grid.arrange(pd,p0,p1,p2,p3,p4,nrow = 2)
+```
+:::
 
-Choose \( k \) to maximize the ratio of between-group to within-group variance.
+### Strengths and Weaknesses
 
-### Alternative Methods for Choosing \( k \)
+The advantages and disadvantages of center-based clustering algorithms can be separated into two main categories: computational and geometric.  For now, we'll focus on the computational aspects.
 
-- Use the **elbow plot** to observe the diminishing returns of increasing \( k \).
-- Calculate the **Calinski-Harabasz index** for assessing clustering appropriateness.
+In the theoretical worst case, Lloyd's algorithm can take$\propto N^{k+1}$ iterations to converge, but it is typically very fast in practice. Most implementations, allow the user to set a maximum number of iterations and converge to approximate suboptimal solutions if the maximum number of iterations is reached.  PAM and greedy $k$-center algorithms are typically much, much slower.  However, once any of the clustering algorithms are complete, new data can be merged into cluster with nearest center. Other methods we'll discuss later cannot incorporate new data without running the algorithm from scratch.
 
-### Comparison of Clustering Algorithms
+Ther are other issues that can increase the computational demands of center-based clustering. Each of the methods requires one to choose the number of clusters in advance. We discuss this issue in more depth shortly, but for now we want to emphasize that there is no connection between the $k$cluster solution and $(k+1)$ cluster solution. Thus, when investigating a suitable number of clusters, we need to run our clustering algorithm for a range of potential values of $k$. 
 
-- **Gaussian Mixture Models** and **Isotropic Gaussian Clustering** can correctly identify cluster structure in datasets with well-defined cluster covariance.
-- **Hierarchical Clustering** is preferable in non-convex cluster scenarios (e.g., spiral or concentric structures).
+Convergence is also dependent on initial condition. In the figure below, we see two separate clustering arrangements resulting from different initial choices of the centers for $k$-means.
 
-### Example in R
+```{r, echo = F}
+set.seed(109)
+out1 <- kmeans(data1, centers = 6, iter.max = 1e4)
+out2 <- kmeans(data1, centers = 6, iter.max = 1e4)
 
-```{r}
-# Example of k-means clustering in R
-set.seed(123)
-data <- matrix(rnorm(100), ncol=2)
-kmeans_result <- kmeans(data, centers=3)
-plot(data, col=kmeans_result$cluster)
-points(kmeans_result$centers, col=1:3, pch=8, cex=2)
+ex1 <- ggplot(data1, aes(x=V1, y=V2, colour = as.factor(out1$cluster))) + geom_point(size = 2) +
+  theme(legend.position = 'none',
+        title =element_text(size=16, face='bold')) +
+  xlab(element_blank()) +
+  ylab(element_blank())  +
+  ggtitle(expression(paste(L[k-means]," = 125")))
+ex2 <- ggplot(data1, aes(x=V1, y=V2, colour = as.factor(out2$cluster))) + geom_point(size = 2) +
+  theme(legend.position = 'none',
+        title =element_text(size=16, face='bold')) +
+  xlab(element_blank()) +
+  ylab(element_blank())  + 
+  ggtitle(expression(paste(L[k-means]," = 112")))
+grid.arrange(ex1,ex2,nrow = 1)
 ```
 
+Thus, we also need to avoid convergence to local minima either by running many different initial conditions to convergence and picking the best solution or by using better initialization such as $k$-means++, which picks the initial points iteratively to maximize distance between the centers before running Lloyd's algorithm. Using $k$-means++ can reduce the number of initializations that one should use, but does not eliminate the potential for convergence to a poor clustering. Thus, center-based algorithms can become quite computationally demanding analyze appropriately.
+
+
+We have already discussed the impact of scale imbalance and outliers so as we turn to the geometric aspects of center based clustering, let's first focus on the centers, which we often treat as **representative** examples of the cluster. However, the sample averages in $k$-means may not resemble actual data points.  Though $k$-means may be much faster in prqctice, the centers in $k$-center and $k$-medoids are restricted to observations making them more representative of the data.  
+
+Clusters are based off interpretable notion of (Euclidean) distance so that points in a cluster are closer to one another than to points in other clusters. However, this feature biases center-based methods to clusters which are spherical in shape. If (dis)similarity not best captured through (squared) Euclidean distance, poor clustering is inevitable, and many of the methods used to estimate the number of cluster with tend to overestiamte the true value. As an example, consider the three rings shown at the beginning of this chapter. Silhouette scores (see 6.1.) suggest 12 clusters which is much larger than the three rings we see in the figure.
+
+```{r,echo = F}
+out <- kmeans(data2, centers= 12)
+ggplot(data2, aes(x=V1, y=V2, colour = as.factor(out$cluster))) + geom_point(size = 2) +
+  theme(legend.position = 'none',
+        title =element_text(size=16, face='bold')) +
+  xlab(element_blank()) +
+  ylab(element_blank()) 
+```
+
+
+
+
+### Choosing the number of cluster $K$
+
+There are many different methods which tend to give (slightly) different results. Direct methods such as the Elbow plot and silhouette diagnostics, are based on balancing a score measuring goodness of fit with a minimal number of clustering.  Alternatively, one can consider testing methods such as the Gap Statistic which compare the clustering performance to a null model where clustering is absent.  
+
+
+#### Elbow plot
+
+The center-based loss fucntion will decrease as the number of clusters increases. Thus, we plot the optimal loss found at different numbers of clusters and look for a sudden drop, much like we did with the scree plot in PCA.  Below, we show an example of this method for data with three well separated spherical clusters
+
+```{r}
+k <- 2:15
+inertia <- rep(NA,length(k))
+for (j in 1:length(k)){
+  inertia[j] <- kmeans(data1,k[j])$tot.withinss
+}
+par(mfrow = c(1,2))
+plot(data1$V1,data1$V2,xlab = '', ylab = '')
+plot(k,inertia, ylab="k-means loss" )
+```
+
+
+#### Gap Statistic
+
+The Gap statistic (Tibshirani et al., (JRSS-B, 2001)), takes a specified number of clusters and compares the total within cluster variation to the expected within-cluster variation under the assumption that the data have no obvious clustering (i.e., randomly distributed). This method can be used to select an optimal number of clusters or as evidence that there is no clustering structure. Though best suited to center based methods (particularly $k$-means), one can apply it to the output of any clustering algorithm in practice so long as there is some quantitative measure of the quality of the clustering.  
+
+The algorithm proceeds through the following six steps.
+    
+1. Cluster the data at varying number of total clusters $k$. Let $L_{k-means}(k)$ be the total within-cluster sum of squared distances using $k$ clusters.
+
+2. Generate $B$ reference data sets of size $N$, with the simulated values of variable $j$ uniformly generated over the range of the observed variable $j$ . Typically $B = 500.$
+
+3. For each generated data set $b=1,\dots, B$ perform the clustering for each $K$. Compute the total within-cluster sum of squared distances $T_K^{(b)}$.
+
+4. Compute the Gap statistic $$Gap(K) = \bar{w} - \log (T_K), \qquad \bar{w} = \frac{1}{B} \sum_{b=1}^B \log(T_K^{(b)})$$
+
+5.  Compute the sample variance $$var(K) = \frac{1}{B-1}\sum_{b=1}^B \left(\log(T_K^{(b)}) - \bar{w}\right)^2,$$
+and define $s_K = \sqrt{var(K)(1+1/B)}$
+
+6. Finally, choose the number of clusters as the smallest K such that
+$$Gap(K) \ge Gap(K + 1) − s_{K+1}$$
+::: {.example name="GAP statistic and iris data}
+Below, we show a plot of the Gap Statistic (left) which indicates that three clusters is correct. The associated clustering is used to color a plot of the first two PC scores (right) 
+```{r, echo = FALSE}
+set.seed(185)
+# plot(ir.pc$x[,1],ir.pc$x[,2])
+gap <- clusGap(ir.pc$x,kmeans, K.max = 10, B=500,verbose = FALSE)
+# print(gap, method = "firstSEmax")
+par(mfrow = c(1,2))
+plot(gap, main = "Gap statistic for Iris Data")
+plot(ir.pc$x[,1],ir.pc$x[,2], col = c("red","blue","black")[kmeans(ir.pc$x,3)$cluster])
+```
+
+:::
+
+
+#### Silhouette plots and coefficients
+
+For a given clustering, we would like to determine how well each sample is clustered.
+
+$$\begin{split}
+a_i &= \text{avg. dissimilarity of } \vec{x}_i \text{with all other samples in same cluster} \\
+b_i &= \text{avg. dissimilarity of } \vec{x}_i \text{ with samples }\text{ in } the \text{ } closest \text{ cluster}
+\end{split}$$
+
+We then define $$s_i = \frac{b_i - a_i}{\max\{a_i,b_i\}} \in (-1,1)$$
+as the silhouette for $\vec{x}_i.$
+
+- Observations with $s_i \approx 1$ are well clustered
+- Observations with $s_i \approx 0$ are between clusters
+- Observations with $s_i < 0$ are probably in wrong cluster
+
+We can use any dissimilarity!
+
+- Can use silhouettes as diagnostics of any method!
+
+- A great clustering will have high silhouettes for all samples.  
+
+- To compare different values of $K$ (and different methods), we can compute the average silhouette
+$$S_K = \frac{1}{N}\sum_{i=1}^N s_i$$
+over a range of values of $K$ and choose the $K$ which maximizes $S_K$.
+
+    

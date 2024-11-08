@@ -30,7 +30,7 @@
   
   
 <link rel="prev" href="ch-clustering.html"/>
-<link rel="next" href="sec-spec-clustering.html"/>
+
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -287,18 +287,11 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="7.1" data-path="center-based-clustering.html"><a href="center-based-clustering.html"><i class="fa fa-check"></i><b>7.1</b> Center-Based Clustering</a>
 <ul>
-<li class="chapter" data-level="7.1.1" data-path="center-based-clustering.html"><a href="center-based-clustering.html#key-points"><i class="fa fa-check"></i><b>7.1.1</b> Key Points</a></li>
-<li class="chapter" data-level="7.1.2" data-path="center-based-clustering.html"><a href="center-based-clustering.html#k-means-clustering"><i class="fa fa-check"></i><b>7.1.2</b> <span class="math inline">\(k\)</span>-Means Clustering</a></li>
-<li class="chapter" data-level="7.1.3" data-path="center-based-clustering.html"><a href="center-based-clustering.html#k-center-clustering"><i class="fa fa-check"></i><b>7.1.3</b> <span class="math inline">\(k\)</span>-Center Clustering</a></li>
-<li class="chapter" data-level="7.1.4" data-path="center-based-clustering.html"><a href="center-based-clustering.html#selecting-number-of-clusters"><i class="fa fa-check"></i><b>7.1.4</b> Selecting Number of Clusters</a></li>
-<li class="chapter" data-level="7.1.5" data-path="center-based-clustering.html"><a href="center-based-clustering.html#alternative-methods-for-choosing-k"><i class="fa fa-check"></i><b>7.1.5</b> Alternative Methods for Choosing <span class="math inline">\(k\)</span></a></li>
-<li class="chapter" data-level="7.1.6" data-path="center-based-clustering.html"><a href="center-based-clustering.html#comparison-of-clustering-algorithms"><i class="fa fa-check"></i><b>7.1.6</b> Comparison of Clustering Algorithms</a></li>
-<li class="chapter" data-level="7.1.7" data-path="center-based-clustering.html"><a href="center-based-clustering.html#example-in-r"><i class="fa fa-check"></i><b>7.1.7</b> Example in R</a></li>
-</ul></li>
-<li class="chapter" data-level="7.2" data-path="sec-spec-clustering.html"><a href="sec-spec-clustering.html"><i class="fa fa-check"></i><b>7.2</b> Spectral Clustering</a>
-<ul>
-<li class="chapter" data-level="7.2.1" data-path="sec-spec-clustering.html"><a href="sec-spec-clustering.html#introduction-3"><i class="fa fa-check"></i><b>7.2.1</b> Introduction</a></li>
-<li class="chapter" data-level="7.2.2" data-path="sec-spec-clustering.html"><a href="sec-spec-clustering.html#algorithm-4"><i class="fa fa-check"></i><b>7.2.2</b> Algorithm</a></li>
+<li class="chapter" data-level="7.1.1" data-path="center-based-clustering.html"><a href="center-based-clustering.html#k-means"><i class="fa fa-check"></i><b>7.1.1</b> <span class="math inline">\(k\)</span>-means</a></li>
+<li class="chapter" data-level="7.1.2" data-path="center-based-clustering.html"><a href="center-based-clustering.html#k-center-and-k-medoids"><i class="fa fa-check"></i><b>7.1.2</b> <span class="math inline">\(k\)</span>-center and <span class="math inline">\(k\)</span>-medoids</a></li>
+<li class="chapter" data-level="7.1.3" data-path="center-based-clustering.html"><a href="center-based-clustering.html#minimizing-clustering-loss-functions"><i class="fa fa-check"></i><b>7.1.3</b> Minimizing clustering loss functions</a></li>
+<li class="chapter" data-level="7.1.4" data-path="center-based-clustering.html"><a href="center-based-clustering.html#strengths-and-weaknesses"><i class="fa fa-check"></i><b>7.1.4</b> Strengths and Weaknesses</a></li>
+<li class="chapter" data-level="7.1.5" data-path="center-based-clustering.html"><a href="center-based-clustering.html#choosing-the-number-of-cluster-k"><i class="fa fa-check"></i><b>7.1.5</b> Choosing the number of cluster <span class="math inline">\(K\)</span></a></li>
 </ul></li>
 </ul></li>
 <li class="divider"></li>
@@ -323,104 +316,222 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="center-based-clustering" class="section level2 hasAnchor" number="7.1">
 <h2><span class="header-section-number">7.1</span> Center-Based Clustering<a href="center-based-clustering.html#center-based-clustering" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><strong>Goal</strong>: Group <code>N</code> observations into clusters of similar points.</p>
-<div id="key-points" class="section level3 hasAnchor" number="7.1.1">
-<h3><span class="header-section-number">7.1.1</span> Key Points<a href="center-based-clustering.html#key-points" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Center-based clustering algorithms are typically formulated as optimization problems. Throughout this section we’ll use, <span class="math inline">\(C_1,\dots,C_k \subset \{\vec{x}_1,\dots,\vec{x}_N\}\)</span> to denote the partitioning of our data into clusters. As such, <span class="math inline">\(C_i\cap C_j,\, i\ne j\)</span> and <span class="math inline">\(C_1\cup\cdots C_k = \{\vec{x}_1,\dots,\vec{x}_N\}.\)</span> If <span class="math inline">\(\vec{x}_i,\vec{x}_j \in C_\ell\)</span> then we will say that <span class="math inline">\(\vec{x}_i,\vec{x}_j\)</span> are in cluster <span class="math inline">\(\ell.\)</span> Importantly, for each cluster we will also have an associated center points, denoted <span class="math inline">\(\vec{c}_1,\dots,\vec{c}_k\)</span> respectively. A point <span class="math inline">\(\vec{x}_i\)</span> is in cluster <span class="math inline">\(\ell\)</span> of <span class="math inline">\(\vec{c}_\ell\)</span> is the closest center to <span class="math inline">\(\vec{x}_i\)</span> under our chosen notion of distance/dissimilarity. To find a clustering of our data, we minimize a loss function dependent on the partition and/or the set of centers.</p>
+<p>We will begin with <span class="math inline">\(k\)</span>-means, the most well known method in this class of clustering algorithms (and perhaps all of clustering). In many ways, <span class="math inline">\(k\)</span>-means is to clustering what PCA is to dimension reduction: a default algorithm used as a first step of analysis. Additional methods of center-based clustering include <span class="math inline">\(k\)</span>-center and <span class="math inline">\(k\)</span>-medoids, which we’ll discuss later. Importantly, in all of these methods, the user pre-specifies a desired number of clusters, and the algorithms proceed to find an (approximately) optimal clustering. When the number of clusters in unknown, separate runs of an algorithm can be run for a range of cluster numbers. Post-processing techniques to compare different clusterings can then be used to find an `optimal’ number of clusters.</p>
+<div id="k-means" class="section level3 hasAnchor" number="7.1.1">
+<h3><span class="header-section-number">7.1.1</span> <span class="math inline">\(k\)</span>-means<a href="center-based-clustering.html#k-means" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Given a partitioning <span class="math inline">\(C_1,\dots,C_k\)</span>, we define the intracluster variation in cluster <span class="math inline">\(\ell\)</span> to be
+<span class="math display">\[V(C_\ell) = \frac{1}{2|C_\ell|} \sum_{\vec{x}_i,\vec{x}_j \in C_\ell} \|\vec{x}_i-\vec{x}_j\|^2\]</span></p>
+<p>be the average squared Euclidean distance between all observations in cluster <span class="math inline">\(\ell\)</span>. Here <span class="math inline">\(|C_\ell|\)</span> is the number of samples in cluster <span class="math inline">\(\ell\)</span>. If <span class="math inline">\(V(C_\ell)\)</span> is small, all points within the cluster are close together, which indicates high similarity as measured by squared Euclidean distance.</p>
+<p>In <span class="math inline">\(k\)</span>-means, we want all clusters to have small intracluster variation so a natural loss function is the sum of all intracluster variations
+<span class="math display">\[L_{kmeans}(C_1,\dots,C_k) = \sum_{\ell=1}^k V(C_\ell).\]</span>
+With a little algebra, one can show that <span class="math display">\[V(C_\ell) = \sum_{\vec{x}_i\in C_\ell} \|\vec{x}_i-\vec{\mu}_\ell\|^2\]</span> where <span class="math inline">\(\vec{\mu}_\ell = \frac{1}{|C_\ell|}\sum_{\vec{x}_i \in C_\ell}\)</span> is the sample mean of points in cluster <span class="math inline">\(\ell.\)</span> Thus, the <span class="math inline">\(k\)</span> means loss function simplifies to <span class="math display">\[T_{kmeans}(C_1,\dots,C_k) = \sum_{\ell=1}^k \sum_{\vec{x}_i \in C_\ell}\|\vec{x}_i-\vec{\mu}_\ell\|^2.\]</span></p>
+<p>Before we turn to algorithms for minimizing , let’s highlight a few potential issues with <span class="math inline">\(k\)</span>-means. Like PCA, <span class="math inline">\(k\)</span>-means relies on squared Euclidean distance, thus it is sensitive to outliers and imbalances in scale. These issues can be ameliorated with standardization (and potentially, the removal of outliers). However, the choice of squared Euclidean distance implicitly emphasizes a specific type of cluster shape: spheres. As will we will show with example later, <span class="math inline">\(k\)</span>-means works well when the clusters are spherical in shape and/or far apart as measured by Euclidean distance. More complicated structure can be quite vexing for <span class="math inline">\(k\)</span>-means.</p>
+</div>
+<div id="k-center-and-k-medoids" class="section level3 hasAnchor" number="7.1.2">
+<h3><span class="header-section-number">7.1.2</span> <span class="math inline">\(k\)</span>-center and <span class="math inline">\(k\)</span>-medoids<a href="center-based-clustering.html#k-center-and-k-medoids" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In <span class="math inline">\(k\)</span>-center and <span class="math inline">\(k\)</span>-medoids, we require the cluster centers to be data points as opposed to sample means of data. Note that a given choice of centers <span class="math inline">\(\vec{c}_1,\dots,\vec{c}_k \subset \{\vec{x}_1,\dots,\vec{x}_N\}\)</span> implies a partition where we take <span class="math display">\[C_\ell = \left\{\vec{x}_i: \|\vec{x}_i-\vec{c}_\ell\| &lt; \|\vec{x}_i - \vec{c}_j\|, j\ne \ell\right\}.\]</span> Using this fact, we can specify the loss function for <span class="math inline">\(k\)</span>-center and <span class="math inline">\(k\)</span>-medoids clustering.</p>
+<p><span class="math display">\[\begin{align*}
+L_{k-center}(\vec{c}_1,\dots,\vec{c}_k) &amp;= \max_{\ell=1,\dots,k} \max_{x_i \in C_\ell} \|\vec{x}_i - \vec{c}_\ell\| \\
+L_{k-center}(\vec{c}_1,\dots,\vec{c}_k) &amp;= \sum_{\ell=1,\dots,k} \sum_{x_i \in C_\ell} \|\vec{x}_i - \vec{c}_\ell\|
+\end{align*}\]</span>
+In the preceding expression we have used (non-squared) Euclidean distance, which immediately makes these algorithms less sensitive to outliers and scale imbalance compared to <span class="math inline">\(k\)</span>-means. Furthermore, alternative distance/dissimilarity measures can be used instead of Euclidean distance which adds an additional level of flexibility. In fact, we do not even need to original data in practice to implement the <span class="math inline">\(k\)</span>-center or <span class="math inline">\(k\)</span>-medoids. A distance matrix alone is sufficient.</p>
+<p>Unfortunately, squared Euclidean distance has the added advantage of being much faster to implement in practice.</p>
+</div>
+<div id="minimizing-clustering-loss-functions" class="section level3 hasAnchor" number="7.1.3">
+<h3><span class="header-section-number">7.1.3</span> Minimizing clustering loss functions<a href="center-based-clustering.html#minimizing-clustering-loss-functions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For any of the three preceding methods, we want to find an optimal partitioning and/or set of centers which minimize their associated loss. One naive approach would be to search or all possible partitioning of our data into <span class="math inline">\(k\)</span> clusters (<span class="math inline">\(k\)</span>-means) or all possible choices of <span class="math inline">\(k\)</span> center points from our data, but one can imagine how computationally unfeasible this approach becomes for even moderate amounts of data. Instead, we will turn to greedy, iterative algorithms which converge to (locally) optimal solutions. The standard approach for <span class="math inline">\(k\)</span>-means is based on Lloyd’s algorithm with a special initialization to avoid convergence to local minima. Later versions of this text will discuss greedy approaches for <span class="math inline">\(k\)</span>-center and the standard partitioning around medians (PAM) algorithm for <span class="math inline">\(k\)</span>-medoids.</p>
+<div id="lloyds-algorithm-for-k-means" class="section level4 hasAnchor" number="7.1.3.1">
+<h4><span class="header-section-number">7.1.3.1</span> Lloyd’s Algorithm for <span class="math inline">\(k\)</span>-Means<a href="center-based-clustering.html#lloyds-algorithm-for-k-means" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ol style="list-style-type: decimal">
-<li>Unlike hierarchical clustering, the number of clusters (<code>k</code>) must be specified in advance.</li>
-<li><span class="math inline">\(k\)</span>-means clustering does not result from splitting clusters in a hierarchical fashion.</li>
-<li>Objective: Define clusters and iteratively optimize cluster centers.</li>
-</ol>
-</div>
-<div id="k-means-clustering" class="section level3 hasAnchor" number="7.1.2">
-<h3><span class="header-section-number">7.1.2</span> <span class="math inline">\(k\)</span>-Means Clustering<a href="center-based-clustering.html#k-means-clustering" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The <span class="math inline">\(k\)</span>-means clustering objective aims to minimize the sum of squared Euclidean distances:</p>
-<p><span class="math display">\[
-J = \sum_{i=1}^k \sum_{x_j \in C_i} ||x_j - \mu_i||^2
-\]</span></p>
-<p>where <span class="math inline">\(\mu_i\)</span> is the mean of points in cluster <span class="math inline">\(C_i\)</span>.</p>
-<div id="characteristics" class="section level4 hasAnchor" number="7.1.2.1">
-<h4><span class="header-section-number">7.1.2.1</span> Characteristics<a href="center-based-clustering.html#characteristics" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<ul>
-<li>Emphasis on minimizing large errors.</li>
-<li>Sensitive to outliers.</li>
-</ul>
-</div>
-</div>
-<div id="k-center-clustering" class="section level3 hasAnchor" number="7.1.3">
-<h3><span class="header-section-number">7.1.3</span> <span class="math inline">\(k\)</span>-Center Clustering<a href="center-based-clustering.html#k-center-clustering" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Objective: Minimize the maximum distance between any data point and its center:</p>
-<p><span class="math display">\[
-\min \max_{x \in C_i} d(x, \mu_i)
-\]</span></p>
-<p>This approach does not yield a closed-form solution.</p>
-<div id="k-median-and-k-medoid-clustering" class="section level4 hasAnchor" number="7.1.3.1">
-<h4><span class="header-section-number">7.1.3.1</span> <span class="math inline">\(k\)</span>-Median and <span class="math inline">\(k\)</span>-Medoid Clustering<a href="center-based-clustering.html#k-median-and-k-medoid-clustering" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>Here, the center of each cluster is the data point closest to all others in that cluster.</p>
-</div>
-<div id="characteristics-1" class="section level4 hasAnchor" number="7.1.3.2">
-<h4><span class="header-section-number">7.1.3.2</span> Characteristics<a href="center-based-clustering.html#characteristics-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<ul>
-<li>Less sensitive to outliers.</li>
-<li>Emphasis on larger distances, unlike <span class="math inline">\(k\)</span>-means.</li>
-</ul>
-</div>
-<div id="algorithm-lloyds-algorithm-for-k-means" class="section level4 hasAnchor" number="7.1.3.3">
-<h4><span class="header-section-number">7.1.3.3</span> Algorithm: Lloyd’s Algorithm for <span class="math inline">\(k\)</span>-Means<a href="center-based-clustering.html#algorithm-lloyds-algorithm-for-k-means" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<ol style="list-style-type: decimal">
-<li><strong>Initialize</strong>: Choose initial centers.</li>
+<li><strong>Initialize</strong>: Choose initial centers randomly from the data.</li>
 <li><strong>Cluster Assignment</strong>: Assign each point to the nearest center.</li>
 <li><strong>Center Update</strong>: Recompute cluster centers based on current assignments.</li>
 <li><strong>Repeat</strong> steps 2-3 until convergence.</li>
 </ol>
+<p>:::{.example name=“Lloyd’s algorithm and Iris Data}
+In this example, we’ll consider the three dimensional <strong>iris</strong> data. For visualization, we’ll plot the first two PC. Centers will be outlined in black.</p>
+<p><img src="_main_files/figure-html/iris-cluster-1.png" width="672" />
+:::</p>
 </div>
 </div>
-<div id="selecting-number-of-clusters" class="section level3 hasAnchor" number="7.1.4">
-<h3><span class="header-section-number">7.1.4</span> Selecting Number of Clusters<a href="center-based-clustering.html#selecting-number-of-clusters" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>An informal approach uses a <strong>scree plot</strong> (elbow method) to determine the optimal number of clusters based on objective function values.</p>
-<div id="objective-function" class="section level4 hasAnchor" number="7.1.4.1">
-<h4><span class="header-section-number">7.1.4.1</span> Objective Function<a href="center-based-clustering.html#objective-function" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p><span class="math display">\[
-J = \sum_{i=1}^k \sum_{x_j \in C_i} d(x_j, \mu_i)
-\]</span></p>
-<p>Choose <span class="math inline">\(k\)</span> to maximize the ratio of between-group to within-group variance.</p>
-</div>
-</div>
-<div id="alternative-methods-for-choosing-k" class="section level3 hasAnchor" number="7.1.5">
-<h3><span class="header-section-number">7.1.5</span> Alternative Methods for Choosing <span class="math inline">\(k\)</span><a href="center-based-clustering.html#alternative-methods-for-choosing-k" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<ul>
-<li>Use the <strong>elbow plot</strong> to observe the diminishing returns of increasing <span class="math inline">\(k\)</span>.</li>
-<li>Calculate the <strong>Calinski-Harabasz index</strong> for assessing clustering appropriateness.</li>
-</ul>
-</div>
-<div id="comparison-of-clustering-algorithms" class="section level3 hasAnchor" number="7.1.6">
-<h3><span class="header-section-number">7.1.6</span> Comparison of Clustering Algorithms<a href="center-based-clustering.html#comparison-of-clustering-algorithms" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<ul>
-<li><strong>Gaussian Mixture Models</strong> and <strong>Isotropic Gaussian Clustering</strong> can correctly identify cluster structure in datasets with well-defined cluster covariance.</li>
-<li><strong>Hierarchical Clustering</strong> is preferable in non-convex cluster scenarios (e.g., spiral or concentric structures).</li>
-</ul>
-</div>
-<div id="example-in-r" class="section level3 hasAnchor" number="7.1.7">
-<h3><span class="header-section-number">7.1.7</span> Example in R<a href="center-based-clustering.html#example-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="center-based-clustering.html#cb47-1" tabindex="-1"></a><span class="co"># Example of k-means clustering in R</span></span>
-<span id="cb47-2"><a href="center-based-clustering.html#cb47-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb47-3"><a href="center-based-clustering.html#cb47-3" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">100</span>), <span class="at">ncol=</span><span class="dv">2</span>)</span>
-<span id="cb47-4"><a href="center-based-clustering.html#cb47-4" tabindex="-1"></a>kmeans_result <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(data, <span class="at">centers=</span><span class="dv">3</span>)</span>
-<span id="cb47-5"><a href="center-based-clustering.html#cb47-5" tabindex="-1"></a><span class="fu">plot</span>(data, <span class="at">col=</span>kmeans_result<span class="sc">$</span>cluster)</span>
-<span id="cb47-6"><a href="center-based-clustering.html#cb47-6" tabindex="-1"></a><span class="fu">points</span>(kmeans_result<span class="sc">$</span>centers, <span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">pch=</span><span class="dv">8</span>, <span class="at">cex=</span><span class="dv">2</span>)</span></code></pre></div>
+<div id="strengths-and-weaknesses" class="section level3 hasAnchor" number="7.1.4">
+<h3><span class="header-section-number">7.1.4</span> Strengths and Weaknesses<a href="center-based-clustering.html#strengths-and-weaknesses" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The advantages and disadvantages of center-based clustering algorithms can be separated into two main categories: computational and geometric. For now, we’ll focus on the computational aspects.</p>
+<p>In the theoretical worst case, Lloyd’s algorithm can take<span class="math inline">\(\propto N^{k+1}\)</span> iterations to converge, but it is typically very fast in practice. Most implementations, allow the user to set a maximum number of iterations and converge to approximate suboptimal solutions if the maximum number of iterations is reached. PAM and greedy <span class="math inline">\(k\)</span>-center algorithms are typically much, much slower. However, once any of the clustering algorithms are complete, new data can be merged into cluster with nearest center. Other methods we’ll discuss later cannot incorporate new data without running the algorithm from scratch.</p>
+<p>Ther are other issues that can increase the computational demands of center-based clustering. Each of the methods requires one to choose the number of clusters in advance. We discuss this issue in more depth shortly, but for now we want to emphasize that there is no connection between the <span class="math inline">\(k\)</span>cluster solution and <span class="math inline">\((k+1)\)</span> cluster solution. Thus, when investigating a suitable number of clusters, we need to run our clustering algorithm for a range of potential values of <span class="math inline">\(k\)</span>.</p>
+<p>Convergence is also dependent on initial condition. In the figure below, we see two separate clustering arrangements resulting from different initial choices of the centers for <span class="math inline">\(k\)</span>-means.</p>
 <p><img src="_main_files/figure-html/unnamed-chunk-197-1.png" width="672" /></p>
+<p>Thus, we also need to avoid convergence to local minima either by running many different initial conditions to convergence and picking the best solution or by using better initialization such as <span class="math inline">\(k\)</span>-means++, which picks the initial points iteratively to maximize distance between the centers before running Lloyd’s algorithm. Using <span class="math inline">\(k\)</span>-means++ can reduce the number of initializations that one should use, but does not eliminate the potential for convergence to a poor clustering. Thus, center-based algorithms can become quite computationally demanding analyze appropriately.</p>
+<p>We have already discussed the impact of scale imbalance and outliers so as we turn to the geometric aspects of center based clustering, let’s first focus on the centers, which we often treat as <strong>representative</strong> examples of the cluster. However, the sample averages in <span class="math inline">\(k\)</span>-means may not resemble actual data points. Though <span class="math inline">\(k\)</span>-means may be much faster in prqctice, the centers in <span class="math inline">\(k\)</span>-center and <span class="math inline">\(k\)</span>-medoids are restricted to observations making them more representative of the data.</p>
+<p>Clusters are based off interpretable notion of (Euclidean) distance so that points in a cluster are closer to one another than to points in other clusters. However, this feature biases center-based methods to clusters which are spherical in shape. If (dis)similarity not best captured through (squared) Euclidean distance, poor clustering is inevitable, and many of the methods used to estimate the number of cluster with tend to overestiamte the true value. As an example, consider the three rings shown at the beginning of this chapter. Silhouette scores (see 6.1.) suggest 12 clusters which is much larger than the three rings we see in the figure.</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-198-1.png" width="672" /></p>
+</div>
+<div id="choosing-the-number-of-cluster-k" class="section level3 hasAnchor" number="7.1.5">
+<h3><span class="header-section-number">7.1.5</span> Choosing the number of cluster <span class="math inline">\(K\)</span><a href="center-based-clustering.html#choosing-the-number-of-cluster-k" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>There are many different methods which tend to give (slightly) different results. Direct methods such as the Elbow plot and silhouette diagnostics, are based on balancing a score measuring goodness of fit with a minimal number of clustering. Alternatively, one can consider testing methods such as the Gap Statistic which compare the clustering performance to a null model where clustering is absent.</p>
+<div id="elbow-plot" class="section level4 hasAnchor" number="7.1.5.1">
+<h4><span class="header-section-number">7.1.5.1</span> Elbow plot<a href="center-based-clustering.html#elbow-plot" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The center-based loss fucntion will decrease as the number of clusters increases. Thus, we plot the optimal loss found at different numbers of clusters and look for a sudden drop, much like we did with the scree plot in PCA. Below, we show an example of this method for data with three well separated spherical clusters</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="center-based-clustering.html#cb47-1" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">15</span></span>
+<span id="cb47-2"><a href="center-based-clustering.html#cb47-2" tabindex="-1"></a>inertia <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,<span class="fu">length</span>(k))</span>
+<span id="cb47-3"><a href="center-based-clustering.html#cb47-3" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(k)){</span>
+<span id="cb47-4"><a href="center-based-clustering.html#cb47-4" tabindex="-1"></a>  inertia[j] <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(data1,k[j])<span class="sc">$</span>tot.withinss</span>
+<span id="cb47-5"><a href="center-based-clustering.html#cb47-5" tabindex="-1"></a>}</span>
+<span id="cb47-6"><a href="center-based-clustering.html#cb47-6" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb47-7"><a href="center-based-clustering.html#cb47-7" tabindex="-1"></a><span class="fu">plot</span>(data1<span class="sc">$</span>V1,data1<span class="sc">$</span>V2,<span class="at">xlab =</span> <span class="st">&#39;&#39;</span>, <span class="at">ylab =</span> <span class="st">&#39;&#39;</span>)</span>
+<span id="cb47-8"><a href="center-based-clustering.html#cb47-8" tabindex="-1"></a><span class="fu">plot</span>(k,inertia, <span class="at">ylab=</span><span class="st">&quot;k-means loss&quot;</span> )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-199-1.png" width="672" /></p>
+</div>
+<div id="gap-statistic" class="section level4 hasAnchor" number="7.1.5.2">
+<h4><span class="header-section-number">7.1.5.2</span> Gap Statistic<a href="center-based-clustering.html#gap-statistic" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The Gap statistic (Tibshirani et al., (JRSS-B, 2001)), takes a specified number of clusters and compares the total within cluster variation to the expected within-cluster variation under the assumption that the data have no obvious clustering (i.e., randomly distributed). This method can be used to select an optimal number of clusters or as evidence that there is no clustering structure. Though best suited to center based methods (particularly <span class="math inline">\(k\)</span>-means), one can apply it to the output of any clustering algorithm in practice so long as there is some quantitative measure of the quality of the clustering.</p>
+<p>The algorithm proceeds through the following six steps.</p>
+<ol style="list-style-type: decimal">
+<li><p>Cluster the data at varying number of total clusters <span class="math inline">\(k\)</span>. Let <span class="math inline">\(L_{k-means}(k)\)</span> be the total within-cluster sum of squared distances using <span class="math inline">\(k\)</span> clusters.</p></li>
+<li><p>Generate <span class="math inline">\(B\)</span> reference data sets of size <span class="math inline">\(N\)</span>, with the simulated values of variable <span class="math inline">\(j\)</span> uniformly generated over the range of the observed variable <span class="math inline">\(j\)</span> . Typically <span class="math inline">\(B = 500.\)</span></p></li>
+<li><p>For each generated data set <span class="math inline">\(b=1,\dots, B\)</span> perform the clustering for each <span class="math inline">\(K\)</span>. Compute the total within-cluster sum of squared distances <span class="math inline">\(T_K^{(b)}\)</span>.</p></li>
+<li><p>Compute the Gap statistic <span class="math display">\[Gap(K) = \bar{w} - \log (T_K), \qquad \bar{w} = \frac{1}{B} \sum_{b=1}^B \log(T_K^{(b)})\]</span></p></li>
+<li><p>Compute the sample variance <span class="math display">\[var(K) = \frac{1}{B-1}\sum_{b=1}^B \left(\log(T_K^{(b)}) - \bar{w}\right)^2,\]</span>
+and define <span class="math inline">\(s_K = \sqrt{var(K)(1+1/B)}\)</span></p></li>
+<li><p>Finally, choose the number of clusters as the smallest K such that
+<span class="math display">\[Gap(K) \ge Gap(K + 1) − s_{K+1}\]</span>
+::: {.example name=“GAP statistic and iris data}
+Below, we show a plot of the Gap Statistic (left) which indicates that three clusters is correct. The associated clustering is used to color a plot of the first two PC scores (right)
+<img src="_main_files/figure-html/unnamed-chunk-200-1.png" width="672" /></p></li>
+</ol>
+<p>:::</p>
+</div>
+<div id="silhouette-plots-and-coefficients" class="section level4 hasAnchor" number="7.1.5.3">
+<h4><span class="header-section-number">7.1.5.3</span> Silhouette plots and coefficients<a href="center-based-clustering.html#silhouette-plots-and-coefficients" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>For a given clustering, we would like to determine how well each sample is clustered.</p>
+<p><span class="math display">\[\begin{split}
+a_i &amp;= \text{avg. dissimilarity of } \vec{x}_i \text{with all other samples in same cluster} \\
+b_i &amp;= \text{avg. dissimilarity of } \vec{x}_i \text{ with samples }\text{ in } the \text{ } closest \text{ cluster}
+\end{split}\]</span></p>
+<p>We then define <span class="math display">\[s_i = \frac{b_i - a_i}{\max\{a_i,b_i\}} \in (-1,1)\]</span>
+as the silhouette for <span class="math inline">\(\vec{x}_i.\)</span></p>
+<ul>
+<li>Observations with <span class="math inline">\(s_i \approx 1\)</span> are well clustered</li>
+<li>Observations with <span class="math inline">\(s_i \approx 0\)</span> are between clusters</li>
+<li>Observations with <span class="math inline">\(s_i &lt; 0\)</span> are probably in wrong cluster</li>
+</ul>
+<p>We can use any dissimilarity!</p>
+<ul>
+<li><p>Can use silhouettes as diagnostics of any method!</p></li>
+<li><p>A great clustering will have high silhouettes for all samples.</p></li>
+<li><p>To compare different values of <span class="math inline">\(K\)</span> (and different methods), we can compute the average silhouette
+<span class="math display">\[S_K = \frac{1}{N}\sum_{i=1}^N s_i\]</span>
+over a range of values of <span class="math inline">\(K\)</span> and choose the <span class="math inline">\(K\)</span> which maximizes <span class="math inline">\(S_K\)</span>.</p></li>
+</ul>
 <!-- Hierarchical -->
+<!-- # ```{r child = 'topics/Hierarchical-Clustering.Rmd'} -->
+<!-- # ``` -->
 <!-- Model based -->
+<!-- # ```{r child = 'topics/Model-Based-Clustering.Rmd'} -->
+<!-- # ``` -->
 <!-- Spectral Clustering -->
+<!-- # ```{r child = 'topics/Spectral-Clustering.Rmd'} -->
+<!-- # ``` -->
+<!-- Clustering comparisons and metrics -->
+
+<div id="refs" class="references csl-bib-body">
+<div class="csl-entry">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline"><span class="smallcaps">Deng</span>, L. (2012). The mnist database of handwritten digit images for machine learning research. <em>IEEE Signal Processing Magazine</em> <strong>29</strong> 141–2.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline"><span class="smallcaps">Hastie</span>, T., <span class="smallcaps">Tibshirani</span>, R. and <span class="smallcaps">Friedman</span>, J. (2001). <em>The elements of statistical learning</em>. Springer New York Inc., New York, NY, USA.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline"><span class="smallcaps">Izenman</span>, A. J. (2008). <em>Modern multivariate statistical techniques: Regression, classification, and manifold learning</em>. Springer Publishing Company, Incorporated.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline"><span class="smallcaps">Trefethen</span>, L. N. and <span class="smallcaps">Bau</span>, D. (1997). <em>Numerical linear algebra</em>. SIAM.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline"><span class="smallcaps">Strang</span>, G. (2006). <em><a href="http://www.amazon.com/Linear-Algebra-Its-Applications-Edition/dp/0030105676">Linear algebra and its applications</a></em>. Thomson, Brooks/Cole, Belmont, CA.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline"><span class="smallcaps">S.</span>, K. P. F. R. (1901). <a href="https://doi.org/10.1080/14786440109462720">LIII. On lines and planes of closest fit to systems of points in space</a>. <em>The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science</em> <strong>2</strong> 559–72.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[7] </div><div class="csl-right-inline"><span class="smallcaps">Hotelling</span>, H. (1933). Analysis of a complex of statistical variables into principal components. <em>Journal of educational psychology</em> <strong>24</strong> 417.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[8] </div><div class="csl-right-inline"><span class="smallcaps">Donoho</span>, D., <span class="smallcaps">Gavish</span>, M. and <span class="smallcaps">Romanov</span>, E. (2023). <a href="https://doi.org/10.1214/22-AOS2232"><span class="nocase">ScreeNOT: Exact MSE-optimal singular value thresholding in correlated noise</span></a>. <em>The Annals of Statistics</em> <strong>51</strong> 122–48.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[9] </div><div class="csl-right-inline"><span class="smallcaps">Cattell</span>, R. B. (1966). <a href="https://doi.org/10.1207/s15327906mbr0102\_10">The scree test for the number of factors</a>. <em>Multivariate Behavioral Research</em> <strong>1</strong> 245–76.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[10] </div><div class="csl-right-inline"><span class="smallcaps">Lee</span>, D. and <span class="smallcaps">Seung</span>, H. S. (2000). <a href="https://proceedings.neurips.cc/paper_files/paper/2000/file/f9d1152547c0bde01830b7e8bd60024c-Paper.pdf">Algorithms for non-negative matrix factorization</a>. In <em>Advances in neural information processing systems</em> vol 13, (T. Leen, T. Dietterich and V. Tresp, ed). MIT Press.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[11] </div><div class="csl-right-inline"><span class="smallcaps">Cutler</span>, A. and <span class="smallcaps">Breiman</span>, L. (1994). <a href="http://www.jstor.org/stable/1269949">Archetypal analysis</a>. <em>Technometrics</em> <strong>36</strong> 338–47.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[12] </div><div class="csl-right-inline"><span class="smallcaps">Lin</span>, C.-H., <span class="smallcaps">Ma</span>, W.-K., <span class="smallcaps">Li</span>, W.-C., <span class="smallcaps">Chi</span>, C.-Y. and <span class="smallcaps">Ambikapathi</span>, A. (2014). <a href="https://doi.org/10.1109/TGRS.2015.2424719">Identifiability of the simplex volume minimization criterion for blind hyperspectral unmixing: The no pure-pixel case</a>. <em>IEEE Transactions on Geoscience and Remote Sensing</em> <strong>53</strong>.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[13] </div><div class="csl-right-inline"><span class="smallcaps">Fu</span>, X., <span class="smallcaps">Ma</span>, W.-K., <span class="smallcaps">Huang</span>, K. and <span class="smallcaps">Sidiropoulos</span>, N. D. (2015). <a href="https://doi.org/10.1109/TSP.2015.2404577">Blind separation of quasi-stationary sources: Exploiting convex geometry in covariance domain</a>. <em>IEEE Transactions on Signal Processing</em> <strong>63</strong> 1–1.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[14] </div><div class="csl-right-inline"><span class="smallcaps">Févotte</span>, C., <span class="smallcaps">Bertin</span>, N. and <span class="smallcaps">Durrieu</span>, J.-L. (2009). <a href="https://doi.org/10.1162/neco.2008.04-08-771">Nonnegative matrix factorization with the itakura-saito divergence: With application to music analysis</a>. <em>Neural Computation</em> <strong>21</strong> 793–830.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[15] </div><div class="csl-right-inline"><span class="smallcaps">Saul</span>, L. K. and <span class="smallcaps">Roweis</span>, S. T. (2003). <a href="https://doi.org/10.1162/153244304322972667">Think globally, fit locally: Unsupervised learning of low dimensional manifolds</a>. <strong>4</strong> 119–55.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[16] </div><div class="csl-right-inline"><span class="smallcaps">Alam</span>, M. A. and <span class="smallcaps">Fukumizu</span>, K. (2014). <a href="https://doi.org/10.3844/jcssp.2014.1139.1150">Hyperparameter selection in kernel principal component analysis</a>. <em>Journal of Computer Science</em> <strong>10</strong> 1139–50.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[17] </div><div class="csl-right-inline"><span class="smallcaps">Mika</span>, S., <span class="smallcaps">Schölkopf</span>, B., <span class="smallcaps">Smola</span>, A., <span class="smallcaps">Müller</span>, K.-R., <span class="smallcaps">Scholz</span>, M. and <span class="smallcaps">Rätsch</span>, G. (1998). <a href="https://proceedings.neurips.cc/paper_files/paper/1998/file/226d1f15ecd35f784d2a20c3ecf56d7f-Paper.pdf">Kernel PCA and de-noising in feature spaces</a>. In <em>Advances in neural information processing systems</em> vol 11, (M. Kearns, S. Solla and D. Cohn, ed). MIT Press.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[18] </div><div class="csl-right-inline"><span class="smallcaps">Tenenbaum</span>, J. B., <span class="smallcaps">Silva</span>, V. de and <span class="smallcaps">Langford</span>, J. C. (2000). <a href="https://doi.org/10.1126/science.290.5500.2319">A global geometric framework for nonlinear dimensionality reduction</a>. <em>Science</em> <strong>290</strong> 2319–23.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[19] </div><div class="csl-right-inline"><span class="smallcaps">Bernstein</span>, M., <span class="smallcaps">Silva</span>, V., <span class="smallcaps">Langford</span>, J. and <span class="smallcaps">Tenenbaum</span>, J. (2001). Graph approximations to geodesics on embedded manifolds.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[20] </div><div class="csl-right-inline"><span class="smallcaps">Roweis</span>, S. T. and <span class="smallcaps">Saul</span>, L. K. (2000). <a href="https://doi.org/10.1126/science.290.5500.2323">Nonlinear dimensionality reduction by locally linear embedding</a>. <em>Science</em> <strong>290</strong> 2323–6.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[21] </div><div class="csl-right-inline"><span class="smallcaps">Chen</span>, J. and <span class="smallcaps">Liu</span>, Y. (2011). <a href="https://doi.org/10.1007/s10462-010-9200-z">Locally linear embedding: A survey</a>. <em>Artif. Intell. Rev.</em> <strong>36</strong> 29–48.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[22] </div><div class="csl-right-inline"><span class="smallcaps">Saul</span>, L. K. and <span class="smallcaps">Roweis</span>, S. T. (2003). <a href="https://doi.org/10.1162/153244304322972667">Think globally, fit locally: Unsupervised learning of low dimensional manifolds</a>. <strong>4</strong> 119–55.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[23] </div><div class="csl-right-inline"><span class="smallcaps">Anon</span>. (2019). <a href="https://doi.org/10.1016/j.patrec.2019.02.030">Locally linear embedding with additive noise</a>. <em>Pattern Recognition Letters</em> <strong>123</strong> 47–52.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[24] </div><div class="csl-right-inline"><span class="smallcaps">Chang</span>, H. and <span class="smallcaps">Yeung</span>, D.-Y. (2006). <a href="https://doi.org/10.1016/j.patcog.2005.07.011">Robust locally linear embedding</a>. <em>Pattern Recognition</em> <strong>39</strong> 1053–65.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[25] </div><div class="csl-right-inline"><span class="smallcaps">Belkin</span>, M. and <span class="smallcaps">Niyogi</span>, P. (2001). <a href="https://proceedings.neurips.cc/paper_files/paper/2001/file/f106b7f99d2cb30c3db1c3cc0fde9ccb-Paper.pdf">Laplacian eigenmaps and spectral techniques for embedding and clustering</a>. In <em>Advances in neural information processing systems</em> vol 14, (T. Dietterich, S. Becker and Z. Ghahramani, ed). MIT Press.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[26] </div><div class="csl-right-inline"><span class="smallcaps">Hinton</span>, G. E. and <span class="smallcaps">Salakhutdinov</span>, R. R. (2006). <a href="https://doi.org/10.1126/science.1127647">Reducing the dimensionality of data with neural networks</a>. <em>Science</em> <strong>313</strong> 504–7.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[27] </div><div class="csl-right-inline"><span class="smallcaps">Kingma</span>, D. P. and <span class="smallcaps">Welling</span>, M. (2013). <a href="https://api.semanticscholar.org/CorpusID:216078090">Auto-encoding variational bayes</a>. <em>CoRR</em> <strong>abs/1312.6114</strong>.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[28] </div><div class="csl-right-inline"><span class="smallcaps">Vincent</span>, P., <span class="smallcaps">Larochelle</span>, H., <span class="smallcaps">Bengio</span>, Y. and <span class="smallcaps">Manzagol</span>, P.-A. (2008). <a href="https://doi.org/10.1145/1390156.1390294">Extracting and composing robust features with denoising autoencoders</a>. In ICML ’08 pp 1096–103. Association for Computing Machinery.</div>
 </div>
 </div>
+</div>
+</div>
+</div>
+<!-- </div> -->
             </section>
 
           </div>
         </div>
       </div>
-<a href="ch-clustering.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="sec-spec-clustering.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="ch-clustering.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

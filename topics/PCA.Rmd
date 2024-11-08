@@ -432,7 +432,7 @@ A natural way (and generally good idea) to address this issue is to standardize 
 ```{r, echo = F}
 out <- prcomp(wine, scale. = TRUE)
 library(gridExtra)
-grid.arrange(ggplot(data.frame(comp = 1:13, var = out$sdev^2),aes(x=comp,y=var)) + geom_point() + xlab("Variance") + ylab("Component") +ggtitle("Scree plot"),
+grid.arrange(ggplot(data.frame(comp = 1:length(out$sdev), var = out$sdev^2),aes(x=comp,y=var)) + geom_point() + xlab("Variance") + ylab("Component") +ggtitle("Scree plot"),
   ggbiplot(out,scale = 0, varname.color = "red") + ggtitle("Biplot") ,
   nrow = 1)  
 ```

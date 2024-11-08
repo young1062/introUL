@@ -1,0 +1,65 @@
+## Hierarchical Clustering Clustering
+
+**Goal**: Group each observation into one of \( k \) clusters, creating a hierarchical structure of data.
+
+### Key Outputs
+- **Dendrogram**: A tree diagram representing hierarchical clustering, where each merge is shown by a horizontal line, with height indicating dissimilarity between merged clusters.
+
+### Hierarchical Clustering Methods
+
+1. **Agglomerative Clustering**: Builds clusters by merging pairs based on minimum dissimilarity.
+2. **Divisive Clustering**: Begins with all data points in one cluster and splits iteratively.
+
+### Dendrogram Interpretation
+
+- Draw a horizontal line crossing \( k \) vertical branches to represent \( k \) clusters.
+- Lower heights represent more similar clusters.
+
+### Distance Measures
+
+1. **Euclidean Distance** \( (p=2) \)
+2. **Manhattan Distance** \( (p=1) \)
+3. **Minkowski Distance** \( (p) \)
+
+Choosing a distance metric affects cluster compactness and structure.
+
+### Agglomerative Hierarchical Clustering Algorithm
+
+1. **Initialize**: Start with `N` clusters, one per data point.
+2. **Identify Closest Clusters**: Find the pair with the smallest dissimilarity.
+3. **Merge Clusters**: Combine the pair and recalculate distances.
+4. **Repeat** until only one cluster remains.
+
+### Linkage Criteria
+- **Single Linkage**: Minimum distance between points in clusters.
+- **Complete Linkage**: Maximum distance between points.
+- **Average Linkage**: Average distance between all pairs of points in clusters.
+
+### Computing the Dendrogram in R
+
+Below is an example using hierarchical clustering with different linkage methods.
+
+```{r}
+# Example hierarchical clustering
+data <- matrix(rnorm(100), ncol=2)
+dist_matrix <- dist(data, method="euclidean")
+
+# Perform hierarchical clustering
+hc_complete <- hclust(dist_matrix, method="complete")
+hc_single <- hclust(dist_matrix, method="single")
+
+# Plot dendrograms
+par(mfrow=c(1,2))
+plot(hc_complete, main="Complete Linkage")
+plot(hc_single, main="Single Linkage")
+```
+
+### Cophenetic Correlation Coefficient
+This coefficient measures how well a dendrogram preserves the pairwise distances of the original data:
+
+$$ c = \frac{\sum_{ij}(d_{ij}-\bar{d})(h_{ij}-\bar{h})}{\sqrt{\sum_{ij}(d_{ij}-\bar{d})^2}\sqrt{\sum_{ij}(h_{ij}-\bar{h})^2}}.$$
+ 
+A high cophenetic correlation suggests a better fit between the clustering and original distances.
+
+Choosing the Number of Clusters
+Use a cut-off height on the dendrogram to select the desired number of clusters. The height choice determines k, the number of clusters.
