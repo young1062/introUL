@@ -1,0 +1,2 @@
+<!-- rand index and rand index R for testing -->
+<!-- silhouette and gap statistics  -->

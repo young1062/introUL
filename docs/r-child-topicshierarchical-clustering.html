@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="average-silhouette.html"/>
-<link rel="next" href="r-child-topicsmodel-based-clustering.html"/>
+<link rel="prev" href="center-based-clustering.html"/>
+
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -289,18 +289,12 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="7.1.1" data-path="center-based-clustering.html"><a href="center-based-clustering.html#k-means"><i class="fa fa-check"></i><b>7.1.1</b> <span class="math inline">\(k\)</span>-means</a></li>
 <li class="chapter" data-level="7.1.2" data-path="center-based-clustering.html"><a href="center-based-clustering.html#k-center-and-k-medoids"><i class="fa fa-check"></i><b>7.1.2</b> <span class="math inline">\(k\)</span>-center and <span class="math inline">\(k\)</span>-medoids</a></li>
+<li class="chapter" data-level="7.1.3" data-path="center-based-clustering.html"><a href="center-based-clustering.html#minimizing-clustering-loss-functions"><i class="fa fa-check"></i><b>7.1.3</b> Minimizing clustering loss functions</a></li>
+<li class="chapter" data-level="7.1.4" data-path="center-based-clustering.html"><a href="center-based-clustering.html#strengths-and-weaknesses"><i class="fa fa-check"></i><b>7.1.4</b> Strengths and Weaknesses</a></li>
+<li class="chapter" data-level="7.1.5" data-path="center-based-clustering.html"><a href="center-based-clustering.html#choosing-the-number-of-cluster-k"><i class="fa fa-check"></i><b>7.1.5</b> Choosing the number of cluster <span class="math inline">\(K\)</span></a></li>
 </ul></li>
-<li class="chapter" data-level="7.2" data-path="minimizing-clustering-loss-functions.html"><a href="minimizing-clustering-loss-functions.html"><i class="fa fa-check"></i><b>7.2</b> Minimizing clustering loss functions</a>
-<ul>
-<li class="chapter" data-level="7.2.1" data-path="minimizing-clustering-loss-functions.html"><a href="minimizing-clustering-loss-functions.html#lloyds-algorithm-for-k-means"><i class="fa fa-check"></i><b>7.2.1</b> Lloyd’s Algorithm for <span class="math inline">\(k\)</span>-Means</a></li>
-<li class="chapter" data-level="7.2.2" data-path="minimizing-clustering-loss-functions.html"><a href="minimizing-clustering-loss-functions.html#strengths-and-weaknesses"><i class="fa fa-check"></i><b>7.2.2</b> Strengths and Weaknesses</a></li>
-<li class="chapter" data-level="7.2.3" data-path="minimizing-clustering-loss-functions.html"><a href="minimizing-clustering-loss-functions.html#addressing-limitations-computational"><i class="fa fa-check"></i><b>7.2.3</b> Addressing limitations (computational)</a></li>
-</ul></li>
-<li class="chapter" data-level="7.3" data-path="average-silhouette.html"><a href="average-silhouette.html"><i class="fa fa-check"></i><b>7.3</b> Average Silhouette</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="r-child-topicshierarchical-clustering.html"><a href="r-child-topicshierarchical-clustering.html"><i class="fa fa-check"></i><b>8</b> <code>{r child = 'topics/Hierarchical-Clustering.Rmd'} #</code></a></li>
-<li class="chapter" data-level="9" data-path="r-child-topicsmodel-based-clustering.html"><a href="r-child-topicsmodel-based-clustering.html"><i class="fa fa-check"></i><b>9</b> <code>{r child = 'topics/Model-Based-Clustering.Rmd'} #</code></a></li>
-<li class="chapter" data-level="10" data-path="r-child-topicsspectral-clustering.html"><a href="r-child-topicsspectral-clustering.html"><i class="fa fa-check"></i><b>10</b> <code>{r child = 'topics/Spectral-Clustering.Rmd'} #</code></a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -324,14 +318,107 @@ div.csl-indent {
 <div id="r-child-topicshierarchical-clustering.rmd" class="section level1 hasAnchor" number="8">
 <h1><span class="header-section-number">Chapter 8</span> <code>{r child = 'topics/Hierarchical-Clustering.Rmd'} #</code><a href="r-child-topicshierarchical-clustering.html#r-child-topicshierarchical-clustering.rmd" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <!-- Model based -->
+<!-- # ```{r child = 'topics/Model-Based-Clustering.Rmd'} -->
+<!-- # ``` -->
+<!-- Spectral Clustering -->
+<!-- # ```{r child = 'topics/Spectral-Clustering.Rmd'} -->
+<!-- # ``` -->
+<!-- Clustering comparisons and metrics -->
+
+<div id="refs" class="references csl-bib-body">
+<div class="csl-entry">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline"><span class="smallcaps">Deng</span>, L. (2012). The mnist database of handwritten digit images for machine learning research. <em>IEEE Signal Processing Magazine</em> <strong>29</strong> 141–2.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline"><span class="smallcaps">Hastie</span>, T., <span class="smallcaps">Tibshirani</span>, R. and <span class="smallcaps">Friedman</span>, J. (2001). <em>The elements of statistical learning</em>. Springer New York Inc., New York, NY, USA.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline"><span class="smallcaps">Izenman</span>, A. J. (2008). <em>Modern multivariate statistical techniques: Regression, classification, and manifold learning</em>. Springer Publishing Company, Incorporated.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline"><span class="smallcaps">Trefethen</span>, L. N. and <span class="smallcaps">Bau</span>, D. (1997). <em>Numerical linear algebra</em>. SIAM.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline"><span class="smallcaps">Strang</span>, G. (2006). <em><a href="http://www.amazon.com/Linear-Algebra-Its-Applications-Edition/dp/0030105676">Linear algebra and its applications</a></em>. Thomson, Brooks/Cole, Belmont, CA.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline"><span class="smallcaps">S.</span>, K. P. F. R. (1901). <a href="https://doi.org/10.1080/14786440109462720">LIII. On lines and planes of closest fit to systems of points in space</a>. <em>The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science</em> <strong>2</strong> 559–72.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[7] </div><div class="csl-right-inline"><span class="smallcaps">Hotelling</span>, H. (1933). Analysis of a complex of statistical variables into principal components. <em>Journal of educational psychology</em> <strong>24</strong> 417.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[8] </div><div class="csl-right-inline"><span class="smallcaps">Donoho</span>, D., <span class="smallcaps">Gavish</span>, M. and <span class="smallcaps">Romanov</span>, E. (2023). <a href="https://doi.org/10.1214/22-AOS2232"><span class="nocase">ScreeNOT: Exact MSE-optimal singular value thresholding in correlated noise</span></a>. <em>The Annals of Statistics</em> <strong>51</strong> 122–48.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[9] </div><div class="csl-right-inline"><span class="smallcaps">Cattell</span>, R. B. (1966). <a href="https://doi.org/10.1207/s15327906mbr0102\_10">The scree test for the number of factors</a>. <em>Multivariate Behavioral Research</em> <strong>1</strong> 245–76.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[10] </div><div class="csl-right-inline"><span class="smallcaps">Lee</span>, D. and <span class="smallcaps">Seung</span>, H. S. (2000). <a href="https://proceedings.neurips.cc/paper_files/paper/2000/file/f9d1152547c0bde01830b7e8bd60024c-Paper.pdf">Algorithms for non-negative matrix factorization</a>. In <em>Advances in neural information processing systems</em> vol 13, (T. Leen, T. Dietterich and V. Tresp, ed). MIT Press.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[11] </div><div class="csl-right-inline"><span class="smallcaps">Cutler</span>, A. and <span class="smallcaps">Breiman</span>, L. (1994). <a href="http://www.jstor.org/stable/1269949">Archetypal analysis</a>. <em>Technometrics</em> <strong>36</strong> 338–47.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[12] </div><div class="csl-right-inline"><span class="smallcaps">Lin</span>, C.-H., <span class="smallcaps">Ma</span>, W.-K., <span class="smallcaps">Li</span>, W.-C., <span class="smallcaps">Chi</span>, C.-Y. and <span class="smallcaps">Ambikapathi</span>, A. (2014). <a href="https://doi.org/10.1109/TGRS.2015.2424719">Identifiability of the simplex volume minimization criterion for blind hyperspectral unmixing: The no pure-pixel case</a>. <em>IEEE Transactions on Geoscience and Remote Sensing</em> <strong>53</strong>.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[13] </div><div class="csl-right-inline"><span class="smallcaps">Fu</span>, X., <span class="smallcaps">Ma</span>, W.-K., <span class="smallcaps">Huang</span>, K. and <span class="smallcaps">Sidiropoulos</span>, N. D. (2015). <a href="https://doi.org/10.1109/TSP.2015.2404577">Blind separation of quasi-stationary sources: Exploiting convex geometry in covariance domain</a>. <em>IEEE Transactions on Signal Processing</em> <strong>63</strong> 1–1.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[14] </div><div class="csl-right-inline"><span class="smallcaps">Févotte</span>, C., <span class="smallcaps">Bertin</span>, N. and <span class="smallcaps">Durrieu</span>, J.-L. (2009). <a href="https://doi.org/10.1162/neco.2008.04-08-771">Nonnegative matrix factorization with the itakura-saito divergence: With application to music analysis</a>. <em>Neural Computation</em> <strong>21</strong> 793–830.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[15] </div><div class="csl-right-inline"><span class="smallcaps">Saul</span>, L. K. and <span class="smallcaps">Roweis</span>, S. T. (2003). <a href="https://doi.org/10.1162/153244304322972667">Think globally, fit locally: Unsupervised learning of low dimensional manifolds</a>. <strong>4</strong> 119–55.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[16] </div><div class="csl-right-inline"><span class="smallcaps">Alam</span>, M. A. and <span class="smallcaps">Fukumizu</span>, K. (2014). <a href="https://doi.org/10.3844/jcssp.2014.1139.1150">Hyperparameter selection in kernel principal component analysis</a>. <em>Journal of Computer Science</em> <strong>10</strong> 1139–50.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[17] </div><div class="csl-right-inline"><span class="smallcaps">Mika</span>, S., <span class="smallcaps">Schölkopf</span>, B., <span class="smallcaps">Smola</span>, A., <span class="smallcaps">Müller</span>, K.-R., <span class="smallcaps">Scholz</span>, M. and <span class="smallcaps">Rätsch</span>, G. (1998). <a href="https://proceedings.neurips.cc/paper_files/paper/1998/file/226d1f15ecd35f784d2a20c3ecf56d7f-Paper.pdf">Kernel PCA and de-noising in feature spaces</a>. In <em>Advances in neural information processing systems</em> vol 11, (M. Kearns, S. Solla and D. Cohn, ed). MIT Press.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[18] </div><div class="csl-right-inline"><span class="smallcaps">Tenenbaum</span>, J. B., <span class="smallcaps">Silva</span>, V. de and <span class="smallcaps">Langford</span>, J. C. (2000). <a href="https://doi.org/10.1126/science.290.5500.2319">A global geometric framework for nonlinear dimensionality reduction</a>. <em>Science</em> <strong>290</strong> 2319–23.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[19] </div><div class="csl-right-inline"><span class="smallcaps">Bernstein</span>, M., <span class="smallcaps">Silva</span>, V., <span class="smallcaps">Langford</span>, J. and <span class="smallcaps">Tenenbaum</span>, J. (2001). Graph approximations to geodesics on embedded manifolds.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[20] </div><div class="csl-right-inline"><span class="smallcaps">Roweis</span>, S. T. and <span class="smallcaps">Saul</span>, L. K. (2000). <a href="https://doi.org/10.1126/science.290.5500.2323">Nonlinear dimensionality reduction by locally linear embedding</a>. <em>Science</em> <strong>290</strong> 2323–6.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[21] </div><div class="csl-right-inline"><span class="smallcaps">Chen</span>, J. and <span class="smallcaps">Liu</span>, Y. (2011). <a href="https://doi.org/10.1007/s10462-010-9200-z">Locally linear embedding: A survey</a>. <em>Artif. Intell. Rev.</em> <strong>36</strong> 29–48.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[22] </div><div class="csl-right-inline"><span class="smallcaps">Saul</span>, L. K. and <span class="smallcaps">Roweis</span>, S. T. (2003). <a href="https://doi.org/10.1162/153244304322972667">Think globally, fit locally: Unsupervised learning of low dimensional manifolds</a>. <strong>4</strong> 119–55.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[23] </div><div class="csl-right-inline"><span class="smallcaps">Anon</span>. (2019). <a href="https://doi.org/10.1016/j.patrec.2019.02.030">Locally linear embedding with additive noise</a>. <em>Pattern Recognition Letters</em> <strong>123</strong> 47–52.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[24] </div><div class="csl-right-inline"><span class="smallcaps">Chang</span>, H. and <span class="smallcaps">Yeung</span>, D.-Y. (2006). <a href="https://doi.org/10.1016/j.patcog.2005.07.011">Robust locally linear embedding</a>. <em>Pattern Recognition</em> <strong>39</strong> 1053–65.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[25] </div><div class="csl-right-inline"><span class="smallcaps">Belkin</span>, M. and <span class="smallcaps">Niyogi</span>, P. (2001). <a href="https://proceedings.neurips.cc/paper_files/paper/2001/file/f106b7f99d2cb30c3db1c3cc0fde9ccb-Paper.pdf">Laplacian eigenmaps and spectral techniques for embedding and clustering</a>. In <em>Advances in neural information processing systems</em> vol 14, (T. Dietterich, S. Becker and Z. Ghahramani, ed). MIT Press.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[26] </div><div class="csl-right-inline"><span class="smallcaps">Hinton</span>, G. E. and <span class="smallcaps">Salakhutdinov</span>, R. R. (2006). <a href="https://doi.org/10.1126/science.1127647">Reducing the dimensionality of data with neural networks</a>. <em>Science</em> <strong>313</strong> 504–7.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[27] </div><div class="csl-right-inline"><span class="smallcaps">Kingma</span>, D. P. and <span class="smallcaps">Welling</span>, M. (2013). <a href="https://api.semanticscholar.org/CorpusID:216078090">Auto-encoding variational bayes</a>. <em>CoRR</em> <strong>abs/1312.6114</strong>.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[28] </div><div class="csl-right-inline"><span class="smallcaps">Vincent</span>, P., <span class="smallcaps">Larochelle</span>, H., <span class="smallcaps">Bengio</span>, Y. and <span class="smallcaps">Manzagol</span>, P.-A. (2008). <a href="https://doi.org/10.1145/1390156.1390294">Extracting and composing robust features with denoising autoencoders</a>. In ICML ’08 pp 1096–103. Association for Computing Machinery.</div>
+</div>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="average-silhouette.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="r-child-topicsmodel-based-clustering.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="center-based-clustering.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

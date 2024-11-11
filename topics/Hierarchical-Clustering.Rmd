@@ -1,65 +1,102 @@
-## Hierarchical Clustering Clustering
+## Hierarchical Clustering 
 
-**Goal**: Group each observation into one of \( k \) clusters, creating a hierarchical structure of data.
+```{r, echo = F}
+library("MASS")
+library("ggplot2")
+set.seed(209)
+N <- 200
+rho <- 0.1
+shift <- (runif(N) < 0.5) + (runif(N) < 0.5)
+data1 <- as.data.frame(mvrnorm(N, mu = c(0,0), Sigma = 0.5*matrix(c(1,rho,rho,1),nrow = 2)) + 
+                         diag((shift == 1))%*% matrix(c(2.5,3),nrow = N, ncol = 2, byrow = T) +
+                         diag((shift == 2))%*% matrix(c(-1.5,3),nrow = N, ncol = 2, byrow = T))
+data1$clus <- shift
+N<- 400
+data2 <- matrix(rnorm(N*2), nrow = N)
+rad <- 1 + (runif(N) < 0.5) + (runif(N) < 0.5)
+data2 <- as.data.frame(diag(rad) %*% diag(1/sqrt(diag(data2 %*% t(data2)))) %*% data2 + mvrnorm(n=N, mu= c(0,0),Sigma = 0.005*diag(1,2)))
+data2$clus <- as.character(rad)
+```
 
-### Key Outputs
-- **Dendrogram**: A tree diagram representing hierarchical clustering, where each merge is shown by a horizontal line, with height indicating dissimilarity between merged clusters.
+Hierarchical clustering views clustering from an alternative perspective compared to the partitioning viewpoint of center-based methods.  Rather than finding an optimal paritioning of data into a pre-specified number of groups, hierarchical methods treat clustering as an iterative process either merging data into larger and larger groups (agglomerative methods) or dividing the full dataset into smaller and smaller clusters (divisive methods).  As a result, there are strong connections between the clustering of data into $k$ vs $k+1$ groups. In particular, when using hierarchical methods, the optimal clustering of data into $k$ ($k+1$) groups can be obtained by merging (splitting) the optimal clustering of data into $k+1$ ($k$) groups. 
 
-### Hierarchical Clustering Methods
+### Dendrograms
 
-1. **Agglomerative Clustering**: Builds clusters by merging pairs based on minimum dissimilarity.
-2. **Divisive Clustering**: Begins with all data points in one cluster and splits iteratively.
+The key output of hierarchical clustering is a dendrogram (tree diagram) depicting the subsequent merges/divisions of data, where each merge/division is shown by a horizontal line, with height indicating dissimilarity between merged or divided clusters. Before discussing the generation of a dendrogram and the many choices on which the process depends, let's first discuss how a dendrogram can be read and the information it provides for clustering.
 
-### Dendrogram Interpretation
+In the figure below, samples 8 and 15 are merged into a cluster at height $\approx 0.5$ indicating they have an original dissimilarity (Euclidean distance in this case) of 0.5. Sample 4 is then merged into the cluster with samples 8 and 15 at height $\approx$ indicating the dissimilarity of sample 4 with the cluster of samples 8 and 15 is $\approx 0.75$
 
-- Draw a horizontal line crossing \( k \) vertical branches to represent \( k \) clusters.
-- Lower heights represent more similar clusters.
+```{r, echo = FALSE}
+set.seed(185)
+par(mfrow = c(1,2))
+samp <- sample(1:nrow(data1),15, replace = F)
+d1small <- data1[samp,]; rownames(d1small) <- 1:length(samp)
+hc <- hclust(dist(d1small))
+plot(d1small[,1],d1small[,2], xlab = '', ylab = '', main = "Sample Data")
+plot(hc,labels = 1:nrow(d1small), xlab = NA, sub = NA)
+```
 
-### Distance Measures
+In addition to indicating the subsequent mergings/divisions of our data, the dendrogram can be used to determine a clustering of the data into a chosen number of clusters.  For example, to cluster the data into three groups, we draw a horizontal line at a height (four in this case) which only cuts the tree into three branches.  
 
-1. **Euclidean Distance** \( (p=2) \)
-2. **Manhattan Distance** \( (p=1) \)
-3. **Minkowski Distance** \( (p) \)
+```{r, echo = FALSE}
+plot(hc, xlab = NA, sub = NA)
+abline(h=4, col = "red")
+rect.hclust(hc, k = 3,
+            border = 2:4)
+```
 
-Choosing a distance metric affects cluster compactness and structure.
+Samples on the same branch are in the same cluster. Thus, the branch cut above suggest the following clustering: 
 
-### Agglomerative Hierarchical Clustering Algorithm
+    - Cluster 1, samples: 12, 9, 13, 15, 2, 6
+    - Cluster 2, samples: 4, 5, 7, 8
+    - Cluster 3, samples: 3, 14, 10, 1, 11
+    
+which appears to match the clusters shown in the original data quite well.
+
+```{r, echo = FALSE}
+plot(d1small[,1],d1small[,2],
+     col= c("red","green","blue")[cutree(hc,k=3)],
+     xlab = '', ylab = '')
+```
+    
+
+
+
+
+### Building a dendrogram
+
+As suggested above there are two primary methods for building a dendrogram. The first is an aggolomerative approach which begins with $N$ clusters (one per data point) then iteratively merges clusters based on the minimum dissimilarity until a final cluster containing all data remains. Alternatively, there is a divisive approach which begins with all data points in one cluster and splits iteratively until it finishes with $N$ clusters (one per data point).  Divisive clustering is less common, so we will focus on agglomerative methods hereafter.
+
+Agglomerative clustering proceeds as follows.
 
 1. **Initialize**: Start with `N` clusters, one per data point.
 2. **Identify Closest Clusters**: Find the pair with the smallest dissimilarity.
 3. **Merge Clusters**: Combine the pair and recalculate distances.
 4. **Repeat** until only one cluster remains.
 
-### Linkage Criteria
-- **Single Linkage**: Minimum distance between points in clusters.
-- **Complete Linkage**: Maximum distance between points.
-- **Average Linkage**: Average distance between all pairs of points in clusters.
+Importantly, the initial dissimilarity or distance is a tuneable choice made by the practitioners.  While Euclidean distance is the default, the performance of the hierarchical agglomerative clustering is highly dependent on this choice.  Like $k$-center and $k$-medoids clustering, you can use Manhattan distance or cosine (dis)similarity if they would be a better choice depending on the application. 
 
-### Computing the Dendrogram in R
+Additionally, we have also have a choice for specifying how the pairwise dissimilarities/distances are used to compute the distance between clusters containing more than one data point. The method for computing dissimilarity/distance between clusters is called **linkage** and common methods include 
 
-Below is an example using hierarchical clustering with different linkage methods.
+- **Single Linkage**: The distance between cluster $A$ and cluster $B$ is the smallest distance between a sample in $A$ and a sample in $B$. Using $C_A$ and $C_B$ to denote clusters $A$ and $B$, the distance between the clusters is
+$$d(C_A,C_B) = \min_{\vec{x}\in C_A, \vec{y} \in C_B} d(\vec{x},\vec{y}).$$
+- **Complete Linkage**: The largest distance between a sample in $A$ and a sample in $B$ is used to define the distance between clusters $A$ and $B$. Mathematically, the distance between the clusters is
+$$d(C_A,C_B) = \max_{\vec{x}\in C_A, \vec{y} \in C_B} d(\vec{x},\vec{y}).$$
+- **Average Linkage**: Average distance between all pairs of points in cluster $A$ and $B$ defines the cluster distance. Then,
+the distance between the clusters is
+$$d(C_A,C_B) = \frac{1}{|C_A|\,|C_B|}\sum_{\vec{x}\in C_A, \vec{y} \in C_B} d(\vec{x},\vec{y}).$$
+- **Ward's Linkage**: This method uses an iterative formula based on the squared distances to minimize the within cluster variation at each merge akin to $k$-means. When the input to agglomerative clustering is Euclidean distance, Ward's Linkage is proportional to the squared Euclidean distance between the sample means in each cluster [@roux_comparative_2018] though an explicit formula using the original dissimilarities is often used so that the original data is not required. For a complete discussion on this method and how it fits into the infinite family of Lance-Williams algorithms, see additional references [@szekely2005hierarchical][@EverittBrianS2001Ca].
 
-```{r}
-# Example hierarchical clustering
-data <- matrix(rnorm(100), ncol=2)
-dist_matrix <- dist(data, method="euclidean")
+In the above, the notation $d(\cdot,\cdot)$ represents the distance or dissimilarity of observations and/or clusters.  Both the choice of original distances/dissimiliarities and the type of linkage have a strong impact on the quality of the clustering.
 
-# Perform hierarchical clustering
-hc_complete <- hclust(dist_matrix, method="complete")
-hc_single <- hclust(dist_matrix, method="single")
+#### Comparing Linkage Methods
 
-# Plot dendrograms
-par(mfrow=c(1,2))
-plot(hc_complete, main="Complete Linkage")
-plot(hc_single, main="Single Linkage")
-```
-
-### Cophenetic Correlation Coefficient
+Cophenetic Correlation Coefficient
 This coefficient measures how well a dendrogram preserves the pairwise distances of the original data:
 
 $$ c = \frac{\sum_{ij}(d_{ij}-\bar{d})(h_{ij}-\bar{h})}{\sqrt{\sum_{ij}(d_{ij}-\bar{d})^2}\sqrt{\sum_{ij}(h_{ij}-\bar{h})^2}}.$$
- 
-A high cophenetic correlation suggests a better fit between the clustering and original distances.
 
-Choosing the Number of Clusters
-Use a cut-off height on the dendrogram to select the desired number of clusters. The height choice determines k, the number of clusters.
+
+#### Determining the number of clusters
+
+

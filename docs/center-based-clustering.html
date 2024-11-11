@@ -30,7 +30,7 @@
   
   
 <link rel="prev" href="ch-clustering.html"/>
-
+<link rel="next" href="hierarchical-clustering.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -293,6 +293,11 @@ div.csl-indent {
 <li class="chapter" data-level="7.1.4" data-path="center-based-clustering.html"><a href="center-based-clustering.html#strengths-and-weaknesses"><i class="fa fa-check"></i><b>7.1.4</b> Strengths and Weaknesses</a></li>
 <li class="chapter" data-level="7.1.5" data-path="center-based-clustering.html"><a href="center-based-clustering.html#choosing-the-number-of-cluster-k"><i class="fa fa-check"></i><b>7.1.5</b> Choosing the number of cluster <span class="math inline">\(K\)</span></a></li>
 </ul></li>
+<li class="chapter" data-level="7.2" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html"><i class="fa fa-check"></i><b>7.2</b> Hierarchical Clustering</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#dendrograms"><i class="fa fa-check"></i><b>7.2.1</b> Dendrograms</a></li>
+<li class="chapter" data-level="7.2.2" data-path="hierarchical-clustering.html"><a href="hierarchical-clustering.html#building-a-dendrogram"><i class="fa fa-check"></i><b>7.2.2</b> Building a dendrogram</a></li>
+</ul></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -361,11 +366,11 @@ In this example, we’ll consider the three dimensional <strong>iris</strong> da
 <p>In the theoretical worst case, Lloyd’s algorithm can take<span class="math inline">\(\propto N^{k+1}\)</span> iterations to converge, but it is typically very fast in practice. Most implementations, allow the user to set a maximum number of iterations and converge to approximate suboptimal solutions if the maximum number of iterations is reached. PAM and greedy <span class="math inline">\(k\)</span>-center algorithms are typically much, much slower. However, once any of the clustering algorithms are complete, new data can be merged into cluster with nearest center. Other methods we’ll discuss later cannot incorporate new data without running the algorithm from scratch.</p>
 <p>Ther are other issues that can increase the computational demands of center-based clustering. Each of the methods requires one to choose the number of clusters in advance. We discuss this issue in more depth shortly, but for now we want to emphasize that there is no connection between the <span class="math inline">\(k\)</span>cluster solution and <span class="math inline">\((k+1)\)</span> cluster solution. Thus, when investigating a suitable number of clusters, we need to run our clustering algorithm for a range of potential values of <span class="math inline">\(k\)</span>.</p>
 <p>Convergence is also dependent on initial condition. In the figure below, we see two separate clustering arrangements resulting from different initial choices of the centers for <span class="math inline">\(k\)</span>-means.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-197-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-198-1.png" width="672" /></p>
 <p>Thus, we also need to avoid convergence to local minima either by running many different initial conditions to convergence and picking the best solution or by using better initialization such as <span class="math inline">\(k\)</span>-means++, which picks the initial points iteratively to maximize distance between the centers before running Lloyd’s algorithm. Using <span class="math inline">\(k\)</span>-means++ can reduce the number of initializations that one should use, but does not eliminate the potential for convergence to a poor clustering. Thus, center-based algorithms can become quite computationally demanding analyze appropriately.</p>
 <p>We have already discussed the impact of scale imbalance and outliers so as we turn to the geometric aspects of center based clustering, let’s first focus on the centers, which we often treat as <strong>representative</strong> examples of the cluster. However, the sample averages in <span class="math inline">\(k\)</span>-means may not resemble actual data points. Though <span class="math inline">\(k\)</span>-means may be much faster in prqctice, the centers in <span class="math inline">\(k\)</span>-center and <span class="math inline">\(k\)</span>-medoids are restricted to observations making them more representative of the data.</p>
 <p>Clusters are based off interpretable notion of (Euclidean) distance so that points in a cluster are closer to one another than to points in other clusters. However, this feature biases center-based methods to clusters which are spherical in shape. If (dis)similarity not best captured through (squared) Euclidean distance, poor clustering is inevitable, and many of the methods used to estimate the number of cluster with tend to overestiamte the true value. As an example, consider the three rings shown at the beginning of this chapter. Silhouette scores (see 6.1.) suggest 12 clusters which is much larger than the three rings we see in the figure.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-198-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-199-1.png" width="672" /></p>
 </div>
 <div id="choosing-the-number-of-cluster-k" class="section level3 hasAnchor" number="7.1.5">
 <h3><span class="header-section-number">7.1.5</span> Choosing the number of cluster <span class="math inline">\(K\)</span><a href="center-based-clustering.html#choosing-the-number-of-cluster-k" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -381,7 +386,7 @@ In this example, we’ll consider the three dimensional <strong>iris</strong> da
 <span id="cb47-6"><a href="center-based-clustering.html#cb47-6" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
 <span id="cb47-7"><a href="center-based-clustering.html#cb47-7" tabindex="-1"></a><span class="fu">plot</span>(data1<span class="sc">$</span>V1,data1<span class="sc">$</span>V2,<span class="at">xlab =</span> <span class="st">&#39;&#39;</span>, <span class="at">ylab =</span> <span class="st">&#39;&#39;</span>)</span>
 <span id="cb47-8"><a href="center-based-clustering.html#cb47-8" tabindex="-1"></a><span class="fu">plot</span>(k,inertia, <span class="at">ylab=</span><span class="st">&quot;k-means loss&quot;</span> )</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-199-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-200-1.png" width="672" /></p>
 </div>
 <div id="gap-statistic" class="section level4 hasAnchor" number="7.1.5.2">
 <h4><span class="header-section-number">7.1.5.2</span> Gap Statistic<a href="center-based-clustering.html#gap-statistic" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -398,7 +403,7 @@ and define <span class="math inline">\(s_K = \sqrt{var(K)(1+1/B)}\)</span></p></
 <span class="math display">\[Gap(K) \ge Gap(K + 1) − s_{K+1}\]</span>
 ::: {.example name=“GAP statistic and iris data}
 Below, we show a plot of the Gap Statistic (left) which indicates that three clusters is correct. The associated clustering is used to color a plot of the first two PC scores (right)
-<img src="_main_files/figure-html/unnamed-chunk-200-1.png" width="672" /></p></li>
+<img src="_main_files/figure-html/unnamed-chunk-201-1.png" width="672" /></p></li>
 </ol>
 <p>:::</p>
 </div>
@@ -425,113 +430,16 @@ as the silhouette for <span class="math inline">\(\vec{x}_i.\)</span></p>
 over a range of values of <span class="math inline">\(K\)</span> and choose the <span class="math inline">\(K\)</span> which maximizes <span class="math inline">\(S_K\)</span>.</p></li>
 </ul>
 <!-- Hierarchical -->
-<!-- # ```{r child = 'topics/Hierarchical-Clustering.Rmd'} -->
-<!-- # ``` -->
-<!-- Model based -->
-<!-- # ```{r child = 'topics/Model-Based-Clustering.Rmd'} -->
-<!-- # ``` -->
-<!-- Spectral Clustering -->
-<!-- # ```{r child = 'topics/Spectral-Clustering.Rmd'} -->
-<!-- # ``` -->
-<!-- Clustering comparisons and metrics -->
-
-<div id="refs" class="references csl-bib-body">
-<div class="csl-entry">
-<div class="csl-left-margin">[1] </div><div class="csl-right-inline"><span class="smallcaps">Deng</span>, L. (2012). The mnist database of handwritten digit images for machine learning research. <em>IEEE Signal Processing Magazine</em> <strong>29</strong> 141–2.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[2] </div><div class="csl-right-inline"><span class="smallcaps">Hastie</span>, T., <span class="smallcaps">Tibshirani</span>, R. and <span class="smallcaps">Friedman</span>, J. (2001). <em>The elements of statistical learning</em>. Springer New York Inc., New York, NY, USA.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[3] </div><div class="csl-right-inline"><span class="smallcaps">Izenman</span>, A. J. (2008). <em>Modern multivariate statistical techniques: Regression, classification, and manifold learning</em>. Springer Publishing Company, Incorporated.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[4] </div><div class="csl-right-inline"><span class="smallcaps">Trefethen</span>, L. N. and <span class="smallcaps">Bau</span>, D. (1997). <em>Numerical linear algebra</em>. SIAM.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[5] </div><div class="csl-right-inline"><span class="smallcaps">Strang</span>, G. (2006). <em><a href="http://www.amazon.com/Linear-Algebra-Its-Applications-Edition/dp/0030105676">Linear algebra and its applications</a></em>. Thomson, Brooks/Cole, Belmont, CA.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[6] </div><div class="csl-right-inline"><span class="smallcaps">S.</span>, K. P. F. R. (1901). <a href="https://doi.org/10.1080/14786440109462720">LIII. On lines and planes of closest fit to systems of points in space</a>. <em>The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science</em> <strong>2</strong> 559–72.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[7] </div><div class="csl-right-inline"><span class="smallcaps">Hotelling</span>, H. (1933). Analysis of a complex of statistical variables into principal components. <em>Journal of educational psychology</em> <strong>24</strong> 417.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[8] </div><div class="csl-right-inline"><span class="smallcaps">Donoho</span>, D., <span class="smallcaps">Gavish</span>, M. and <span class="smallcaps">Romanov</span>, E. (2023). <a href="https://doi.org/10.1214/22-AOS2232"><span class="nocase">ScreeNOT: Exact MSE-optimal singular value thresholding in correlated noise</span></a>. <em>The Annals of Statistics</em> <strong>51</strong> 122–48.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[9] </div><div class="csl-right-inline"><span class="smallcaps">Cattell</span>, R. B. (1966). <a href="https://doi.org/10.1207/s15327906mbr0102\_10">The scree test for the number of factors</a>. <em>Multivariate Behavioral Research</em> <strong>1</strong> 245–76.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[10] </div><div class="csl-right-inline"><span class="smallcaps">Lee</span>, D. and <span class="smallcaps">Seung</span>, H. S. (2000). <a href="https://proceedings.neurips.cc/paper_files/paper/2000/file/f9d1152547c0bde01830b7e8bd60024c-Paper.pdf">Algorithms for non-negative matrix factorization</a>. In <em>Advances in neural information processing systems</em> vol 13, (T. Leen, T. Dietterich and V. Tresp, ed). MIT Press.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[11] </div><div class="csl-right-inline"><span class="smallcaps">Cutler</span>, A. and <span class="smallcaps">Breiman</span>, L. (1994). <a href="http://www.jstor.org/stable/1269949">Archetypal analysis</a>. <em>Technometrics</em> <strong>36</strong> 338–47.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[12] </div><div class="csl-right-inline"><span class="smallcaps">Lin</span>, C.-H., <span class="smallcaps">Ma</span>, W.-K., <span class="smallcaps">Li</span>, W.-C., <span class="smallcaps">Chi</span>, C.-Y. and <span class="smallcaps">Ambikapathi</span>, A. (2014). <a href="https://doi.org/10.1109/TGRS.2015.2424719">Identifiability of the simplex volume minimization criterion for blind hyperspectral unmixing: The no pure-pixel case</a>. <em>IEEE Transactions on Geoscience and Remote Sensing</em> <strong>53</strong>.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[13] </div><div class="csl-right-inline"><span class="smallcaps">Fu</span>, X., <span class="smallcaps">Ma</span>, W.-K., <span class="smallcaps">Huang</span>, K. and <span class="smallcaps">Sidiropoulos</span>, N. D. (2015). <a href="https://doi.org/10.1109/TSP.2015.2404577">Blind separation of quasi-stationary sources: Exploiting convex geometry in covariance domain</a>. <em>IEEE Transactions on Signal Processing</em> <strong>63</strong> 1–1.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[14] </div><div class="csl-right-inline"><span class="smallcaps">Févotte</span>, C., <span class="smallcaps">Bertin</span>, N. and <span class="smallcaps">Durrieu</span>, J.-L. (2009). <a href="https://doi.org/10.1162/neco.2008.04-08-771">Nonnegative matrix factorization with the itakura-saito divergence: With application to music analysis</a>. <em>Neural Computation</em> <strong>21</strong> 793–830.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[15] </div><div class="csl-right-inline"><span class="smallcaps">Saul</span>, L. K. and <span class="smallcaps">Roweis</span>, S. T. (2003). <a href="https://doi.org/10.1162/153244304322972667">Think globally, fit locally: Unsupervised learning of low dimensional manifolds</a>. <strong>4</strong> 119–55.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[16] </div><div class="csl-right-inline"><span class="smallcaps">Alam</span>, M. A. and <span class="smallcaps">Fukumizu</span>, K. (2014). <a href="https://doi.org/10.3844/jcssp.2014.1139.1150">Hyperparameter selection in kernel principal component analysis</a>. <em>Journal of Computer Science</em> <strong>10</strong> 1139–50.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[17] </div><div class="csl-right-inline"><span class="smallcaps">Mika</span>, S., <span class="smallcaps">Schölkopf</span>, B., <span class="smallcaps">Smola</span>, A., <span class="smallcaps">Müller</span>, K.-R., <span class="smallcaps">Scholz</span>, M. and <span class="smallcaps">Rätsch</span>, G. (1998). <a href="https://proceedings.neurips.cc/paper_files/paper/1998/file/226d1f15ecd35f784d2a20c3ecf56d7f-Paper.pdf">Kernel PCA and de-noising in feature spaces</a>. In <em>Advances in neural information processing systems</em> vol 11, (M. Kearns, S. Solla and D. Cohn, ed). MIT Press.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[18] </div><div class="csl-right-inline"><span class="smallcaps">Tenenbaum</span>, J. B., <span class="smallcaps">Silva</span>, V. de and <span class="smallcaps">Langford</span>, J. C. (2000). <a href="https://doi.org/10.1126/science.290.5500.2319">A global geometric framework for nonlinear dimensionality reduction</a>. <em>Science</em> <strong>290</strong> 2319–23.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[19] </div><div class="csl-right-inline"><span class="smallcaps">Bernstein</span>, M., <span class="smallcaps">Silva</span>, V., <span class="smallcaps">Langford</span>, J. and <span class="smallcaps">Tenenbaum</span>, J. (2001). Graph approximations to geodesics on embedded manifolds.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[20] </div><div class="csl-right-inline"><span class="smallcaps">Roweis</span>, S. T. and <span class="smallcaps">Saul</span>, L. K. (2000). <a href="https://doi.org/10.1126/science.290.5500.2323">Nonlinear dimensionality reduction by locally linear embedding</a>. <em>Science</em> <strong>290</strong> 2323–6.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[21] </div><div class="csl-right-inline"><span class="smallcaps">Chen</span>, J. and <span class="smallcaps">Liu</span>, Y. (2011). <a href="https://doi.org/10.1007/s10462-010-9200-z">Locally linear embedding: A survey</a>. <em>Artif. Intell. Rev.</em> <strong>36</strong> 29–48.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[22] </div><div class="csl-right-inline"><span class="smallcaps">Saul</span>, L. K. and <span class="smallcaps">Roweis</span>, S. T. (2003). <a href="https://doi.org/10.1162/153244304322972667">Think globally, fit locally: Unsupervised learning of low dimensional manifolds</a>. <strong>4</strong> 119–55.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[23] </div><div class="csl-right-inline"><span class="smallcaps">Anon</span>. (2019). <a href="https://doi.org/10.1016/j.patrec.2019.02.030">Locally linear embedding with additive noise</a>. <em>Pattern Recognition Letters</em> <strong>123</strong> 47–52.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[24] </div><div class="csl-right-inline"><span class="smallcaps">Chang</span>, H. and <span class="smallcaps">Yeung</span>, D.-Y. (2006). <a href="https://doi.org/10.1016/j.patcog.2005.07.011">Robust locally linear embedding</a>. <em>Pattern Recognition</em> <strong>39</strong> 1053–65.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[25] </div><div class="csl-right-inline"><span class="smallcaps">Belkin</span>, M. and <span class="smallcaps">Niyogi</span>, P. (2001). <a href="https://proceedings.neurips.cc/paper_files/paper/2001/file/f106b7f99d2cb30c3db1c3cc0fde9ccb-Paper.pdf">Laplacian eigenmaps and spectral techniques for embedding and clustering</a>. In <em>Advances in neural information processing systems</em> vol 14, (T. Dietterich, S. Becker and Z. Ghahramani, ed). MIT Press.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[26] </div><div class="csl-right-inline"><span class="smallcaps">Hinton</span>, G. E. and <span class="smallcaps">Salakhutdinov</span>, R. R. (2006). <a href="https://doi.org/10.1126/science.1127647">Reducing the dimensionality of data with neural networks</a>. <em>Science</em> <strong>313</strong> 504–7.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[27] </div><div class="csl-right-inline"><span class="smallcaps">Kingma</span>, D. P. and <span class="smallcaps">Welling</span>, M. (2013). <a href="https://api.semanticscholar.org/CorpusID:216078090">Auto-encoding variational bayes</a>. <em>CoRR</em> <strong>abs/1312.6114</strong>.</div>
-</div>
-<div class="csl-entry">
-<div class="csl-left-margin">[28] </div><div class="csl-right-inline"><span class="smallcaps">Vincent</span>, P., <span class="smallcaps">Larochelle</span>, H., <span class="smallcaps">Bengio</span>, Y. and <span class="smallcaps">Manzagol</span>, P.-A. (2008). <a href="https://doi.org/10.1145/1390156.1390294">Extracting and composing robust features with denoising autoencoders</a>. In ICML ’08 pp 1096–103. Association for Computing Machinery.</div>
 </div>
 </div>
 </div>
-</div>
-</div>
-<!-- </div> -->
             </section>
 
           </div>
         </div>
       </div>
-<a href="ch-clustering.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="ch-clustering.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="hierarchical-clustering.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
