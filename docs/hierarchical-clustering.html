@@ -343,10 +343,10 @@ div.csl-indent {
 <ol style="list-style-type: decimal">
 <li><strong>Initialize</strong>: Start with <code>N</code> clusters, one per data point.</li>
 <li><strong>Identify Closest Clusters</strong>: Find the pair with the smallest dissimilarity.</li>
-<li><strong>Merge Clusters</strong>: Combine the pair and recalculate distances.</li>
+<li><strong>Merge Clusters</strong>: Combine the clusters and recalculate distances.</li>
 <li><strong>Repeat</strong> until only one cluster remains.</li>
 </ol>
-<p>Importantly, the initial dissimilarity or distance is a tuneable choice made by the practitioners. While Euclidean distance is the default, the performance of the hierarchical agglomerative clustering is highly dependent on this choice. Like <span class="math inline">\(k\)</span>-center and <span class="math inline">\(k\)</span>-medoids clustering, you can use Manhattan distance or cosine (dis)similarity if they would be a better choice depending on the application.</p>
+<p>Importantly, the initial dissimilarity or distance is a tuneable choice made by the practitioners. While Euclidean distance is the default, the performance of the hierarchical agglomerative clustering is highly dependent on this choice. Like <span class="math inline">\(k\)</span>-center and <span class="math inline">\(k\)</span>-medoids clustering, you can non-Euclidean dissimilarities or distance such as Manhattan distance or cosine (dis)similarity if they would be a better choice depending on the application.</p>
 <p>Additionally, we have also have a choice for specifying how the pairwise dissimilarities/distances are used to compute the distance between clusters containing more than one data point. The method for computing dissimilarity/distance between clusters is called <strong>linkage</strong> and common methods include</p>
 <ul>
 <li><strong>Single Linkage</strong>: The distance between cluster <span class="math inline">\(A\)</span> and cluster <span class="math inline">\(B\)</span> is the smallest distance between a sample in <span class="math inline">\(A\)</span> and a sample in <span class="math inline">\(B\)</span>. Using <span class="math inline">\(C_A\)</span> and <span class="math inline">\(C_B\)</span> to denote clusters <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, the distance between the clusters is
@@ -356,17 +356,21 @@ div.csl-indent {
 <li><strong>Average Linkage</strong>: Average distance between all pairs of points in cluster <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> defines the cluster distance. Then,
 the distance between the clusters is
 <span class="math display">\[d(C_A,C_B) = \frac{1}{|C_A|\,|C_B|}\sum_{\vec{x}\in C_A, \vec{y} \in C_B} d(\vec{x},\vec{y}).\]</span></li>
-<li><strong>Ward’s Linkage</strong>: This method uses an iterative formula based on the squared distances to minimize the within cluster variation at each merge akin to <span class="math inline">\(k\)</span>-means. When the input to agglomerative clustering is Euclidean distance, Ward’s Linkage is proportional to the squared Euclidean distance between the sample means in each cluster <span class="citation">[<a href="#ref-roux_comparative_2018">29</a>]</span> though an explicit formula using the original dissimilarities is often used so that the original data is not required. For a complete discussion on this method and how it fits into the infinite family of Lance-Williams algorithms, see additional references [<span class="citation">[<a href="#ref-szekely2005hierarchical">30</a>]</span>]<span class="citation">[<a href="#ref-EverittBrianS2001Ca">31</a>]</span>.</li>
+<li><strong>Ward’s Linkage</strong>: This method uses an iterative formula based on the squared distances to minimize the within cluster variation at each merge akin to <span class="math inline">\(k\)</span>-means. When the input to agglomerative clustering is Euclidean distance, Ward’s Linkage is proportional to the squared Euclidean distance between the sample means in each cluster <span class="citation">[<a href="#ref-roux_comparative_2018">29</a>]</span> though an explicit formula using the original dissimilarities is often used so that the original data is not required. For a complete discussion on this method and how it fits into the infinite family of Lance-Williams algorithms, see additional references <span class="citation">[<a href="#ref-szekely2005hierarchical">30</a>, <a href="#ref-EverittBrianS2001Ca">31</a>]</span>.</li>
 </ul>
 <p>In the above, the notation <span class="math inline">\(d(\cdot,\cdot)\)</span> represents the distance or dissimilarity of observations and/or clusters. Both the choice of original distances/dissimiliarities and the type of linkage have a strong impact on the quality of the clustering.</p>
 <div id="comparing-linkage-methods" class="section level4 hasAnchor" number="7.2.2.1">
 <h4><span class="header-section-number">7.2.2.1</span> Comparing Linkage Methods<a href="hierarchical-clustering.html#comparing-linkage-methods" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>Cophenetic Correlation Coefficient
-This coefficient measures how well a dendrogram preserves the pairwise distances of the original data:</p>
-<p><span class="math display">\[ c = \frac{\sum_{ij}(d_{ij}-\bar{d})(h_{ij}-\bar{h})}{\sqrt{\sum_{ij}(d_{ij}-\bar{d})^2}\sqrt{\sum_{ij}(h_{ij}-\bar{h})^2}}.\]</span></p>
+<p>The four linkages methods above have different properties with single and complete representing extreme cases and average linkage and Ward linkage somewhere in between. Specifically, single linkage only requires two points to be close for clusters to merge, whereas complete linkage requires all pairs of points to be close. This “friend of my friend is my friend” feature of single linkage can generate clusters which are formed by long chains of singletons merged together at short heights and can in some cases capture manifold structure within a cluster. Conversely, complete linkage favors many small, compact clusters which get merged at larger heights.</p>
+<p>Comparing and choosing a linkage method can use the above heuristics as a guide, but for a more data driven approach, Gap statistics or silhouette coefficients are suitable. Unique to hierarchical clustering, we can also use the cophenetic correlation as a quantitative measure of how well a clustering preserves pairwise distances/dissimilarities in the original data.</p>
+<div class="definition">
+<p><span id="def:cc" class="definition"><strong>Definition 7.1  (Cophenetic Correlation Coefficient) </strong></span>For compactness, let <span class="math inline">\({\bf \Delta}_{ij}\)</span>, <span class="math inline">\(1\le i &lt; j \le N,\)</span> denote the user supplied distances/dissimilarities between observations <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>. For a given choice of linkage, let <span class="math inline">\(h_{ij}\)</span> be the height that <span class="math inline">\(\vec{x}_i\)</span> and <span class="math inline">\(\vec{x}_j\)</span> are merged into the same cluster. The <em>cophenetic correlation</em> is the sample correlation of the <span class="math inline">\(\binom{N}{2}\)</span> pairs <span class="math display">\[(h_{ij},{\bf \Delta}_{ij}), \qquad 1\le i &lt; j \le N.\]</span></p>
+</div>
+<p>The cophenetic correlation can be computed for different linkage methods. Typically, the method closest to one (optimal value of the cophenetic correlation) should be selected, though care should be used as is the case with any method to balance additional factors.</p>
 </div>
 <div id="determining-the-number-of-clusters" class="section level4 hasAnchor" number="7.2.2.2">
 <h4><span class="header-section-number">7.2.2.2</span> Determining the number of clusters<a href="hierarchical-clustering.html#determining-the-number-of-clusters" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>In addition to selecting the number of clusters, Gap statistics and silhouette coefficients can also be used to select the optimal number of clusters. Other methods, such as the Mojena coefficient <span class="citation">[<a href="#ref-mojena">32</a>]</span> are designed specifically for hierarchical clustering.</p>
 <!-- Model based -->
 <!-- # ```{r child = 'topics/Model-Based-Clustering.Rmd'} -->
 <!-- # ``` -->
@@ -469,6 +473,9 @@ This coefficient measures how well a dendrogram preserves the pairwise distances
 <div class="csl-entry">
 <div class="csl-left-margin">[31] </div><div class="csl-right-inline"><span class="smallcaps">Everitt</span>, B. S. (2001). <em>Cluster analysis</em>. Arnold ; Oxford University Press, London : New York.</div>
 </div>
+<div class="csl-entry">
+<div class="csl-left-margin">[32] </div><div class="csl-right-inline"><span class="smallcaps">Mojena</span>, R. (1977). <a href="https://doi.org/10.1093/comjnl/20.4.359"><span class="nocase">Hierarchical grouping methods and stopping rules: an evaluation*</span></a>. <em>The Computer Journal</em> <strong>20</strong> 359–63.</div>
+</div>
 </div>
 </div>
 </div>
@@ -484,6 +491,9 @@ This coefficient measures how well a dendrogram preserves the pairwise distances
 </div>
 <div id="ref-EverittBrianS2001Ca" class="csl-entry">
 <div class="csl-left-margin">[31] </div><div class="csl-right-inline"><span class="smallcaps">Everitt</span>, B. S. (2001). <em>Cluster analysis</em>. Arnold ; Oxford University Press, London : New York.</div>
+</div>
+<div id="ref-mojena" class="csl-entry">
+<div class="csl-left-margin">[32] </div><div class="csl-right-inline"><span class="smallcaps">Mojena</span>, R. (1977). <a href="https://doi.org/10.1093/comjnl/20.4.359"><span class="nocase">Hierarchical grouping methods and stopping rules: an evaluation*</span></a>. <em>The Computer Journal</em> <strong>20</strong> 359–63.</div>
 </div>
 </div>
             </section>

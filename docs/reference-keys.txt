@@ -65,6 +65,7 @@ exm:ex-helix-distance
 eq:def-manifold-dist
 eq:psd-gl
 exm:cluster-what
+def:cc
 intro
 prerequisites
 ch-prob

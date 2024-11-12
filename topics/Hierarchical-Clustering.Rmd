@@ -71,10 +71,10 @@ Agglomerative clustering proceeds as follows.
 
 1. **Initialize**: Start with `N` clusters, one per data point.
 2. **Identify Closest Clusters**: Find the pair with the smallest dissimilarity.
-3. **Merge Clusters**: Combine the pair and recalculate distances.
+3. **Merge Clusters**: Combine the clusters and recalculate distances.
 4. **Repeat** until only one cluster remains.
 
-Importantly, the initial dissimilarity or distance is a tuneable choice made by the practitioners.  While Euclidean distance is the default, the performance of the hierarchical agglomerative clustering is highly dependent on this choice.  Like $k$-center and $k$-medoids clustering, you can use Manhattan distance or cosine (dis)similarity if they would be a better choice depending on the application. 
+Importantly, the initial dissimilarity or distance is a tuneable choice made by the practitioners.  While Euclidean distance is the default, the performance of the hierarchical agglomerative clustering is highly dependent on this choice.  Like $k$-center and $k$-medoids clustering, you can non-Euclidean dissimilarities or distance such as Manhattan distance or cosine (dis)similarity if they would be a better choice depending on the application. 
 
 Additionally, we have also have a choice for specifying how the pairwise dissimilarities/distances are used to compute the distance between clusters containing more than one data point. The method for computing dissimilarity/distance between clusters is called **linkage** and common methods include 
 
@@ -85,18 +85,23 @@ $$d(C_A,C_B) = \max_{\vec{x}\in C_A, \vec{y} \in C_B} d(\vec{x},\vec{y}).$$
 - **Average Linkage**: Average distance between all pairs of points in cluster $A$ and $B$ defines the cluster distance. Then,
 the distance between the clusters is
 $$d(C_A,C_B) = \frac{1}{|C_A|\,|C_B|}\sum_{\vec{x}\in C_A, \vec{y} \in C_B} d(\vec{x},\vec{y}).$$
-- **Ward's Linkage**: This method uses an iterative formula based on the squared distances to minimize the within cluster variation at each merge akin to $k$-means. When the input to agglomerative clustering is Euclidean distance, Ward's Linkage is proportional to the squared Euclidean distance between the sample means in each cluster [@roux_comparative_2018] though an explicit formula using the original dissimilarities is often used so that the original data is not required. For a complete discussion on this method and how it fits into the infinite family of Lance-Williams algorithms, see additional references [@szekely2005hierarchical][@EverittBrianS2001Ca].
+- **Ward's Linkage**: This method uses an iterative formula based on the squared distances to minimize the within cluster variation at each merge akin to $k$-means. When the input to agglomerative clustering is Euclidean distance, Ward's Linkage is proportional to the squared Euclidean distance between the sample means in each cluster [@roux_comparative_2018] though an explicit formula using the original dissimilarities is often used so that the original data is not required. For a complete discussion on this method and how it fits into the infinite family of Lance-Williams algorithms, see additional references [@szekely2005hierarchical; @EverittBrianS2001Ca].
 
 In the above, the notation $d(\cdot,\cdot)$ represents the distance or dissimilarity of observations and/or clusters.  Both the choice of original distances/dissimiliarities and the type of linkage have a strong impact on the quality of the clustering.
 
 #### Comparing Linkage Methods
 
-Cophenetic Correlation Coefficient
-This coefficient measures how well a dendrogram preserves the pairwise distances of the original data:
+The four linkages methods above have different properties with single and complete representing extreme cases and average linkage and Ward linkage somewhere in between.  Specifically, single linkage only requires two points to be close for clusters to merge, whereas complete linkage requires all pairs of points to be close.  This "friend of my friend is my friend" feature of single linkage can generate clusters which are formed by long chains of singletons merged together at short heights and can in some cases capture manifold structure within a cluster.  Conversely, complete linkage favors many small, compact clusters which get merged at larger heights.  
 
-$$ c = \frac{\sum_{ij}(d_{ij}-\bar{d})(h_{ij}-\bar{h})}{\sqrt{\sum_{ij}(d_{ij}-\bar{d})^2}\sqrt{\sum_{ij}(h_{ij}-\bar{h})^2}}.$$
+Comparing and choosing a linkage method can use the above heuristics as a guide, but for a more data driven approach, Gap statistics or silhouette coefficients are suitable. Unique to hierarchical clustering, we can also use the cophenetic correlation as a quantitative measure of how well a clustering preserves pairwise distances/dissimilarities in the original data.
 
+::: {.definition #cc name="Cophenetic Correlation Coefficient"}
+For compactness, let ${\bf \Delta}_{ij}$, $1\le i < j \le N,$ denote the user supplied distances/dissimilarities between observations $i$ and $j$.  For a given choice of linkage, let $h_{ij}$ be the height that $\vec{x}_i$ and $\vec{x}_j$ are merged into the same cluster.  The *cophenetic correlation* is the sample correlation of the $\binom{N}{2}$ pairs $$(h_{ij},{\bf \Delta}_{ij}), \qquad 1\le i < j \le N.$$
+:::
+
+The cophenetic correlation can be computed for different linkage methods. Typically, the method closest to one (optimal value of the cophenetic correlation) should be selected, though care should be used as is the case with any method to balance additional factors.
 
 #### Determining the number of clusters
 
+In addition to selecting the number of clusters, Gap statistics and silhouette coefficients can also be used to select the optimal number of clusters.  Other methods, such as the Mojena coefficient [@mojena] are designed specifically for hierarchical clustering.
 
