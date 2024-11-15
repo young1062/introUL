@@ -60,3 +60,4 @@ This text is targeted at upper level undergraduates with a well rounded backgrou
 3) Multivariable calculus: gradients and basic optimization
 
 A brief review of the most important ideas is covered in Chapter \@ref(ch-prob).  Additional tools and techniques needed for specific algorithms are covered at a cursory level as needed. References to more thorough discussions are provided throughout for the interested reader.  
+

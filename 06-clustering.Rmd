@@ -50,4 +50,3 @@ There is one main commonality (and associated set of notation) that will persist
 <!-- # ``` -->
 
 <!-- Clustering comparisons and metrics -->
-
