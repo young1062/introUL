@@ -1,2 +1,283 @@
 <!-- rand index and rand index R for testing -->
-<!-- silhouette and gap statistics  -->
+<!-- silhouette and gap statistics  -->---
+
+title: "Textbook_Script"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## Installing libraries 
+```{r, echo=FALSE}
+
+library("MASS")
+library("scatterplot3d")
+library("gdsfmt")
+library("SNPRelate")
+library("ggplot2")
+library(cluster) 
+library(mclust)
+library(aricode)
+library(tidyr)
+library(ellipse)
+load("/Users/dinan_elsyad/Desktop/stat_185_dinan/genetics_data/pset2.Rdata")
+
+```
+
+## Loading data 
+```{r, import_genome, message = FALSE, verbose = FALSE, warning = FALSE, echo=FALSE}
+genofile <- snpgdsOpen(snpgdsExampleFileName())
+# reproducing SNP PCA directly via SVD
+snpset <- snpgdsLDpruning(genofile, 
+                    ld.threshold=0.3,
+                    maf=0.001,
+                    missing.rate=0.001,
+                    verbose = FALSE)
+snpset.id <- unlist(unname(snpset))
+geno <- snpgdsGetGeno(genofile, snp.id = snpset.id)
+pop_code <- read.gdsn(index.gdsn(genofile, "sample.annot/pop.group"))
+```
+
+## What Does Clustering Tell Us?
+
+Clustering allows us to uncover natural groupings or patterns in the data without prior knowledge of labels. In the context of this dataset, clustering can help identify whether genetic information alone can recover the underlying geographic populations from which the individuals were sampled. This is particularly useful for validating known population structures and exploring whether SNP combinations provide sufficient information to distinguish between subgroups.
+
+## Outline of This Section
+
+In this section, various clustering methods are applied to genomic data from 279 individuals, with the goal of recovering the underlying population structure based on SNPs. The dataset represents four population groups:
+
+YRI: Yoruba in Ibadan, Nigeria
+CEU: Utah residents with Northern and Western European ancestry
+HCB: Han Chinese in Beijing, China
+JPT: Japanese in Tokyo, Japan
+
+Shown below is the 2D representation of the data, with each point colored with its respective known population grouping. Even know we know there are four groups in the data, we see that the data naturally has three clusters (at least in the 2D setting).  
+
+```{r, echo=FALSE}
+
+col <- c("red", "blue","black","green")
+labs <- pop_code
+un.pop <- unique(pop_code)
+
+for (j in 1:length(un.pop)){
+  labs[which(pop_code == un.pop[j]) ] <- col[j]
+}
+
+pca <- prcomp(geno, scale. = TRUE)
+geno_pca <- pca$x[, 1:2]
+
+plot(geno_pca[,1], geno_pca[,2],
+     col = labs,
+     xlab = "First PC score",
+     ylab = "Second PC score")
+
+legend("top",
+       title = "Population",
+       legend = un.pop,
+       fill = col,
+       xpd = TRUE)
+
+```
+
+This section will be testing and comparisong how well hierarchical clustering, K-means, PAM, and Gaussian Mixture Models (GMM) uncover the true clustering in the data, as shown above. PCA is used as a preprocessing step for some methods to account for the high dimensionality of the SNP data, enabling better performance and visualization. 
+
+
+```{r, echo=FALSE}
+
+## Function for testing different methods 
+
+evaluate_clustering <- function(dat, K, labels) {
+
+    dataset <- scale(dat)
+
+    results <- data.frame(
+      Method = c("Average Linkage", "Single Linkage", "Complete Linkage",
+                 "PAM (Euclidean)", "PAM (Manhattan)", "K-Means", "GMM"),
+      ARI = NA,
+      NMI = NA
+    )
+    
+    objects <- list()
+
+    ##########################
+    # Hierarchical Clustering
+    ##########################
+    
+    dist_matrix <- dist(dataset, method = "euclidean")
+
+    # Average Linkage
+    ave_cls <- hclust(dist_matrix, method = "average")
+    clusters_avg <- cutree(ave_cls, k = K)
+    results$ARI[1] <- adjustedRandIndex(labels, clusters_avg)
+    results$NMI[1] <- NMI(labels, clusters_avg)
+    objects$average_linkage <- ave_cls
+
+    # Single Linkage
+    sin_cls <- hclust(dist_matrix, method = "single")
+    clusters_single <- cutree(sin_cls, k = K)
+    results$ARI[2] <- adjustedRandIndex(labels, clusters_single)
+    results$NMI[2] <- NMI(labels, clusters_single)
+    objects$single_linkage <- sin_cls
+
+    # Complete Linkage
+    com_cls <- hclust(dist_matrix, method = "complete")
+    clusters_complete <- cutree(com_cls, k = K)
+    results$ARI[3] <- adjustedRandIndex(labels, clusters_complete)
+    results$NMI[3] <- NMI(labels, clusters_complete)
+    objects$complete_linkage <- com_cls
+
+    ##########################
+    # k-Medoids Clustering (PAM)
+    ##########################
+
+    # Euclidean Distance
+    pam_euclidean <- pam(dataset, K, metric = "euclidean")
+    clusters_pam_euclidean <- pam_euclidean$clustering
+    results$ARI[4] <- adjustedRandIndex(labels, clusters_pam_euclidean)
+    results$NMI[4] <- NMI(labels, clusters_pam_euclidean)
+    objects$pam_euclidean <- pam_euclidean
+
+    # Manhattan Distance
+    pam_manhattan <- pam(dataset, K, metric = "manhattan")
+    clusters_pam_manhattan <- pam_manhattan$clustering
+    results$ARI[5] <- adjustedRandIndex(labels, clusters_pam_manhattan)
+    results$NMI[5] <- NMI(labels, clusters_pam_manhattan)
+    objects$pam_manhattan <- pam_manhattan
+
+    ##########################
+    # k-Means Clustering
+    ##########################
+
+    kmeans_result <- kmeans(dataset, centers = K)
+    clusters_kmeans <- kmeans_result$cluster
+    results$ARI[6] <- adjustedRandIndex(labels, clusters_kmeans)
+    results$NMI[6] <- NMI(labels, clusters_kmeans)
+    objects$kmeans <- kmeans_result
+    
+    ##########################
+    # Gaussian Mixture Models (GMM)
+    ##########################
+    
+    gmm_result <- Mclust(dataset, G = K)
+    clusters_gmm <- gmm_result$classification
+    results$ARI[7] <- adjustedRandIndex(labels, clusters_gmm)
+    results$NMI[7] <- NMI(labels, clusters_gmm)
+    objects$gmm <- gmm_result
+
+    return(list(results = results, objects = objects))
+}
+
+```
+
+
+## Hierarchical clustering
+
+```{r, echo=FALSE}
+
+results_k4 <- evaluate_clustering(geno, K = 4, pop_code)
+
+plot_data <- results_k4[[2]]
+
+plot(plot_data$single_linkage, labels = FALSE, cex = 0.5, xlab = "Original Data", 
+       sub = "", axes = TRUE, frame.plot = FALSE, ylab = "", hang = 0, 
+       main = paste("Single Linkage - Euclidean"))
+  rect.hclust(plot_data$single_linkage, k = 4, border = 2:6)
+  
+  plot(plot_data$average_linkage, labels = FALSE, cex = 0.5, xlab = "Original Data", 
+       sub = "", axes = TRUE, frame.plot = FALSE, ylab = "", hang = 0, 
+       main = paste("Average Linkage - Euclidean"))
+  rect.hclust(plot_data$average_linkage, k = 4, border = 2:6)
+  
+  plot(plot_data$complete_linkage, labels = FALSE, cex = 0.5, xlab = "Original Data", 
+       sub = "", axes = TRUE, frame.plot = FALSE, ylab = "", hang = 0, 
+       main = paste("Complete Linkage - Euclidean"))
+  rect.hclust(plot_data$complete_linkage, k = 4, border = 2:6)
+
+```
+
+## Interpreting the Dendrograms and Conducting a Comparative Analysis
+
+The dendrograms generated by single linkage, average linkage, and complete linkage hierarchical clustering provide insights into how well these methods group the dataset. In general, the x-axis represents individual data points or small clusters, and the y-axis reflects the dissimilarity at which clusters merge. By cutting the dendrogram at a specific height, clusters can be extracted.
+
+Single linkage clustering tends to suffer from the "chaining effect," where distant points are linked through intermediate points, resulting in elongated and poorly defined clusters. This is evident in the dendrogram, where one large, imbalanced cluster dominates, with points merging at high dissimilarity levels. Single linkage is not ideal for datasets like this, which have compact and distinct clusters.
+
+Average linkage clustering offers a better balance between compactness and separation by using the average distance between all points in two clusters to guide merging. The dendrogram shows more balanced clusters than single linkage, but the grouping remains imprecise, with many points merging at intermediate dissimilarity levels. This method improves over single linkage but still struggles to fully separate the true underlying population structure.
+
+Complete linkage clustering performs the best of the three methods, as it uses the maximum distance between points in clusters to determine merging. The resulting dendrogram shows more compact and well-separated clusters, with branches forming at lower heights, indicating tighter groupings. While complete linkage avoids the chaining issue and creates better-defined clusters, it still struggles with the high-dimensional SNP dataset, where distance-based metrics are less reliable.
+
+In summary, complete linkage provides the most meaningful clustering among the three hierarchical methods, followed by average linkage. 
+
+## Note on Dimension Reduction  
+
+PCA was applied as a preprocessing step for K-means, PAM, and GMM clustering methods. High-dimensional data, such as SNPs, often suffers from redundancy and noise, which can distort clustering performance. PCA reduces the data to its most informative components, retaining key patterns while discarding irrelevant variability. This makes clustering methods more efficient and improves their ability to uncover meaningful groupings.
+
+
+## K-means
+
+```{r, echo=FALSE}
+
+pca <- prcomp(geno, scale. = TRUE)
+geno_pca <- pca$x[, 1:2]
+
+kmeans_result <- kmeans(geno_pca, centers = 4)
+kmeans_clusters <- kmeans_result$cluster
+
+plot(geno_pca, col = kmeans_clusters, pch = 19, 
+     main = "K - Means Clustering with PCA",
+     xlab = "Principal Component 1", 
+     ylab = "Principal Component 2")
+
+# Add cluster centroids to the plot
+points(kmeans_result$centers, col = 1:4, pch = 4, cex = 3, lwd = 3)
+
+
+```
+
+## K-medoids (PAM)
+
+```{r, echo=FALSE}
+
+pam_result <- pam(geno_pca, k = 4)
+pam_clusters <- pam_result$clustering
+
+plot(geno_pca, col = pam_clusters, pch = 19,
+     main = "PAM Clustering (Euclidean) with PCA",
+     xlab = "Principal Component 1",
+     ylab = "Principal Component 2")
+
+points(pam_result$medoids, col = 1:4, pch = 4, cex = 3, lwd = 3)
+```
+
+## Gaussian Mixture Models (GMM)
+
+```{r, echo=FALSE}
+
+gmm_result <- Mclust(geno_pca, G = 4) 
+
+gmm_clusters <- gmm_result$classification
+
+plot(geno_pca, col = gmm_clusters, pch = 19,
+     main = "GMM Clustering with PCA",
+     xlab = "Principal Component 1",
+     ylab = "Principal Component 2")
+
+```
+
+## Comparison between methods
+
+While visual inspection of clustering results provides an intuitive understanding, quantitative metrics are needed to assess how well the methods recover the true population groupings. The following metrics are used:
+
+Adjusted Rand Index (ARI): Measures the similarity between the clustering result and true labels, adjusted for chance. Higher values indicate better recovery of true groupings.
+
+Normalized Mutual Information (NMI): Captures the amount of shared information between clustering results and true labels. Unlike ARI, NMI accounts for imbalanced clusters.
+
+Regardless of whether we look at ARI and NMI, it seems that the GMM clustering method performed the best. This suggests that Gaussian Mixture Models captured the structure of the data most effectively. Among the partitioning methods, PAM (Euclidean) slightly outperformed K-means, showing its robustness in clustering based on pairwise dissimilarities.
+
+
+
+```{r, echo=FALSE}
+
+results_k4[[1]]
+
+```
+
