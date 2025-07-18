@@ -5,7 +5,7 @@ library("plotly")
 library("NMF")
 ```
 
-In both PCA and SVD, we learn data-drive orthonormal feature vectors which we can use to decompose our data in an orderly fashion.  Nonnegative matrix factorization (NMF) is again focused on learning a set latent vectors which can be used to approximate our data. However, we will add a few restrictions motivated by experimental data and a desire to increase interpretability of the results which will drastically alter the results.  
+In both PCA and SVD, we learn data-driven orthonormal feature vectors which we can use to decompose our data in an orderly fashion.  Nonnegative matrix factorization (NMF) is again focused on learning a set latent vectors which can be used to approximate our data. However, we will add a few restrictions motivated by experimental data and a desire to increase interpretability of the results which will drastically alter the results.  
 
 For NMF, we focus on cases where ${\bf X}$ is an $N\times d$ data matrix with the added condition that its entries are nonnegative. Notationally, we write ${\bf X}\in\mathbb{R}_{\ge 0}^{N\times d}$ to indicate it is composed of nonnegative real values.  The nonnegativity condition is a natural constraint for many experimental data sets, but we are also going to impose a similar constraint on our feature vectors and coefficients.  More specifically, for a specific rank $k$, we seek a coefficient matrix ${\bf W}\in\mathbb{R}_{\ge 0}^{N\times k}$ and feature matrix ${\bf H}\in \mathbb{R}^{k\times d}_{\ge 0}$ such that ${\bf WH}$ is as close to ${\bf X}$ as possible. The nonnegativity constraint on the elements of ${\bf W}$ and ${\bf H}$ implies that ${\bf WH}\in\mathbb{R}_{\ge 0}^{N\times d}$. There are many different measures of proximity that one may use in NMF which are greater than zero and equal to zero if and only if ${\bf X}={\bf WH}$.  The most common measures are 
 
@@ -15,7 +15,8 @@ For NMF, we focus on cases where ${\bf X}$ is an $N\times d$ data matrix with th
 
 - Itakura-Saito Divergence: $$D_{IS}({\bf X}, {\bf WH}) = \sum_{i=1}^N\sum_{j=1}^d \left[\frac{{\bf X}_{ij}}{({\bf WH})_{ij}} - \log\frac{{\bf X}_{ij}}{({\bf WH})_{ij}} -1  \right]$$
 
-These loss functions emphasize and prioritize different features of the data and are often coupled with additional penalties or assumptions on the elements of ${\bf W}$ and ${\bf H}$ which we will discuss at the end of the section.  
+These loss functions emphasize and prioritize different features of the data and are often coupled with additional penalties or assumptions on the elements of ${\bf W}$ and ${\bf H}$ which we will discuss at the end of the section.  From a statistical perspective, they may also be motivated based on differing beliefs about the data generating process.  For example, suppose we assume conditional independence of the entries of ${\bf X}$ given ${\bf W}$, ${\bf H}$, and error variance $\sigma$. Under a Gaussian error model $${\bf X}_{ij} \mid {\bf W},\,{\bf H} \sim \mathcal{N}\left(({\bf WH})_{ij},\sigma^2\right)$$
+maximizing the associated likelihood w.r.t. ${\bf W}$ and ${\bf H}$ is equivalent to minimization of the Frobenius norm $\|{\bf X}-{\bf WH}\|_F^2.$
 
 
 

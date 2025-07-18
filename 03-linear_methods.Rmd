@@ -125,11 +125,11 @@ par(mfrow = c(1,2))
 scatterplot3d(x = helix[,1],
               y = helix[,2],
               z = helix[,3],
-              xlab = expression("x"[1]), ylab = expression("x"[2]), zlab = expression("x"[3]))
+              xlab = expression("x"[1]), ylab = expression("x"[2]), zlab = expression("x"[3]),cex.symbols = 0.1)
 scatterplot3d(x = helix[,1],
               y = helix[,3],
               z = helix[,2],
-              xlab = expression("x"[1]), ylab = expression("x"[3]), zlab = expression("x"[2]))
+              xlab = expression("x"[1]), ylab = expression("x"[3]), zlab = expression("x"[2]),cex.symbols = 0.1)
 ```
 
 

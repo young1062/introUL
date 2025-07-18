@@ -7,7 +7,7 @@ This text assumes a familiarity with probability theory, multivariable calculus,
     - Minor concepts: likelihood functions, conditional expectation, parametric distributions (e.g. Gaussian)
 - Linear Algebra
     - Major concepts: interpretations of matrix-vector and matrix-matrix multiplication, spans, bases, matrix decompositions
-    - Minor concepts: orthonormal transformations, vector and matrix norms
+    - Minor concepts: orthonormal transformations, vector and matrix norms, Hadamard operations
 - Multivariable calculus: 
     - Major concepts: gradients (computation and interpretation), optimization with and without constraints
     - Minor concepts: multivariate Taylor expansions, determing properties of local optima via Hessian matrix
@@ -446,6 +446,19 @@ A matrix is positive semidefinite if $\vec{x}^T{\bf A}\vec{x} \ge 0$ for all $\v
 
 One may interpret the powers of a matrix as repeated multiplication of a square matrix.  More specifically, for any $m\in \{1,2,\dots\}$, let ${\bf A}^m = \underbrace{{\bf A} \dots {\bf A}}_{m \text{ times}}$.  For diagonalizable positive definite matrices, we may extend this interpretation to negative and fractional power using the eigenvalue decomposition.  If the eigenvalue decomposition of the ${\bf A}$ is ${\bf A} = {\bf W \Lambda W}^{-1}$ for some diagonal matrix ${\Lambda}$ with positive entries, $\lambda_1,\dots,\lambda_n$ along its diagonal. For any $s\in\mathbb{R}$, we define ${\bf A}^s = {\bf W \Lambda}^s {\bf W}^{-1}$ where $$\Lambda^s = \begin{bmatrix} \lambda_1^s & 0 & 0 \\ 0 & \ddots & 0 \\0&0&\lambda_n^s\end{bmatrix}.$$
 
+### Hadamard (elementwise) operations
+
+Given two matrices ${\bf A},\,{\bf B}\in\mathbb{R}^{m\times n}$ with the same number of rows and columns, we define Hadamard product and division as
+\begin{align*}
+{\bf A} \odot {\bf B} \in \mathbb{R}^{m\times n} & \text{ such that } ({\bf A}\odot {\bf B})_{ij} = {\bf A}_{ij}{\bf B}_{ij} \\
+{\bf A} \oslash {\bf B} \in \mathbb{R}^{m\times n} & \text{ such that } ({\bf A}\oslash {\bf B})_{ij} = \frac{{\bf A}_{ij}}{{\bf B}_{ij}}
+\end{align*}
+Unlike standard matrix multiplication, the Hadamard product $\odot$ is commutative such that ${\bf B}\odot {\bf A} = {\bf A}\odot {\bf B}$. Commutativity does not hold for Hadamard division.
+
+Furthermore, we define Hadamard powers as
+$${\bf A}^{\circ k} \in\mathbb{R}^{m\times n} \text{ such that } \left({\bf A}^{\circ k}\right)_{ij} = \left({\bf A}_{ij}\right)^k.$$
+For the special case $k=-1$, we refer to ${\bf A}^{\circ (-1)}$ as the Hadamard inverse.  
+
 
 
 ## Exercises
@@ -581,6 +594,12 @@ $$\vec{\mu} = \begin{pmatrix}
     a. Explain why ${\bf A A}^T$ and ${\bf A}^T{\bf A}$ are diagonalizable and positive semi-definite.
     
     b. Give expressions for the singular vectors and singular values of ${\bf A}$ in terms of the eigenvectors and eigenvalues of ${\bf A A}^T$ and ${\bf A}^T{\bf A}$.
+    
+1. Let $${\bf A}= \begin{bmatrix} 1 & 2  &3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{bmatrix}$$
+
+    a. Show that ${\bf A}^2 \ne {\bf A}^{\circ 2}$.
+    
+    b. Under what conditions does ${\bf A}^k = {\bf A}^{\circ k}$ for a square matrix ${\bf A}$?
 
 ### Hybrid Problems
   

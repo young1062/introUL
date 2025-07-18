@@ -109,6 +109,10 @@ In the following sections, we will review a small collection of different method
 ```{r child = 'topics/laplacian_eigenmaps.Rmd'}
 ```
 
+<!-- Hessian Eigenmaps -->
+```{r child = 'topics/hessian_eigenmaps.Rmd'}
+```
+
 <!-- AE -->
 ```{r child = 'topics/AE.Rmd'}
 ```
