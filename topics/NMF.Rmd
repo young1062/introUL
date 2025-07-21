@@ -16,7 +16,7 @@ For NMF, we focus on cases where ${\bf X}$ is an $N\times d$ data matrix with th
 - Itakura-Saito Divergence: $$D_{IS}({\bf X}, {\bf WH}) = \sum_{i=1}^N\sum_{j=1}^d \left[\frac{{\bf X}_{ij}}{({\bf WH})_{ij}} - \log\frac{{\bf X}_{ij}}{({\bf WH})_{ij}} -1  \right]$$
 
 These loss functions emphasize and prioritize different features of the data and are often coupled with additional penalties or assumptions on the elements of ${\bf W}$ and ${\bf H}$ which we will discuss at the end of the section.  From a statistical perspective, they may also be motivated based on differing beliefs about the data generating process.  For example, suppose we assume conditional independence of the entries of ${\bf X}$ given ${\bf W}$, ${\bf H}$, and error variance $\sigma$. Under a Gaussian error model $${\bf X}_{ij} \mid {\bf W},\,{\bf H} \sim \mathcal{N}\left(({\bf WH})_{ij},\sigma^2\right)$$
-maximizing the associated likelihood w.r.t. ${\bf W}$ and ${\bf H}$ is equivalent to minimization of the Frobenius norm $\|{\bf X}-{\bf WH}\|_F^2.$
+maximizing the associated likelihood w.r.t. ${\bf W}$ and ${\bf H}$ is equivalent to minimization of the Frobenius norm $\|{\bf X}-{\bf WH}\|_F^2.$ We'll revisit this idea in greater detail in Section 4.3.6.
 
 
 
@@ -268,15 +268,15 @@ for (j in 1:k){
 }
 ```
 
-### NMF and Maximum Likelihood Estimation
+### NMF and Maximum Likelihood Estimation 
 
 Throughout this section we have focused on the geometric aspects of NMF, but there are parallel statistical perspectives based on maximum likelihood estimation.  For example, consider the model $${\bf X}_{ij} \mid ({\bf WH}_{ij}) \sim \mathcal{N}\left(({\bf WH}_{ij},\sigma^2\right), \qquad 1\le i\le N, 1\le j\le d$$
-with the additional assumption that the observations in ${\bf X}$ are conditionally independent given $({\bf WH})$ and that ${\bf WH}$ is low-rank.  Under this framework the likelihood of the data is then 
-$$\mathcal{L}({\bf X}\mid{\bf WH}) \propto \prod_{i=1}^N\prod_{j=1}^d \exp\left(-\frac{({\bf X}_{ij}-({\bf WH}_{ij}))^2}{\sigma^2}\right)$$ which has log-likelihood
-$$\log \mathcal{L}({\bf X}\mid{\bf WH}) = -\frac{1}{\sigma^2}\prod_{i=1}^N\prod_{j=1}^d ({\bf X}_{ij}-({\bf WH}_{ij}))^2 = -\frac{1}{\sigma^2}\|{\bf X}-{\bf WH}\|_F^2.$$
+with the additional assumption that the observations in ${\bf X}$ are conditionally independent given ${\bf WH}\in \mathbb{R}^{N\times k}_{\ge 0}$, ${\bf H}\in\mathbb{R}^{k\times d}_\ge 0$ and $\sigma$.  Under this framework the likelihood of the data is then 
+$$\mathcal{L}({\bf X}\mid{\bf WH}) \propto \frac{1}{\sqrt{2\pi\sigma^2}}\prod_{i=1}^N\prod_{j=1}^d \exp\left(-\frac{({\bf X}_{ij}-({\bf WH}_{ij}))^2}{\sigma^2}\right)$$ which has log-likelihood
+$$\log \mathcal{L}({\bf X}\mid{\bf WH}) = -\frac{N}{2}\log\sigma^2-\frac{1}{\sigma^2}\prod_{i=1}^N\prod_{j=1}^d ({\bf X}_{ij}-({\bf WH}_{ij}))^2 = - \frac{N}{2}\log\sigma^2 -\frac{1}{\sigma^2}\|{\bf X}-{\bf WH}\|_F^2.$$
 Thus, minimizing the Frobenius norm is equivalent to maximizing the likelihood in this normal model with homoskedastic errors.  
 
-Similarly, divergence arises from a Poisson model $${\bf X}_{ij} \mid {\bf WH}_{ij} \sim \text{Pois}\left(({\bf WH})_{ij}\right)$$ again with a low rank structure for ${\bf WH}$ and the conditional independence assumption on the entries of ${\bf X}$ given ${\bf WH}$.  
+Similarly, divergence arises from a Poisson model $${\bf X}_{ij} \mid {\bf WH}_{ij} \sim \text{Pois}\left(({\bf WH})_{ij}\right)$$ again with a low rank structure for ${\bf W}$ and ${\bf H}$ and the conditional independence assumption on the entries of ${\bf X}$ given ${\bf WH}$.  
 
 The IS divergence again uses conditional independence and a low rank structure for ${\bf WH}$ under the assumption of multiplicative Gamma distributed errors with mean one, i.e. 
 $${\bf X}_{ij} \mid {\bf WH}_{ij} = ({\bf WH})_{ij} e_{ij}, \, e_{ij} \sim \text{Gamma}(\alpha,\beta)$$
