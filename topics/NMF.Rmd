@@ -240,11 +240,12 @@ Importantly, we can view the coefficient $c_1,\dots,c_k$ as defining (probabilit
 Under this setup, we then want to solve the following constrained optimization problem
 $$\argmin_{{\bf W}\in \mathbb{R}_{\ge 0}^{N\times k},\,{\bf B}\in\mathbb{R}_{\ge 0}^{k\times N}, {\bf B}\vec{1}_N = \vec{1}_k}\| {\bf X}- {\bf WBX}\|_F.$$
 
-The rows of ${\bf BX}$, called archetypes, reside are typically extremal in the sense that they reside on the boundary of the convex hull of the data.  We show them below for a rank four approximation to the eights.
+The rows of ${\bf BX}$, called archetypes, reside are typically extremal in the sense that they reside on the boundary of the convex hull of the data. We show them below for a rank two approximation to the eights consistent with the choice in the example above.
 
 ```{r, echo = F}
 library(archetypes)
-eights_aa <- archetypes(eights_min_zero,k=4)
+k = 2
+eights_aa <- archetypes(eights_min_zero,k=2)
 H <- matrix(0,nrow = k, ncol = ncol(eights))
 H[,-zero_col] <- eights_aa$archetypes
 par(mar=c(1,1,1,1))

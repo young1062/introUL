@@ -384,14 +384,14 @@ In this example, we’ll consider the three dimensional <strong>iris</strong> da
 <div id="elbow-plot" class="section level4 hasAnchor" number="7.1.5.1">
 <h4><span class="header-section-number">7.1.5.1</span> Elbow plot<a href="center-based-clustering.html#elbow-plot" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The center-based loss fucntion will decrease as the number of clusters increases. Thus, we plot the optimal loss found at different numbers of clusters and look for a sudden drop, much like we did with the scree plot in PCA. Below, we show an example of this method for data with three well separated spherical clusters</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="center-based-clustering.html#cb51-1" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">15</span></span>
-<span id="cb51-2"><a href="center-based-clustering.html#cb51-2" tabindex="-1"></a>inertia <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,<span class="fu">length</span>(k))</span>
-<span id="cb51-3"><a href="center-based-clustering.html#cb51-3" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(k)){</span>
-<span id="cb51-4"><a href="center-based-clustering.html#cb51-4" tabindex="-1"></a>  inertia[j] <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(data1,k[j])<span class="sc">$</span>tot.withinss</span>
-<span id="cb51-5"><a href="center-based-clustering.html#cb51-5" tabindex="-1"></a>}</span>
-<span id="cb51-6"><a href="center-based-clustering.html#cb51-6" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
-<span id="cb51-7"><a href="center-based-clustering.html#cb51-7" tabindex="-1"></a><span class="fu">plot</span>(data1<span class="sc">$</span>V1,data1<span class="sc">$</span>V2,<span class="at">xlab =</span> <span class="st">&#39;&#39;</span>, <span class="at">ylab =</span> <span class="st">&#39;&#39;</span>)</span>
-<span id="cb51-8"><a href="center-based-clustering.html#cb51-8" tabindex="-1"></a><span class="fu">plot</span>(k,inertia, <span class="at">ylab=</span><span class="st">&quot;k-means loss&quot;</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="center-based-clustering.html#cb47-1" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">15</span></span>
+<span id="cb47-2"><a href="center-based-clustering.html#cb47-2" tabindex="-1"></a>inertia <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,<span class="fu">length</span>(k))</span>
+<span id="cb47-3"><a href="center-based-clustering.html#cb47-3" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(k)){</span>
+<span id="cb47-4"><a href="center-based-clustering.html#cb47-4" tabindex="-1"></a>  inertia[j] <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(data1,k[j])<span class="sc">$</span>tot.withinss</span>
+<span id="cb47-5"><a href="center-based-clustering.html#cb47-5" tabindex="-1"></a>}</span>
+<span id="cb47-6"><a href="center-based-clustering.html#cb47-6" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb47-7"><a href="center-based-clustering.html#cb47-7" tabindex="-1"></a><span class="fu">plot</span>(data1<span class="sc">$</span>V1,data1<span class="sc">$</span>V2,<span class="at">xlab =</span> <span class="st">&#39;&#39;</span>, <span class="at">ylab =</span> <span class="st">&#39;&#39;</span>)</span>
+<span id="cb47-8"><a href="center-based-clustering.html#cb47-8" tabindex="-1"></a><span class="fu">plot</span>(k,inertia, <span class="at">ylab=</span><span class="st">&quot;k-means loss&quot;</span> )</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-203-1.png" width="672" /></p>
 </div>
 <div id="gap-statistic" class="section level4 hasAnchor" number="7.1.5.2">
