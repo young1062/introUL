@@ -84,7 +84,7 @@ Thus, we may view NMF as a restricted version of PCA or SVD where we have moved 
 
 A third and far more subtle issue occurs because we do not enforce orthogonality.  In \@ref[fig:nmf-ex], imagine that the feature vectors are the arms of a folding fan.  We could change the angle between our feature vectors by opening or closing the arms of the fan.  So long as we do not close the fan too much (and leave our data outside the positive span) or open them too much (so that feature vectors have negative entries), we can still find a perfect reconstruction.  This `folding fan' issue can be addressed through additional penalties which we discuss in \@ref{sec-nmf-ext}, but nonuniqueness cannot be eliminated entirely. Thus, we seek **an** NMF for our data rather than **the** NMF.
 
-### Finding an NMF: Multiplicative Updates
+### Finding a NMF: Multiplicative Updates
 \DeclareMathOperator*{\argmin}{arg\,min}
 For a given choice of error, the lack of a unique solution also means there is no closed form solution for ${\bf W}$ and ${\bf H}$. Thus, we will need to apply numerical optimization to find a ${\bf W}$ and ${\bf H}$ which minimizes the selected error,  $$\argmin_{{\bf W}\in\mathbb{R}^{N\times k}_{\ge 0}, {\bf H}\in\mathbb{R}^{k\times d}_{\ge 0}} D({\bf X},{\bf WH})$$.  The loss is a function of all of the entries of ${\bf W}$ and ${\bf H}$. To apply any type of gradient based optimization, we need to compute the partial derivative of our loss with respect to each of the entries of these matrices.  
 
@@ -111,20 +111,29 @@ In a standard implementation of gradient descent, we choose a step size $\epsilo
 \end{equation}
 to each entry of ${\bf W}$ and ${\bf H}$ simultaneously. Alternatively, we could consider coordinate descent where we update each entry of ${\bf W}$ (holding all other entries of ${\bf W}$ and ${\bf H}$ constant) separately then do the same for ${\bf H}$ then repeat.  Each approach will converge to a local mode (though possibly different ones) when $\epsilon$ is sufficiently small.  However, if $\epsilon$ is too small it may take many iterations to converge.  Unfortunately, choosing $\epsilon$ can create a numerically unstable algorithm (that doesn't converge at all) or one where we lose the nonnegativity condition on the entries of ${\bf W}$ or ${\bf H}$.  
 
-To preserve nonnegativity, [@lee_seung] developed a set of state dependent step-sizes (one for each entry of ${\bf W}$ and ${\bf H}$) which result in multiplicative rather than additive updates.  IFor divergence, they take step sizes
+To preserve nonnegativity, [@lee_seung] developed a set of state dependent step-sizes (one for each entry of ${\bf W}$ and ${\bf H}$) which result in multiplicative rather than additive updates.  For divergence, they take step sizes
 $$\epsilon_{ij}^{W} = \frac{{\bf W}_{ij}}{\sum_t {\bf H}_{jt}} \text{ and } \epsilon_{ij}^H = \frac{{\bf H}_{ij}}{\sum_s {\bf W}_{sj}}.$$
 These step size are proportional to the entries we are updating so that we take larger steps for larger entries of ${\bf W}$ of ${\bf H}$. If we substitute these step sizes in the updates simplify to 
 
 \begin{equation}
 \begin{split}
-{\bf W}_{ij} \leftarrow {\bf W}_{ij} \left[\frac{\sum_t \left({\bf H}_{jt}{\bf X}_{it}/({\bf WH}_{it})\right)}{\sum_t {\bf H}_{jt}} \right] \\
-{\bf H}_{ij} \leftarrow {\bf H}_{ij} \left[\frac{\sum_s\left({\bf W}_{si}{\bf X_{sj}}/({\bf WH})_{si}    \right)}{\sum_s {\bf W}_{si}}\right]
+{\bf W}_{ij} &\leftarrow {\bf W}_{ij} \left[\frac{\sum_t \left({\bf H}_{jt}{\bf X}_{it}/({\bf WH}_{it})\right)}{\sum_t {\bf H}_{jt}} \right] \\
+{\bf H}_{ij} &\leftarrow {\bf H}_{ij} \left[\frac{\sum_s\left({\bf W}_{si}{\bf X_{sj}}/({\bf WH})_{si}    \right)}{\sum_s {\bf W}_{si}}\right]
 \end{split}
 \end{equation}
 
-indicating that we rescale the entries of ${\bf W}$ and ${\bf H}$ by some nonnegative value which is guaranteed to preserve the nonnegativity of each entry.  One can verify that the multiplicative updates simplify to one when ${\bf X}= {\bf WH}.$ One can then iteratively update the entries of ${\bf W}$ and ${\bf H}$ one at a time, in blocks, or all together until a local mode is reached.  
+indicating that we rescale the entries of ${\bf W}$ and ${\bf H}$ by some nonnegative value which is guaranteed to preserve the nonnegativity of each entry. A short proof showing convergence to a local mode may be found in the original paper by Lee and Seung along with multiplicative update rules for other choices of loss are also available in [@lee_seung]. Deriving these updates are also provided as exercises for the reader.  Furthermore, one can verify that the multiplicative updates simplify to one when ${\bf X}= {\bf WH}.$ 
 
-Multiplicative update rules for other choices of loss are also available in [@lee_seung] but are also provided as exercises for the reader.
+We can more compactly write the updates for each matrix using Hadamard notation, which gives the following multiplicative updates for ${\bf W}$ and ${\bf H}$
+
+\begin{equation}
+\begin{split}
+{\bf W} &\leftarrow {\bf W} \odot \left\{[{\bf X}\oslash( {\bf WH})]{\bf H}^T\right\} \oslash [{\bf 1}_{N\times d}{\bf H}^T]  \\
+{\bf H} &\leftarrow {\bf H} \odot \left\{{\bf W}^T [{\bf X} \oslash ({\bf WH})]\right\}  \oslash [{\bf W}^T {\bf 1}_{N\times d} ]
+\end{split}
+\end{equation}
+
+In most implementations of NMF, multiplicative updates for ${\bf W}$ and ${\bf H}$ are alternated until convergence. However, some packages also implement rescaling following each pair of multiplicative updates to enforce other constraints (such as sum to one constrains on the rows of ${\bf W}$ or columns of ${\bf H}$). When using NMF it is good to check documentation to see if these additional steps are implemented.  
 
 
 
@@ -136,12 +145,18 @@ For a given choice of loss, standard NMF proceeds in the following manner.
 2) Apply the multiplicative rule until a local minimum is reached.
 3) Repeats steps (1) and (2) for different initial conditions then select the final ${\bf W}$ and ${\bf H}$ which give the lowest overall loss.
 
-Different initial conditions (ICs) will converge to different local modes; reptition over multiple differents (ICs) will help find a better overall minimizer and avoid getting a final NMF which is trapped in a poor local mode.  There is no guidance of how many ICs. Many packages default to five. More would be better but computational resources are not infinite, and finding even one mode though coordinate ascent can be slow.  
+Different initial conditions (ICs) will converge to different local modes; reptition over multiple differents (ICs) will help find a better overall minimizer and avoid getting a final NMF which is trapped in a poor local mode.  There is no guidance of how many ICs. Many packages default to five. More would be better but computational resources are not infinite, and finding even one mode though coordinate ascent can be slow.  There are also methods based on nonnegativity constraints of the SVD (aptly named nonnegative SVD or NNSVD) for initialization which have shown good performance [@nnsvd]. However, NNSVD initialization does increase computation burden.
 
-The choice of $k$ is also challenging.  In prior information or other project constraints dictate a specific choice of $k$ one should use that value. However, the preceding steps can be repeated over a range of $k$. One can then compare plot the optimal loss as a function of $k$ and look for a cutoff where the error appears to saturate.  Importantly, there are no connections between the rank $k$ NMF and rank $k+1$ NMF. Unlike, PCA or SVD, one cannot truncate the vectors and coefficients and attain an optimal solution for a lower-dimensional representation. Thus, separate fits at each choice of $k$ must be attained through separate runs of the numerical optimization.  
+The choice of $k$ is also challenging.  If prior information or other project constraints dictate a specific choice of $k$ one should use that value. Alternatively, if visualization is a priority taking $k=1,2,$ or $3$ is a natural choice.  Unfortunately, in many cases prior information is typically absent, thus data driven methods for selecting $k$ from a range of possible choices are required.  Importantly, since there are no connections between the rank $k$ NMF and rank $k+1$ NMF, one cannot truncate the vectors and coefficients and attain an optimal solution for a lower-dimensional representation as we can in PCA or SVD. Thus, separate fits at each choice of $k$ must be attained through separate runs of the numerical optimization making NMF far more computationally demanding in practice.  
+
+Suppose for now, we have optimal NMF fits for a range of nonnegative ranks obtained by fitting separate NMF models for a range of ranks using multiple initial conditions or NNSVD based initialization at each rank. Given these fits, one natural approach is to follow a `scree plot` like approach similar to what we have used for PCA and NMF. One can then compare plot the loss as a function of $k$ and look for an elbow where the error appears to saturate.  
+
+Much like SVD and PCA, unfortunately, there is often no clear elbow indicating an obvious choice of $k$.  As such, additional approaches have been suggested in the literature such as cross-validation where in the data is split into test-train sets and the robustness of loss is investigated at each rank. Bayesian methods for balancing low loss with model complexity (small $k$) are also viable but again rely on some prior on model complexity.Other authors have used connections between NMF and clustering to adapt methods for assessing the quality of (hierarchical) clustering  to the case of finding an optimal $k$ in NMF.  For example, one can use the robustness (or lack thereof) of clustering of data at each rank measured by the cophenetic correlation to identify an optimal $k$ [@nmf_cophentic_corr]. We'll discuss hierarchical clustering and the cophenetic correlation in more detail Chapter 7. For now, we'll restate the advice from [@nmf_cophentic_corr] and advocate for the value of $k$ at which the cophenetic correlation begins to drop.
+
+
 
 :::{.example #mnist-nmf name="NMF applied to MNIST"}
-As an example, we show NMF applied to the first $100$ eights (to save computation time) from the MNIST dataset [@mnist] using Divergence with five runs per rank. Below we fit separate NMFs for ranks 1 through 25 with 5 random initializations per fit.  Optimal divergence as a function of rank is shown below.
+As an example, we show NMF applied to the first $100$ eights (to save computation time) from the MNIST dataset [@mnist] using Divergence with five runs per rank. Below we fit separate NMFs for ranks 1 through 25 with 5 random initializations per fit.  Divergence (residuals) and the cophenetic correlation are each shown below as a function of rank.
 
 
 ```{r mnist-w-nmf, warning = FALSE, echo = FALSE}
@@ -151,18 +166,19 @@ eights <- digits$pixels[digits$labels == 8,][1:100,]
 zero_col <- which(colSums(eights) == 0)
 eights_min_zero <- eights[,-zero_col]
 
-mnist_nmf <- nmf(eights_min_zero, rank = 1:25, 
+mnist_nmf <- nmf(t(eights_min_zero), rank = 1:25, 
                  method = "brunet", nrun = 5)
-plot(mnist_nmf$measures$residuals, xlab = "Rank", ylab = "Divergence")
+par(mfrow = c(1,2))
+plot(mnist_nmf, "residuals")
+plot(mnist_nmf, "cophenetic")
 ```
 
-There is no clear elbow like feature in the plot that would clearly suggest an optimal rank between 1 and 25. If we select a rank 4 NMF, we do get interpretable 8-like images as our feature images(vectors) shown below.
-
+There is no clear elbow in the plot of the model residuals that clearly suggests an optimal rank between 1 and 25. The cophenetic correlation begins to drop after rank 2. Thus, the method of [@nmf_cophentic_corr] suggests $k=2$ is reasonable.  In fact if we select a rank 2 NMF, we do get interpretable 8-like images as our feature images(vectors) which correspond to eights slanting in two different directions, a seemingly reasonable compression of structure in the data.
 
 ```{r, echo = F}
-k <- 4
+k <- 2
 H <- matrix(0,nrow = k, ncol = ncol(eights))
-H[,-zero_col] <- mnist_nmf$fit$'4'@fit@H
+H[,-zero_col] <- t(mnist_nmf$fit$'2'@fit@W)
 par(mar=c(1,1,1,1))
 par(mfrow = c(k/2,2))
 for (j in 1:k){
@@ -171,10 +187,10 @@ for (j in 1:k){
 }
 ```
 
-Compare this to the less 8-like images found using the features given by a rank 4 approximation from SVD.
+Compare this to the less 8-like images found using the features given by a rank 2 approximation from SVD.
 
 ```{r, echo = F, message =F}
-k <- 4
+k <- 2
 mnist_svd <- svd(eights_min_zero, nv = k)
 H <- matrix(0,nrow = k, ncol = ncol(eights))
 H[,-zero_col] <- t(mnist_svd$v)
@@ -244,7 +260,7 @@ for (j in 1:k){
 Much like Archetype Analysis, Volume regularized NMF creates feature vectors which resemble the observation through a more geometric approach [@vrnmf1,@vrnmf2].  Suppose that we are seeking a rank $k$ approximation of data in $d$ dimensions with $k<d$.  If the vectors $\vec{h}_1,\dots,\vec{h}_k$ are affinely independent, i.e. they don't live on a hyperplane of dimension less than $k$, then the volume of the convex of hall of the vectors is given by the following formula
 $$\text{vol}\left(\text{conv}(\{\vec{h}_1,\dots,\vec{h}_k\})\right) = \frac{\sqrt{\text{det}(\tilde{\bf H}\tilde{\bf H}^T})}{(k-1)!}$$
 where $$\tilde{\bf H} = \begin{bmatrix} \vec{h}_1^T-\vec{h}_k^T \\ \vdots \\ \vec{h}_{k-1}^T-\vec{h}_k^T\end{bmatrix} \in \mathbb{R}^{(k-1)\times d}.$$
-An extension of this result is that for linearly independent vectors $\vec{h}_1,\dots,\vec{h}_k$, the volume of the convex hull of the vectors $\vec{0},\vec{h}_1,\dots,\vec{h}_k$ can be computed directly from our feature matrix ${\bf H}$, i.e. $$\text{vol}\left(\text{conv}(\{0,\vec{h}_1,\dots,\vec{h}_k\})\right) = \frac{\sqrt{det({\bf H}{\bf H}^T})}{(k)!}.$$  
+An extension of this result is that for linearly independent vectors $\vec{h}_1,\dots,\vec{h}_k$, the volume of the convex hull of the vectors $\vec{0},\vec{h}_1,\dots,\vec{h}_k$ can be computed directly from our feature matrix ${\bf H}$, i.e. $$\text{vol}\left(\text{conv}(\{0,\vec{h}_1,\dots,\vec{h}_k\})\right) = \frac{\sqrt{\det({\bf H}{\bf H}^T})}{k!}.$$  
 
 One brief aside on the notion of volume here that is not typically made clear in the related literature. When $k < d$, the convex hull of $\vec{0},\vec{h}_1,\dots,\vec{h}_k$ is contained in a $k$-dimensional hyperplane.  Thus, its $d$-dimensional volume must be zero.  When we talk of the volume of a convex hull, we instead mean its $k$-dimensional volume.  As an example, consider the case of a single vector $\vec{h}_1$ in $\mathbb{R}^3.$ The convex hull of $\vec{0},\vec{h_1}$ is the line segment from the origin to $\vec{h}_1$.  Line segments have zero 3-dimensional volume, but they do have length (1-dimensional volume).  In this case, the 1-dimensional volume of the convex hull is the length of the line segment, e.g. $\|\vec{h}_1\|$.
 
@@ -273,11 +289,11 @@ for (j in 1:k){
 Throughout this section we have focused on the geometric aspects of NMF, but there are parallel statistical perspectives based on maximum likelihood estimation.  For example, consider the model $${\bf X}_{ij} \mid ({\bf WH}_{ij}) \sim \mathcal{N}\left(({\bf WH}_{ij},\sigma^2\right), \qquad 1\le i\le N, 1\le j\le d$$
 with the additional assumption that the observations in ${\bf X}$ are conditionally independent given ${\bf WH}\in \mathbb{R}^{N\times k}_{\ge 0}$, ${\bf H}\in\mathbb{R}^{k\times d}_\ge 0$ and $\sigma$.  Under this framework the likelihood of the data is then 
 $$\mathcal{L}({\bf X}\mid{\bf WH}) \propto \frac{1}{\sqrt{2\pi\sigma^2}}\prod_{i=1}^N\prod_{j=1}^d \exp\left(-\frac{({\bf X}_{ij}-({\bf WH}_{ij}))^2}{\sigma^2}\right)$$ which has log-likelihood
-$$\log \mathcal{L}({\bf X}\mid{\bf WH}) = -\frac{N}{2}\log\sigma^2-\frac{1}{\sigma^2}\prod_{i=1}^N\prod_{j=1}^d ({\bf X}_{ij}-({\bf WH}_{ij}))^2 = - \frac{N}{2}\log\sigma^2 -\frac{1}{\sigma^2}\|{\bf X}-{\bf WH}\|_F^2.$$
+$$\log \mathcal{L}({\bf X}\mid{\bf WH}) = -\frac{N}{2}\log\sigma^2-\frac{1}{\sigma^2}\sum_{i=1}^N\sum_{j=1}^d ({\bf X}_{ij}-({\bf WH}_{ij}))^2 = - \frac{N}{2}\log\sigma^2 -\frac{1}{\sigma^2}\|{\bf X}-{\bf WH}\|_F^2.$$
 Thus, minimizing the Frobenius norm is equivalent to maximizing the likelihood in this normal model with homoskedastic errors.  
 
-Similarly, divergence arises from a Poisson model $${\bf X}_{ij} \mid {\bf WH}_{ij} \sim \text{Pois}\left(({\bf WH})_{ij}\right)$$ again with a low rank structure for ${\bf W}$ and ${\bf H}$ and the conditional independence assumption on the entries of ${\bf X}$ given ${\bf WH}$.  
+Similarly, divergence arises from a Poisson model $${\bf X}_{ij} \mid ({\bf WH})_{ij} \sim \text{Pois}\left(({\bf WH})_{ij}\right)$$ again with a low rank structure for ${\bf W}$ and ${\bf H}$ and the conditional independence assumption on the entries of ${\bf X}$ given ${\bf WH}$.  
 
 The IS divergence again uses conditional independence and a low rank structure for ${\bf WH}$ under the assumption of multiplicative Gamma distributed errors with mean one, i.e. 
-$${\bf X}_{ij} \mid {\bf WH}_{ij} = ({\bf WH})_{ij} e_{ij}, \, e_{ij} \sim \text{Gamma}(\alpha,\beta)$$
+$${\bf X}_{ij} \mid ({\bf WH})_{ij} = ({\bf WH})_{ij} e_{ij}, \qquad\, e_{ij} \sim_{iid} \text{Gamma}(\alpha,\beta)$$
 with $\alpha/\beta = 1$. See [@is_div] for additional details.

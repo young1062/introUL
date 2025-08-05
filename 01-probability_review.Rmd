@@ -453,7 +453,7 @@ Given two matrices ${\bf A},\,{\bf B}\in\mathbb{R}^{m\times n}$ with the same nu
 {\bf A} \odot {\bf B} \in \mathbb{R}^{m\times n} & \text{ such that } ({\bf A}\odot {\bf B})_{ij} = {\bf A}_{ij}{\bf B}_{ij} \\
 {\bf A} \oslash {\bf B} \in \mathbb{R}^{m\times n} & \text{ such that } ({\bf A}\oslash {\bf B})_{ij} = \frac{{\bf A}_{ij}}{{\bf B}_{ij}}
 \end{align*}
-Unlike standard matrix multiplication, the Hadamard product $\odot$ is commutative such that ${\bf B}\odot {\bf A} = {\bf A}\odot {\bf B}$. Commutativity does not hold for Hadamard division.
+Unlike standard matrix multiplication, the Hadamard product $\odot$ is commutative such that ${\bf B}\odot {\bf A} = {\bf A}\odot {\bf B}$. Commutativity does not hold for Hadamard division however.
 
 Furthermore, we define Hadamard powers as
 $${\bf A}^{\circ k} \in\mathbb{R}^{m\times n} \text{ such that } \left({\bf A}^{\circ k}\right)_{ij} = \left({\bf A}_{ij}\right)^k.$$

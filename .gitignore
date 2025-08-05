@@ -16,5 +16,7 @@
 data
 *cache*
 .Rproj.user
+_bookdown_files/
+_main.Rmd
 
 
