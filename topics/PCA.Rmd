@@ -66,7 +66,7 @@ $$\frac{1}{N}\sum_{i=1}^N\|\vec{x}_i\|^2 = \frac{1}{N}\sum_{i=1}^N y_i^2 +\frac{
 The left-hand side of the above expression is fixed for a given set of data, whereas the first term on the right side is exactly what we sought to maximize when finding the first principal component loading.  This quantity is the average squared length of the projection of each sample onto the direction $\vec{w}_1$. As such, we can view the first principal component loading as the direction in which $\vec{x}_1,\dots,\vec{x}_N$ most greatly varies.  Let's turn to an example in $\mathbb{R}^3$ to view this.
 
 
-::: {.example #pca-demo-1 name="Computing the First PCA Loading and Scores"}
+::: {.example #ex-pca-demo-1 name="Computing the First PCA Loading and Scores"}
 Below, we show a scatterplot of $N=500$ points in $\mathbb{R}^3$ drawn randomly from a MVN. These data have been centered.
 ```{r, echo = FALSE}
 set.seed(185)
@@ -211,7 +211,7 @@ Now let's apply PCA to the updated data matrix ${\bf X}^{(1)}$ from which we get
 \end{equation}
 The 2nd PC variance is the largest eigenvalue of $\hat{\bf \Sigma}^{(1)}$ and its associated unit length eigenvector is the 2nd PC loading, denoted $\vec{w}_2$.  The second PC scores $\vec{w}_2^T\vec{x}_i^{(1)}$ for $i=1,\dots,N.$ 
 
-Continuing \@ref(ex:pca-demo-1), we have 
+Continuing \@ref(ex-pca-demo-1), we have 
 $$
 \hat{\bf \Sigma}^{(1)} = 
 ```{r, echo = FALSE, results = 'asis'} 

@@ -329,6 +329,10 @@ div.csl-indent {
 <h2><span class="header-section-number">6.5</span> Hessian Eigenmaps (HLLEs)<a href="hessian-eigenmaps-hlles.html#hessian-eigenmaps-hlles" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="introduction-2" class="section level3 hasAnchor" number="6.5.1">
 <h3><span class="header-section-number">6.5.1</span> Introduction<a href="hessian-eigenmaps-hlles.html#introduction-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To motivate Hessian eigenmaps, let us revisit the revisit the idea of derivatives on real valued functions on the manifold. Suppose we have a manifold <span class="math inline">\(\mathcal{M} \subset \mathbb{R}^d\)</span> and function <span class="math inline">\(f:\mathcal{M}\to\mathbb{R}\)</span>. Assuming that <span class="math inline">\(\mathcal{M}\)</span> has intrinsic dimension <span class="math inline">\(t  &lt; d\)</span>, to each point <span class="math inline">\(\vec{x}\in\mathcal{M}\)</span>, we can associate a <span class="math inline">\(t\)</span> dimensional tangent space <span class="math inline">\(T_\vec{x}(\mathcal{M})\)</span> which we equip with a choice of orthonormal basis vectors. Furthermore, there is an open neighborhood <span class="math inline">\(U\)</span> containing <span class="math inline">\(\vec{x}\)</span> with every point in the neighborhood in one to one correspondence with</p>
+<div class="theorem">
+<p><span id="thm:hlle" class="theorem"><strong>Theorem 6.1  (Null Space of Hessian Operator on Manifolds) </strong></span>Suppose <span class="math inline">\(\mathcal{M} = \phi(\Theta)\)</span> where <span class="math inline">\(\Theta\)</span> is an open, connected subset of <span class="math inline">\(\mathbb{R}^t\)</span>, and <span class="math inline">\(\phi\)</span> is a locally isometric embedding of <span class="math inline">\(\Theta\)</span> into <span class="math inline">\(\mathbb{R}^d\)</span>. Then <span class="math inline">\(\mathcal{H}(f)\)</span> has a <span class="math inline">\(t+1\)</span> dimensional null space spanned by the constant function and a <span class="math inline">\(t\)</span>-dimensional space of functions spanned by the original isometric coordinates.</p>
+</div>
 </div>
 <div id="algorithm-3" class="section level3 hasAnchor" number="6.5.2">
 <h3><span class="header-section-number">6.5.2</span> Algorithm<a href="hessian-eigenmaps-hlles.html#algorithm-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -389,7 +393,7 @@ gitbook.start({
     "options": null
   },
   "toc": {
-    "collapse": "section"
+    "collapse": "chapter"
   }
 });
 });

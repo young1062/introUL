@@ -3,10 +3,78 @@
 
 ### Introduction
 
+To motivate Hessian eigenmaps, let us revisit the revisit the idea of derivatives on real valued functions on the manifold.  Suppose we have a manifold $\mathcal{M} \subset \mathbb{R}^d$ and function $f:\mathcal{M}\to\mathbb{R}$.  Assuming that $\mathcal{M}$ has intrinsic dimension $t  < d$, to each point $\vec{x}\in\mathcal{M}$, we can associate a $t$ dimensional tangent space $T_{\vec{x}}(\mathcal{M})$ which we equip with a choice of orthonormal basis vectors.  Furthermore, there is an open neighborhood $U$ containing $\vec{x}$ with every point in the neighborhood in one to one correspondence with a point in the tangent space.
 
-### Algorithm
+
+:::{.theorem #thm-hlle name="Null Space of Hessian Operator on Manifolds"}
+Suppose $\mathcal{M} = \Psi(\Theta)$ where $\Theta$ is an open, connected subset of $\mathbb{R}^t$, and $\Psi$ is a locally isometric embedding of $\Theta$ into $\mathbb{R}^d$. Then $\mathcal{H}(f)$ has a $t+1$ dimensional null space spanned by the constant function and a $t$-dimensional space of functions spanned by the original isometric coordinates.
+:::
+
+Suppose now that we have a function $f:\mathcal{M}\to \mathbb{R} \subset\mathbb{R}^d$ and we wish to estimate $\mathcal{H}(f)$ using observed data $\vec{x}_1,\dots,\vec{x}_N\in\mathcal{M}$.  HLLEs are based around the construction of a discretized estimation of $\mathcal{H}(f)$ which we can write in the quadratic form $$\vec{f}^T{\bf H}\vec{f} \text{ where } \vec{f} = \left(f(\vec{x}_1),\dots,f(\vec{x}_N)\right)^T\in\mathbb{R}^N.$$ The matrix ${\bf H}\in\mathbb{R}^{N\times N}$ is symmetric and positive semidefinite and depends only on the observed data $\vec{x}_1,\dots,\vec{x}_N$. Its construction will be discussed in greater detail in the algorithms section below. 
+
+For now, assume that we have access to ${\bf H}$. Suppose that $f$ is in the null space of $\mathcal{H}(f)$ then i) $\vec{f}^T{\bf H}\vec{f} \approx 0$ and ii) from Theorem \@ref(thm-hlle) it must be the case that $f(\vec{x}_i) = \alpha  + \beta^T\vec{z}_i$.  Importantly, if we can identify the null space of the matrix ${\bf H}$ then we can use this to recover the original low-dimensional coordinates (up to rigid motion and coordinate rescaling).
+
+Similar to LLEs and ISOMAP, this algorithm begins with a k-nearest neighbor search and finishes with a eigenvalue decomposition. As inputs we provide the data, the intrinsic dimension, $t$, of the manifold, and a specified number of nearest neighbors $k$. For reasons we'll discuss later, we must select $k > t(t+3)/2$. This constraint can be problematic in practice. For example, if we believe the intrinsic dimension of $\mathcal{M}$ is 100, then we need to pick $k > 5150$ meaning we need at least 5151 samples in our dataset!  Such a constraint may be difficult to satisfy in practice, but for dimension reduction focused on visualization with the ambition assumption that $t=1,2,$ or $3$,  $k \ge 10$ is sufficient.
+
+#### Compute nearest neighbors and local coordinates
+
+For each $\vec{x}_i$ compute its $k$-nearest neighbors which we'll denote $\mathcal{N}_i$.  We'll use each of these neighbors to estimate the Hessian of $f$ at $\vec{x}_i$. Next we'll estimate local coordinates of the neighbors in $\mathcal{N}_i$ by using SVD to approximate the tangent plane $T_{\vec{x}_i}(\mathcal{M})$.  One important observation to recall.  We expect the points in $\mathcal{N}_i$ to all be close together and centered around $\vec{x}_i$.  In this neighborhood around $\vec{x}_i$ we expect the manifold $\mathcal{M}$ to look like a small patch of $\mathbb{R}^d$. As such, they should be (nearly) contained in a $t$-dimensional affine subspace of $\mathbb{R}^d.$ 
+
+Let ${\bf M}_i \in \mathbb{R}^{k\times d}$ be the matrix of centered nearest neighbors of $\vec{x}_i$. Specifically, the $j$th row of ${\bf M}_i$ is $(\vec{x}_{i_j} - \vec{x}_i)^T$ where $\vec{x}_{i_j}$ is the $j$th nearest neighbor of $\vec{x}_i$. We apply a singular value decomposition to ${\bf M}_i$ giving factorization $${\bf M}_i = {\bf U}_i {\bf S}_i {\bf V}_i^T$$ where ${\bf U}\in\mathbb{R}^{k\times k}$ abd $V_i\in\mathbb{R}^{k\times k}$ have orthonormal columns and ${\bf S}_i\in\mathbb{R}^{k\times d}$ is diagonal. If the neighbors in $\mathcal{N}_i$ were fully contained in a t-dimensional affine subspace we expect that ${\bf S}_i$ has $t$ large singular values with the remainder equal to zero. Additionally in this case, the tangent space $T_{\vec{x}_i}$ is $\vec{x}_i + \span\{\vec{v}_1,\dots,\vec{v}_t\}$ where $\vec{v}_1,\dots,\vec{v}_t$ are the first $t$ columns of ${\bf V}$.  
+
+In practice, we should only expect the first $t$ singular values to be large with the remainder smaller but non-zero.  However, we'll still use the first $t$ columns of ${\bf V}$ as an (approximate) orthonormal basis for the tangent space.  The first $t$ columns of ${\bf U}_i{\bf S}_i$ give approximations of the local coordinates of the neighbors $\mathcal{N}_i$ in this neighborhood (the $j$th row gives the local coordinates for the $j$th nearest neighbor). Hereafter, we'll let $\vec{u}^i_j = (u^i_{j1},\dots,u_^i{jt}$ denote the local coordinates of the $j$th nearest neighbor in the tangent space.
+
+#### Estimate the Hessian
+
+Recall from section \@ref(sec-manifolds), that we can define derivatives for a function $f$ at $\vec{x}_i$ using the local coordinates.  
+
+Now, we can use the local gradients and Hessians to construct a Taylor approximation to $f(\vec{x}_j)$ for each point in the neighbor $\mathcal{N}_j$. In the tangent space $T_{\vec{x}_i}(\mathcal{M})$, we associate the origin with $\vec{x}_i$. Taylor expanding around the origin to second order we have the following approximation 
+\begin{align*}
+f(\vec{x}_{i_j}) &\approx f(\vec{x}_i) + \left[\nabla^{tan} f(\vec{x}_i)\right]^T \cdot \vec{u}^i_j + \frac{1}{2}{\vec{u}^i_j}^T \left(H^{tan}f (\vec{x}_i)\right)\vec{u}^i_j\\
+&= f(\vec{x}_i) + \sum_{\ell=1}^t \left[\nabla^{tan} f(\vec{x}_i)\right]_\ell \vec{u}^i_{j\ell} + \frac{1}{2}\sum_{\ell=1}^t \left(H^{tan}f (\vec{x}_i)\right)_{\ell\ell} (u^i_{j\ell})^2 + \sum{\ell < s} \left(H^{tan}f (\vec{x}_i)\right)_{\ell,s} u^i_{j\ell}u^i{js}
+\end{align*}
+To estimate the entries of the Hessian, we use quadratic regression.  Build design matrix ${\bf X}_i \in \mathbb{R}^{k\times (1+d+d(d+1)/2)}$ including all terms up to second order of the local coordinates such that
+$${\bf X}_i = 
+\begin{bmatrix}
+1 & u^i_{11} & \dots u^i_{1t} & \frac{1}{2}(u^i_{11})^2 & \dots& \frac{1}{2}(u^i_{1t})^2 & \frac{\sqrt{2}}{2}u^i_{11}u^i_{12}& \frac{\sqrt{2}}{2} u^i_{11}u^i_{13} & \dots &\frac{\sqrt{2}}{2}u^i_{1,t-1}u^i_{1t}  \\
+\vdots & \vdots & \vdots & \vdots & \dots & \vdots & \vdots & \vdots & \dots & \vdots\\
+1 & u^i_{k1} & \dots u^i_{kt} & \frac{1}{2}(u^i_{k1})^2 & \dots &\frac{1}{2}(u^i_{kt})^2 & \frac{\sqrt{2}}{2}u^i_{k1}u^i_{k2}& \frac{\sqrt{2}}{2}u^i_{k1}u^i_{k3} & \dots & \frac{\sqrt{2}}{2}u^i_{k,t-1}u^i_{kt} 
+\end{bmatrix}
+$$
+If we let $\vec{f}_i = \left(f(\vec{x}_{i_1}),\dots,f(\vec{x}_{i_k})\right)^T$ be a vector containing the function values at the nearest neighbors of $\vec{x}_i$, then we can estimate the coefficients of the Taylor expansion using the following regression formula
+$$\vec{f}_i = {\bf X}^i \vec{\beta}$$ where the last $t + t(t+1)/2$ terms of $\vec{\beta}_i$ correspond to the entries of the $H^{tan}(f)$ at $\vec{x}_i$.  We then estimate $\vec{\beta}_i$ using the Moore-Penrose pseudoinverse $$\vec{\beta}_i \approx ({\bf X}_i^T{\bf X})^{-1}{\bf X}_i^T \vec{f}_i.$$ For the pseudoinverse to be invertible, ${\bf X}_i$ must have at least as many rows as columns. Thus, we need $k \ge 1+t + t(t+1)/2 = 1 + t(t+3)/2 > t(t+3)/2$.
+
+We can drop the first $t+1$ entries which contain the intercept and the first order regression terms.  Let $\vec{\beta}_{i,drop}$ denote the final $t(t+1)/2$ entries of $\vec{\beta}_1$.  If we square then sum the entries of $\vec{\beta}_{i,drop}$, we now have an estimate of $\| H^{tan}(f)\|_F^2$ at $\vec{x}_i$.  
+
+One final note on this issue.  The $1/2$ and ${\sqrt{2}}/2$ terms in ${\bf X}_i$ are introduced to ensure we are correctly estimating (and single counting) the diagonal entries of the Hessian while double counting its upper triangular elements. This detail is missing from the original paper [@hlles]. As such, many implementation may also replicate the mistake. Be cautious when choosing a package for implementing HLLEs!
 
 
+#### The Eigenvalue Problem
+
+Define ${\bf S}_i \in \mathbb{R}^{k \times N}$ as follows $$({\bf S}_i)_{j\ell} = \begin{cases} 1 & \vec{x}_\ell \text{ is the } j \text{th nearest neighbor of } \vec{x}_i \\
+0 & \text{else.}
+\end{cases}$$
+Using this notation, we can express $\vec{f}_i$ (the function values from the k nearest neighbors of $\vec{x}_i$) as the product of ${\bf S}_i$ and $\vec{f}$ (the vector containing the function value at all samples $\vec{x}_1,\dots,\vec{x}_N$. Specifically, $\vec{f}_i= {\bf S}_i \vec{f}$.
+
+Now, we will use an empirical average of our Hessian estimates at each data point to approximate the operator $\mathcal{H}(f)$ as follows 
+\begin{align*}
+\mathcal{H}(f) &= \int_{\mathcal{M}} \|H^{tan}(f)\|_F^2 dm \\
+&\approx \frac{1}{N}\sum_{i=1}^N \|\|H^{tan}\big(f\big)(\vec{x}_i)\|_F^2 \\
+&\approx \frac{1}{N}\sum_{i=1}^N \|{\bf H}_i \vec{f}_i\|^2 
+\end{align*}
+
+Now, we can make use of the identity $\vec{f}_i={\bf S}_i \vec{f}$ to write this approximation as a quadratic function of $\vec{f}.$
+\begin{align*}
+\approx \frac{1}{N}\sum_{i=1}^N \|{\bf H}_i \vec{f}_i\|^2  &= \frac{1}{N}\sum_{i=1}^N \vec{f_i}^T{\bf H}_i^T{\bf H}_i \vec{f}_i\\
+&= \frac{1}{N} \sum_{i=1}^N \vec{f}^T{\bf S}_i^T{\bf H}_i^T{\bf H}_i {\bf S}_i \vec{f} \\
+&= \vec{f}^T\left(\frac{1}{N} \sum_{i=1}^N{\bf S}_i^T {\bf H}_i^T{\bf H}_i{\bf S}_i\right)\vec{f}
+\end{align*}
+
+Letting $${\bf H} = \frac{1}{N} \sum_{i=1}^N{\bf S}_i^T {\bf H}_i^T{\bf H}_i{\bf S}_i$$ our approximation becomes $$\vec{f}^T{\bf H}\vec{f}.$$ Here is the final critical observation. If $f$ is a vector in the null space of $\mathcal{H}$ then it must be in the span of the coordinate functions, *and* we would expect the approximation to be small  (close to zero except for sampling variability and estimation error).  As such, we can look eigenvector(s) associated with the smallest eigenvalue(s) of ${\bf H}$ to give approximations to the coordinate functions! 
+
+Like LLEs, ${\bf H}$ will have one eigenvalues which is exactly zero corresponding to the constant function. We'll take the next $t$ eigenvectors associated with the next smallest $t$ eigenvalues and use them to build a data matrix. The rows of this data matrix give the corresponding low dimensional coordinates of our data.  
+
+Since ${\bf H}$ is symmetric and positive semidefinite (its is the sum of symmetric, psd matrices), its eigenvectors will be orthogonal.  Selecting these eigenvectors as approximates for functions $f_1,\dots,f_t$ giving the corresponding 1st through $t$th coordinates is equiavalent to imposing an orthogonality constraint on these vectors.  We'll also take the vectors to be unit length.  As a result, we can expect HLLE to recover original coordinates up to rigid motion (scaling and rotation/reflection) and coordinate rescaling.
 
 
 
