@@ -219,115 +219,12 @@ The result of LLE is quite sensitive to its two control parameters: the number o
 
 Here we use the Swiss Roll example to illustrate this. LLE is optimal at $k=45$. However, when $k=40$, the recovered lower-dimensional configuration is wrong (Green points and yellow points overlap, which is not the case in Swiss Roll); and when we slightly increase $k$ to 50, the recovered two-dimensional expression is not necessarily a rectangle.
 
-```{r}
-set.seed(42)
-# Install and load necessary packages
-# install.packages("dimRed")
-# install.packages("rgl")
-library(dimRed)
-library(rgl)
-library(Rdimtools)
-library(scatterplot3d)
-
-# Generate Swiss roll-shaped data
-S <- rep(0, 2000)
-Swiss <- matrix(NA, nrow = 2000, ncol = 3)
-for (n in 1:2000) {
-  s <- runif(1, min = 3 * pi / 2, max = 9 * pi / 2)
-  t <- runif(1, min = 0, max = 20)
-  S[n] <- s
-  Swiss[n, ] <- c(s * cos(s), t, s * sin(s))
-}
-
-par(mfrow = c(2,2))
-scatterplot3d(Swiss, color = myColorRamp(c("red","purple","blue","green","yellow"), S),
-               xlab = expression(x[1]), ylab = expression(x[2]), zlab = expression(x[3]))
-
-plot(do.lle(Swiss, ndim = 2, type = c("knn",40))$Y,
-     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=40",
-     col = myColorRamp(c("red","purple","blue","green","yellow"), S))
-
-plot(do.lle(Swiss, ndim = 2, type = c("knn",45))$Y,
-     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=45",
-     col = myColorRamp(c("red","purple","blue","green","yellow"), S))
-
-plot(do.lle(Swiss, ndim = 2, type = c("knn",50))$Y,
-     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=50",
-     col = myColorRamp(c("red","purple","blue","green","yellow"), S))
-```
 
 2) **Vulnerable to sparse or unevenly-distributed samples**
 
 The vulnerability towards sparsity and uneven distribution exists in almost all manifold learning methods, including ISOMAP, as we have illustrated in the previous section. LLE is not immune to this either. When a data set is unevenly distributed, since LLE relies on the original Euclidean distance metric, it tends to select neighbors from a singular direction where these neighbors are densely clustered. Clearly, using these selected neighbors to reconstruct the reference point results in significant redundancy in that specific direction. Concurrently, essential information from other directions or regions is not retained for the reconstruction of the reference point. As a result, these selected neighbors are inadequate for accurately representing and reconstructing the reference point. Consequently, much of the intrinsic structure and internal features will be lost after dimension reduction using LLE.
 
-We borrow the "stretched" Swiss Roll example from ISOMAP section and try LLE this time. LLE also cracks in this scenario, regardless of the chosen parameter $k$.
-
-```{r}
-set.seed(42)
-S <- rep(0,2000)
-Swiss_sparse <- matrix(NA, nrow = 2000, ncol = 3)
-for( n in 1:2000){
-    s <- runif(1, min = 3*pi/2, max = 9*pi/2)
-    t <- runif(1, min = 0,      max = 60)
-    S[n] <- s
-    Swiss_sparse[n, ] <- c( s*cos(s), t, s*sin(s) )
-}
-
-par(mfrow = c(2,2))
-scatterplot3d(Swiss_sparse, color = myColorRamp(c("red","purple","blue","green","yellow"), S), main = "Swiss Roll with Sparse Region",
-               xlab = expression(x[1]), ylab = expression(x[2]), zlab = expression(x[3]))
-
-plot(do.lle(Swiss_sparse, ndim = 2, type = c("knn",35))$Y,
-     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=35",
-     col = myColorRamp(c("red","purple","blue","green","yellow"), S))
-
-plot(do.lle(Swiss_sparse, ndim = 2, type = c("knn",40))$Y,
-     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=40",
-     col = myColorRamp(c("red","purple","blue","green","yellow"), S))
-
-plot(do.lle(Swiss_sparse, ndim = 2, type = c("knn",45))$Y,
-     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=45",
-     col = myColorRamp(c("red","purple","blue","green","yellow"), S))
-
-```
-
-In addition, we manually create a Swiss Roll with some sparse regions and try LLE on it. From naked eye, these sparse regions won't affect the overall manifold look. However, since LLE utilizes the local structure, it is greatly affected.
-
-```{r}
-library(scatterplot3d)
-library(Rdimtools)
-set.seed(42)
-S <- rep(0,2000)
-Swiss <- matrix(NA, nrow = 2000, ncol = 3)
-for(n in 1:2000){
-    s <- runif(1, min = 3*pi/2, max = 9*pi/2)
-    t <- runif(1, min = 0,      max = 15)
-    S[n] <- s
-    Swiss[n, ] <- c( s*cos(s), t, s*sin(s) )
-}
-
-# Manually create a sparse region
-mask <- Swiss[,2] > 5 & Swiss[,2] < 10 & Swiss[,3] > -5 & Swiss[,3] < 5
-Swiss_masked <- Swiss[!mask, ]
-S <- S[!mask]
-
-par(mfrow = c(2,2))
-scatterplot3d(Swiss_masked, color = myColorRamp(c("red","purple","blue","green","yellow"), S), main = "Swiss Roll with Sparse Region",
-               xlab = expression(x[1]), ylab = expression(x[2]), zlab = expression(x[3]))
-
-plot(do.lle(Swiss_masked, ndim = 2, type = c("knn",20))$Y,
-     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=20",
-     col = myColorRamp(c("red","purple","blue","green","yellow"), S))
-
-plot(do.lle(Swiss_masked, ndim = 2, type = c("knn",30))$Y,
-     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=30",
-     col = myColorRamp(c("red","purple","blue","green","yellow"), S))
-
-plot(do.lle(Swiss_masked, ndim = 2, type = c("knn",50))$Y,
-     xlab = "1st Dimension", ylab = "2nd Dimension", main = "K=50",
-     col = myColorRamp(c("red","purple","blue","green","yellow"), S))
-```
 
 3) **Sensitivity to noise**
 
-LLE is super sensitive to noise. Even a small noise would cause failure in deriving low dimensional configurations. Justin Wang, et.al utilize various visualization examples to illustrate this drawback in their paper [@llenoise], you may take a look if you are interested. Various algorithms have been developed to address this issue, i.e., Robustly Locally Linear Embedding (RLLE) [@RobustLLE], and Locally Linear Embedding with Additive Noise (LLEAN) [@llenoise]. The former works well when outliers exist, while the latter has a satisfactory performance when the original points are distorted with noises.
+LLE is extremely sensitive to noise. Even a small noise would cause failure in deriving low dimensional configurations. Justin Wang, et.al utilize various visualization examples to illustrate this drawback in their paper [@llenoise], you may take a look if you are interested. Various algorithms have been developed to address this issue, i.e., Robustly Locally Linear Embedding (RLLE) [@RobustLLE], and Locally Linear Embedding with Additive Noise (LLEAN) [@llenoise]. The former works well when outliers exist, while the latter has a satisfactory performance when the original points are distorted with noises.

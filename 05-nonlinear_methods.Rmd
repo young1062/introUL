@@ -2,7 +2,15 @@
 
 ## The Manifold Hypothesis
 
-In the simplest setting, the manifold hypothesis can be stated as follows. Assume there are points $\vec{z}_1,\dots,\vec{z}_N\in A \subset \mathbb{R}^k$ which are *iid* random samples from some probability distribution. These points are (nonlinearly) mapped into a higher dimensional space $\mathbb{R}^d$ by a smooth map $\Psi$ giving data $\vec{x}_i = \Psi(\vec{z}_i)$ for $i=1,\dots,N.$   Hereafter, we refer to $\Psi$ as the manifold map.  In this setting, we are only given $\vec{x}_1,\dots,\vec{x}_N$, and we want to recover the lower-dimensional $\vec{z}_1,\dots,\vec{z}_N$. If possible, we would also like recover $\Psi$ and $\Psi^{-1}$ and in the most ideal case, the sampling distribution that generated the lower-dimensional coordinates $\vec{z}_1,\dots,\vec{z}_N$. 
+The manifold hypothesis is the central assumptions of modern nonlinear dimension reduction methods and can be stated as follows. 
+
+:::{.def manifold_hyp name="Manifold Hypothesis"}
+The observed data $\vec{x}_1,\dots,\vec{x}_N\in\mathbb{R}$ are concentrated on or near a manifold of intrinsic dimension $t\ll d.$
+:::
+
+Manifolds are (not linear) subspaces. In the following sections, we will provide more background on the mathematical foundation of manifold including important properties and assumptions used by various methods of nonlinear dimension reduction. For now, let's discuss a simple mechanism for generating data on a manifold.
+
+Assume there are points $\vec{z}_1,\dots,\vec{z}_N\in A \subset \mathbb{R}^k$ which are *iid* random samples from some probability distribution. These points are (nonlinearly) mapped into a higher dimensional space $\mathbb{R}^d$ by a smooth map $\Psi$ giving data $\vec{x}_i = \Psi(\vec{z}_i)$ for $i=1,\dots,N.$   Hereafter, we refer to $\Psi$ as the manifold map.  In this setting, we are only given $\vec{x}_1,\dots,\vec{x}_N$, and we want to recover the lower-dimensional $\vec{z}_1,\dots,\vec{z}_N$. If possible, we would also like recover $\Psi$ and $\Psi^{-1}$ and in the most ideal case, the sampling distribution that generated the lower-dimensional coordinates $\vec{z}_1,\dots,\vec{z}_N$. 
 
 ::: {.example #ex-swiss-roll name="Mapping to the Swiss Roll"}
 Let $A = (\pi/2,9\pi/2)\times (0,15)$.  We define the map $\Psi:A\to \mathbb{R}^3$ as follows
@@ -58,7 +66,7 @@ scatterplot3js(Swiss+matrix(rnorm(prod(dim(Swiss)),mean = 0,sd = 0.5), nrow = nr
 In addition to the goals in the noiseless case, we may also add the goal of learning the noiseless version of the data which reside on a manifold.
 
 
-However, there are a number of practical issues to this setup.  First, the dimension, $k$, of the original lower-dimensional points is typically unknown.  Similar to previous methods, we could pick a value of $k$ with the goal of visualization, base our choice off of prior knowledge, or run our algorithms different choices of $k$ and compare the results.  More advanced methods for estimating the true value of $k$ are an open area of research (REFERENCES NEEDED).  
+However, there are a number of practical issues to this setup.  First, the dimension, $t$, of the original lower-dimensional points is typically unknown.  Similar to previous methods, we could pick a value of $t$ with the goal of visualization, base our choice off of prior knowledge, or run our algorithms different choices of $t$ and compare the results.  More advanced methods for estimating the true value of $k$ are an open area of research [@dim_est1].  
 
 There is also a issue with the uniqueness problem statement.  Given only the high dimensional observations, there is no way we could identify the original lower-dimensional points without more information.  In fact, one could find an unlimited sources of equally suitable results.  Here is the issue.
 
@@ -107,7 +115,9 @@ figure 8
 ```{r child = 'topics/AE.Rmd'}
 ```
 
-##
+<!-- Examples -->
+```{r child = 'topics/Manifold_Learning_Examples.Rmd'}
+```
 
 ## Exercises
 

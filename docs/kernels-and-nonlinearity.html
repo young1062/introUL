@@ -286,7 +286,10 @@ div.csl-indent {
 <li class="chapter" data-level="6.7.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#algorithm-3"><i class="fa fa-check"></i><b>6.7.2</b> Algorithm</a></li>
 <li class="chapter" data-level="6.7.3" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#example"><i class="fa fa-check"></i><b>6.7.3</b> Example</a></li>
 </ul></li>
-<li class="chapter" data-level="6.8" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#section"><i class="fa fa-check"></i><b>6.8</b> </a></li>
+<li class="chapter" data-level="6.8" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#comparison-of-manifold-learning-methods"><i class="fa fa-check"></i><b>6.8</b> Comparison of Manifold Learning Methods</a>
+<ul>
+<li class="chapter" data-level="6.8.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#visual-comparison-of-results"><i class="fa fa-check"></i><b>6.8.1</b> Visual comparison of results</a></li>
+</ul></li>
 <li class="chapter" data-level="6.9" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#exercises-4"><i class="fa fa-check"></i><b>6.9</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="ch-clustering.html"><a href="ch-clustering.html"><i class="fa fa-check"></i><b>7</b> Clustering</a>
@@ -388,16 +391,16 @@ where <span class="math inline">\({\bf K}\)</span> has the inner products in the
 <p>Notably, at no point do we compute the PC loadings! However, similar to standard PCA, we use the scores for dimension reduction and the PC variances for choosing a dimension. Without the loadings, we cannot recompute the original data. Below, we show an application of kernel PCA to the helix and demonstrate its ability to identify the one-dimensional structure of the helix and its sensitivity to kernel selection and tuning.</p>
 <div class="example">
 <p><span id="exm:kpca-helix" class="example"><strong>Example 5.1  (Kernel PCA applied to the Helix) </strong></span>First, we show the kPCA variances for three different kernels and tuning parameters. The data are regularly spaced points along the helix.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-132-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-133-1.png" width="672" /></p>
 <p>From these graphs, one would infer very different lower dimensional choices depending on the kernel and parameters. The polynomial kernel provides the most robust estimate of the one-dimensional nature of the data.</p>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-133"></span>
-<img src="_main_files/figure-html/unnamed-chunk-133-1.png" alt="kPCA Variances for different Kernels" width="672" />
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-134"></span>
+<img src="_main_files/figure-html/unnamed-chunk-134-1.png" alt="kPCA Variances for different Kernels" width="672" />
 <p class="caption">
 Figure 5.1: kPCA Variances for different Kernels
 </p>
 </div>
 <p>Below, we show the recovered one-dimensional coordinates for the polynomial kernel with offset 1 and degree 4 shown below, which is good, but do not quite reflect the equal spaced nature of the points.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-134-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-135-1.png" width="672" /></p>
 </div>
 <p>As the preceding example demonstrates, kernel PCA can identify nonlinear structure, but is quite sensitive to kernel selection and tuning. More advanced implementations make use of cross-validation to aid in the selection and tuning of the kernel <span class="citation">[<a href="#ref-kPCA_tuning2">19</a>]</span>.</p>
 </div>
