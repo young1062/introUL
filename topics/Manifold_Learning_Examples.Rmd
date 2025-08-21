@@ -20,7 +20,7 @@ washer.swiss <- read.csv("../data/rolled_washer.csv")[,-1]
 
 As an initial comparison, we'll look at several 3-dimensional examples with known lower dimensional latent spaces where we can visualize the data.  Importantly, these examples fail to satisfy some of the conditions of the preceding methods so we can assess how susceptible the methods we have discussed to violations in their assumptions. Table x.x summarizes the results
 
-```{r tab-manifolds}
+```{r tab-manifolds, echo = FALSE}
 examples <- data.frame(Manifold = c("Helix","Swiss Roll","Folded Washer","Rolled Washer"),
                        Intrinsic.Dimension = c("One","Two","Two","Two"),
                        Preimage = c("Line segment", "Rectangle","Annulus","Annulus"),

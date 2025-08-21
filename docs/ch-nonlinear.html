@@ -333,10 +333,10 @@ div.csl-indent {
 <div id="the-manifold-hypothesis" class="section level2 hasAnchor" number="6.1">
 <h2><span class="header-section-number">6.1</span> The Manifold Hypothesis<a href="ch-nonlinear.html#the-manifold-hypothesis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The manifold hypothesis is the central assumptions of modern nonlinear dimension reduction methods and can be stated as follows.</p>
-<p>:::{.def manifold_hyp name=“Manifold Hypothesis”}
-The observed data <span class="math inline">\(\vec{x}_1,\dots,\vec{x}_N\in\mathbb{R}\)</span> are concentrated on or near a manifold of intrinsic dimension <span class="math inline">\(t\ll d.\)</span>
-:::</p>
-<p>Manifolds are (not linear) subspaces. In the following sections, we will provide more background on the mathematical foundation of manifold including important properties and assumptions used by various methods of nonlinear dimension reduction. For now, let’s discuss a simple mechanism for generating data on a manifold.</p>
+<div class="definition">
+<p><span id="def:unlabeled-div-3" class="definition"><strong>Definition 6.1  (Manifold Hypothesis) </strong></span>The observed data <span class="math inline">\(\vec{x}_1,\dots,\vec{x}_N\in\mathbb{R}\)</span> are concentrated on or near a manifold of intrinsic dimension <span class="math inline">\(t\ll d.\)</span></p>
+</div>
+<p>Manifolds are subspaces which could be linear but typically are not. In the following sections, we will provide more background on the mathematical foundation of manifold including important properties and assumptions used by various methods of nonlinear dimension reduction. For now, let’s discuss a simple mechanism for generating data on a manifold.</p>
 <p>Assume there are points <span class="math inline">\(\vec{z}_1,\dots,\vec{z}_N\in A \subset \mathbb{R}^k\)</span> which are <em>iid</em> random samples from some probability distribution. These points are (nonlinearly) mapped into a higher dimensional space <span class="math inline">\(\mathbb{R}^d\)</span> by a smooth map <span class="math inline">\(\Psi\)</span> giving data <span class="math inline">\(\vec{x}_i = \Psi(\vec{z}_i)\)</span> for <span class="math inline">\(i=1,\dots,N.\)</span> Hereafter, we refer to <span class="math inline">\(\Psi\)</span> as the manifold map. In this setting, we are only given <span class="math inline">\(\vec{x}_1,\dots,\vec{x}_N\)</span>, and we want to recover the lower-dimensional <span class="math inline">\(\vec{z}_1,\dots,\vec{z}_N\)</span>. If possible, we would also like recover <span class="math inline">\(\Psi\)</span> and <span class="math inline">\(\Psi^{-1}\)</span> and in the most ideal case, the sampling distribution that generated the lower-dimensional coordinates <span class="math inline">\(\vec{z}_1,\dots,\vec{z}_N\)</span>.</p>
 <div class="example">
 <p><span id="exm:ex-swiss-roll" class="example"><strong>Example 6.1  (Mapping to the Swiss Roll) </strong></span>Let <span class="math inline">\(A = (\pi/2,9\pi/2)\times (0,15)\)</span>. We define the map <span class="math inline">\(\Psi:A\to \mathbb{R}^3\)</span> as follows
@@ -360,7 +360,7 @@ Below we show <span class="math inline">\(N=10^4\)</span> samples which are draw
 <h2><span class="header-section-number">6.2</span> A brief primer on manifolds and differential geometry<a href="ch-nonlinear.html#sec-manifolds" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In the previous sections, we have focused on methods which seek to approximate our data through a linear combination of feature vectors. As we have seen, the resulting approximations live on linear (or affine) subspaces in the case of PCA and SVD and positive spans or convex combinations in the case of NMF. While our data may exhibit some low-dimensional structure, there is no practical reason to expect such behavior to be inherently linear. In the resulting sections, we will explore methods which consider <strong>nonlinear</strong> structure and assume the data reside on or near a manifold. Such methods are referred to as nonlinear dimension reduction or manifold learning. Critical to this discussion is the notion of a manifold.</p>
 <div class="definition">
-<p><span id="def:def-manifold" class="definition"><strong>Definition 6.1  (Informal Definition of a Manifold) </strong></span>A manifold is a (topological) space which locally resembles Euclidean space. Each point on a <span class="math inline">\(k\)</span>-dimensional manifold has a neighborhood that can be mapped continuously to <span class="math inline">\(\mathbb{R}^k\)</span>.</p>
+<p><span id="def:def-manifold" class="definition"><strong>Definition 6.2  (Informal Definition of a Manifold) </strong></span>A manifold is a (topological) space which locally resembles Euclidean space. Each point on a <span class="math inline">\(k\)</span>-dimensional manifold has a neighborhood that can be mapped continuously to <span class="math inline">\(\mathbb{R}^k\)</span>.</p>
 </div>
 <p>To guide your intuition, think of a manifold as a smooth, possibly curved surface. Here are a few examples.</p>
 <div class="example">
@@ -441,16 +441,16 @@ Let <span class="math inline">\(\mathcal{M}_1\)</span> be a manifold with distan
 <span class="math display">\[\Delta_{ij} = d^{\mathcal{G}}_{ij}\]</span></p>
 <p><strong>Simulation Example</strong></p>
 <p>Here we provide a randomly generated Neighborhood Graph for six data points, it uses the K-nearest neighbor criteria (can easily tell this since the matrix is not symmetric, <span class="math inline">\(K=2\)</span>)</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="ch-nonlinear.html#cb24-1" tabindex="-1"></a><span class="co"># Define the matrix</span></span>
-<span id="cb24-2"><a href="ch-nonlinear.html#cb24-2" tabindex="-1"></a>matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
-<span id="cb24-3"><a href="ch-nonlinear.html#cb24-3" tabindex="-1"></a>  <span class="dv">0</span>,   <span class="dv">3</span>,  <span class="dv">4</span>,   <span class="cn">Inf</span>, <span class="cn">Inf</span>, <span class="cn">Inf</span>,</span>
-<span id="cb24-4"><a href="ch-nonlinear.html#cb24-4" tabindex="-1"></a>  <span class="dv">7</span>,   <span class="dv">0</span>,  <span class="cn">Inf</span>, <span class="dv">2</span>,   <span class="cn">Inf</span>, <span class="cn">Inf</span>,</span>
-<span id="cb24-5"><a href="ch-nonlinear.html#cb24-5" tabindex="-1"></a>  <span class="dv">6</span>,   <span class="cn">Inf</span>,<span class="dv">0</span>,   <span class="cn">Inf</span>, <span class="dv">7</span>,   <span class="cn">Inf</span>,</span>
-<span id="cb24-6"><a href="ch-nonlinear.html#cb24-6" tabindex="-1"></a>  <span class="cn">Inf</span>, <span class="dv">5</span>,  <span class="cn">Inf</span>, <span class="dv">0</span>,   <span class="cn">Inf</span>, <span class="dv">10</span>,</span>
-<span id="cb24-7"><a href="ch-nonlinear.html#cb24-7" tabindex="-1"></a>  <span class="cn">Inf</span>, <span class="cn">Inf</span>,<span class="dv">8</span>,   <span class="cn">Inf</span>, <span class="dv">0</span>,   <span class="dv">13</span>,</span>
-<span id="cb24-8"><a href="ch-nonlinear.html#cb24-8" tabindex="-1"></a>  <span class="cn">Inf</span>, <span class="cn">Inf</span>,<span class="cn">Inf</span>, <span class="dv">9</span>,   <span class="dv">14</span>,  <span class="dv">0</span></span>
-<span id="cb24-9"><a href="ch-nonlinear.html#cb24-9" tabindex="-1"></a>), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">nrow =</span> <span class="dv">6</span>)</span>
-<span id="cb24-10"><a href="ch-nonlinear.html#cb24-10" tabindex="-1"></a><span class="fu">print</span>(matrix)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="ch-nonlinear.html#cb20-1" tabindex="-1"></a><span class="co"># Define the matrix</span></span>
+<span id="cb20-2"><a href="ch-nonlinear.html#cb20-2" tabindex="-1"></a>matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
+<span id="cb20-3"><a href="ch-nonlinear.html#cb20-3" tabindex="-1"></a>  <span class="dv">0</span>,   <span class="dv">3</span>,  <span class="dv">4</span>,   <span class="cn">Inf</span>, <span class="cn">Inf</span>, <span class="cn">Inf</span>,</span>
+<span id="cb20-4"><a href="ch-nonlinear.html#cb20-4" tabindex="-1"></a>  <span class="dv">7</span>,   <span class="dv">0</span>,  <span class="cn">Inf</span>, <span class="dv">2</span>,   <span class="cn">Inf</span>, <span class="cn">Inf</span>,</span>
+<span id="cb20-5"><a href="ch-nonlinear.html#cb20-5" tabindex="-1"></a>  <span class="dv">6</span>,   <span class="cn">Inf</span>,<span class="dv">0</span>,   <span class="cn">Inf</span>, <span class="dv">7</span>,   <span class="cn">Inf</span>,</span>
+<span id="cb20-6"><a href="ch-nonlinear.html#cb20-6" tabindex="-1"></a>  <span class="cn">Inf</span>, <span class="dv">5</span>,  <span class="cn">Inf</span>, <span class="dv">0</span>,   <span class="cn">Inf</span>, <span class="dv">10</span>,</span>
+<span id="cb20-7"><a href="ch-nonlinear.html#cb20-7" tabindex="-1"></a>  <span class="cn">Inf</span>, <span class="cn">Inf</span>,<span class="dv">8</span>,   <span class="cn">Inf</span>, <span class="dv">0</span>,   <span class="dv">13</span>,</span>
+<span id="cb20-8"><a href="ch-nonlinear.html#cb20-8" tabindex="-1"></a>  <span class="cn">Inf</span>, <span class="cn">Inf</span>,<span class="cn">Inf</span>, <span class="dv">9</span>,   <span class="dv">14</span>,  <span class="dv">0</span></span>
+<span id="cb20-9"><a href="ch-nonlinear.html#cb20-9" tabindex="-1"></a>), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">nrow =</span> <span class="dv">6</span>)</span>
+<span id="cb20-10"><a href="ch-nonlinear.html#cb20-10" tabindex="-1"></a><span class="fu">print</span>(matrix)</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
 ## [1,]    0    3    4  Inf  Inf  Inf
 ## [2,]    7    0  Inf    2  Inf  Inf
@@ -459,40 +459,40 @@ Let <span class="math inline">\(\mathcal{M}_1\)</span> be a manifold with distan
 ## [5,]  Inf  Inf    8  Inf    0   13
 ## [6,]  Inf  Inf  Inf    9   14    0</code></pre>
 <p>Shown below is the implementation of Floyd-Warshall algorithm in R. As you can see from the three for loops, its computation complexity is <span class="math inline">\(O(n^3)\)</span>.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="ch-nonlinear.html#cb26-1" tabindex="-1"></a><span class="co"># Adjusting the matrix to set d_ij and d_ji to the smaller value</span></span>
-<span id="cb26-2"><a href="ch-nonlinear.html#cb26-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">dim</span>(matrix)[<span class="dv">1</span>]</span>
-<span id="cb26-3"><a href="ch-nonlinear.html#cb26-3" tabindex="-1"></a></span>
-<span id="cb26-4"><a href="ch-nonlinear.html#cb26-4" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb26-5"><a href="ch-nonlinear.html#cb26-5" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb26-6"><a href="ch-nonlinear.html#cb26-6" tabindex="-1"></a>    <span class="cf">if</span> (i <span class="sc">!=</span> j <span class="sc">&amp;&amp;</span> <span class="fu">is.finite</span>(matrix[i, j]) <span class="sc">&amp;&amp;</span> <span class="fu">is.finite</span>(matrix[j, i])) {</span>
-<span id="cb26-7"><a href="ch-nonlinear.html#cb26-7" tabindex="-1"></a>      min_val <span class="ot">&lt;-</span> <span class="fu">min</span>(matrix[i, j], matrix[j, i])</span>
-<span id="cb26-8"><a href="ch-nonlinear.html#cb26-8" tabindex="-1"></a>      matrix[i, j] <span class="ot">&lt;-</span> min_val</span>
-<span id="cb26-9"><a href="ch-nonlinear.html#cb26-9" tabindex="-1"></a>      matrix[j, i] <span class="ot">&lt;-</span> min_val</span>
-<span id="cb26-10"><a href="ch-nonlinear.html#cb26-10" tabindex="-1"></a>    }</span>
-<span id="cb26-11"><a href="ch-nonlinear.html#cb26-11" tabindex="-1"></a>  }</span>
-<span id="cb26-12"><a href="ch-nonlinear.html#cb26-12" tabindex="-1"></a>}</span>
-<span id="cb26-13"><a href="ch-nonlinear.html#cb26-13" tabindex="-1"></a></span>
-<span id="cb26-14"><a href="ch-nonlinear.html#cb26-14" tabindex="-1"></a><span class="co"># Floyd-Warshall Algorithm</span></span>
-<span id="cb26-15"><a href="ch-nonlinear.html#cb26-15" tabindex="-1"></a>floyd_warshall <span class="ot">&lt;-</span> <span class="cf">function</span>(mat) {</span>
-<span id="cb26-16"><a href="ch-nonlinear.html#cb26-16" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">dim</span>(mat)[<span class="dv">1</span>]</span>
-<span id="cb26-17"><a href="ch-nonlinear.html#cb26-17" tabindex="-1"></a>  dist <span class="ot">&lt;-</span> mat</span>
-<span id="cb26-18"><a href="ch-nonlinear.html#cb26-18" tabindex="-1"></a>  </span>
-<span id="cb26-19"><a href="ch-nonlinear.html#cb26-19" tabindex="-1"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb26-20"><a href="ch-nonlinear.html#cb26-20" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb26-21"><a href="ch-nonlinear.html#cb26-21" tabindex="-1"></a>      <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb26-22"><a href="ch-nonlinear.html#cb26-22" tabindex="-1"></a>        dist[i, j] <span class="ot">&lt;-</span> <span class="fu">min</span>(dist[i, j], dist[i, k] <span class="sc">+</span> dist[k, j])</span>
-<span id="cb26-23"><a href="ch-nonlinear.html#cb26-23" tabindex="-1"></a>      }</span>
-<span id="cb26-24"><a href="ch-nonlinear.html#cb26-24" tabindex="-1"></a>    }</span>
-<span id="cb26-25"><a href="ch-nonlinear.html#cb26-25" tabindex="-1"></a>  }</span>
-<span id="cb26-26"><a href="ch-nonlinear.html#cb26-26" tabindex="-1"></a>  </span>
-<span id="cb26-27"><a href="ch-nonlinear.html#cb26-27" tabindex="-1"></a>  <span class="fu">return</span>(dist)</span>
-<span id="cb26-28"><a href="ch-nonlinear.html#cb26-28" tabindex="-1"></a>}</span>
-<span id="cb26-29"><a href="ch-nonlinear.html#cb26-29" tabindex="-1"></a></span>
-<span id="cb26-30"><a href="ch-nonlinear.html#cb26-30" tabindex="-1"></a><span class="co"># Get the result</span></span>
-<span id="cb26-31"><a href="ch-nonlinear.html#cb26-31" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">floyd_warshall</span>(matrix)</span>
-<span id="cb26-32"><a href="ch-nonlinear.html#cb26-32" tabindex="-1"></a></span>
-<span id="cb26-33"><a href="ch-nonlinear.html#cb26-33" tabindex="-1"></a><span class="co"># Print the result</span></span>
-<span id="cb26-34"><a href="ch-nonlinear.html#cb26-34" tabindex="-1"></a><span class="fu">print</span>(result)</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="ch-nonlinear.html#cb22-1" tabindex="-1"></a><span class="co"># Adjusting the matrix to set d_ij and d_ji to the smaller value</span></span>
+<span id="cb22-2"><a href="ch-nonlinear.html#cb22-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">dim</span>(matrix)[<span class="dv">1</span>]</span>
+<span id="cb22-3"><a href="ch-nonlinear.html#cb22-3" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="ch-nonlinear.html#cb22-4" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb22-5"><a href="ch-nonlinear.html#cb22-5" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb22-6"><a href="ch-nonlinear.html#cb22-6" tabindex="-1"></a>    <span class="cf">if</span> (i <span class="sc">!=</span> j <span class="sc">&amp;&amp;</span> <span class="fu">is.finite</span>(matrix[i, j]) <span class="sc">&amp;&amp;</span> <span class="fu">is.finite</span>(matrix[j, i])) {</span>
+<span id="cb22-7"><a href="ch-nonlinear.html#cb22-7" tabindex="-1"></a>      min_val <span class="ot">&lt;-</span> <span class="fu">min</span>(matrix[i, j], matrix[j, i])</span>
+<span id="cb22-8"><a href="ch-nonlinear.html#cb22-8" tabindex="-1"></a>      matrix[i, j] <span class="ot">&lt;-</span> min_val</span>
+<span id="cb22-9"><a href="ch-nonlinear.html#cb22-9" tabindex="-1"></a>      matrix[j, i] <span class="ot">&lt;-</span> min_val</span>
+<span id="cb22-10"><a href="ch-nonlinear.html#cb22-10" tabindex="-1"></a>    }</span>
+<span id="cb22-11"><a href="ch-nonlinear.html#cb22-11" tabindex="-1"></a>  }</span>
+<span id="cb22-12"><a href="ch-nonlinear.html#cb22-12" tabindex="-1"></a>}</span>
+<span id="cb22-13"><a href="ch-nonlinear.html#cb22-13" tabindex="-1"></a></span>
+<span id="cb22-14"><a href="ch-nonlinear.html#cb22-14" tabindex="-1"></a><span class="co"># Floyd-Warshall Algorithm</span></span>
+<span id="cb22-15"><a href="ch-nonlinear.html#cb22-15" tabindex="-1"></a>floyd_warshall <span class="ot">&lt;-</span> <span class="cf">function</span>(mat) {</span>
+<span id="cb22-16"><a href="ch-nonlinear.html#cb22-16" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">dim</span>(mat)[<span class="dv">1</span>]</span>
+<span id="cb22-17"><a href="ch-nonlinear.html#cb22-17" tabindex="-1"></a>  dist <span class="ot">&lt;-</span> mat</span>
+<span id="cb22-18"><a href="ch-nonlinear.html#cb22-18" tabindex="-1"></a>  </span>
+<span id="cb22-19"><a href="ch-nonlinear.html#cb22-19" tabindex="-1"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb22-20"><a href="ch-nonlinear.html#cb22-20" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb22-21"><a href="ch-nonlinear.html#cb22-21" tabindex="-1"></a>      <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb22-22"><a href="ch-nonlinear.html#cb22-22" tabindex="-1"></a>        dist[i, j] <span class="ot">&lt;-</span> <span class="fu">min</span>(dist[i, j], dist[i, k] <span class="sc">+</span> dist[k, j])</span>
+<span id="cb22-23"><a href="ch-nonlinear.html#cb22-23" tabindex="-1"></a>      }</span>
+<span id="cb22-24"><a href="ch-nonlinear.html#cb22-24" tabindex="-1"></a>    }</span>
+<span id="cb22-25"><a href="ch-nonlinear.html#cb22-25" tabindex="-1"></a>  }</span>
+<span id="cb22-26"><a href="ch-nonlinear.html#cb22-26" tabindex="-1"></a>  </span>
+<span id="cb22-27"><a href="ch-nonlinear.html#cb22-27" tabindex="-1"></a>  <span class="fu">return</span>(dist)</span>
+<span id="cb22-28"><a href="ch-nonlinear.html#cb22-28" tabindex="-1"></a>}</span>
+<span id="cb22-29"><a href="ch-nonlinear.html#cb22-29" tabindex="-1"></a></span>
+<span id="cb22-30"><a href="ch-nonlinear.html#cb22-30" tabindex="-1"></a><span class="co"># Get the result</span></span>
+<span id="cb22-31"><a href="ch-nonlinear.html#cb22-31" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">floyd_warshall</span>(matrix)</span>
+<span id="cb22-32"><a href="ch-nonlinear.html#cb22-32" tabindex="-1"></a></span>
+<span id="cb22-33"><a href="ch-nonlinear.html#cb22-33" tabindex="-1"></a><span class="co"># Print the result</span></span>
+<span id="cb22-34"><a href="ch-nonlinear.html#cb22-34" tabindex="-1"></a><span class="fu">print</span>(result)</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
 ## [1,]    0    3    4    5   11   14
 ## [2,]    3    0    7    2   14   11
@@ -781,7 +781,7 @@ as our <span class="math inline">\(t\)</span>-dimensional configuration.</p>
 <h2><span class="header-section-number">6.6</span> Hessian Eigenmaps (HLLEs)<a href="ch-nonlinear.html#hessian-eigenmaps-hlles" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="introduction-2" class="section level3 hasAnchor" number="6.6.1">
 <h3><span class="header-section-number">6.6.1</span> Introduction<a href="ch-nonlinear.html#introduction-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>To motivate Hessian eigenmaps, let us revisit the revisit the idea of derivatives on real valued functions on the manifold. Suppose we have a manifold <span class="math inline">\(\mathcal{M} \subset \mathbb{R}^d\)</span> and function <span class="math inline">\(f:\mathcal{M}\to\mathbb{R}\)</span>. Assuming that <span class="math inline">\(\mathcal{M}\)</span> has intrinsic dimension <span class="math inline">\(t  &lt; d\)</span>, to each point <span class="math inline">\(\vec{x}\in\mathcal{M}\)</span>, we can associate a <span class="math inline">\(t\)</span> dimensional tangent space <span class="math inline">\(T_{\vec{x}}(\mathcal{M})\)</span> which we equip with a choice of orthonormal basis vectors. Furthermore, there is an open neighborhood <span class="math inline">\(U\)</span> containing <span class="math inline">\(\vec{x}\)</span> with every point in the neighborhood in one to one correspondence with a point in the tangent space.</p>
+<p>To motivate Hessian eigenmaps, let us revisit the revisit the idea of derivatives on real valued functions on the manifold. Suppose we have a manifold <span class="math inline">\(\mathcal{M} \subset \mathbb{R}^d\)</span> and function <span class="math inline">\(f:\mathcal{M}\to\mathbb{R}\)</span>. Assuming that <span class="math inline">\(\mathcal{M}\)</span> has intrinsic dimension <span class="math inline">\(t  &lt; d\)</span>, to each point <span class="math inline">\(\vec{x}\in\mathcal{M}\)</span>, we can associate a <span class="math inline">\(t\)</span> dimensional tangent space <span class="math inline">\(T_{\vec{x}}(\mathcal{M})\)</span> which we equip with a choice of orthonormal basis vectors. Furthermore, there is an open neighborhood <span class="math inline">\(U\)</span> containing <span class="math inline">\(\vec{x}\)</span> with every point in the neighborhood in one to one correspondence with a point in the tangent space allowing us to conduct calculus on the manifold using approximations within the tangent space.</p>
 <div class="theorem">
 <p><span id="thm:thm-hlle" class="theorem"><strong>Theorem 6.1  (Null Space of Hessian Operator on Manifolds) </strong></span>Suppose <span class="math inline">\(\mathcal{M} = \Psi(\Theta)\)</span> where <span class="math inline">\(\Theta\)</span> is an open, connected subset of <span class="math inline">\(\mathbb{R}^t\)</span>, and <span class="math inline">\(\Psi\)</span> is a locally isometric embedding of <span class="math inline">\(\Theta\)</span> into <span class="math inline">\(\mathbb{R}^d\)</span>. Then <span class="math inline">\(\mathcal{H}(f)\)</span> has a <span class="math inline">\(t+1\)</span> dimensional null space spanned by the constant function and a <span class="math inline">\(t\)</span>-dimensional space of functions spanned by the original isometric coordinates.</p>
 </div>
@@ -919,25 +919,25 @@ where <span class="math inline">\(\alpha\)</span> is the learning rate.</li>
 <ol style="list-style-type: decimal">
 <li>Load and Preprocess the Data</li>
 </ol>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="ch-nonlinear.html#cb28-1" tabindex="-1"></a>mnist <span class="ot">&lt;-</span> <span class="fu">dataset_mnist</span>()</span>
-<span id="cb28-2"><a href="ch-nonlinear.html#cb28-2" tabindex="-1"></a>train_images <span class="ot">&lt;-</span> mnist<span class="sc">$</span>train<span class="sc">$</span>x</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="ch-nonlinear.html#cb24-1" tabindex="-1"></a>mnist <span class="ot">&lt;-</span> <span class="fu">dataset_mnist</span>()</span>
+<span id="cb24-2"><a href="ch-nonlinear.html#cb24-2" tabindex="-1"></a>train_images <span class="ot">&lt;-</span> mnist<span class="sc">$</span>train<span class="sc">$</span>x</span></code></pre></div>
 <p>The above code loads the MNIST dataset from <strong>keras</strong> package. mnist variable is divided into a training set and a test set, both containing the image information and label information. Since we are using Autoencoders to conduct dimensio reduction here (unsupervised learning), we only require the image information from the traing set. The train_images contains the images from the training set.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="ch-nonlinear.html#cb29-1" tabindex="-1"></a><span class="co"># Flatten and normalize the images</span></span>
-<span id="cb29-2"><a href="ch-nonlinear.html#cb29-2" tabindex="-1"></a>train_images <span class="ot">&lt;-</span> <span class="fu">array_reshape</span>(train_images, <span class="fu">c</span>(<span class="fu">nrow</span>(train_images), <span class="dv">28</span><span class="sc">*</span><span class="dv">28</span>))</span>
-<span id="cb29-3"><a href="ch-nonlinear.html#cb29-3" tabindex="-1"></a>train_images <span class="ot">&lt;-</span> train_images <span class="sc">/</span> <span class="dv">255</span></span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="ch-nonlinear.html#cb25-1" tabindex="-1"></a><span class="co"># Flatten and normalize the images</span></span>
+<span id="cb25-2"><a href="ch-nonlinear.html#cb25-2" tabindex="-1"></a>train_images <span class="ot">&lt;-</span> <span class="fu">array_reshape</span>(train_images, <span class="fu">c</span>(<span class="fu">nrow</span>(train_images), <span class="dv">28</span><span class="sc">*</span><span class="dv">28</span>))</span>
+<span id="cb25-3"><a href="ch-nonlinear.html#cb25-3" tabindex="-1"></a>train_images <span class="ot">&lt;-</span> train_images <span class="sc">/</span> <span class="dv">255</span></span></code></pre></div>
 <p>For an Autoencoder to process these images, they need to be reshaped into a flat vector. This step reshapes each 28x28 image into a vector of length 784. Furthermore, to facilitate the neural network’s training, the pixel values (originally between 0 to 255) are normalized to fall between 0 and 1.</p>
 <ol start="2" style="list-style-type: decimal">
 <li>Build the Autoencoders</li>
 </ol>
 <p>The autoencoder comprises two main parts: Encoder and Decoder, as we have stated before.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="ch-nonlinear.html#cb30-1" tabindex="-1"></a><span class="co"># initiates the input layer for the autoencoder which expects input vectors of length 784</span></span>
-<span id="cb30-2"><a href="ch-nonlinear.html#cb30-2" tabindex="-1"></a>input_img <span class="ot">&lt;-</span> <span class="fu">layer_input</span>(<span class="at">shape =</span> <span class="fu">c</span>(<span class="dv">28</span><span class="sc">*</span><span class="dv">28</span>)) </span>
-<span id="cb30-3"><a href="ch-nonlinear.html#cb30-3" tabindex="-1"></a></span>
-<span id="cb30-4"><a href="ch-nonlinear.html#cb30-4" tabindex="-1"></a><span class="co"># Encoder</span></span>
-<span id="cb30-5"><a href="ch-nonlinear.html#cb30-5" tabindex="-1"></a>encoded <span class="ot">&lt;-</span> input_img <span class="sc">%&gt;%</span> </span>
-<span id="cb30-6"><a href="ch-nonlinear.html#cb30-6" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">128</span>, <span class="at">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb30-7"><a href="ch-nonlinear.html#cb30-7" tabindex="-1"></a>  <span class="fu">layer_dropout</span>(<span class="at">rate=</span><span class="fl">0.8</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb30-8"><a href="ch-nonlinear.html#cb30-8" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">2</span>, <span class="at">activation =</span> <span class="st">&quot;tanh&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="ch-nonlinear.html#cb26-1" tabindex="-1"></a><span class="co"># initiates the input layer for the autoencoder which expects input vectors of length 784</span></span>
+<span id="cb26-2"><a href="ch-nonlinear.html#cb26-2" tabindex="-1"></a>input_img <span class="ot">&lt;-</span> <span class="fu">layer_input</span>(<span class="at">shape =</span> <span class="fu">c</span>(<span class="dv">28</span><span class="sc">*</span><span class="dv">28</span>)) </span>
+<span id="cb26-3"><a href="ch-nonlinear.html#cb26-3" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="ch-nonlinear.html#cb26-4" tabindex="-1"></a><span class="co"># Encoder</span></span>
+<span id="cb26-5"><a href="ch-nonlinear.html#cb26-5" tabindex="-1"></a>encoded <span class="ot">&lt;-</span> input_img <span class="sc">%&gt;%</span> </span>
+<span id="cb26-6"><a href="ch-nonlinear.html#cb26-6" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">128</span>, <span class="at">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-7"><a href="ch-nonlinear.html#cb26-7" tabindex="-1"></a>  <span class="fu">layer_dropout</span>(<span class="at">rate=</span><span class="fl">0.8</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-8"><a href="ch-nonlinear.html#cb26-8" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">2</span>, <span class="at">activation =</span> <span class="st">&quot;tanh&quot;</span>)</span></code></pre></div>
 <p>The Encoder starts with the input image and passes it through a dense layer with 128 neurons and ReLU activation. A dropout layer is added for regularization, reducing the risk of over-fitting. The last layer of the Encoder further compresses the data into a 2D representation.</p>
 <p><strong>Dropout Layer</strong>
 In the context of Keras, layer_dropout(rate=0.8) adds a dropout layer where there’s an 80% chance that any given neuron in the previous layer will be turned off during training for a particular update.</p>
@@ -974,25 +974,25 @@ In the context of Keras, layer_dropout(rate=0.8) adds a dropout layer where ther
 <p>Used primarily in the output layer of a classifier, where it turns logits into probabilities by distributing them over several classes</p>
 <p>Range: Between 0 to 1</p>
 <p>Each activation function has its unique characteristics and is suitable for different kinds of tasks. The choice of an activation function depends on the specific problem at hand, the nature of the data, and the architecture of the neural network.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="ch-nonlinear.html#cb31-1" tabindex="-1"></a><span class="co"># Decoder</span></span>
-<span id="cb31-2"><a href="ch-nonlinear.html#cb31-2" tabindex="-1"></a>decoded <span class="ot">&lt;-</span> encoded <span class="sc">%&gt;%</span> </span>
-<span id="cb31-3"><a href="ch-nonlinear.html#cb31-3" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">128</span>, <span class="at">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb31-4"><a href="ch-nonlinear.html#cb31-4" tabindex="-1"></a>  <span class="fu">layer_dropout</span>(<span class="at">rate=</span><span class="fl">0.8</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb31-5"><a href="ch-nonlinear.html#cb31-5" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">28</span><span class="sc">*</span><span class="dv">28</span>, <span class="at">activation =</span> <span class="st">&quot;tanh&quot;</span>)</span>
-<span id="cb31-6"><a href="ch-nonlinear.html#cb31-6" tabindex="-1"></a></span>
-<span id="cb31-7"><a href="ch-nonlinear.html#cb31-7" tabindex="-1"></a><span class="co"># combines the encoder and decoder into the Autoencoder model</span></span>
-<span id="cb31-8"><a href="ch-nonlinear.html#cb31-8" tabindex="-1"></a>autoencoder <span class="ot">&lt;-</span> <span class="fu">keras_model</span>(<span class="at">input =</span> input_img, <span class="at">output =</span> decoded)</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="ch-nonlinear.html#cb27-1" tabindex="-1"></a><span class="co"># Decoder</span></span>
+<span id="cb27-2"><a href="ch-nonlinear.html#cb27-2" tabindex="-1"></a>decoded <span class="ot">&lt;-</span> encoded <span class="sc">%&gt;%</span> </span>
+<span id="cb27-3"><a href="ch-nonlinear.html#cb27-3" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">128</span>, <span class="at">activation =</span> <span class="st">&quot;relu&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb27-4"><a href="ch-nonlinear.html#cb27-4" tabindex="-1"></a>  <span class="fu">layer_dropout</span>(<span class="at">rate=</span><span class="fl">0.8</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb27-5"><a href="ch-nonlinear.html#cb27-5" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">28</span><span class="sc">*</span><span class="dv">28</span>, <span class="at">activation =</span> <span class="st">&quot;tanh&quot;</span>)</span>
+<span id="cb27-6"><a href="ch-nonlinear.html#cb27-6" tabindex="-1"></a></span>
+<span id="cb27-7"><a href="ch-nonlinear.html#cb27-7" tabindex="-1"></a><span class="co"># combines the encoder and decoder into the Autoencoder model</span></span>
+<span id="cb27-8"><a href="ch-nonlinear.html#cb27-8" tabindex="-1"></a>autoencoder <span class="ot">&lt;-</span> <span class="fu">keras_model</span>(<span class="at">input =</span> input_img, <span class="at">output =</span> decoded)</span></code></pre></div>
 <p>The Decoder takes the encoded 2D representation and attempts to reconstruct the original image. It uses a dense layer with 128 neurons followed by another dropout layer. The final dense layer outputs vectors of length <span class="math inline">\(784 \, (28 \times 28)\)</span>, matching the original image’s shape.</p>
 <ol start="3" style="list-style-type: decimal">
 <li>Compile and Train Autoencoders</li>
 </ol>
 <p>Before training, the model needs to be compiled. The ‘adam’ optimizer and the ‘mean_squared_error’ loss function are chosen for this task. You may choose different loss functions according to your specific data type and objective, here MSE might be the most suitable.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="ch-nonlinear.html#cb32-1" tabindex="-1"></a>autoencoder <span class="sc">%&gt;%</span> <span class="fu">compile</span>(</span>
-<span id="cb32-2"><a href="ch-nonlinear.html#cb32-2" tabindex="-1"></a>  <span class="at">optimizer =</span> <span class="st">&#39;adam&#39;</span>, </span>
-<span id="cb32-3"><a href="ch-nonlinear.html#cb32-3" tabindex="-1"></a>  <span class="at">loss =</span> <span class="st">&#39;mean_squared_error&#39;</span></span>
-<span id="cb32-4"><a href="ch-nonlinear.html#cb32-4" tabindex="-1"></a>)</span>
-<span id="cb32-5"><a href="ch-nonlinear.html#cb32-5" tabindex="-1"></a></span>
-<span id="cb32-6"><a href="ch-nonlinear.html#cb32-6" tabindex="-1"></a><span class="fu">summary</span>(autoencoder)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="ch-nonlinear.html#cb28-1" tabindex="-1"></a>autoencoder <span class="sc">%&gt;%</span> <span class="fu">compile</span>(</span>
+<span id="cb28-2"><a href="ch-nonlinear.html#cb28-2" tabindex="-1"></a>  <span class="at">optimizer =</span> <span class="st">&#39;adam&#39;</span>, </span>
+<span id="cb28-3"><a href="ch-nonlinear.html#cb28-3" tabindex="-1"></a>  <span class="at">loss =</span> <span class="st">&#39;mean_squared_error&#39;</span></span>
+<span id="cb28-4"><a href="ch-nonlinear.html#cb28-4" tabindex="-1"></a>)</span>
+<span id="cb28-5"><a href="ch-nonlinear.html#cb28-5" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="ch-nonlinear.html#cb28-6" tabindex="-1"></a><span class="fu">summary</span>(autoencoder)</span></code></pre></div>
 <pre><code>## Model: &quot;model&quot;
 ## ______________________________________________________________________________________________________________________________________________________
 ##  Layer (type)                                                      Output Shape                                                Param #                
@@ -1010,26 +1010,26 @@ In the context of Keras, layer_dropout(rate=0.8) adds a dropout layer where ther
 ## Non-trainable params: 0 (0.00 Byte)
 ## ______________________________________________________________________________________________________________________________________________________</code></pre>
 <p>The Autoencoder is trained using the training images as both inputs and targets. This is because the Autoencoder’s goal is to reconstruct its input as closely as possible.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="ch-nonlinear.html#cb34-1" tabindex="-1"></a><span class="co"># history &lt;- autoencoder %&gt;% fit(</span></span>
-<span id="cb34-2"><a href="ch-nonlinear.html#cb34-2" tabindex="-1"></a><span class="co">#   train_images, train_images, </span></span>
-<span id="cb34-3"><a href="ch-nonlinear.html#cb34-3" tabindex="-1"></a><span class="co">#   epochs = 40, </span></span>
-<span id="cb34-4"><a href="ch-nonlinear.html#cb34-4" tabindex="-1"></a><span class="co">#   batch_size = 256, </span></span>
-<span id="cb34-5"><a href="ch-nonlinear.html#cb34-5" tabindex="-1"></a><span class="co">#   shuffle = TRUE,</span></span>
-<span id="cb34-6"><a href="ch-nonlinear.html#cb34-6" tabindex="-1"></a><span class="co">#   validation_split = 0.2,</span></span>
-<span id="cb34-7"><a href="ch-nonlinear.html#cb34-7" tabindex="-1"></a><span class="co">#   getOption(&quot;keras.fit_verbose&quot;, default = 0)</span></span>
-<span id="cb34-8"><a href="ch-nonlinear.html#cb34-8" tabindex="-1"></a><span class="co"># )</span></span>
-<span id="cb34-9"><a href="ch-nonlinear.html#cb34-9" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb34-10"><a href="ch-nonlinear.html#cb34-10" tabindex="-1"></a><span class="co"># plot(history)</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="ch-nonlinear.html#cb30-1" tabindex="-1"></a><span class="co"># history &lt;- autoencoder %&gt;% fit(</span></span>
+<span id="cb30-2"><a href="ch-nonlinear.html#cb30-2" tabindex="-1"></a><span class="co">#   train_images, train_images, </span></span>
+<span id="cb30-3"><a href="ch-nonlinear.html#cb30-3" tabindex="-1"></a><span class="co">#   epochs = 40, </span></span>
+<span id="cb30-4"><a href="ch-nonlinear.html#cb30-4" tabindex="-1"></a><span class="co">#   batch_size = 256, </span></span>
+<span id="cb30-5"><a href="ch-nonlinear.html#cb30-5" tabindex="-1"></a><span class="co">#   shuffle = TRUE,</span></span>
+<span id="cb30-6"><a href="ch-nonlinear.html#cb30-6" tabindex="-1"></a><span class="co">#   validation_split = 0.2,</span></span>
+<span id="cb30-7"><a href="ch-nonlinear.html#cb30-7" tabindex="-1"></a><span class="co">#   getOption(&quot;keras.fit_verbose&quot;, default = 0)</span></span>
+<span id="cb30-8"><a href="ch-nonlinear.html#cb30-8" tabindex="-1"></a><span class="co"># )</span></span>
+<span id="cb30-9"><a href="ch-nonlinear.html#cb30-9" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb30-10"><a href="ch-nonlinear.html#cb30-10" tabindex="-1"></a><span class="co"># plot(history)</span></span></code></pre></div>
 <ol start="4" style="list-style-type: decimal">
 <li>Visualize the Encoded Representations</li>
 </ol>
 <p>To visualize the 2D representations learned by the Encoder, a separate Encoder model is created. This model shares its weights with the Autoencoders’ Encoder portion. It’s then used to predict or transform the training images into their 2D encoded form.</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="ch-nonlinear.html#cb35-1" tabindex="-1"></a>encoder <span class="ot">&lt;-</span> <span class="fu">keras_model</span>(<span class="at">inputs =</span> input_img, <span class="at">outputs =</span> encoded)</span>
-<span id="cb35-2"><a href="ch-nonlinear.html#cb35-2" tabindex="-1"></a>encoded_images <span class="ot">&lt;-</span> <span class="fu">predict</span>(encoder, train_images)</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="ch-nonlinear.html#cb31-1" tabindex="-1"></a>encoder <span class="ot">&lt;-</span> <span class="fu">keras_model</span>(<span class="at">inputs =</span> input_img, <span class="at">outputs =</span> encoded)</span>
+<span id="cb31-2"><a href="ch-nonlinear.html#cb31-2" tabindex="-1"></a>encoded_images <span class="ot">&lt;-</span> <span class="fu">predict</span>(encoder, train_images)</span></code></pre></div>
 <pre><code>## 1875/1875 - 2s - 2s/epoch - 1ms/step</code></pre>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="ch-nonlinear.html#cb37-1" tabindex="-1"></a><span class="co"># Convert to a data frame for easier viewing</span></span>
-<span id="cb37-2"><a href="ch-nonlinear.html#cb37-2" tabindex="-1"></a>encoded_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(encoded_images)</span>
-<span id="cb37-3"><a href="ch-nonlinear.html#cb37-3" tabindex="-1"></a><span class="fu">head</span>(encoded_df)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="ch-nonlinear.html#cb33-1" tabindex="-1"></a><span class="co"># Convert to a data frame for easier viewing</span></span>
+<span id="cb33-2"><a href="ch-nonlinear.html#cb33-2" tabindex="-1"></a>encoded_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(encoded_images)</span>
+<span id="cb33-3"><a href="ch-nonlinear.html#cb33-3" tabindex="-1"></a><span class="fu">head</span>(encoded_df)</span></code></pre></div>
 <pre><code>##            V1         V2
 ## 1  0.47590536 -0.7713644
 ## 2  0.27221459 -0.7234561
@@ -1038,42 +1038,42 @@ In the context of Keras, layer_dropout(rate=0.8) adds a dropout layer where ther
 ## 5 -0.03241353 -0.8622247
 ## 6 -0.58336955 -0.5683364</code></pre>
 <p>Using the ggplot2 package, the encoded images are visualized, color-coded by their true labels. This visualization provides insights into how well the encoder has learned to cluster different digits in this reduced-dimensional space. We also compare the result of Autoencoders with that of PCA, as shown below.</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="ch-nonlinear.html#cb39-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb39-2"><a href="ch-nonlinear.html#cb39-2" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
-<span id="cb39-3"><a href="ch-nonlinear.html#cb39-3" tabindex="-1"></a>labels_train <span class="ot">&lt;-</span> mnist<span class="sc">$</span>train<span class="sc">$</span>y</span>
-<span id="cb39-4"><a href="ch-nonlinear.html#cb39-4" tabindex="-1"></a>labels_train <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(labels_train)</span>
-<span id="cb39-5"><a href="ch-nonlinear.html#cb39-5" tabindex="-1"></a></span>
-<span id="cb39-6"><a href="ch-nonlinear.html#cb39-6" tabindex="-1"></a><span class="co"># Plotting the data</span></span>
-<span id="cb39-7"><a href="ch-nonlinear.html#cb39-7" tabindex="-1"></a>ae <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(encoded_df, <span class="fu">aes</span>(<span class="at">x =</span> V1, <span class="at">y =</span> V2, <span class="at">color =</span> labels_train)) <span class="sc">+</span></span>
-<span id="cb39-8"><a href="ch-nonlinear.html#cb39-8" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb39-9"><a href="ch-nonlinear.html#cb39-9" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Autoencoder projection&quot;</span>,</span>
-<span id="cb39-10"><a href="ch-nonlinear.html#cb39-10" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;DF1&quot;</span>,</span>
-<span id="cb39-11"><a href="ch-nonlinear.html#cb39-11" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;DF2&quot;</span>,</span>
-<span id="cb39-12"><a href="ch-nonlinear.html#cb39-12" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">&quot;Response&quot;</span>) <span class="sc">+</span></span>
-<span id="cb39-13"><a href="ch-nonlinear.html#cb39-13" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb39-14"><a href="ch-nonlinear.html#cb39-14" tabindex="-1"></a><span class="co"># plotting 3d results</span></span>
-<span id="cb39-15"><a href="ch-nonlinear.html#cb39-15" tabindex="-1"></a><span class="co"># ae3 &lt;- plot_ly(encoded_df, x=~V1, y=~V2, z =~V3, </span></span>
-<span id="cb39-16"><a href="ch-nonlinear.html#cb39-16" tabindex="-1"></a><span class="co">#                 color = labels_train,</span></span>
-<span id="cb39-17"><a href="ch-nonlinear.html#cb39-17" tabindex="-1"></a><span class="co">#                 size = 0.1)</span></span></code></pre></div>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="ch-nonlinear.html#cb40-1" tabindex="-1"></a>pca_result <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(train_images)</span>
-<span id="cb40-2"><a href="ch-nonlinear.html#cb40-2" tabindex="-1"></a></span>
-<span id="cb40-3"><a href="ch-nonlinear.html#cb40-3" tabindex="-1"></a><span class="co"># Extract the scores of the first two principal components</span></span>
-<span id="cb40-4"><a href="ch-nonlinear.html#cb40-4" tabindex="-1"></a>scores <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(pca_result<span class="sc">$</span>x[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span>
-<span id="cb40-5"><a href="ch-nonlinear.html#cb40-5" tabindex="-1"></a><span class="fu">colnames</span>(scores) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;PC1&quot;</span>, <span class="st">&quot;PC2&quot;</span>)</span>
-<span id="cb40-6"><a href="ch-nonlinear.html#cb40-6" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(scores, <span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> labels_train)) <span class="sc">+</span></span>
-<span id="cb40-7"><a href="ch-nonlinear.html#cb40-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb40-8"><a href="ch-nonlinear.html#cb40-8" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;PCA&quot;</span>, <span class="at">x =</span> <span class="st">&quot;PC1&quot;</span>, <span class="at">y =</span> <span class="st">&quot;PC2&quot;</span>, <span class="at">color=</span><span class="st">&quot;response&quot;</span>) <span class="sc">+</span></span>
-<span id="cb40-9"><a href="ch-nonlinear.html#cb40-9" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb40-10"><a href="ch-nonlinear.html#cb40-10" tabindex="-1"></a><span class="co"># # 3D </span></span>
-<span id="cb40-11"><a href="ch-nonlinear.html#cb40-11" tabindex="-1"></a><span class="co"># scores &lt;- as.data.frame(pca_result$x[, 1:3])</span></span>
-<span id="cb40-12"><a href="ch-nonlinear.html#cb40-12" tabindex="-1"></a><span class="co"># colnames(scores) &lt;- c(&quot;PC1&quot;, &quot;PC2&quot;, &quot;PC3&quot;)</span></span>
-<span id="cb40-13"><a href="ch-nonlinear.html#cb40-13" tabindex="-1"></a><span class="co"># p3 &lt;- plot_ly(scores, x = ~PC1, y =~PC2, z=~PC3, </span></span>
-<span id="cb40-14"><a href="ch-nonlinear.html#cb40-14" tabindex="-1"></a><span class="co">#               color = labels_train,</span></span>
-<span id="cb40-15"><a href="ch-nonlinear.html#cb40-15" tabindex="-1"></a><span class="co">#               size = 0.1)</span></span></code></pre></div>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="ch-nonlinear.html#cb41-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))</span>
-<span id="cb41-2"><a href="ch-nonlinear.html#cb41-2" tabindex="-1"></a>p</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="ch-nonlinear.html#cb35-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb35-2"><a href="ch-nonlinear.html#cb35-2" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb35-3"><a href="ch-nonlinear.html#cb35-3" tabindex="-1"></a>labels_train <span class="ot">&lt;-</span> mnist<span class="sc">$</span>train<span class="sc">$</span>y</span>
+<span id="cb35-4"><a href="ch-nonlinear.html#cb35-4" tabindex="-1"></a>labels_train <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(labels_train)</span>
+<span id="cb35-5"><a href="ch-nonlinear.html#cb35-5" tabindex="-1"></a></span>
+<span id="cb35-6"><a href="ch-nonlinear.html#cb35-6" tabindex="-1"></a><span class="co"># Plotting the data</span></span>
+<span id="cb35-7"><a href="ch-nonlinear.html#cb35-7" tabindex="-1"></a>ae <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(encoded_df, <span class="fu">aes</span>(<span class="at">x =</span> V1, <span class="at">y =</span> V2, <span class="at">color =</span> labels_train)) <span class="sc">+</span></span>
+<span id="cb35-8"><a href="ch-nonlinear.html#cb35-8" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb35-9"><a href="ch-nonlinear.html#cb35-9" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Autoencoder projection&quot;</span>,</span>
+<span id="cb35-10"><a href="ch-nonlinear.html#cb35-10" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;DF1&quot;</span>,</span>
+<span id="cb35-11"><a href="ch-nonlinear.html#cb35-11" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;DF2&quot;</span>,</span>
+<span id="cb35-12"><a href="ch-nonlinear.html#cb35-12" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">&quot;Response&quot;</span>) <span class="sc">+</span></span>
+<span id="cb35-13"><a href="ch-nonlinear.html#cb35-13" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb35-14"><a href="ch-nonlinear.html#cb35-14" tabindex="-1"></a><span class="co"># plotting 3d results</span></span>
+<span id="cb35-15"><a href="ch-nonlinear.html#cb35-15" tabindex="-1"></a><span class="co"># ae3 &lt;- plot_ly(encoded_df, x=~V1, y=~V2, z =~V3, </span></span>
+<span id="cb35-16"><a href="ch-nonlinear.html#cb35-16" tabindex="-1"></a><span class="co">#                 color = labels_train,</span></span>
+<span id="cb35-17"><a href="ch-nonlinear.html#cb35-17" tabindex="-1"></a><span class="co">#                 size = 0.1)</span></span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="ch-nonlinear.html#cb36-1" tabindex="-1"></a>pca_result <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(train_images)</span>
+<span id="cb36-2"><a href="ch-nonlinear.html#cb36-2" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="ch-nonlinear.html#cb36-3" tabindex="-1"></a><span class="co"># Extract the scores of the first two principal components</span></span>
+<span id="cb36-4"><a href="ch-nonlinear.html#cb36-4" tabindex="-1"></a>scores <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(pca_result<span class="sc">$</span>x[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span>
+<span id="cb36-5"><a href="ch-nonlinear.html#cb36-5" tabindex="-1"></a><span class="fu">colnames</span>(scores) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;PC1&quot;</span>, <span class="st">&quot;PC2&quot;</span>)</span>
+<span id="cb36-6"><a href="ch-nonlinear.html#cb36-6" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(scores, <span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> labels_train)) <span class="sc">+</span></span>
+<span id="cb36-7"><a href="ch-nonlinear.html#cb36-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb36-8"><a href="ch-nonlinear.html#cb36-8" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;PCA&quot;</span>, <span class="at">x =</span> <span class="st">&quot;PC1&quot;</span>, <span class="at">y =</span> <span class="st">&quot;PC2&quot;</span>, <span class="at">color=</span><span class="st">&quot;response&quot;</span>) <span class="sc">+</span></span>
+<span id="cb36-9"><a href="ch-nonlinear.html#cb36-9" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb36-10"><a href="ch-nonlinear.html#cb36-10" tabindex="-1"></a><span class="co"># # 3D </span></span>
+<span id="cb36-11"><a href="ch-nonlinear.html#cb36-11" tabindex="-1"></a><span class="co"># scores &lt;- as.data.frame(pca_result$x[, 1:3])</span></span>
+<span id="cb36-12"><a href="ch-nonlinear.html#cb36-12" tabindex="-1"></a><span class="co"># colnames(scores) &lt;- c(&quot;PC1&quot;, &quot;PC2&quot;, &quot;PC3&quot;)</span></span>
+<span id="cb36-13"><a href="ch-nonlinear.html#cb36-13" tabindex="-1"></a><span class="co"># p3 &lt;- plot_ly(scores, x = ~PC1, y =~PC2, z=~PC3, </span></span>
+<span id="cb36-14"><a href="ch-nonlinear.html#cb36-14" tabindex="-1"></a><span class="co">#               color = labels_train,</span></span>
+<span id="cb36-15"><a href="ch-nonlinear.html#cb36-15" tabindex="-1"></a><span class="co">#               size = 0.1)</span></span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="ch-nonlinear.html#cb37-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb37-2"><a href="ch-nonlinear.html#cb37-2" tabindex="-1"></a>p</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-170-1.png" width="672" /></p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="ch-nonlinear.html#cb42-1" tabindex="-1"></a>ae</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="ch-nonlinear.html#cb38-1" tabindex="-1"></a>ae</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-170-2.png" width="672" /></p>
 <p><strong>Alternative Choices for the use of R packages for Autoencoders</strong></p>
 <p>Besides package <strong>keras</strong> we have used as an example, <strong>h2o</strong> package is also a popular package for implementing Autoencoders. Unlike h2o package has an automated machine learning (AutoML) feature, making it easy for users to train and compare multiple models. In addition, it requires less manual tuning and configuration for deep learning, making it more accessible for beginners or those not primarily focused on deep learning. You may have a try yourself if you are interested after class. <a href="https://cran.r-project.org/web/packages/h2o/index.html" class="uri">https://cran.r-project.org/web/packages/h2o/index.html</a> (Keep in mind that h2o is Java-based, so having Java installed is a prerequisite of using h2o package)</p>
@@ -1084,18 +1084,6 @@ In the context of Keras, layer_dropout(rate=0.8) adds a dropout layer where ther
 <div id="comparison-of-manifold-learning-methods" class="section level2 hasAnchor" number="6.8">
 <h2><span class="header-section-number">6.8</span> Comparison of Manifold Learning Methods<a href="ch-nonlinear.html#comparison-of-manifold-learning-methods" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>As an initial comparison, we’ll look at several 3-dimensional examples with known lower dimensional latent spaces where we can visualize the data. Importantly, these examples fail to satisfy some of the conditions of the preceding methods so we can assess how susceptible the methods we have discussed to violations in their assumptions. Table x.x summarizes the results</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="ch-nonlinear.html#cb43-1" tabindex="-1"></a>examples <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Manifold =</span> <span class="fu">c</span>(<span class="st">&quot;Helix&quot;</span>,<span class="st">&quot;Swiss Roll&quot;</span>,<span class="st">&quot;Folded Washer&quot;</span>,<span class="st">&quot;Rolled Washer&quot;</span>),</span>
-<span id="cb43-2"><a href="ch-nonlinear.html#cb43-2" tabindex="-1"></a>                       <span class="at">Intrinsic.Dimension =</span> <span class="fu">c</span>(<span class="st">&quot;One&quot;</span>,<span class="st">&quot;Two&quot;</span>,<span class="st">&quot;Two&quot;</span>,<span class="st">&quot;Two&quot;</span>),</span>
-<span id="cb43-3"><a href="ch-nonlinear.html#cb43-3" tabindex="-1"></a>                       <span class="at">Preimage =</span> <span class="fu">c</span>(<span class="st">&quot;Line segment&quot;</span>, <span class="st">&quot;Rectangle&quot;</span>,<span class="st">&quot;Annulus&quot;</span>,<span class="st">&quot;Annulus&quot;</span>),</span>
-<span id="cb43-4"><a href="ch-nonlinear.html#cb43-4" tabindex="-1"></a>                       <span class="at">Preimage.connected =</span> <span class="fu">rep</span>(<span class="st">&quot;Yes&quot;</span>,<span class="dv">4</span>),</span>
-<span id="cb43-5"><a href="ch-nonlinear.html#cb43-5" tabindex="-1"></a>                       <span class="at">Preimage.convex =</span> <span class="fu">c</span>(<span class="st">&quot;Yes&quot;</span>,<span class="st">&quot;Yes&quot;</span>,<span class="st">&quot;No&quot;</span>,<span class="st">&quot;No&quot;</span>),</span>
-<span id="cb43-6"><a href="ch-nonlinear.html#cb43-6" tabindex="-1"></a>                       <span class="at">Manifold.isometry =</span> <span class="fu">c</span>(<span class="st">&quot;Yes&quot;</span>,<span class="fu">rep</span>(<span class="st">&quot;No&quot;</span>,<span class="dv">3</span>)),</span>
-<span id="cb43-7"><a href="ch-nonlinear.html#cb43-7" tabindex="-1"></a>                       <span class="at">Manifold.local.iso =</span> <span class="fu">c</span>(<span class="st">&quot;Yes&quot;</span>,<span class="fu">rep</span>(<span class="st">&quot;No&quot;</span>,<span class="dv">3</span>)))</span>
-<span id="cb43-8"><a href="ch-nonlinear.html#cb43-8" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(examples,</span>
-<span id="cb43-9"><a href="ch-nonlinear.html#cb43-9" tabindex="-1"></a>             <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&quot;Manifold&quot;</span>,<span class="st">&quot;Intrinsic Dimension&quot;</span>,<span class="st">&quot;Preimage&quot;</span>,<span class="st">&quot;Preimage connected?&quot;</span>,</span>
-<span id="cb43-10"><a href="ch-nonlinear.html#cb43-10" tabindex="-1"></a>                           <span class="st">&quot;Preimage convex?&quot;</span>, <span class="st">&quot;Isometric Manifold Map?&quot;</span>, <span class="st">&quot;Locally Isometric Manifold Map?&quot;</span>),</span>
-<span id="cb43-11"><a href="ch-nonlinear.html#cb43-11" tabindex="-1"></a>             <span class="at">caption =</span> <span class="st">&quot;Manifold learning examples and their properties&quot;</span>,</span>
-<span id="cb43-12"><a href="ch-nonlinear.html#cb43-12" tabindex="-1"></a>             <span class="at">align =</span> <span class="st">&quot;lclcccc&quot;</span>)</span></code></pre></div>
 <table>
 <caption><span id="tab:tab-manifolds">Table 6.1: </span>Manifold learning examples and their properties</caption>
 <colgroup>

@@ -4,11 +4,11 @@
 
 The manifold hypothesis is the central assumptions of modern nonlinear dimension reduction methods and can be stated as follows. 
 
-:::{.def manifold_hyp name="Manifold Hypothesis"}
+::: {.definition name="Manifold Hypothesis"}
 The observed data $\vec{x}_1,\dots,\vec{x}_N\in\mathbb{R}$ are concentrated on or near a manifold of intrinsic dimension $t\ll d.$
 :::
 
-Manifolds are (not linear) subspaces. In the following sections, we will provide more background on the mathematical foundation of manifold including important properties and assumptions used by various methods of nonlinear dimension reduction. For now, let's discuss a simple mechanism for generating data on a manifold.
+Manifolds are subspaces which could be linear but typically are not. In the following sections, we will provide more background on the mathematical foundation of manifold including important properties and assumptions used by various methods of nonlinear dimension reduction. For now, let's discuss a simple mechanism for generating data on a manifold.
 
 Assume there are points $\vec{z}_1,\dots,\vec{z}_N\in A \subset \mathbb{R}^k$ which are *iid* random samples from some probability distribution. These points are (nonlinearly) mapped into a higher dimensional space $\mathbb{R}^d$ by a smooth map $\Psi$ giving data $\vec{x}_i = \Psi(\vec{z}_i)$ for $i=1,\dots,N.$   Hereafter, we refer to $\Psi$ as the manifold map.  In this setting, we are only given $\vec{x}_1,\dots,\vec{x}_N$, and we want to recover the lower-dimensional $\vec{z}_1,\dots,\vec{z}_N$. If possible, we would also like recover $\Psi$ and $\Psi^{-1}$ and in the most ideal case, the sampling distribution that generated the lower-dimensional coordinates $\vec{z}_1,\dots,\vec{z}_N$. 
 

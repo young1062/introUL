@@ -3,10 +3,10 @@
 
 ### Introduction
 
-To motivate Hessian eigenmaps, let us revisit the revisit the idea of derivatives on real valued functions on the manifold.  Suppose we have a manifold $\mathcal{M} \subset \mathbb{R}^d$ and function $f:\mathcal{M}\to\mathbb{R}$.  Assuming that $\mathcal{M}$ has intrinsic dimension $t  < d$, to each point $\vec{x}\in\mathcal{M}$, we can associate a $t$ dimensional tangent space $T_{\vec{x}}(\mathcal{M})$ which we equip with a choice of orthonormal basis vectors.  Furthermore, there is an open neighborhood $U$ containing $\vec{x}$ with every point in the neighborhood in one to one correspondence with a point in the tangent space.
+To motivate Hessian eigenmaps, let us revisit the revisit the idea of derivatives on real valued functions on the manifold.  Suppose we have a manifold $\mathcal{M} \subset \mathbb{R}^d$ and function $f:\mathcal{M}\to\mathbb{R}$.  Assuming that $\mathcal{M}$ has intrinsic dimension $t  < d$, to each point $\vec{x}\in\mathcal{M}$, we can associate a $t$ dimensional tangent space $T_{\vec{x}}(\mathcal{M})$ which we equip with a choice of orthonormal basis vectors.  Furthermore, there is an open neighborhood $U$ containing $\vec{x}$ with every point in the neighborhood in one to one correspondence with a point in the tangent space allowing us to conduct calculus on the manifold using approximations within the tangent space.
 
 
-:::{.theorem #thm-hlle name="Null Space of Hessian Operator on Manifolds"}
+::: {.theorem #thm-hlle name="Null Space of Hessian Operator on Manifolds"}
 Suppose $\mathcal{M} = \Psi(\Theta)$ where $\Theta$ is an open, connected subset of $\mathbb{R}^t$, and $\Psi$ is a locally isometric embedding of $\Theta$ into $\mathbb{R}^d$. Then $\mathcal{H}(f)$ has a $t+1$ dimensional null space spanned by the constant function and a $t$-dimensional space of functions spanned by the original isometric coordinates.
 :::
 

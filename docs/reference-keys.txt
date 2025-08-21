@@ -56,6 +56,7 @@ fig:unnamed-chunk-14
 thm:mercer
 exm:kpca-helix
 fig:unnamed-chunk-134
+def:unlabeled-div-3
 exm:ex-swiss-roll
 exm:ex-swiss-w-noise
 def:def-manifold
