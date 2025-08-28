@@ -187,7 +187,7 @@ The Decoder takes the encoded 2D representation and attempts to reconstruct the 
 
 Before training, the model needs to be compiled. The 'adam' optimizer and the 'mean_squared_error' loss function are chosen for this task. You may choose different loss functions according to your specific data type and objective, here MSE might be the most suitable.
 
-```{r}
+```{r compile_AE}
 autoencoder %>% compile(
   optimizer = 'adam', 
   loss = 'mean_squared_error'

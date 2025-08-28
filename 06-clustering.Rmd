@@ -41,13 +41,12 @@ There is one main commonality (and associated set of notation) that will persist
 ```
 
 <!-- Model based -->
-<!-- # ```{r child = 'topics/Model-Based-Clustering.Rmd'} -->
-<!-- # ``` -->
+```{r child = 'topics/Model-Based-Clustering.Rmd'}
+```
 
 <!-- Spectral Clustering -->
-
-<!-- # ```{r child = 'topics/Spectral-Clustering.Rmd'} -->
-<!-- # ``` -->
+```{r child = 'topics/Spectral-Clustering.Rmd'}
+```
 
 <!-- Clustering comparisons and metrics -->
 

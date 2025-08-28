@@ -258,14 +258,14 @@ ggplot(data2, aes(x=V1, y=V2, colour = as.factor(out$cluster))) + geom_point(siz
 
 
 
-### Choosing the number of cluster $K$
+### Choosing the number of clusters
 
 There are many different methods which tend to give (slightly) different results. Direct methods such as the Elbow plot and silhouette diagnostics, are based on balancing a score measuring goodness of fit with a minimal number of clustering.  Alternatively, one can consider testing methods such as the Gap Statistic which compare the clustering performance to a null model where clustering is absent.  
 
 
 #### Elbow plot
 
-The center-based loss fucntion will decrease as the number of clusters increases. Thus, we plot the optimal loss found at different numbers of clusters and look for a sudden drop, much like we did with the scree plot in PCA.  Below, we show an example of this method for data with three well separated spherical clusters
+The center-based loss function will decrease as the number of clusters increases. Thus, we can plot the optimal loss found at different numbers of clusters and look for a sudden drop, much like we did with the scree plot in PCA.  Below, we show an example of this method for data with three well separated spherical clusters
 
 ```{r}
 k <- 2:15
@@ -298,7 +298,7 @@ and define $s_K = \sqrt{var(K)(1+1/B)}$
 
 6. Finally, choose the number of clusters as the smallest K such that
 $$Gap(K) \ge Gap(K + 1) − s_{K+1}$$
-::: {.example name="GAP statistic and iris data}
+::: {.example name="GAP statistic and iris data"}
 Below, we show a plot of the Gap Statistic (left) which indicates that three clusters is correct. The associated clustering is used to color a plot of the first two PC scores (right) 
 ```{r, echo = FALSE}
 set.seed(185)
@@ -309,7 +309,6 @@ par(mfrow = c(1,2))
 plot(gap, main = "Gap statistic for Iris Data")
 plot(ir.pc$x[,1],ir.pc$x[,2], col = c("red","blue","black")[kmeans(ir.pc$x,3)$cluster])
 ```
-
 :::
 
 

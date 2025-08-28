@@ -112,8 +112,8 @@ figure 8
 ```
 
 <!-- AE -->
-```{r child = 'topics/AE.Rmd'}
-```
+<!-- # ```{r child = 'topics/AE.Rmd'} -->
+<!-- # ``` -->
 
 <!-- Examples -->
 ```{r child = 'topics/Manifold_Learning_Examples.Rmd'}
