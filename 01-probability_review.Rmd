@@ -123,11 +123,11 @@ The first is the mean or expected value of the random vector which is the vector
  E[\vec{x}] = \int_{\mathbb{R}^d}\vec{x} f(\vec{x})d\vec{x} = \begin{bmatrix} E[x_1] \\ \vdots \\ E[x_d] \end{bmatrix} = \begin{bmatrix} \int_{\mathbb{R}^d} x_1 f(\vec{x})d\vec{x} \\ \vdots \\ \int_{\mathbb{R}^d} x_d f(\vec{x})d\vec{x} \end{bmatrix}
  (\#eq:def-expectation)
 \end{equation}
-where $$\int_{\mathbb{R}^d} x_i f(\vec{x})d\vec{x} = \int_{-\infty}^\infty \dots \int_{-\infty}^\infty x_i f(x_1,\dots,x_d)dx_1 \dots dx_d.$$  Note, we are assuming each of the integrals in \@ref(eq:def-expectation) is well defined, which is a convention we adhere to throughout this text.  Often, we'll often use $\vec{\mu}$ to denote the mean vector. When we are considering more than multiple random vectors $\vec{x}$ and $\vec{y}$ we will add a corresponding subscript $\vec{\mu}_\vec{x}$ to denote the corresponding mean of $\vec{x}$. 
+where $$\int_{\mathbb{R}^d} x_i f(\vec{x})d\vec{x} = \int_{-\infty}^\infty \dots \int_{-\infty}^\infty x_i f(x_1,\dots,x_d)dx_1 \dots dx_d.$$  Note, we are assuming each of the integrals in \@ref(eq:def-expectation) is well defined, which is a convention we adhere to throughout this text.  Often, we'll often use $\vec{\mu}$ to denote the mean vector. When we are considering more than multiple random vectors $\vec{x}$ and $\vec{y}$ we will add a corresponding subscript $\vec{\mu}_{\vec{x}}$ to denote the corresponding mean of $\vec{x}$. 
 
 The linearity of expectation for univariate random vectors holds here as well.  If $\vec{x}\in\mathbb{R}^d$ is a random vector, ${\bf A}\in\mathbb{R}^{k\times d}$ is a matrix of constant entries, and $\vec{b}\in\mathbb{R}^k$ is a vector of constant entries then $$E[{\bf A}\vec{x} + \vec{b}] = {\bf A}\vec{\mu} + \vec{b}.$$  Importantly, for non-squared matrices ${\bf A}$ then mean of ${\bf A}\vec{x}$ will be of a different dimension than $\vec{x}.$
 
-In general, the coordinates of a random vector will not be independent. To quantify the pairwise dependence, we could consider the covariance $$Cov(x_i,x_j) = E[(x_i - \mu_i)(x_j -\mu_j)] = \int_\mathbb{R}^d (x_i-\mu_i)(x_j-\mu_j) f(\vec{x})d\vec{x}$$ for $1\le i,j \le d$. In the case $i=j$, this simplifies to $Cov(x_i,x_i) = Var(x_i)$.  
+In general, the coordinates of a random vector will not be independent. To quantify the pairwise dependence, we could consider the covariance $$Cov(x_i,x_j) = E[(x_i - \mu_i)(x_j -\mu_j)] = \int_{\mathbb{R}^d} (x_i-\mu_i)(x_j-\mu_j) f(\vec{x})d\vec{x}$$ for $1\le i,j \le d$. In the case $i=j$, this simplifies to $Cov(x_i,x_i) = Var(x_i)$.  
 
 Importantly, we do not want to consider each all of the pairwise covariance separately. Instead, we can organize them as a $d\times d$ matrix ${\bf \Sigma}$ with entries ${\bf \Sigma}_{ij} = Cov(x_i,x_j)$.  Hereafter, we will refer to ${\bf \Sigma}$ as the covariance matrix of $\vec{x}.$ When we are considering multiple random vectors we will use subscripts so that ${\bf \Sigma}_{\vec{x}}$ and ${\bf \Sigma}_{\vec{y}}$ denote the covariance matrices or random vectors ${\vec{x}}$ and ${\vec{y}}$ respectively.  Following the notational conventions, it follows that $\vec{x} - E[\vec{x}] = \vec{x} - \vec{\mu} \in \mathbb{R}^d$ so that the outer product of $\vec{x} - \vec{\mu}$ with itself is the $d\times d$ matrix with entries
 $$[(\vec{x} - \vec{\mu})(\vec{x} - \vec{\mu})^T]_{ij} = (x_i-\mu_i)(x_j-\mu_j)$$ so that we may more compactly write
@@ -545,7 +545,7 @@ $$\vec{\mu} = \begin{pmatrix}
     
     b. Classify the critical point(s) found in part (a) as minima, maxima, or saddle points. Explain your reasoning.
     
-1. Verify that the mean and variance of the $\mathcal{N}(\vec{\mu},{\bf \Sigma})$ distribution are indeed $\vec{\mu},${\bf \Sigma}$ by computing the integrals directly.
+1. Verify that the mean and variance of the $\mathcal{N}(\vec{\mu},{\bf \Sigma})$ distribution are indeed $\vec{\mu},\,{\bf \Sigma}$ respectively by computing the integrals directly.
 
 1. Verify that the mean and variance of the $t_\nu(\vec{\mu},{\bf \Sigma}$ distribution by computing the integrals directly. You may assume that $\nu > 2.$
 

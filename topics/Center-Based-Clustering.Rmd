@@ -297,7 +297,7 @@ The algorithm proceeds through the following six steps.
 and define $s_K = \sqrt{var(K)(1+1/B)}$
 
 6. Finally, choose the number of clusters as the smallest K such that
-$$Gap(K) \ge Gap(K + 1) − s_{K+1}$$
+$$Gap(K) \ge Gap(K+1) - s_{K+1}$$
 ::: {.example name="GAP statistic and iris data"}
 Below, we show a plot of the Gap Statistic (left) which indicates that three clusters is correct. The associated clustering is used to color a plot of the first two PC scores (right) 
 ```{r, echo = FALSE}

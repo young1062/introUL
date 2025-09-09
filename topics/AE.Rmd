@@ -229,8 +229,7 @@ Using the ggplot2 package, the encoded images are visualized, color-coded by the
 ```{r}
 library(ggplot2)
 library(plotly)
-labels_train <- mnist$train$y
-labels_train <- as.factor(labels_train)
+labels_train <- as.factor(mnist$train$y)
 
 # Plotting the data
 ae <- ggplot(encoded_df, aes(x = V1, y = V2, color = labels_train)) +

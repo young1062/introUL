@@ -222,7 +222,7 @@ which has largest eigenvalue `r round(lam2,2)` (2nd PC variance) and associated 
 
 Here is one crucial observation.  The vector $\vec{w}_2$ gives the direction of greatest variability of the vectors $\vec{x}_1^{(1)},\dots,\vec{x}_N^{(1)}.$ For each of these vectors we have removed the component in the direction of $\vec{w}_1$. Thus, $\vec{x}_1^{(1)},\dots,\vec{x}_N^{(1)}$ do not vary at all in the $\vec{w}_1$ direction.  What can we say about $\vec{w}_2$? Naturally, it must be perpendicular to $\vec{w}_1$!  We can see this geometric relationship if we plot the vectors $\vec{x}^{(1)}_i$ in our previous example along with the span of the first and second loading.
 
-```{r pca2, echo = FALSE, fig.cap="First and 2nd Loadings with Data after $\vec{w}_1$ component removed"}
+```{r pca2, echo = FALSE, fig.cap="First and 2nd Loadings with Data after component along first loading has been removed"}
 plot_ly(data.frame(x = 20*Sigmahat.eigen$vectors[1,1]*c(-1,1),
                    y = 20*Sigmahat.eigen$vectors[2,1]*c(-1,1),
                    z = 20*Sigmahat.eigen$vectors[3,1]*c(-1,1)),
@@ -306,7 +306,6 @@ where ${\bf Y}\in \mathbb{R}^{N\times d}$ is a matrix of PC scores and ${\bf W}$
 
 #### Geometric interpretation of PCA
 
-<<<<<<< HEAD
 We began with an $N\times d$ data matrix ${\bf X}$ and now we have an $N\times d$ matrix of PCA scores ${\bf Y}$. One may be inclined to ask: where is the dimension reduction?  To answer this question, let's revisit some important features of the scores and loadings.
 
 First, since the loadings $\vec{w}_1,\dots,\vec{w}_d$ are orthonormal vectors in $\mathbb{R}^d$, they naturally form a basis!  The PCA scores are then the coordinates of our data in the basis $\{\vec{w}_1,\dots,\vec{w}_d\}$. Specifically, ${\bf Y}_{ij}$ for $j=1,\dots,d$ are the coordinates for (centered) vector $\vec{x}_i$ since $$\vec{x}_i = {\bf Y}_{i1}\vec{w}_1+\cdots+ {\bf Y}_{id}\vec{w}_d.$$
@@ -329,10 +328,10 @@ Secondly, we can use the first $k$ scores to build approximations,
 $$\vec{x}_i \approx \hat{x}_i = {\bf Y}_{i1}\vec{w}_1+\cdots + {\bf Y}_{ik} \vec{w}_k, \qquad i=1,\dots, N.$$ How good is this approximation?  Optimal, in a squared loss sense, thanks to the following theorem.
 
 ::: {.theorem #pca-opt}
-Fix $k<d.$ Given any $k$-dimensional linear subspace of $\mathbb{R}^d$, denoted $\mathcal{V}$, let $\text{proj}_\mathcal{V}(\vec{x})$ denote the orthogonal projection of $\vec{x}$ onto \mathcal{V}, then $$\frac{1}{N}\sum_{i=1}^N \|\vec{x}_i - \text{proj}_\mathcal{V}(\vec{x}_i)\|^2 \ge \lambda_{k+1}+\cdots+\lambda_d$$
+Fix $k<d.$ Given any $k$-dimensional linear subspace of $\mathbb{R}^d$, denoted $\mathcal{V}$, let $\text{proj}_{\mathcal{V}}(\vec{x})$ denote the orthogonal projection of $\vec{x}$ onto $\mathcal{V}$, then $$\frac{1}{N}\sum_{i=1}^N \|\vec{x}_i - \text{proj}_{\mathcal{V}}(\vec{x}_i)\|^2 \ge \lambda_{k+1}+\cdots+\lambda_d$$
 where $\lambda_{k+1},\cdots,\lambda_d$ are the last $(d-k)$ principal component variances of $\vec{x}_1,\dots,\vec{x}_N$.  
 
-Furthermore, if $\lambda_k > \lambda_{k+1}$, then $\text{span}\{\vec{w}_1,\dots,\vec{w}_k\}$ is the unique $k$-dimensional linear subspace for which $$\frac{1}{N}\sum_{i=1}^N \|\vec{x}_i - \text{proj}_\mathcal{V}(\vec{x}_i)\|^2 = \lambda_{k+1}+\cdots+\lambda_d.$$
+Furthermore, if $\lambda_k > \lambda_{k+1}$, then $\text{span}\{\vec{w}_1,\dots,\vec{w}_k\}$ is the unique $k$-dimensional linear subspace for which $$\frac{1}{N}\sum_{i=1}^N \|\vec{x}_i - \text{proj}_{\mathcal{V}}(\vec{x}_i)\|^2 = \lambda_{k+1}+\cdots+\lambda_d.$$
 :::
 
 A few notes on the above theorem to add some clarity.  First, note that $$\hat{x}_i = {\bf Y}_{i1}\vec{w}_1+\cdots + {\bf Y}_{ik} \vec{w}_k$$ is the orthogonal projection of $\vec{x}_i$ onto $\text{span}\{\vec{w}_1,\dots,\vec{w}_k\}$ so that $$\vec{x}_i - \text{proj}_{\text{span}\{\vec{w}_1,\dots,\vec{w}_k\}}(\vec{x}_i) = {\bf Y}_{i,k+1}\vec{w}_{k+1}+\cdots+{\bf Y}_{id}\vec{w}_d.$$ Using this identity and the properties of the PCA scores allows one to verify the equality at the end of the theorem (see exercises).  
@@ -343,7 +342,7 @@ In all of the previous analysis, we have been operating under the assumption tha
 
 ::: {.corollary $pca-opt-aff}
 Given any $k$-dimensional affine subspace $\mathcal{A}\subset\mathbb{R}^d$
-$$\frac{1}{N}\sum_{i=1}^N \|\vec{x}_i - \text{proj}_\mathcal{A}(\vec{x}_i)\|^2 \ge \lambda_{k+1}+\cdots+\lambda_d$$ with equality (assuming $\lambda_k>\lambda_{k+1}$) if and only if $\mathcal{A} = \bar{x} + \text{span}\{\vec{w}_1,\dots,\vec{w}_k\}.$
+$$\frac{1}{N}\sum_{i=1}^N \|\vec{x}_i - \text{proj}_{\mathcal{A}}(\vec{x}_i)\|^2 \ge \lambda_{k+1}+\cdots+\lambda_d$$ with equality (assuming $\lambda_k>\lambda_{k+1}$) if and only if $\mathcal{A} = \bar{x} + \text{span}\{\vec{w}_1,\dots,\vec{w}_k\}.$
 :::
 
 Note the set $\bar{x} + \text{span}\{\vec{w}_1,\dots,\vec{w}_k\}$ is the set of all vectors $$\{\vec{v}\in\mathbb{R}^d:\,\vec{v}-\bar{x} \in \text{span}\{\vec{w}_1,\dots,\vec{w}_k\}\},$$ i.e. the optimal $k$-dimensional hyperplane found after centering if translated by $\hat{x}$.  In this case, the optimal approximation of our data is $$\vec{x}_i \approx \bar{x} + {\bf Y}_{i1}\vec{w}_1+\cdots + {\bf Y}_{ik}\vec{w}_k.$$
@@ -487,7 +486,7 @@ These data reside on a one-dimensional curve, specifically the curve parameteriz
 
 However, if we inspect the principal component variance, we do not see a clear separation in the first PC variance with the second and third.  There is a jump between the second and third, and plotting the first two scores (biplot) shows the nonlinear structure.
 
-```{r}
+```{r, echo = FALSE}
 out <- princomp(df)
 grid.arrange(ggplot(data.frame(comp = 1:3, var = out$sdev^2),aes(x=comp,y=var)) + geom_point() + xlab("Variance") + ylab("Component")+ ggtitle("Scree plot") + ylim(c(0,70)),
   ggbiplot(out,scale = 0, varname.color = "red")+ ggtitle("Biplot"),

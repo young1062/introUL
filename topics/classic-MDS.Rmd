@@ -222,10 +222,10 @@ $$B_{ii} = \frac{1}{N} (\sum_{j=1}^{N} (\Delta_{ij})^2 - \operatorname{tr} (B))$
 
 After that, we can finally get the off-diagonal entries of $B$:
 
-\begin{aligned}
+\begin{align*}
 B_{ij} & = \frac{1}{2} (B_{ii} + B_{jj} - (\Delta_{ij})^2) \\
 & = -\frac{1}{2} (\Delta_{ij})^2 + \frac{1}{N} \sum_{i=1}^N (\Delta_{ij})^2 + \frac{1}{N} \sum_{j=1}^N (\Delta_{ij})^2-\frac{1}{2 N^2} \sum_{i=1}^N \sum_{j=1}^N (\Delta_{ij})^2
-\end{aligned}
+\end{align*}
 
 We may more compactly express the inner product matrix $B$ in a matrix form, as $$B = HAH$$ where $A \in \mathbb{R}^{N \times N}$ has entries $A_{ij} = -\frac{1}{2}(\Delta_{ij}) \quad \text{for} \; \forall \; 1 \leq i,j \leq N$ and $H$ is the centering matrix $$H = \mathbb{I}_N - \frac{1}{N} \mathbb{1}_N \mathbb{1}_N^T$$. 
 
@@ -239,7 +239,7 @@ Both diagonal and off-diagonal entries of the inner product matrix $B$ has been 
 
 Our intuition is to apply SVD/diagonalization to $B$ in order to recover the configuration $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N \in \mathbb{R}^t$ by computing the nonzero eigenvalues and corresponding eigenvectors giving the factorization.
 
-\begin{align}
+\begin{align*}
 B & = \left(\vec{u}_1\left|\vec{u}_2\right| \ldots \mid \vec{u}_t\right) \begin{pmatrix}
 \lambda_1 & \cdots & 0 \\
  \vdots & \ddots & \vdots \\
@@ -260,13 +260,13 @@ B & = \left(\vec{u}_1\left|\vec{u}_2\right| \ldots \mid \vec{u}_t\right) \begin{
 0 & \cdots & \lambda^{1/2}_t \end{pmatrix}
 \tilde{U}^T \\
 & = (\tilde{U} \Lambda^{1/2}) (\tilde{U} \Lambda^{1/2})^T
-\end{align}
+\end{align*}
 
 Let $Y=\tilde{U} \Lambda^{1/2}$, so that rows of $\tilde{U} \Lambda^{1/2}$ correspond to the vectors $\vec{y}_1, \vec{y}_2, \dots, \vec{y}_N$. It satisfies every entry of the inner product matrix $B$, as well as all pairwise distances $\Delta_{ij}$!  Importantly, the rank of $B$ immediately indicates the minimal dimension needed to recover a configuration which exactly recovers the Euclidean distances in $\Delta.$ 
-\DeclareMathOperator*{\argmin}{arg\,min}
+
 For visualization, we may prefer a lower dimensional configuration than the dimensionality $t$ discovered through classical scaling. For a $k < t$ dimensional configuration, we instead use the first $k$ columns of $\tilde{U}\Lambda^{1/2}$ as a our $k$-dimensional vectors.  Outside of optimal recovery, we may instead formulate the classical scaling problem in $k$-dimensions as the following minimization problem.  
 
-$$\argmin_{Y \in \mathbb{R}^{N\times k}} \| B - YY^T\|_F$$
+$$\text{argmin}_{Y \in \mathbb{R}^{N\times k}} \| B - YY^T\|_F$$
 from which it follows that $YY^T$ is built from the rank $k$ approximation to $B$.  Using the results from SVD and the equivalence of SVD and eigendecompositions for symmetric positive, semidefinite matrices, this is equivalent to using the first $k$ columns of $\tilde{U}\Lambda^{1/2}$.
 
 **Dealing with real data case**
@@ -384,7 +384,7 @@ A important method of metric MDS is the Sammon mapping which takes $W_{ij} \prop
 
 First, we show the minimal Sammon stress at each dimension. 
 
-```{r, fig.cap="Sammon stress for Global Cities Data"}
+```{r, fig.cap="Sammon stress for Global Cities Data", echo = FALSE}
 t <- stress <- 1:8
 for (j in t){
 stress[j] <- sammon(D, k = j, trace = F)$stress

@@ -173,7 +173,7 @@ Compute eigen-vectors with the smallest $d+1$ eigenvalues $0=\lambda_1 \leq \lam
 In the original paper [@lle], the authors provide a very intuitive plot that summarizes the above three steps. 
 
 <p style="text-align:center;">
-![LLE_illustration](../images/lle_schematic.png){width=40% height=40%} </p>
+![LLE_illustration](images/lle_schematic.png){width=40% height=40%} </p>
 
 
 **Parameter Tuning**

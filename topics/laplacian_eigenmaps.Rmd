@@ -57,19 +57,19 @@ Consider the loss function
 \end{equation}
 This loss function is most sensitive to large pairwise distance $\|\vec{y}_i-\vec{y}_j\|$ when ${\bf W}_{ij}$ is also large (our original data were close).  Thus, minimizing the preceding penalty prioritizes keeping $\vec{y}_i$ and $\vec{y}_j$ close when $\vec{x}_i$ and $\vec{x}_j$ have a high affinity (weight). As a result, Laplacian eigenmaps emphasize local geometry.
 
-Vectors $\vec{y}_1,\dots,\vec{y}_N$ which minimizes this loss function are not unique.  First, there is an issue of translation. To address this issue, we will add a constraint that $ {\bf D Y}$ is a centered data matrix, i.e. ${\bf Y}^T{\bf D}\vec{1} = \vec{0}$. We can view the matrix ${\bf DY}$ as a reweighting of the data matrix ${\bf Y}$ with higher weights ${\bf D}_{ii}$ for data $\vec{x}_i$ which were closer to more points.  Here ${\bf D}$ is the diagonal matrix used in the definition of the graph Laplacian.  Note that $${\bf DY} = \begin{bmatrix} {\bf D}_{11} \vec{y}_1^T \\ \vdots \\ {\bf D}_{NN}\vec{y}_N\end{bmatrix}.$$ Requiring ${\bf DY}$ to be centered results in configurations where those points with highest affinity a constrained close to the origin in our lower dimensional representation.
+Vectors $\vec{y}_1,\dots,\vec{y}_N$ which minimizes this loss function are not unique.  First, there is an issue of translation. To address this issue, we will add a constraint that ${\bf D Y}$ is a centered data matrix, i.e. ${\bf Y}^T{\bf D}\vec{1} = \vec{0}$. We can view the matrix ${\bf DY}$ as a reweighting of the data matrix ${\bf Y}$ with higher weights ${\bf D}_{ii}$ for data $\vec{x}_i$ which are closer to more points.  Here ${\bf D}$ is the diagonal matrix used in the definition of the graph Laplacian.  Note that $${\bf DY} = \begin{bmatrix} {\bf D}_{11} \vec{y}_1^T \\ \vdots \\ {\bf D}_{NN}\vec{y}_N\end{bmatrix}.$$ Requiring ${\bf DY}$ to be centered results in configurations where those points with highest affinity a constrained close to the origin in our lower dimensional representation.
 
 However, solving the optimization problem with this modified centering constraint is still ill-posed, namely we could take $\vec{y}_1=\dots=\vec{y}_N = \vec{0}$ giving a configuration which is collapsed onto the origin.  In fact, given any configuration $\vec{y}_1,\dots,\vec{y}_N$ we could decrease the loss by rescaling all of our data by some constant scalar scalar $0 < c < 1$ since ${\bf D}(c{\bf Y}) = c {\bf DY}$ will still be centered.    To address this scaling issue and give a meaningful $t$-dimensional configuration, we also add the constraint ${\bf Y}^T {\bf D Y} = {\bf I}_t$. This constraint eliminates the collapse of the $t$-dimensional configuration onto a $t-1$ dimensional hyperplane, and in particular eliminates the cases where the $1-$dimensional configuration collapses onto a point.  
 
 Thus, we seek a data matrix ${\bf Y}\in\mathbb{R}^{N\times t}$ solving the following constrained optimization problem 
 \begin{equation}
-\argmin_{{\bf Y}^T {\bf D Y} = {\bf I}_t, {\bf Y}^T{\bf D}\vec{1}^T = \vec{0} } = tr({\bf Y}^T {\bf L Y}).
+\text{argmin}_{{\bf Y}^T {\bf D Y} = {\bf I}_t, {\bf Y}^T{\bf D}\vec{1}^T = \vec{0} } = tr({\bf Y}^T {\bf L Y}).
 \end{equation}
 To solve this problem, we first introduce the change of variable $\tilde{\bf Y} = {\bf D}^{1/2}{\bf Y}$ so that the constraints become 
 $${\bf Y}^T{\bf  D}\vec{1}^T = ({\bf D}^{1/2} {\bf Y})^T{\bf D}^{1/2}\vec{1}^T = \tilde{\bf Y}^T {\bf D}^{1/2} \vec{1}^T = \vec{0}$$ and  
 $${\bf Y}^T{\bf D Y}= {\bf Y}^T{\bf D}^{1/2} {\bf D}^{1/2}{\bf Y} = ({\bf D}^{1/2}{\bf Y})^T  ({\bf D}^{1/2}{\bf Y}) = \tilde{\bf Y}^T\tilde{\bf Y} = {\bf I}$$ implying that the columns of $\tilde{\bf Y}$ are orthonormal  After the change of variable, our optimization problem becomes 
 \begin{equation}
-\argmin_{\tilde{\bf Y}^T\tilde{\bf Y} = {\bf I}_t, \tilde{\bf Y}^{1/2} {\bf D}^{1/2}\vec{1} = \vec{0} } tr\left(\tilde{\bf Y}^T {\bf D}^{-1/2}{\bf L}{\bf D}^{-1/2}\tilde{\bf Y} \right).
+\text{argmin}_{\tilde{\bf Y}^T\tilde{\bf Y} = {\bf I}_t, \tilde{\bf Y}^{1/2} {\bf D}^{1/2}\vec{1} = \vec{0} } tr\left(\tilde{\bf Y}^T {\bf D}^{-1/2}{\bf L}{\bf D}^{-1/2}\tilde{\bf Y} \right).
 \end{equation}
 We can minimize this equation by making use of the eigenvalues and eigenvectors of the (symmetric) normalized graph Laplacian
 $${\bf L}_{sym} = {\bf I} - {\bf D}^{-1/2}{\bf W}{\bf D}^{-1/2}.$$  

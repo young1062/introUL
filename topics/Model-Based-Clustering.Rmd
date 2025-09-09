@@ -86,7 +86,7 @@ plot(X.gmm.ex[,1],X.gmm.ex[,2],col = c("red","blue","black")[Z],
 
 In the preceding example, the clusters had an elliptical shape which is a distinct variation from $k$-means clustering which presumes spherical clusters. The location and shape/orientation of each cluster is controlled by its mean vector and covariance matrix respectively. As such, GMMs can still generate spherical clusters if the eigenvalues of each covariance matrix are (approximately) equal. This is a natural consequence of the Gaussian distribution and diagonalization of the covariance matrix.  In high dimensions, Gaussian distributions concentrate near the surface of ellipsoids (rather than on the interior) but the general observation regarding the increased flexibility of GMMs over k-means holds true. Ignoring computational demands, one might expect GMMs to outperform k-means in many settings.  
 
-Model flexibility is not the only advantage of mixture models.  Suppose you were asked to assign a sample at the location marked with a purple *x* below.
+Suppose you were asked to assign a sample at the location marked with a purple *x* below.
 
 ```{r, echo = FALSE, fig.align='center'}
 plot(X.gmm.ex[,1],X.gmm.ex[,2],col = c("red","blue","black")[Z],
@@ -162,7 +162,7 @@ $$BIC_k = 2 \log L_k^* - 2 \log \mathcal{P}_k$$
 
 which balances goodness of fit with model complexity. Under this framework, we select the value of $k$ which maximizes BIC. (Note, some sources define BIC as the negative of our formula above and select $k$ opt to minimize. Be mindful of the convention when using pre-existing packages!) 
 
-We can use the BIC approach to investigate additional constraints on the model parameters. Recall from the \@ref(ex:gmm), the shape of clusters is controlled by the covariance matrices.  By applying addition constraints to ${\bf \Sigma}_1,\dots,{\bf \Sigma}_K$ we can reduce the number of model parameters.  The standard convention for covariance constraints comes from Banfield and Raftery (1993) who observed that every covariance matrix can be decomposed via its eigenvalue decomposition $${\bf \Sigma}_j = \lambda_j {\bf W}_j{\bf \Lambda}_j{\bf W}_j$$
+We can use the BIC approach to investigate additional constraints on the model parameters. Recall from the \@ref(exm:gmm), the shape of clusters is controlled by the covariance matrices.  By applying addition constraints to ${\bf \Sigma}_1,\dots,{\bf \Sigma}_K$ we can reduce the number of model parameters.  The standard convention for covariance constraints comes from Banfield and Raftery (1993) who observed that every covariance matrix can be decomposed via its eigenvalue decomposition $${\bf \Sigma}_j = \lambda_j {\bf W}_j{\bf \Lambda}_j{\bf W}_j$$
 where $\lambda_j$ is a scalar parameter controlling the volume of the cluster,  ${\bf W}_j$ is an orthonormal matrix controlling the orientation of the cluster, and ${\bf \Lambda}_j$ is a diagonal matrix with diagonal entries in the interval $(0,1]$ giving the relative lengths of the semi-major axes of the ellipsoid [@banfield1993].  We can apply constraints on one or more of the corresponding components of the covariance matrices summarized in the table below
 
 ```{r, echo = FALSE}

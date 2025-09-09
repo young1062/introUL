@@ -80,13 +80,13 @@ $$\int_{2\pi}^{4\pi} \left\|\frac{d\Psi}{dt}\right\| dt = \int_{2\pi}^{4\pi} dt 
 Jumping slightly ahead, we then say the manifold distance between $\Psi(2\pi)$ and $\Psi(4\pi)$ is $2\pi$.  Importantly, the manifold distance coincides exactly with the Euclidean distance between the **lower-dimensional** coordinates.  In fact, for any two points, $s$ and $t$, on the real line their Euclidean distance, $|s-t|$ will be the same as the manifold distance between $\Psi(s)$ and $\Psi(t)$. Thus, the helix map $\Psi$ above serves as our first example of an isometric (distance preserving) map.
 :::
 
-We may generalize this idea to any smooth manifold to define a new notion of distance.  Given a manifold $\mathcal{M}$, we define the manifold distance function $d_\mathcal{M} : \mathcal{M} \times \mathcal{M} \to [0,\infty)$ as follows 
+We may generalize this idea to any smooth manifold to define a new notion of distance.  Given a manifold $\mathcal{M}$, we define the manifold distance function $d_{\mathcal{M}} : \mathcal{M} \times \mathcal{M} \to [0,\infty)$ as follows 
 
 **Definition of Manifold Distance**
 ::: {.definition #def-manifold-dist name="Manifold Distance Function"}
 Given two points $\vec{x}$ and $\vec{y}$ on a smooth manifold, $\mathcal{M}$, let $\Gamma(\vec{x},\vec{y})$ be the set of all piecewise smooth curves connecting $\vec{x}$ and $\vec{y}$ constrained to stay on $\mathcal{M}$.  Then, we define the manifold distance to be
 \begin{equation}
-d_\mathcal{M}(\vec{x},\vec{y}) = \inf_{\gamma \in \Gamma(\vec{x},\vec{y})} L(\gamma)
+d_{\mathcal{M}}(\vec{x},\vec{y}) = \inf_{\gamma \in \Gamma(\vec{x},\vec{y})} L(\gamma)
 (\#eq:def-manifold-dist)
 \end{equation}
 where $L(\gamma)$ is the arclength of $\gamma.$  

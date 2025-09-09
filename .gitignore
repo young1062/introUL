@@ -18,5 +18,7 @@ data
 .Rproj.user
 _bookdown_files/
 _main.Rmd
+_main.log
+_main.tex
 
 

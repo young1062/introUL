@@ -1,7 +1,7 @@
 ## Singular Value Decomposition {#sec-svd}
 
 ### Low-rank approximations 
-In the next two subsections, we are going to focus on *low-rank* matrix approximation methods in which we try to approximate our data matrix ${\bf X}$ using a low-rank alternative.  In the language of dimension reduction, the idea is to approximate each data with a linear combonation of a small number ($k< d$ of latent feature vectors.  Briefly, let's discuss how this idea works in the case of PCA.
+In the next two subsections, we are going to focus on *low-rank* matrix approximation methods in which we try to approximate our data matrix ${\bf X}$ using a low-rank alternative.  In the language of dimension reduction, the idea is to approximate each data with a linear combination of a small number ($k< d$ of latent feature vectors.  Briefly, let's discuss how this idea works in the case of PCA.
 
 
 In PCA, the loadings provide a data-driven orthonormal basis $\vec{w}_1,\dots,\vec{w}_d$ which allow us to compute the PCA scores from the centered data. In matrix notation, this scores are given by $$\underbrace{{\bf Y}}_{\text{PCA scores}} = \underbrace{({\bf HX})}_{\text{centered data matrix}} \times \underbrace{{\bf W}}_{\text{loadings}}.$$
@@ -20,27 +20,19 @@ Due to the properties of the scores and loadings, the approximation is a rank $k
 ### SVD and Low Rank Approximations
 
 The standard problem for low rank matrix approximations is to solve the following problem. Given a matrix ${\bf X}\in\mathbb{R}^{N\times d}$ and a chosen rank $k$, we want:
-\DeclareMathOperator*{\argmin}{arg\,min}
-\begin{equation}
-\argmin_{{\bf Z}\in\mathbb{R}^{N\times d} \\ \text{rank}({\bf Z}) = k} \|{\bf X} - {\bf Z}\|_F^2 = \argmin_{{\bf Z}\in\mathbb{R}^{N\times d} \\ \text{rank}({\bf Z}) = k} \left(\sum_{ij}({\bf X}_{ij} - {\bf Z}_{ij})^2 \right) = \argmin_{{\bf Z}\in\mathbb{R}^{N\times d} \\ \text{rank}({\bf Z}) = k} \left(\sum_i \|\vec{x}_i-\vec{z}_i\|^2\right)
-\end{equation}
-where $\vec{z}_1^T, \dots,\vec{z}_N^T$ denote the rows of ${\bf Z}$.
+$$
+\text{argmin}_{{\bf Z}\in\mathbb{R}^{N\times d}} \|{\bf X} - {\bf Z}\|_F^2 = 
+$$
+subject to the constraint that ${\bf Z}$ has rank $k$.
 
 Solving this constrained minimization problem may appear difficult, but the answer is obtainable directly from the SVD of ${\bf X}$ due to the following theorem.
 
-::: {.theorem #svd-frob name="Best Rank $k$ Approximation"}
+::: {.theorem #svd-frob name="Eckart-Young-Mirsky Theorem"}
 Suppose matrix ${\bf X}\in\mathbb{R}^{N\times d}$ has singular value decomposition $${\bf X} = {\bf US V}^T$$ with singular values $$\sigma_1\ge\dots \ge \sigma_{\min\{N,d\}}.$$  Then 
-1) For any rank $k$ matrix ${\bf Z}\in\mathbb{R}^{N\times d}$, $$\|{\bf X}-{\bf Z}\|_F \ge \sigma_{k+1}^2 + \dots + \sigma_{\min\{N,d\}}^2$$
+1) For any rank $k$ matrix ${\bf Z}\in\mathbb{R}^{N\times d}$, $$\|{\bf X}-{\bf Z}\|_F^2 \ge \sigma_{k+1}^2 + \dots + \sigma_{\min\{N,d\}}^2$$
 2) The rank $k$ matrix attained by keeping the first $k$ left singular vectors, right singular vectors, and singular values of the SVD of ${\bf X}$ attains this minimum.  Specifically, if $\vec{u}_1,\dots,\vec{u}_k$ are the first $k$ left singular vectors and $\vec{v}_1,\dots,\vec{v}_k$ are the first $k$ right singular vectors then 
-\begin{equation}
-\argmin_{{\bf Z}\in\mathbb{R}^{N\times d} \\ \text{rank}({\bf Z}) = k} \|{\bf X} - {\bf Z}\|_F^2 = 
-\begin{bmatrix}&& \\ \vec{u}_1 & \dots & \vec{u}_k \\ && \end{bmatrix}
-\begin{bmatrix}\sigma_1 & &  \\
- & \ddots &  \\
- &  & \sigma_k \end{bmatrix}
-\begin{bmatrix}
-&\vec{v}_1^T & \\ & \vdots& \\ &\vec{v}_k^T& \end{bmatrix}
-\end{equation}
+$$\tilde{X} = \sum_{j=1}^k \sigma_j \vec{u}_j\vec{v}_j^T$$
+is the best rank $k$ approximation to ${\bf X}$ under (squared) Frobenius loss.
 :::
 
 There are several important implications of this theorem.  First, the direct result indicates that computing the SVD of ${\bf X}$ immediately allows us to compute the best approximation under Frobenius loss for a specified rank $k$.  In practice, the full SVD is not required since we will typically consider the case where $k <\min\{N,d\}$.  There is a another implication as well.  In cases where a specific choice of $k$ is not clear, the singular values of ${\bf X}$ provide  a method to comparing different choices of $k$.  Akin to the scree plot, we can plot the (squared) singular values to look for clear separation or alternatively, plot the ratio $$\frac{\sum_{j=1}^k\sigma_j^2}{\sum_{j=1}^{\min\{N,d\}}\sigma_j^2}$$ as a function of $k$ to understand the relative error for a specific choice of $k$.  

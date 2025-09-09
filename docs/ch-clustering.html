@@ -408,14 +408,14 @@ In this example, we’ll consider the three dimensional <strong>iris</strong> da
 <div id="elbow-plot" class="section level4 hasAnchor" number="7.1.5.1">
 <h4><span class="header-section-number">7.1.5.1</span> Elbow plot<a href="ch-clustering.html#elbow-plot" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The center-based loss function will decrease as the number of clusters increases. Thus, we can plot the optimal loss found at different numbers of clusters and look for a sudden drop, much like we did with the scree plot in PCA. Below, we show an example of this method for data with three well separated spherical clusters</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="ch-clustering.html#cb24-1" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">15</span></span>
-<span id="cb24-2"><a href="ch-clustering.html#cb24-2" tabindex="-1"></a>inertia <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,<span class="fu">length</span>(k))</span>
-<span id="cb24-3"><a href="ch-clustering.html#cb24-3" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(k)){</span>
-<span id="cb24-4"><a href="ch-clustering.html#cb24-4" tabindex="-1"></a>  inertia[j] <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(data1,k[j])<span class="sc">$</span>tot.withinss</span>
-<span id="cb24-5"><a href="ch-clustering.html#cb24-5" tabindex="-1"></a>}</span>
-<span id="cb24-6"><a href="ch-clustering.html#cb24-6" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
-<span id="cb24-7"><a href="ch-clustering.html#cb24-7" tabindex="-1"></a><span class="fu">plot</span>(data1<span class="sc">$</span>V1,data1<span class="sc">$</span>V2,<span class="at">xlab =</span> <span class="st">&#39;&#39;</span>, <span class="at">ylab =</span> <span class="st">&#39;&#39;</span>)</span>
-<span id="cb24-8"><a href="ch-clustering.html#cb24-8" tabindex="-1"></a><span class="fu">plot</span>(k,inertia, <span class="at">ylab=</span><span class="st">&quot;k-means loss&quot;</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="ch-clustering.html#cb45-1" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">15</span></span>
+<span id="cb45-2"><a href="ch-clustering.html#cb45-2" tabindex="-1"></a>inertia <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,<span class="fu">length</span>(k))</span>
+<span id="cb45-3"><a href="ch-clustering.html#cb45-3" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(k)){</span>
+<span id="cb45-4"><a href="ch-clustering.html#cb45-4" tabindex="-1"></a>  inertia[j] <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(data1,k[j])<span class="sc">$</span>tot.withinss</span>
+<span id="cb45-5"><a href="ch-clustering.html#cb45-5" tabindex="-1"></a>}</span>
+<span id="cb45-6"><a href="ch-clustering.html#cb45-6" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb45-7"><a href="ch-clustering.html#cb45-7" tabindex="-1"></a><span class="fu">plot</span>(data1<span class="sc">$</span>V1,data1<span class="sc">$</span>V2,<span class="at">xlab =</span> <span class="st">&#39;&#39;</span>, <span class="at">ylab =</span> <span class="st">&#39;&#39;</span>)</span>
+<span id="cb45-8"><a href="ch-clustering.html#cb45-8" tabindex="-1"></a><span class="fu">plot</span>(k,inertia, <span class="at">ylab=</span><span class="st">&quot;k-means loss&quot;</span> )</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-175-1.png" width="672" /></p>
 </div>
 <div id="gap-statistic" class="section level4 hasAnchor" number="7.1.5.2">
@@ -581,7 +581,7 @@ Figure 7.1: Samples from a GMM
 </div>
 </div>
 <p>In the preceding example, the clusters had an elliptical shape which is a distinct variation from <span class="math inline">\(k\)</span>-means clustering which presumes spherical clusters. The location and shape/orientation of each cluster is controlled by its mean vector and covariance matrix respectively. As such, GMMs can still generate spherical clusters if the eigenvalues of each covariance matrix are (approximately) equal. This is a natural consequence of the Gaussian distribution and diagonalization of the covariance matrix. In high dimensions, Gaussian distributions concentrate near the surface of ellipsoids (rather than on the interior) but the general observation regarding the increased flexibility of GMMs over k-means holds true. Ignoring computational demands, one might expect GMMs to outperform k-means in many settings.</p>
-<p>Model flexibility is not the only advantage of mixture models. Suppose you were asked to assign a sample at the location marked with a purple <em>x</em> below.</p>
+<p>Suppose you were asked to assign a sample at the location marked with a purple <em>x</em> below.</p>
 <p><img src="_main_files/figure-html/unnamed-chunk-196-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Do you expect the <em>x</em> was generated from the same density as the points in the red cluster or from the density that generated the point in the black cluster? In center based clustering, this is a binary choice. However, it is unclear from the picture so perhaps that most honest answer is that there is a 50/50 chance that it was generated from either (we can likely agree there is vanishingly small chance it belongs to the blue cluster). The option to make such <em>fuzzy</em> clustering is a natural consequence of the probabilistic modeling approach behind GMMs. For a given parameter vector <span class="math inline">\(\Phi\)</span> we can compute a posterior <span class="math inline">\(p(z_i | \vec{x}_i,\Phi)\)</span> reflecting our belief about the clustering labeling.</p>
 <p>Ultimately, clustering via GMMs requires estimation of the parameter <span class="math inline">\(\Phi\)</span> for a given model. If we had access to the cluster labels, <span class="math inline">\(z_1,\dots,z_N\)</span> this would be an easy problems. We could simply take sample means and covariances for the samples assigned to cluster <span class="math inline">\(j\)</span> to estimate <span class="math inline">\(\vec{\mu}_j\)</span> and <span class="math inline">\({\bf \Sigma}_j\)</span> and we could use the proportion of samples given cluster label <span class="math inline">\(j\)</span> as our estimate for <span class="math inline">\(p_j\)</span>. Mathematically, we would use the estimates
@@ -638,7 +638,7 @@ p_j^{(t+1)} &amp;= \frac{\sum_{i=1}^N \gamma_{ij}^{(t)}}{\sum_{i=1}^N\sum_{\ell=
 <p>The EM-algorithm provides a method for a finding the optimal parameters and subsequent clustering for a fixed number of clusters <span class="math inline">\(K\)</span>. If we wish to estimate the number of clusters, we can use the maximized log-likelihood as a measure of the goodness of fit to the data. Let <span class="math display">\[\log L_k^* = \log p(\vec{x}_1,\dots,\vec{x}_N\mid \Phi^*)\]</span> denote the maximum log-likelihood assuming <span class="math inline">\(k\)</span> clusters. Larger values of <span class="math inline">\(\log L_k^*\)</span> reflect a better fit to the observed data so it natural to expect <span class="math inline">\(\log L_k^*\)</span> to increase as <span class="math inline">\(k\)</span> increases. To avoid overfitting, we use the Bayesian Information Criterion (BIC). Let <span class="math inline">\(\mathcal{P}_k\)</span> denote the number of parameters in a GMM for <span class="math inline">\(k\)</span> clusters. BIC is defined as</p>
 <p><span class="math display">\[BIC_k = 2 \log L_k^* - 2 \log \mathcal{P}_k\]</span></p>
 <p>which balances goodness of fit with model complexity. Under this framework, we select the value of <span class="math inline">\(k\)</span> which maximizes BIC. (Note, some sources define BIC as the negative of our formula above and select <span class="math inline">\(k\)</span> opt to minimize. Be mindful of the convention when using pre-existing packages!)</p>
-<p>We can use the BIC approach to investigate additional constraints on the model parameters. Recall from the <a href="#ex:gmm"><strong>??</strong></a>, the shape of clusters is controlled by the covariance matrices. By applying addition constraints to <span class="math inline">\({\bf \Sigma}_1,\dots,{\bf \Sigma}_K\)</span> we can reduce the number of model parameters. The standard convention for covariance constraints comes from Banfield and Raftery (1993) who observed that every covariance matrix can be decomposed via its eigenvalue decomposition <span class="math display">\[{\bf \Sigma}_j = \lambda_j {\bf W}_j{\bf \Lambda}_j{\bf W}_j\]</span>
+<p>We can use the BIC approach to investigate additional constraints on the model parameters. Recall from the <a href="ch-clustering.html#exm:gmm">7.2</a>, the shape of clusters is controlled by the covariance matrices. By applying addition constraints to <span class="math inline">\({\bf \Sigma}_1,\dots,{\bf \Sigma}_K\)</span> we can reduce the number of model parameters. The standard convention for covariance constraints comes from Banfield and Raftery (1993) who observed that every covariance matrix can be decomposed via its eigenvalue decomposition <span class="math display">\[{\bf \Sigma}_j = \lambda_j {\bf W}_j{\bf \Lambda}_j{\bf W}_j\]</span>
 where <span class="math inline">\(\lambda_j\)</span> is a scalar parameter controlling the volume of the cluster, <span class="math inline">\({\bf W}_j\)</span> is an orthonormal matrix controlling the orientation of the cluster, and <span class="math inline">\({\bf \Lambda}_j\)</span> is a diagonal matrix with diagonal entries in the interval <span class="math inline">\((0,1]\)</span> giving the relative lengths of the semi-major axes of the ellipsoid <span class="citation">[<a href="#ref-banfield1993">35</a>]</span>. We can apply constraints on one or more of the corresponding components of the covariance matrices summarized in the table below</p>
 <table>
 <colgroup>
@@ -693,9 +693,9 @@ Figure 7.2: BIC curves for GMMs applied to the smile data
 </p>
 </div>
 <p>Using BIC, the optimal GMM one should select contains nine clusters with EVV covariance structure. In the associated clustering shown below, the eyes are appropriately clustered, but the nose is split into two separate clusters. Most egregiously though, we can see the mouth was broken apart into five thin elliptic pieces reflecting the inherent limitations of the cluster shapes that can be identified by GMMs.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="ch-clustering.html#cb26-1" tabindex="-1"></a><span class="fu">plot</span>(smile.gmm, <span class="at">what =</span> <span class="st">&quot;classification&quot;</span>,</span>
-<span id="cb26-2"><a href="ch-clustering.html#cb26-2" tabindex="-1"></a>     <span class="at">xaxt=</span><span class="st">&#39;n&#39;</span>,<span class="at">yaxt=</span><span class="st">&#39;n&#39;</span>,</span>
-<span id="cb26-3"><a href="ch-clustering.html#cb26-3" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&#39;&#39;</span>, <span class="at">ylab =</span><span class="st">&#39;&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="ch-clustering.html#cb47-1" tabindex="-1"></a><span class="fu">plot</span>(smile.gmm, <span class="at">what =</span> <span class="st">&quot;classification&quot;</span>,</span>
+<span id="cb47-2"><a href="ch-clustering.html#cb47-2" tabindex="-1"></a>     <span class="at">xaxt=</span><span class="st">&#39;n&#39;</span>,<span class="at">yaxt=</span><span class="st">&#39;n&#39;</span>,</span>
+<span id="cb47-3"><a href="ch-clustering.html#cb47-3" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&#39;&#39;</span>, <span class="at">ylab =</span><span class="st">&#39;&#39;</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-200-1.png" width="672" /></p>
 </div>
 <p>Given this limitation, there has been considerable work dedicated to improving model-based clustering including the design of more expressive mixture densities [<span class="citation">[<a href="#ref-Karlis2009">36</a>]</span>;<span class="citation">[<a href="#ref-OHagan2016">37</a>]</span>;<span class="citation">[<a href="#ref-Dang2023">38</a>]</span>} and methods which produce more parsimonious clustering arrangements by iteratively merging nearby clusters <span class="citation">[<a href="#ref-Dombowsky2025">39</a>]</span>.</p>
@@ -747,30 +747,30 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 <p>In reality, especially when we use Fully-connected graph, we can’t get <span class="math inline">\(k\)</span> exact zero-eigenvalues with corresponding <span class="math inline">\(k\)</span> eigenvectors. (Different clusters are not necessarily completely separate, and Fully-connected graph even allows every <span class="math inline">\(\mathbf{W}_{ij} &gt; 0\)</span>). So we will just conduct eigen decomposition and choose <span class="math inline">\(k\)</span> smallest eigenvalues together with their corresponding eigen-vectors.</p>
 <p><strong>A toy example</strong></p>
 <p>First, we’ll create the simulation data with two distinct clusters.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="ch-clustering.html#cb27-1" tabindex="-1"></a><span class="co"># Generate two clusters</span></span>
-<span id="cb27-2"><a href="ch-clustering.html#cb27-2" tabindex="-1"></a>cluster1 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="fl">1.5</span>, <span class="fl">2.5</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb27-3"><a href="ch-clustering.html#cb27-3" tabindex="-1"></a>cluster2 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="fl">4.5</span>, <span class="fl">5.5</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb27-4"><a href="ch-clustering.html#cb27-4" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">rbind</span>(cluster1, cluster2)</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="ch-clustering.html#cb48-1" tabindex="-1"></a><span class="co"># Generate two clusters</span></span>
+<span id="cb48-2"><a href="ch-clustering.html#cb48-2" tabindex="-1"></a>cluster1 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="fl">1.5</span>, <span class="fl">2.5</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb48-3"><a href="ch-clustering.html#cb48-3" tabindex="-1"></a>cluster2 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="fl">4.5</span>, <span class="fl">5.5</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb48-4"><a href="ch-clustering.html#cb48-4" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">rbind</span>(cluster1, cluster2)</span></code></pre></div>
 <p>Visualize the data points to make it more intuitive.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="ch-clustering.html#cb28-1" tabindex="-1"></a><span class="fu">plot</span>(data, <span class="at">col =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;red&quot;</span>, <span class="fu">nrow</span>(cluster1)), <span class="fu">rep</span>(<span class="st">&quot;blue&quot;</span>, <span class="fu">nrow</span>(cluster2))), <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">xlab =</span> <span class="st">&quot;X-axis&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Y-axis&quot;</span>)</span>
-<span id="cb28-2"><a href="ch-clustering.html#cb28-2" tabindex="-1"></a><span class="fu">text</span>(data, <span class="at">labels =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(data), <span class="at">pos =</span> <span class="dv">4</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>)  <span class="co"># Adding labels</span></span>
-<span id="cb28-3"><a href="ch-clustering.html#cb28-3" tabindex="-1"></a><span class="fu">title</span>(<span class="st">&quot;Data Points Visualization&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="ch-clustering.html#cb49-1" tabindex="-1"></a><span class="fu">plot</span>(data, <span class="at">col =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;red&quot;</span>, <span class="fu">nrow</span>(cluster1)), <span class="fu">rep</span>(<span class="st">&quot;blue&quot;</span>, <span class="fu">nrow</span>(cluster2))), <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">xlab =</span> <span class="st">&quot;X-axis&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Y-axis&quot;</span>)</span>
+<span id="cb49-2"><a href="ch-clustering.html#cb49-2" tabindex="-1"></a><span class="fu">text</span>(data, <span class="at">labels =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(data), <span class="at">pos =</span> <span class="dv">4</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>)  <span class="co"># Adding labels</span></span>
+<span id="cb49-3"><a href="ch-clustering.html#cb49-3" tabindex="-1"></a><span class="fu">title</span>(<span class="st">&quot;Data Points Visualization&quot;</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-211-1.png" width="672" /></p>
 <p>We use the <strong><span class="math inline">\(\epsilon\)</span>-neighborhood</strong> approach to construct the similarity graph.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="ch-clustering.html#cb29-1" tabindex="-1"></a>epsilon <span class="ot">&lt;-</span> <span class="fl">1.5</span>  <span class="co"># Set epsilon value</span></span>
-<span id="cb29-2"><a href="ch-clustering.html#cb29-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(data)</span>
-<span id="cb29-3"><a href="ch-clustering.html#cb29-3" tabindex="-1"></a>similarity_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, n, n)</span>
-<span id="cb29-4"><a href="ch-clustering.html#cb29-4" tabindex="-1"></a></span>
-<span id="cb29-5"><a href="ch-clustering.html#cb29-5" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb29-6"><a href="ch-clustering.html#cb29-6" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb29-7"><a href="ch-clustering.html#cb29-7" tabindex="-1"></a>    <span class="cf">if</span> (i <span class="sc">!=</span> j <span class="sc">&amp;&amp;</span> <span class="fu">dist</span>(<span class="fu">rbind</span>(data[i, ], data[j, ])) <span class="sc">&lt;</span> epsilon) {</span>
-<span id="cb29-8"><a href="ch-clustering.html#cb29-8" tabindex="-1"></a>      similarity_matrix[i, j] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb29-9"><a href="ch-clustering.html#cb29-9" tabindex="-1"></a>      similarity_matrix[j, i] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb29-10"><a href="ch-clustering.html#cb29-10" tabindex="-1"></a>    }</span>
-<span id="cb29-11"><a href="ch-clustering.html#cb29-11" tabindex="-1"></a>  }</span>
-<span id="cb29-12"><a href="ch-clustering.html#cb29-12" tabindex="-1"></a>}</span>
-<span id="cb29-13"><a href="ch-clustering.html#cb29-13" tabindex="-1"></a></span>
-<span id="cb29-14"><a href="ch-clustering.html#cb29-14" tabindex="-1"></a><span class="fu">print</span>(similarity_matrix)</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="ch-clustering.html#cb50-1" tabindex="-1"></a>epsilon <span class="ot">&lt;-</span> <span class="fl">1.5</span>  <span class="co"># Set epsilon value</span></span>
+<span id="cb50-2"><a href="ch-clustering.html#cb50-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(data)</span>
+<span id="cb50-3"><a href="ch-clustering.html#cb50-3" tabindex="-1"></a>similarity_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, n, n)</span>
+<span id="cb50-4"><a href="ch-clustering.html#cb50-4" tabindex="-1"></a></span>
+<span id="cb50-5"><a href="ch-clustering.html#cb50-5" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb50-6"><a href="ch-clustering.html#cb50-6" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb50-7"><a href="ch-clustering.html#cb50-7" tabindex="-1"></a>    <span class="cf">if</span> (i <span class="sc">!=</span> j <span class="sc">&amp;&amp;</span> <span class="fu">dist</span>(<span class="fu">rbind</span>(data[i, ], data[j, ])) <span class="sc">&lt;</span> epsilon) {</span>
+<span id="cb50-8"><a href="ch-clustering.html#cb50-8" tabindex="-1"></a>      similarity_matrix[i, j] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb50-9"><a href="ch-clustering.html#cb50-9" tabindex="-1"></a>      similarity_matrix[j, i] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb50-10"><a href="ch-clustering.html#cb50-10" tabindex="-1"></a>    }</span>
+<span id="cb50-11"><a href="ch-clustering.html#cb50-11" tabindex="-1"></a>  }</span>
+<span id="cb50-12"><a href="ch-clustering.html#cb50-12" tabindex="-1"></a>}</span>
+<span id="cb50-13"><a href="ch-clustering.html#cb50-13" tabindex="-1"></a></span>
+<span id="cb50-14"><a href="ch-clustering.html#cb50-14" tabindex="-1"></a><span class="fu">print</span>(similarity_matrix)</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
 ## [1,]    0    1    1    0    0    0
 ## [2,]    1    0    1    0    0    0
@@ -779,9 +779,9 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 ## [5,]    0    0    0    1    0    1
 ## [6,]    0    0    0    1    1    0</code></pre>
 <p>Compute the Laplacian matrix.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="ch-clustering.html#cb31-1" tabindex="-1"></a>degree_matrix <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="fu">apply</span>(similarity_matrix, <span class="dv">1</span>, sum))</span>
-<span id="cb31-2"><a href="ch-clustering.html#cb31-2" tabindex="-1"></a>laplacian_matrix <span class="ot">&lt;-</span> degree_matrix <span class="sc">-</span> similarity_matrix</span>
-<span id="cb31-3"><a href="ch-clustering.html#cb31-3" tabindex="-1"></a><span class="fu">print</span>(laplacian_matrix)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="ch-clustering.html#cb52-1" tabindex="-1"></a>degree_matrix <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="fu">apply</span>(similarity_matrix, <span class="dv">1</span>, sum))</span>
+<span id="cb52-2"><a href="ch-clustering.html#cb52-2" tabindex="-1"></a>laplacian_matrix <span class="ot">&lt;-</span> degree_matrix <span class="sc">-</span> similarity_matrix</span>
+<span id="cb52-3"><a href="ch-clustering.html#cb52-3" tabindex="-1"></a><span class="fu">print</span>(laplacian_matrix)</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
 ## [1,]    2   -1   -1    0    0    0
 ## [2,]   -1    2   -1    0    0    0
@@ -790,19 +790,19 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 ## [5,]    0    0    0   -1    2   -1
 ## [6,]    0    0    0   -1   -1    2</code></pre>
 <p>Perform eigen decomposition on the Laplacian matrix. We choose the smallest two eigenvalues here since we want to</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="ch-clustering.html#cb33-1" tabindex="-1"></a>eigen_result <span class="ot">&lt;-</span> <span class="fu">eigen</span>(laplacian_matrix)</span>
-<span id="cb33-2"><a href="ch-clustering.html#cb33-2" tabindex="-1"></a></span>
-<span id="cb33-3"><a href="ch-clustering.html#cb33-3" tabindex="-1"></a><span class="co"># Sort eigenvalues and their corresponding eigenvectors</span></span>
-<span id="cb33-4"><a href="ch-clustering.html#cb33-4" tabindex="-1"></a>sorted_indices <span class="ot">&lt;-</span> <span class="fu">order</span>(eigen_result<span class="sc">$</span>values)</span>
-<span id="cb33-5"><a href="ch-clustering.html#cb33-5" tabindex="-1"></a>sorted_eigenvalues <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>values[sorted_indices]</span>
-<span id="cb33-6"><a href="ch-clustering.html#cb33-6" tabindex="-1"></a>sorted_eigenvectors <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>vectors[, sorted_indices]</span>
-<span id="cb33-7"><a href="ch-clustering.html#cb33-7" tabindex="-1"></a></span>
-<span id="cb33-8"><a href="ch-clustering.html#cb33-8" tabindex="-1"></a><span class="co"># Select the smallest two eigenvalues and their corresponding eigenvectors</span></span>
-<span id="cb33-9"><a href="ch-clustering.html#cb33-9" tabindex="-1"></a>smallest_eigenvalues <span class="ot">&lt;-</span> sorted_eigenvalues[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
-<span id="cb33-10"><a href="ch-clustering.html#cb33-10" tabindex="-1"></a>smallest_eigenvectors <span class="ot">&lt;-</span> sorted_eigenvectors[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
-<span id="cb33-11"><a href="ch-clustering.html#cb33-11" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvalues)</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="ch-clustering.html#cb54-1" tabindex="-1"></a>eigen_result <span class="ot">&lt;-</span> <span class="fu">eigen</span>(laplacian_matrix)</span>
+<span id="cb54-2"><a href="ch-clustering.html#cb54-2" tabindex="-1"></a></span>
+<span id="cb54-3"><a href="ch-clustering.html#cb54-3" tabindex="-1"></a><span class="co"># Sort eigenvalues and their corresponding eigenvectors</span></span>
+<span id="cb54-4"><a href="ch-clustering.html#cb54-4" tabindex="-1"></a>sorted_indices <span class="ot">&lt;-</span> <span class="fu">order</span>(eigen_result<span class="sc">$</span>values)</span>
+<span id="cb54-5"><a href="ch-clustering.html#cb54-5" tabindex="-1"></a>sorted_eigenvalues <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>values[sorted_indices]</span>
+<span id="cb54-6"><a href="ch-clustering.html#cb54-6" tabindex="-1"></a>sorted_eigenvectors <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>vectors[, sorted_indices]</span>
+<span id="cb54-7"><a href="ch-clustering.html#cb54-7" tabindex="-1"></a></span>
+<span id="cb54-8"><a href="ch-clustering.html#cb54-8" tabindex="-1"></a><span class="co"># Select the smallest two eigenvalues and their corresponding eigenvectors</span></span>
+<span id="cb54-9"><a href="ch-clustering.html#cb54-9" tabindex="-1"></a>smallest_eigenvalues <span class="ot">&lt;-</span> sorted_eigenvalues[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb54-10"><a href="ch-clustering.html#cb54-10" tabindex="-1"></a>smallest_eigenvectors <span class="ot">&lt;-</span> sorted_eigenvectors[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb54-11"><a href="ch-clustering.html#cb54-11" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvalues)</span></code></pre></div>
 <pre><code>## [1] 1.776357e-15 1.776357e-15</code></pre>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="ch-clustering.html#cb35-1" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvectors)</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="ch-clustering.html#cb56-1" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvectors)</span></code></pre></div>
 <pre><code>##            [,1]       [,2]
 ## [1,]  0.0000000 -0.5773503
 ## [2,]  0.0000000 -0.5773503
@@ -812,20 +812,20 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 ## [6,] -0.5773503  0.0000000</code></pre>
 <p>We find that the smallest two eigen-values are 0 (not exact zero here because of computational precision issue), and their corresponding eigen-vectors give us information about the clustering. The first cluster contains data point 4, 5, 6; while the second cluster contains the rest three data points 1, 2, 3.</p>
 <p>We try <strong>fully-connected graph</strong> with radial basis function to construct the adjacency matrix this time.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="ch-clustering.html#cb37-1" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="dv">1</span>  <span class="co"># Scale parameter for the RBF kernel</span></span>
-<span id="cb37-2"><a href="ch-clustering.html#cb37-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(data)</span>
-<span id="cb37-3"><a href="ch-clustering.html#cb37-3" tabindex="-1"></a>similarity_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, n, n)</span>
-<span id="cb37-4"><a href="ch-clustering.html#cb37-4" tabindex="-1"></a></span>
-<span id="cb37-5"><a href="ch-clustering.html#cb37-5" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb37-6"><a href="ch-clustering.html#cb37-6" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb37-7"><a href="ch-clustering.html#cb37-7" tabindex="-1"></a>    <span class="cf">if</span> (i <span class="sc">!=</span> j) {</span>
-<span id="cb37-8"><a href="ch-clustering.html#cb37-8" tabindex="-1"></a>      distance <span class="ot">&lt;-</span> <span class="fu">dist</span>(<span class="fu">rbind</span>(data[i, ], data[j, ]))<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb37-9"><a href="ch-clustering.html#cb37-9" tabindex="-1"></a>      similarity_matrix[i, j] <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>gamma <span class="sc">*</span> distance)</span>
-<span id="cb37-10"><a href="ch-clustering.html#cb37-10" tabindex="-1"></a>    }</span>
-<span id="cb37-11"><a href="ch-clustering.html#cb37-11" tabindex="-1"></a>  }</span>
-<span id="cb37-12"><a href="ch-clustering.html#cb37-12" tabindex="-1"></a>}</span>
-<span id="cb37-13"><a href="ch-clustering.html#cb37-13" tabindex="-1"></a></span>
-<span id="cb37-14"><a href="ch-clustering.html#cb37-14" tabindex="-1"></a><span class="fu">print</span>(similarity_matrix)</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="ch-clustering.html#cb58-1" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="dv">1</span>  <span class="co"># Scale parameter for the RBF kernel</span></span>
+<span id="cb58-2"><a href="ch-clustering.html#cb58-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(data)</span>
+<span id="cb58-3"><a href="ch-clustering.html#cb58-3" tabindex="-1"></a>similarity_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, n, n)</span>
+<span id="cb58-4"><a href="ch-clustering.html#cb58-4" tabindex="-1"></a></span>
+<span id="cb58-5"><a href="ch-clustering.html#cb58-5" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb58-6"><a href="ch-clustering.html#cb58-6" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb58-7"><a href="ch-clustering.html#cb58-7" tabindex="-1"></a>    <span class="cf">if</span> (i <span class="sc">!=</span> j) {</span>
+<span id="cb58-8"><a href="ch-clustering.html#cb58-8" tabindex="-1"></a>      distance <span class="ot">&lt;-</span> <span class="fu">dist</span>(<span class="fu">rbind</span>(data[i, ], data[j, ]))<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb58-9"><a href="ch-clustering.html#cb58-9" tabindex="-1"></a>      similarity_matrix[i, j] <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>gamma <span class="sc">*</span> distance)</span>
+<span id="cb58-10"><a href="ch-clustering.html#cb58-10" tabindex="-1"></a>    }</span>
+<span id="cb58-11"><a href="ch-clustering.html#cb58-11" tabindex="-1"></a>  }</span>
+<span id="cb58-12"><a href="ch-clustering.html#cb58-12" tabindex="-1"></a>}</span>
+<span id="cb58-13"><a href="ch-clustering.html#cb58-13" tabindex="-1"></a></span>
+<span id="cb58-14"><a href="ch-clustering.html#cb58-14" tabindex="-1"></a><span class="fu">print</span>(similarity_matrix)</span></code></pre></div>
 <pre><code>##              [,1]         [,2]         [,3]         [,4]         [,5]         [,6]
 ## [1,] 0.000000e+00 2.865048e-01 6.065307e-01 1.522998e-08 2.172440e-10 2.289735e-11
 ## [2,] 2.865048e-01 0.000000e+00 2.865048e-01 8.764248e-08 1.522998e-08 2.172440e-10
@@ -833,9 +833,9 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 ## [4,] 1.522998e-08 8.764248e-08 3.726653e-06 0.000000e+00 2.865048e-01 6.065307e-01
 ## [5,] 2.172440e-10 1.522998e-08 8.764248e-08 2.865048e-01 0.000000e+00 2.865048e-01
 ## [6,] 2.289735e-11 2.172440e-10 1.522998e-08 6.065307e-01 2.865048e-01 0.000000e+00</code></pre>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="ch-clustering.html#cb39-1" tabindex="-1"></a>degree_matrix <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="fu">apply</span>(similarity_matrix, <span class="dv">1</span>, sum))</span>
-<span id="cb39-2"><a href="ch-clustering.html#cb39-2" tabindex="-1"></a>laplacian_matrix <span class="ot">&lt;-</span> degree_matrix <span class="sc">-</span> similarity_matrix</span>
-<span id="cb39-3"><a href="ch-clustering.html#cb39-3" tabindex="-1"></a><span class="fu">print</span>(laplacian_matrix)</span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="ch-clustering.html#cb60-1" tabindex="-1"></a>degree_matrix <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="fu">apply</span>(similarity_matrix, <span class="dv">1</span>, sum))</span>
+<span id="cb60-2"><a href="ch-clustering.html#cb60-2" tabindex="-1"></a>laplacian_matrix <span class="ot">&lt;-</span> degree_matrix <span class="sc">-</span> similarity_matrix</span>
+<span id="cb60-3"><a href="ch-clustering.html#cb60-3" tabindex="-1"></a><span class="fu">print</span>(laplacian_matrix)</span></code></pre></div>
 <pre><code>##               [,1]          [,2]          [,3]          [,4]          [,5]          [,6]
 ## [1,]  8.930355e-01 -2.865048e-01 -6.065307e-01 -1.522998e-08 -2.172440e-10 -2.289735e-11
 ## [2,] -2.865048e-01  5.730097e-01 -2.865048e-01 -8.764248e-08 -1.522998e-08 -2.172440e-10
@@ -843,19 +843,19 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 ## [4,] -1.522998e-08 -8.764248e-08 -3.726653e-06  8.930393e-01 -2.865048e-01 -6.065307e-01
 ## [5,] -2.172440e-10 -1.522998e-08 -8.764248e-08 -2.865048e-01  5.730097e-01 -2.865048e-01
 ## [6,] -2.289735e-11 -2.172440e-10 -1.522998e-08 -6.065307e-01 -2.865048e-01  8.930355e-01</code></pre>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="ch-clustering.html#cb41-1" tabindex="-1"></a>eigen_result <span class="ot">&lt;-</span> <span class="fu">eigen</span>(laplacian_matrix)</span>
-<span id="cb41-2"><a href="ch-clustering.html#cb41-2" tabindex="-1"></a></span>
-<span id="cb41-3"><a href="ch-clustering.html#cb41-3" tabindex="-1"></a><span class="co"># Sort eigenvalues and their corresponding eigenvectors</span></span>
-<span id="cb41-4"><a href="ch-clustering.html#cb41-4" tabindex="-1"></a>sorted_indices <span class="ot">&lt;-</span> <span class="fu">order</span>(eigen_result<span class="sc">$</span>values)</span>
-<span id="cb41-5"><a href="ch-clustering.html#cb41-5" tabindex="-1"></a>sorted_eigenvalues <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>values[sorted_indices]</span>
-<span id="cb41-6"><a href="ch-clustering.html#cb41-6" tabindex="-1"></a>sorted_eigenvectors <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>vectors[, sorted_indices]</span>
-<span id="cb41-7"><a href="ch-clustering.html#cb41-7" tabindex="-1"></a></span>
-<span id="cb41-8"><a href="ch-clustering.html#cb41-8" tabindex="-1"></a><span class="co"># Select the smallest two eigenvalues and their corresponding eigenvectors</span></span>
-<span id="cb41-9"><a href="ch-clustering.html#cb41-9" tabindex="-1"></a>smallest_eigenvalues <span class="ot">&lt;-</span> sorted_eigenvalues[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
-<span id="cb41-10"><a href="ch-clustering.html#cb41-10" tabindex="-1"></a>smallest_eigenvectors <span class="ot">&lt;-</span> sorted_eigenvectors[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
-<span id="cb41-11"><a href="ch-clustering.html#cb41-11" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvalues)</span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="ch-clustering.html#cb62-1" tabindex="-1"></a>eigen_result <span class="ot">&lt;-</span> <span class="fu">eigen</span>(laplacian_matrix)</span>
+<span id="cb62-2"><a href="ch-clustering.html#cb62-2" tabindex="-1"></a></span>
+<span id="cb62-3"><a href="ch-clustering.html#cb62-3" tabindex="-1"></a><span class="co"># Sort eigenvalues and their corresponding eigenvectors</span></span>
+<span id="cb62-4"><a href="ch-clustering.html#cb62-4" tabindex="-1"></a>sorted_indices <span class="ot">&lt;-</span> <span class="fu">order</span>(eigen_result<span class="sc">$</span>values)</span>
+<span id="cb62-5"><a href="ch-clustering.html#cb62-5" tabindex="-1"></a>sorted_eigenvalues <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>values[sorted_indices]</span>
+<span id="cb62-6"><a href="ch-clustering.html#cb62-6" tabindex="-1"></a>sorted_eigenvectors <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>vectors[, sorted_indices]</span>
+<span id="cb62-7"><a href="ch-clustering.html#cb62-7" tabindex="-1"></a></span>
+<span id="cb62-8"><a href="ch-clustering.html#cb62-8" tabindex="-1"></a><span class="co"># Select the smallest two eigenvalues and their corresponding eigenvectors</span></span>
+<span id="cb62-9"><a href="ch-clustering.html#cb62-9" tabindex="-1"></a>smallest_eigenvalues <span class="ot">&lt;-</span> sorted_eigenvalues[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb62-10"><a href="ch-clustering.html#cb62-10" tabindex="-1"></a>smallest_eigenvectors <span class="ot">&lt;-</span> sorted_eigenvectors[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb62-11"><a href="ch-clustering.html#cb62-11" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvalues)</span></code></pre></div>
 <pre><code>## [1] 2.564067e-16 2.632047e-06</code></pre>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="ch-clustering.html#cb43-1" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvectors)</span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="ch-clustering.html#cb64-1" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvectors)</span></code></pre></div>
 <pre><code>##            [,1]       [,2]
 ## [1,] -0.4082483  0.4082488
 ## [2,] -0.4082483  0.4082494
@@ -1070,7 +1070,7 @@ gitbook.start({
     "link": null,
     "text": null
   },
-  "download": ["_main.pdf", "_main.epub"],
+  "download": ["_main.pdf"],
   "search": {
     "engine": "fuse",
     "options": null

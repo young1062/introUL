@@ -447,16 +447,16 @@ Let <span class="math inline">\(\mathcal{M}_1\)</span> be a manifold with distan
 <span class="math display">\[\Delta_{ij} = d^{\mathcal{G}}_{ij}\]</span></p>
 <p><strong>Simulation Example</strong></p>
 <p>Here we provide a randomly generated Neighborhood Graph for six data points, it uses the K-nearest neighbor criteria (can easily tell this since the matrix is not symmetric, <span class="math inline">\(K=2\)</span>)</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="ch-nonlinear.html#cb20-1" tabindex="-1"></a><span class="co"># Define the matrix</span></span>
-<span id="cb20-2"><a href="ch-nonlinear.html#cb20-2" tabindex="-1"></a>matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
-<span id="cb20-3"><a href="ch-nonlinear.html#cb20-3" tabindex="-1"></a>  <span class="dv">0</span>,   <span class="dv">3</span>,  <span class="dv">4</span>,   <span class="cn">Inf</span>, <span class="cn">Inf</span>, <span class="cn">Inf</span>,</span>
-<span id="cb20-4"><a href="ch-nonlinear.html#cb20-4" tabindex="-1"></a>  <span class="dv">7</span>,   <span class="dv">0</span>,  <span class="cn">Inf</span>, <span class="dv">2</span>,   <span class="cn">Inf</span>, <span class="cn">Inf</span>,</span>
-<span id="cb20-5"><a href="ch-nonlinear.html#cb20-5" tabindex="-1"></a>  <span class="dv">6</span>,   <span class="cn">Inf</span>,<span class="dv">0</span>,   <span class="cn">Inf</span>, <span class="dv">7</span>,   <span class="cn">Inf</span>,</span>
-<span id="cb20-6"><a href="ch-nonlinear.html#cb20-6" tabindex="-1"></a>  <span class="cn">Inf</span>, <span class="dv">5</span>,  <span class="cn">Inf</span>, <span class="dv">0</span>,   <span class="cn">Inf</span>, <span class="dv">10</span>,</span>
-<span id="cb20-7"><a href="ch-nonlinear.html#cb20-7" tabindex="-1"></a>  <span class="cn">Inf</span>, <span class="cn">Inf</span>,<span class="dv">8</span>,   <span class="cn">Inf</span>, <span class="dv">0</span>,   <span class="dv">13</span>,</span>
-<span id="cb20-8"><a href="ch-nonlinear.html#cb20-8" tabindex="-1"></a>  <span class="cn">Inf</span>, <span class="cn">Inf</span>,<span class="cn">Inf</span>, <span class="dv">9</span>,   <span class="dv">14</span>,  <span class="dv">0</span></span>
-<span id="cb20-9"><a href="ch-nonlinear.html#cb20-9" tabindex="-1"></a>), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">nrow =</span> <span class="dv">6</span>)</span>
-<span id="cb20-10"><a href="ch-nonlinear.html#cb20-10" tabindex="-1"></a><span class="fu">print</span>(matrix)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="ch-nonlinear.html#cb41-1" tabindex="-1"></a><span class="co"># Define the matrix</span></span>
+<span id="cb41-2"><a href="ch-nonlinear.html#cb41-2" tabindex="-1"></a>matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
+<span id="cb41-3"><a href="ch-nonlinear.html#cb41-3" tabindex="-1"></a>  <span class="dv">0</span>,   <span class="dv">3</span>,  <span class="dv">4</span>,   <span class="cn">Inf</span>, <span class="cn">Inf</span>, <span class="cn">Inf</span>,</span>
+<span id="cb41-4"><a href="ch-nonlinear.html#cb41-4" tabindex="-1"></a>  <span class="dv">7</span>,   <span class="dv">0</span>,  <span class="cn">Inf</span>, <span class="dv">2</span>,   <span class="cn">Inf</span>, <span class="cn">Inf</span>,</span>
+<span id="cb41-5"><a href="ch-nonlinear.html#cb41-5" tabindex="-1"></a>  <span class="dv">6</span>,   <span class="cn">Inf</span>,<span class="dv">0</span>,   <span class="cn">Inf</span>, <span class="dv">7</span>,   <span class="cn">Inf</span>,</span>
+<span id="cb41-6"><a href="ch-nonlinear.html#cb41-6" tabindex="-1"></a>  <span class="cn">Inf</span>, <span class="dv">5</span>,  <span class="cn">Inf</span>, <span class="dv">0</span>,   <span class="cn">Inf</span>, <span class="dv">10</span>,</span>
+<span id="cb41-7"><a href="ch-nonlinear.html#cb41-7" tabindex="-1"></a>  <span class="cn">Inf</span>, <span class="cn">Inf</span>,<span class="dv">8</span>,   <span class="cn">Inf</span>, <span class="dv">0</span>,   <span class="dv">13</span>,</span>
+<span id="cb41-8"><a href="ch-nonlinear.html#cb41-8" tabindex="-1"></a>  <span class="cn">Inf</span>, <span class="cn">Inf</span>,<span class="cn">Inf</span>, <span class="dv">9</span>,   <span class="dv">14</span>,  <span class="dv">0</span></span>
+<span id="cb41-9"><a href="ch-nonlinear.html#cb41-9" tabindex="-1"></a>), <span class="at">byrow =</span> <span class="cn">TRUE</span>, <span class="at">nrow =</span> <span class="dv">6</span>)</span>
+<span id="cb41-10"><a href="ch-nonlinear.html#cb41-10" tabindex="-1"></a><span class="fu">print</span>(matrix)</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
 ## [1,]    0    3    4  Inf  Inf  Inf
 ## [2,]    7    0  Inf    2  Inf  Inf
@@ -465,40 +465,40 @@ Let <span class="math inline">\(\mathcal{M}_1\)</span> be a manifold with distan
 ## [5,]  Inf  Inf    8  Inf    0   13
 ## [6,]  Inf  Inf  Inf    9   14    0</code></pre>
 <p>Shown below is the implementation of Floyd-Warshall algorithm in R. As you can see from the three for loops, its computation complexity is <span class="math inline">\(O(n^3)\)</span>.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="ch-nonlinear.html#cb22-1" tabindex="-1"></a><span class="co"># Adjusting the matrix to set d_ij and d_ji to the smaller value</span></span>
-<span id="cb22-2"><a href="ch-nonlinear.html#cb22-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">dim</span>(matrix)[<span class="dv">1</span>]</span>
-<span id="cb22-3"><a href="ch-nonlinear.html#cb22-3" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="ch-nonlinear.html#cb22-4" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb22-5"><a href="ch-nonlinear.html#cb22-5" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb22-6"><a href="ch-nonlinear.html#cb22-6" tabindex="-1"></a>    <span class="cf">if</span> (i <span class="sc">!=</span> j <span class="sc">&amp;&amp;</span> <span class="fu">is.finite</span>(matrix[i, j]) <span class="sc">&amp;&amp;</span> <span class="fu">is.finite</span>(matrix[j, i])) {</span>
-<span id="cb22-7"><a href="ch-nonlinear.html#cb22-7" tabindex="-1"></a>      min_val <span class="ot">&lt;-</span> <span class="fu">min</span>(matrix[i, j], matrix[j, i])</span>
-<span id="cb22-8"><a href="ch-nonlinear.html#cb22-8" tabindex="-1"></a>      matrix[i, j] <span class="ot">&lt;-</span> min_val</span>
-<span id="cb22-9"><a href="ch-nonlinear.html#cb22-9" tabindex="-1"></a>      matrix[j, i] <span class="ot">&lt;-</span> min_val</span>
-<span id="cb22-10"><a href="ch-nonlinear.html#cb22-10" tabindex="-1"></a>    }</span>
-<span id="cb22-11"><a href="ch-nonlinear.html#cb22-11" tabindex="-1"></a>  }</span>
-<span id="cb22-12"><a href="ch-nonlinear.html#cb22-12" tabindex="-1"></a>}</span>
-<span id="cb22-13"><a href="ch-nonlinear.html#cb22-13" tabindex="-1"></a></span>
-<span id="cb22-14"><a href="ch-nonlinear.html#cb22-14" tabindex="-1"></a><span class="co"># Floyd-Warshall Algorithm</span></span>
-<span id="cb22-15"><a href="ch-nonlinear.html#cb22-15" tabindex="-1"></a>floyd_warshall <span class="ot">&lt;-</span> <span class="cf">function</span>(mat) {</span>
-<span id="cb22-16"><a href="ch-nonlinear.html#cb22-16" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">dim</span>(mat)[<span class="dv">1</span>]</span>
-<span id="cb22-17"><a href="ch-nonlinear.html#cb22-17" tabindex="-1"></a>  dist <span class="ot">&lt;-</span> mat</span>
-<span id="cb22-18"><a href="ch-nonlinear.html#cb22-18" tabindex="-1"></a>  </span>
-<span id="cb22-19"><a href="ch-nonlinear.html#cb22-19" tabindex="-1"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb22-20"><a href="ch-nonlinear.html#cb22-20" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb22-21"><a href="ch-nonlinear.html#cb22-21" tabindex="-1"></a>      <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb22-22"><a href="ch-nonlinear.html#cb22-22" tabindex="-1"></a>        dist[i, j] <span class="ot">&lt;-</span> <span class="fu">min</span>(dist[i, j], dist[i, k] <span class="sc">+</span> dist[k, j])</span>
-<span id="cb22-23"><a href="ch-nonlinear.html#cb22-23" tabindex="-1"></a>      }</span>
-<span id="cb22-24"><a href="ch-nonlinear.html#cb22-24" tabindex="-1"></a>    }</span>
-<span id="cb22-25"><a href="ch-nonlinear.html#cb22-25" tabindex="-1"></a>  }</span>
-<span id="cb22-26"><a href="ch-nonlinear.html#cb22-26" tabindex="-1"></a>  </span>
-<span id="cb22-27"><a href="ch-nonlinear.html#cb22-27" tabindex="-1"></a>  <span class="fu">return</span>(dist)</span>
-<span id="cb22-28"><a href="ch-nonlinear.html#cb22-28" tabindex="-1"></a>}</span>
-<span id="cb22-29"><a href="ch-nonlinear.html#cb22-29" tabindex="-1"></a></span>
-<span id="cb22-30"><a href="ch-nonlinear.html#cb22-30" tabindex="-1"></a><span class="co"># Get the result</span></span>
-<span id="cb22-31"><a href="ch-nonlinear.html#cb22-31" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">floyd_warshall</span>(matrix)</span>
-<span id="cb22-32"><a href="ch-nonlinear.html#cb22-32" tabindex="-1"></a></span>
-<span id="cb22-33"><a href="ch-nonlinear.html#cb22-33" tabindex="-1"></a><span class="co"># Print the result</span></span>
-<span id="cb22-34"><a href="ch-nonlinear.html#cb22-34" tabindex="-1"></a><span class="fu">print</span>(result)</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="ch-nonlinear.html#cb43-1" tabindex="-1"></a><span class="co"># Adjusting the matrix to set d_ij and d_ji to the smaller value</span></span>
+<span id="cb43-2"><a href="ch-nonlinear.html#cb43-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">dim</span>(matrix)[<span class="dv">1</span>]</span>
+<span id="cb43-3"><a href="ch-nonlinear.html#cb43-3" tabindex="-1"></a></span>
+<span id="cb43-4"><a href="ch-nonlinear.html#cb43-4" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb43-5"><a href="ch-nonlinear.html#cb43-5" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb43-6"><a href="ch-nonlinear.html#cb43-6" tabindex="-1"></a>    <span class="cf">if</span> (i <span class="sc">!=</span> j <span class="sc">&amp;&amp;</span> <span class="fu">is.finite</span>(matrix[i, j]) <span class="sc">&amp;&amp;</span> <span class="fu">is.finite</span>(matrix[j, i])) {</span>
+<span id="cb43-7"><a href="ch-nonlinear.html#cb43-7" tabindex="-1"></a>      min_val <span class="ot">&lt;-</span> <span class="fu">min</span>(matrix[i, j], matrix[j, i])</span>
+<span id="cb43-8"><a href="ch-nonlinear.html#cb43-8" tabindex="-1"></a>      matrix[i, j] <span class="ot">&lt;-</span> min_val</span>
+<span id="cb43-9"><a href="ch-nonlinear.html#cb43-9" tabindex="-1"></a>      matrix[j, i] <span class="ot">&lt;-</span> min_val</span>
+<span id="cb43-10"><a href="ch-nonlinear.html#cb43-10" tabindex="-1"></a>    }</span>
+<span id="cb43-11"><a href="ch-nonlinear.html#cb43-11" tabindex="-1"></a>  }</span>
+<span id="cb43-12"><a href="ch-nonlinear.html#cb43-12" tabindex="-1"></a>}</span>
+<span id="cb43-13"><a href="ch-nonlinear.html#cb43-13" tabindex="-1"></a></span>
+<span id="cb43-14"><a href="ch-nonlinear.html#cb43-14" tabindex="-1"></a><span class="co"># Floyd-Warshall Algorithm</span></span>
+<span id="cb43-15"><a href="ch-nonlinear.html#cb43-15" tabindex="-1"></a>floyd_warshall <span class="ot">&lt;-</span> <span class="cf">function</span>(mat) {</span>
+<span id="cb43-16"><a href="ch-nonlinear.html#cb43-16" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">dim</span>(mat)[<span class="dv">1</span>]</span>
+<span id="cb43-17"><a href="ch-nonlinear.html#cb43-17" tabindex="-1"></a>  dist <span class="ot">&lt;-</span> mat</span>
+<span id="cb43-18"><a href="ch-nonlinear.html#cb43-18" tabindex="-1"></a>  </span>
+<span id="cb43-19"><a href="ch-nonlinear.html#cb43-19" tabindex="-1"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb43-20"><a href="ch-nonlinear.html#cb43-20" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb43-21"><a href="ch-nonlinear.html#cb43-21" tabindex="-1"></a>      <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb43-22"><a href="ch-nonlinear.html#cb43-22" tabindex="-1"></a>        dist[i, j] <span class="ot">&lt;-</span> <span class="fu">min</span>(dist[i, j], dist[i, k] <span class="sc">+</span> dist[k, j])</span>
+<span id="cb43-23"><a href="ch-nonlinear.html#cb43-23" tabindex="-1"></a>      }</span>
+<span id="cb43-24"><a href="ch-nonlinear.html#cb43-24" tabindex="-1"></a>    }</span>
+<span id="cb43-25"><a href="ch-nonlinear.html#cb43-25" tabindex="-1"></a>  }</span>
+<span id="cb43-26"><a href="ch-nonlinear.html#cb43-26" tabindex="-1"></a>  </span>
+<span id="cb43-27"><a href="ch-nonlinear.html#cb43-27" tabindex="-1"></a>  <span class="fu">return</span>(dist)</span>
+<span id="cb43-28"><a href="ch-nonlinear.html#cb43-28" tabindex="-1"></a>}</span>
+<span id="cb43-29"><a href="ch-nonlinear.html#cb43-29" tabindex="-1"></a></span>
+<span id="cb43-30"><a href="ch-nonlinear.html#cb43-30" tabindex="-1"></a><span class="co"># Get the result</span></span>
+<span id="cb43-31"><a href="ch-nonlinear.html#cb43-31" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">floyd_warshall</span>(matrix)</span>
+<span id="cb43-32"><a href="ch-nonlinear.html#cb43-32" tabindex="-1"></a></span>
+<span id="cb43-33"><a href="ch-nonlinear.html#cb43-33" tabindex="-1"></a><span class="co"># Print the result</span></span>
+<span id="cb43-34"><a href="ch-nonlinear.html#cb43-34" tabindex="-1"></a><span class="fu">print</span>(result)</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
 ## [1,]    0    3    4    5   11   14
 ## [2,]    3    0    7    2   14   11
@@ -1043,7 +1043,7 @@ gitbook.start({
     "link": null,
     "text": null
   },
-  "download": ["_main.pdf", "_main.epub"],
+  "download": ["_main.pdf"],
   "search": {
     "engine": "fuse",
     "options": null
