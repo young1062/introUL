@@ -88,7 +88,7 @@ A third and far more subtle issue occurs because we do not enforce orthogonality
 For a given choice of error, the lack of a unique solution also means there is no closed form solution for ${\bf W}$ and ${\bf H}$. Thus, we will need to apply numerical optimization to find a ${\bf W}$ and ${\bf H}$ which minimizes the selected error,  $$\text{argmin}_{{\bf W}\in\mathbb{R}^{N\times k}_{\ge 0}, {\bf H}\in\mathbb{R}^{k\times d}_{\ge 0}}\,\,\,\,\, D({\bf X},{\bf WH})$$.  The loss is a function of all of the entries of ${\bf W}$ and ${\bf H}$. To apply any type of gradient based optimization, we need to compute the partial derivative of our loss with respect to each of the entries of these matrices.  
 
 As an example, we will focus on the divergence and show the relevant details.  For gradient based optimization, we then need to compute $\frac{\partial }{\partial {\bf W}_{ij}} D({\bf X}\| {\bf WH})$ for $`\le i \le N$ and $1\le j\le k$ and $\frac{\partial }{\partial {\bf H}_{j\ell}} D({\bf X}\| {\bf WH})$ for $1\le j \le k$ and $1\le \ell \le d.$  Note that $$({\bf WH})_{st} = \sum_{j=1}^k{\bf W}_{sk}{\bf H}_{kt}$$ so that 
-$$\frac{\partial ({\bf WH})_{st}}{\partial ({\bf WH})_{ij}} = \begin{cases}
+$$\frac{\partial ({\bf WH})_{st}}{\partial {\bf W}_{ij}} = \begin{cases}
 {\bf H}_{jt} & s = i \\
 0 & s\ne i
 \end{cases}$$
