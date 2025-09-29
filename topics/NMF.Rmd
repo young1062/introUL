@@ -94,13 +94,13 @@ $$\frac{\partial ({\bf WH})_{st}}{\partial ({\bf WH})_{ij}} = \begin{cases}
 \end{cases}$$
 Thus, we may may make use of the chain rule to conclude that
 \begin{align*}
-\frac{\partial }{\partial {\bf W}_{ij}} D({bf X}\| {\bf WH}) &= \frac{\partial }{\partial {\bf W}_{ij}}\sum_{st} \left({\bf X}_{st} \log(({\bf X})_{st}) - {\bf X}_{st} \log(({\bf WH})_{st}) + ({\bf WH})_st - ({\bf X})_{st}\right)\\
+\frac{\partial }{\partial {\bf W}_{ij}} D({\bf X}\| {\bf WH}) &= \frac{\partial }{\partial {\bf W}_{ij}}\sum_{st} \left({\bf X}_{st} \log(({\bf X})_{st}) - {\bf X}_{st} \log(({\bf WH})_{st}) + ({\bf WH})_st - ({\bf X})_{st}\right)\\
 &=\frac{\partial }{\partial {\bf W}_{ij}}\sum_{st} \left(- {\bf X}_{st} \log(({\bf WH})_{st}) + ({\bf WH})_{st} \right) \\
 &=\sum_{st}\left(\frac{{\bf X}_{st}}{({\bf WH}_{st})} + 1\right)\frac{\partial ({\bf WH})_{st}}{\partial {\bf W}_{ij}} \\
 &=\sum_{t=1}^d \left(-\frac{{\bf X}_{it}}{({\bf WH}_{it})} + 1\right){\bf H}_{jt}.
 \end{align*}
 A similar calculation gives
-$$\frac{\partial }{\partial {\bf H}_{ij}} D({bf X}\| {\bf WH}) = \sum_{s=1}^N \left(-\frac{{\bf X}_{sj}}{({\bf WH})_{sj}} + 1\right) {\bf W}_{sj}.$$
+$$\frac{\partial }{\partial {\bf H}_{ij}} D({\bf X}\| {\bf WH}) = \sum_{s=1}^N \left(-\frac{{\bf X}_{sj}}{({\bf WH})_{sj}} + 1\right) {\bf W}_{sj}.$$
 In a standard implementation of gradient descent, we choose a step size $\epsilon >0$ and apply the updates 
 \begin{equation}
 \begin{split}
@@ -117,7 +117,7 @@ These step size are proportional to the entries we are updating so that we take 
 \begin{equation}
 \begin{split}
 {\bf W}_{ij} &\leftarrow {\bf W}_{ij} \left[\frac{\sum_t \left({\bf H}_{jt}{\bf X}_{it}/({\bf WH}_{it})\right)}{\sum_t {\bf H}_{jt}} \right] \\
-{\bf H}_{ij} &\leftarrow {\bf H}_{ij} \left[\frac{\sum_s\left({\bf W}_{si}{\bf X_{sj}}/({\bf WH})_{si}    \right)}{\sum_s {\bf W}_{si}}\right]
+{\bf H}_{ij} &\leftarrow {\bf H}_{ij} \left[\frac{\sum_s \left({\bf W}_{si}{\bf X}_{sj}/({\bf WH})_{si}\right)}{\sum_s {\bf W}_{si}}\right]
 \end{split}
 \end{equation}
 
