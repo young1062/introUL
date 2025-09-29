@@ -100,24 +100,24 @@ Thus, we may may make use of the chain rule to conclude that
 &=\sum_{t=1}^d \left(-\frac{{\bf X}_{it}}{({\bf WH}_{it})} + 1\right){\bf H}_{jt}.
 \end{align*}
 A similar calculation gives
-$$\frac{\partial }{\partial {\bf H}_{ij}} D({\bf X}\| {\bf WH}) = \sum_{s=1}^N \left(-\frac{{\bf X}_{sj}}{({\bf WH})_{sj}} + 1\right) {\bf W}_{sj}.$$
+$$\frac{\partial }{\partial {\bf H}_{ij}} D({\bf X}\| {\bf WH}) = \sum_{s=1}^N \left(-\frac{{\bf X}_{sj}}{({\bf WH})_{sj}} + 1\right) {\bf W}_{si}.$$
 In a standard implementation of gradient descent, we choose a step size $\epsilon >0$ and apply the updates 
 \begin{equation}
 \begin{split}
 {\bf W}_{ij} \leftarrow {\bf W}_{ij} - \epsilon \sum_{t=1}^d \left(-\frac{{\bf X}_{it}}{({\bf WH}_{it})} + 1\right){\bf H}_{jt} \\
-{\bf H}_{ij} \leftarrow {\bf H}_{ij} - \epsilon \sum_{s=1}^N \left(-\frac{{\bf X}_{sj}}{({\bf WH})_{sj}} + 1\right) {\bf W}_{sj}
+{\bf H}_{ij} \leftarrow {\bf H}_{ij} - \epsilon \sum_{s=1}^N \left(-\frac{{\bf X}_{sj}}{({\bf WH})_{sj}} + 1\right) {\bf W}_{si}
 \end{split}
 \end{equation}
 to each entry of ${\bf W}$ and ${\bf H}$ simultaneously. Alternatively, we could consider coordinate descent where we update each entry of ${\bf W}$ (holding all other entries of ${\bf W}$ and ${\bf H}$ constant) separately then do the same for ${\bf H}$ then repeat.  Each approach will converge to a local mode (though possibly different ones) when $\epsilon$ is sufficiently small.  However, if $\epsilon$ is too small it may take many iterations to converge.  Unfortunately, choosing $\epsilon$ can create a numerically unstable algorithm (that doesn't converge at all) or one where we lose the nonnegativity condition on the entries of ${\bf W}$ or ${\bf H}$.  
 
 To preserve nonnegativity, [@lee_seung] developed a set of state dependent step-sizes (one for each entry of ${\bf W}$ and ${\bf H}$) which result in multiplicative rather than additive updates.  For divergence, they take step sizes
-$$\epsilon_{ij}^{W} = \frac{{\bf W}_{ij}}{\sum_t {\bf H}_{jt}} \text{ and } \epsilon_{ij}^H = \frac{{\bf H}_{ij}}{\sum_s {\bf W}_{sj}}.$$
+$$\epsilon_{ij}^{W} = \frac{{\bf W}_{ij}}{\sum_t {\bf H}_{jt}} \text{ and } \epsilon_{ij}^H = \frac{{\bf H}_{ij}}{\sum_s {\bf W}_{si}}.$$
 These step size are proportional to the entries we are updating so that we take larger steps for larger entries of ${\bf W}$ of ${\bf H}$. If we substitute these step sizes in the updates simplify to 
 
 \begin{equation}
 \begin{split}
 {\bf W}_{ij} &\leftarrow {\bf W}_{ij} \left[\frac{\sum_t \left({\bf H}_{jt}{\bf X}_{it}/({\bf WH}_{it})\right)}{\sum_t {\bf H}_{jt}} \right] \\
-{\bf H}_{ij} &\leftarrow {\bf H}_{ij} \left[\frac{\sum_s \left({\bf W}_{si}{\bf X}_{sj}/({\bf WH})_{si}\right)}{\sum_s {\bf W}_{si}}\right]
+{\bf H}_{ij} &\leftarrow {\bf H}_{ij} \left[\frac{\sum_s \left({\bf W}_{si}{\bf X}_{sj}/({\bf WH})_{sj}\right)}{\sum_s {\bf W}_{si}}\right]
 \end{split}
 \end{equation}
 
