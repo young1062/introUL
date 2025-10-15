@@ -22,8 +22,8 @@ We will only consider symmetric functions such that $k(\vec{x},\vec{y}) = k(\vec
 
 | Name | Equation | Tuning Parameters |
 |------|----------|-------------------|
-| Radial Basis Function | $k(\vec{x},\vec{y} = \exp\left(-\sigma\|\vec{x}-\vec{y}\|^2\right)$  | Scale $\sigma >0$ |
-| Laplace | $k(\vec{x},\vec{y} = \exp\left(-\sigma\|\vec{x}-\vec{y}\|\right)$  | Scale $\sigma >0$ |
+| Radial Basis Function | $k(\vec{x},\vec{y}) = \exp\left(-\sigma\|\vec{x}-\vec{y}\|^2\right)$  | Scale $\sigma >0$ |
+| Laplace | $k(\vec{x},\vec{y}) = \exp\left(-\sigma\|\vec{x}-\vec{y}\|\right)$  | Scale $\sigma >0$ |
 | Polynomial | $k(\vec{x},\vec{y}) = (c+ \vec{x}^T\vec{y})^d$ | Offset $c >0$, Degree $d \in \mathbb{N}$ |
 
 
