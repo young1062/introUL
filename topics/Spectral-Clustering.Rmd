@@ -61,7 +61,7 @@ In reality, especially when we use Fully-connected graph, we can't get $k$ exact
 
 First, we'll create the simulation data with two distinct clusters.
 
-```{r}
+```{r, echo = FALSE}
 # Generate two clusters
 cluster1 <- matrix(c(1, 2, 1.5, 2.5, 2, 3), ncol = 2)
 cluster2 <- matrix(c(4, 5, 4.5, 5.5, 5, 6), ncol = 2)
@@ -79,7 +79,7 @@ title("Data Points Visualization")
 
 We use the **$\epsilon$-neighborhood** approach to construct the similarity graph. 
 
-```{r}
+```{r, echo = FALSE}
 epsilon <- 1.5  # Set epsilon value
 n <- nrow(data)
 similarity_matrix <- matrix(0, n, n)

@@ -258,7 +258,10 @@ div.csl-indent {
 <li class="chapter" data-level="6" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html"><i class="fa fa-check"></i><b>6</b> Manifold Learning</a>
 <ul>
 <li class="chapter" data-level="6.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#the-manifold-hypothesis"><i class="fa fa-check"></i><b>6.1</b> The Manifold Hypothesis</a></li>
-<li class="chapter" data-level="6.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#sec-manifolds"><i class="fa fa-check"></i><b>6.2</b> A brief primer on manifolds and differential geometry</a></li>
+<li class="chapter" data-level="6.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#sec-manifolds"><i class="fa fa-check"></i><b>6.2</b> Brief primer on manifolds</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#charts-atlases-tangent-spaces-and-approximating-tangent-planes"><i class="fa fa-check"></i><b>6.2.1</b> Charts, atlases, tangent spaces and approximating tangent planes</a></li>
+</ul></li>
 <li class="chapter" data-level="6.3" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#isometric-feature-map-isomap"><i class="fa fa-check"></i><b>6.3</b> Isometric Feature Map (ISOMAP)</a>
 <ul>
 <li class="chapter" data-level="6.3.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#introduction"><i class="fa fa-check"></i><b>6.3.1</b> Introduction</a></li>
@@ -396,11 +399,11 @@ In this example, we’ll consider the three dimensional <strong>iris</strong> da
 <p>In the theoretical worst case, Lloyd’s algorithm can take<span class="math inline">\(\propto N^{k+1}\)</span> iterations to converge, but it is typically very fast in practice. Most implementations, allow the user to set a maximum number of iterations and converge to approximate suboptimal solutions if the maximum number of iterations is reached. PAM and greedy <span class="math inline">\(k\)</span>-center algorithms are typically much, much slower. However, once any of the clustering algorithms are complete, new data can be merged into cluster with nearest center. Other methods we’ll discuss later cannot incorporate new data without running the algorithm from scratch.</p>
 <p>Ther are other issues that can increase the computational demands of center-based clustering. Each of the methods requires one to choose the number of clusters in advance. We discuss this issue in more depth shortly, but for now we want to emphasize that there is no connection between the <span class="math inline">\(k\)</span>cluster solution and <span class="math inline">\((k+1)\)</span> cluster solution. Thus, when investigating a suitable number of clusters, we need to run our clustering algorithm for a range of potential values of <span class="math inline">\(k\)</span>.</p>
 <p>Convergence is also dependent on initial condition. In the figure below, we see two separate clustering arrangements resulting from different initial choices of the centers for <span class="math inline">\(k\)</span>-means.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-173-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-206-1.png" width="672" /></p>
 <p>Thus, we also need to avoid convergence to local minima either by running many different initial conditions to convergence and picking the best solution or by using better initialization such as <span class="math inline">\(k\)</span>-means++, which picks the initial points iteratively to maximize distance between the centers before running Lloyd’s algorithm. Using <span class="math inline">\(k\)</span>-means++ can reduce the number of initializations that one should use, but does not eliminate the potential for convergence to a poor clustering. Thus, center-based algorithms can become quite computationally demanding analyze appropriately.</p>
 <p>We have already discussed the impact of scale imbalance and outliers so as we turn to the geometric aspects of center based clustering, let’s first focus on the centers, which we often treat as <strong>representative</strong> examples of the cluster. However, the sample averages in <span class="math inline">\(k\)</span>-means may not resemble actual data points. Though <span class="math inline">\(k\)</span>-means may be much faster in prqctice, the centers in <span class="math inline">\(k\)</span>-center and <span class="math inline">\(k\)</span>-medoids are restricted to observations making them more representative of the data.</p>
 <p>Clusters are based off interpretable notion of (Euclidean) distance so that points in a cluster are closer to one another than to points in other clusters. However, this feature biases center-based methods to clusters which are spherical in shape. If (dis)similarity not best captured through (squared) Euclidean distance, poor clustering is inevitable, and many of the methods used to estimate the number of cluster with tend to overestiamte the true value. As an example, consider the three rings shown at the beginning of this chapter. Silhouette scores (see 6.1.) suggest 12 clusters which is much larger than the three rings we see in the figure.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-174-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-207-1.png" width="672" /></p>
 </div>
 <div id="choosing-the-number-of-clusters" class="section level3 hasAnchor" number="7.1.5">
 <h3><span class="header-section-number">7.1.5</span> Choosing the number of clusters<a href="ch-clustering.html#choosing-the-number-of-clusters" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -408,15 +411,15 @@ In this example, we’ll consider the three dimensional <strong>iris</strong> da
 <div id="elbow-plot" class="section level4 hasAnchor" number="7.1.5.1">
 <h4><span class="header-section-number">7.1.5.1</span> Elbow plot<a href="ch-clustering.html#elbow-plot" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The center-based loss function will decrease as the number of clusters increases. Thus, we can plot the optimal loss found at different numbers of clusters and look for a sudden drop, much like we did with the scree plot in PCA. Below, we show an example of this method for data with three well separated spherical clusters</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="ch-clustering.html#cb45-1" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">15</span></span>
-<span id="cb45-2"><a href="ch-clustering.html#cb45-2" tabindex="-1"></a>inertia <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,<span class="fu">length</span>(k))</span>
-<span id="cb45-3"><a href="ch-clustering.html#cb45-3" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(k)){</span>
-<span id="cb45-4"><a href="ch-clustering.html#cb45-4" tabindex="-1"></a>  inertia[j] <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(data1,k[j])<span class="sc">$</span>tot.withinss</span>
-<span id="cb45-5"><a href="ch-clustering.html#cb45-5" tabindex="-1"></a>}</span>
-<span id="cb45-6"><a href="ch-clustering.html#cb45-6" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
-<span id="cb45-7"><a href="ch-clustering.html#cb45-7" tabindex="-1"></a><span class="fu">plot</span>(data1<span class="sc">$</span>V1,data1<span class="sc">$</span>V2,<span class="at">xlab =</span> <span class="st">&#39;&#39;</span>, <span class="at">ylab =</span> <span class="st">&#39;&#39;</span>)</span>
-<span id="cb45-8"><a href="ch-clustering.html#cb45-8" tabindex="-1"></a><span class="fu">plot</span>(k,inertia, <span class="at">ylab=</span><span class="st">&quot;k-means loss&quot;</span> )</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-175-1.png" width="672" /></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="ch-clustering.html#cb23-1" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">15</span></span>
+<span id="cb23-2"><a href="ch-clustering.html#cb23-2" tabindex="-1"></a>inertia <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>,<span class="fu">length</span>(k))</span>
+<span id="cb23-3"><a href="ch-clustering.html#cb23-3" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(k)){</span>
+<span id="cb23-4"><a href="ch-clustering.html#cb23-4" tabindex="-1"></a>  inertia[j] <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(data1,k[j])<span class="sc">$</span>tot.withinss</span>
+<span id="cb23-5"><a href="ch-clustering.html#cb23-5" tabindex="-1"></a>}</span>
+<span id="cb23-6"><a href="ch-clustering.html#cb23-6" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb23-7"><a href="ch-clustering.html#cb23-7" tabindex="-1"></a><span class="fu">plot</span>(data1<span class="sc">$</span>V1,data1<span class="sc">$</span>V2,<span class="at">xlab =</span> <span class="st">&#39;&#39;</span>, <span class="at">ylab =</span> <span class="st">&#39;&#39;</span>)</span>
+<span id="cb23-8"><a href="ch-clustering.html#cb23-8" tabindex="-1"></a><span class="fu">plot</span>(k,inertia, <span class="at">ylab=</span><span class="st">&quot;k-means loss&quot;</span> )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-208-1.png" width="672" /></p>
 </div>
 <div id="gap-statistic" class="section level4 hasAnchor" number="7.1.5.2">
 <h4><span class="header-section-number">7.1.5.2</span> Gap Statistic<a href="ch-clustering.html#gap-statistic" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -430,10 +433,10 @@ In this example, we’ll consider the three dimensional <strong>iris</strong> da
 <li><p>Compute the sample variance <span class="math display">\[var(K) = \frac{1}{B-1}\sum_{b=1}^B \left(\log(T_K^{(b)}) - \bar{w}\right)^2,\]</span>
 and define <span class="math inline">\(s_K = \sqrt{var(K)(1+1/B)}\)</span></p></li>
 <li><p>Finally, choose the number of clusters as the smallest K such that
-<span class="math display">\[Gap(K) \ge Gap(K + 1) − s_{K+1}\]</span>
+<span class="math display">\[Gap(K) \ge Gap(K+1) - s_{K+1}\]</span>
 ::: {.example name=“GAP statistic and iris data”}
 Below, we show a plot of the Gap Statistic (left) which indicates that three clusters is correct. The associated clustering is used to color a plot of the first two PC scores (right)
-<img src="_main_files/figure-html/unnamed-chunk-176-1.png" width="672" />
+<img src="_main_files/figure-html/unnamed-chunk-209-1.png" width="672" />
 :::</p></li>
 </ol>
 </div>
@@ -470,15 +473,15 @@ over a range of values of <span class="math inline">\(K\)</span> and choose the 
 <h3><span class="header-section-number">7.2.1</span> Dendrograms<a href="ch-clustering.html#dendrograms" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The key output of hierarchical clustering is a dendrogram (tree diagram) depicting the subsequent merges/divisions of data, where each merge/division is shown by a horizontal line, with height indicating dissimilarity between merged or divided clusters. Before discussing the generation of a dendrogram and the many choices on which the process depends, let’s first discuss how a dendrogram can be read and the information it provides for clustering.</p>
 <p>In the figure below, samples 8 and 15 are merged into a cluster at height <span class="math inline">\(\approx 0.5\)</span> indicating they have an original dissimilarity (Euclidean distance in this case) of 0.5. Sample 4 is then merged into the cluster with samples 8 and 15 at height <span class="math inline">\(\approx\)</span> indicating the dissimilarity of sample 4 with the cluster of samples 8 and 15 is <span class="math inline">\(\approx 0.75\)</span></p>
-<p><img src="_main_files/figure-html/unnamed-chunk-186-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-219-1.png" width="672" /></p>
 <p>In addition to indicating the subsequent mergings/divisions of our data, the dendrogram can be used to determine a clustering of the data into a chosen number of clusters. For example, to cluster the data into three groups, we draw a horizontal line at a height (four in this case) which only cuts the tree into three branches.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-187-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-220-1.png" width="672" /></p>
 <p>Samples on the same branch are in the same cluster. Thus, the branch cut above suggest the following clustering:</p>
 <pre><code>- Cluster 1, samples: 12, 9, 13, 15, 2, 6
 - Cluster 2, samples: 4, 5, 7, 8
 - Cluster 3, samples: 3, 14, 10, 1, 11</code></pre>
 <p>which appears to match the clusters shown in the original data quite well.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-188-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-221-1.png" width="672" /></p>
 </div>
 <div id="building-a-dendrogram" class="section level3 hasAnchor" number="7.2.2">
 <h3><span class="header-section-number">7.2.2</span> Building a dendrogram<a href="ch-clustering.html#building-a-dendrogram" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -500,7 +503,7 @@ over a range of values of <span class="math inline">\(K\)</span> and choose the 
 <li><strong>Average Linkage</strong>: Average distance between all pairs of points in cluster <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> defines the cluster distance. Then,
 the distance between the clusters is
 <span class="math display">\[d(C_A,C_B) = \frac{1}{|C_A|\,|C_B|}\sum_{\vec{x}\in C_A, \vec{y} \in C_B} d(\vec{x},\vec{y}).\]</span></li>
-<li><strong>Ward’s Linkage</strong>: This method uses an iterative formula based on the squared distances to minimize the within cluster variation at each merge akin to <span class="math inline">\(k\)</span>-means. When the input to agglomerative clustering is Euclidean distance, Ward’s Linkage is proportional to the squared Euclidean distance between the sample means in each cluster <span class="citation">[<a href="#ref-roux_comparative_2018">30</a>]</span> though an explicit formula using the original dissimilarities is often used so that the original data is not required. For a complete discussion on this method and how it fits into the infinite family of Lance-Williams algorithms, see additional references <span class="citation">[<a href="#ref-szekely2005hierarchical">31</a>, <a href="#ref-EverittBrianS2001Ca">32</a>]</span>.</li>
+<li><strong>Ward’s Linkage</strong>: This method uses an iterative formula based on the squared distances to minimize the within cluster variation at each merge akin to <span class="math inline">\(k\)</span>-means. When the input to agglomerative clustering is Euclidean distance, Ward’s Linkage is proportional to the squared Euclidean distance between the sample means in each cluster <span class="citation">[<a href="#ref-roux_comparative_2018">33</a>]</span> though an explicit formula using the original dissimilarities is often used so that the original data is not required. For a complete discussion on this method and how it fits into the infinite family of Lance-Williams algorithms, see additional references <span class="citation">[<a href="#ref-szekely2005hierarchical">34</a>, <a href="#ref-EverittBrianS2001Ca">35</a>]</span>.</li>
 </ul>
 <p>In the above, the notation <span class="math inline">\(d(\cdot,\cdot)\)</span> represents the distance or dissimilarity of observations and/or clusters. Both the choice of original distances/dissimiliarities and the type of linkage have a strong impact on the quality of the clustering.</p>
 <div id="comparing-linkage-methods" class="section level4 hasAnchor" number="7.2.2.1">
@@ -514,7 +517,7 @@ the distance between the clusters is
 </div>
 <div id="determining-the-number-of-clusters" class="section level4 hasAnchor" number="7.2.2.2">
 <h4><span class="header-section-number">7.2.2.2</span> Determining the number of clusters<a href="ch-clustering.html#determining-the-number-of-clusters" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>In addition to selecting the number of clusters, Gap statistics and silhouette coefficients can also be used to select the optimal number of clusters. Other methods, such as the Mojena coefficient <span class="citation">[<a href="#ref-mojena">33</a>]</span> are designed specifically for hierarchical clustering.</p>
+<p>In addition to selecting the number of clusters, Gap statistics and silhouette coefficients can also be used to select the optimal number of clusters. Other methods, such as the Mojena coefficient <span class="citation">[<a href="#ref-mojena">36</a>]</span> are designed specifically for hierarchical clustering.</p>
 <!-- Model based -->
 </div>
 </div>
@@ -582,7 +585,7 @@ Figure 7.1: Samples from a GMM
 </div>
 <p>In the preceding example, the clusters had an elliptical shape which is a distinct variation from <span class="math inline">\(k\)</span>-means clustering which presumes spherical clusters. The location and shape/orientation of each cluster is controlled by its mean vector and covariance matrix respectively. As such, GMMs can still generate spherical clusters if the eigenvalues of each covariance matrix are (approximately) equal. This is a natural consequence of the Gaussian distribution and diagonalization of the covariance matrix. In high dimensions, Gaussian distributions concentrate near the surface of ellipsoids (rather than on the interior) but the general observation regarding the increased flexibility of GMMs over k-means holds true. Ignoring computational demands, one might expect GMMs to outperform k-means in many settings.</p>
 <p>Suppose you were asked to assign a sample at the location marked with a purple <em>x</em> below.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-196-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-229-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Do you expect the <em>x</em> was generated from the same density as the points in the red cluster or from the density that generated the point in the black cluster? In center based clustering, this is a binary choice. However, it is unclear from the picture so perhaps that most honest answer is that there is a 50/50 chance that it was generated from either (we can likely agree there is vanishingly small chance it belongs to the blue cluster). The option to make such <em>fuzzy</em> clustering is a natural consequence of the probabilistic modeling approach behind GMMs. For a given parameter vector <span class="math inline">\(\Phi\)</span> we can compute a posterior <span class="math inline">\(p(z_i | \vec{x}_i,\Phi)\)</span> reflecting our belief about the clustering labeling.</p>
 <p>Ultimately, clustering via GMMs requires estimation of the parameter <span class="math inline">\(\Phi\)</span> for a given model. If we had access to the cluster labels, <span class="math inline">\(z_1,\dots,z_N\)</span> this would be an easy problems. We could simply take sample means and covariances for the samples assigned to cluster <span class="math inline">\(j\)</span> to estimate <span class="math inline">\(\vec{\mu}_j\)</span> and <span class="math inline">\({\bf \Sigma}_j\)</span> and we could use the proportion of samples given cluster label <span class="math inline">\(j\)</span> as our estimate for <span class="math inline">\(p_j\)</span>. Mathematically, we would use the estimates
 <span class="math display">\[\begin{equation}
@@ -597,7 +600,7 @@ where <span class="math inline">\(\mathbb{1}(z_i=j)\)</span> is the indicator fu
 <span class="math display">\[\begin{equation}
 \log p(\vec{x}_1,\dots,\vec{x}_N\mid \Phi) = \sum_{i=1}^N\log\left(\sum_{j=1}^N p_j\mathcal{N}(\vec{x}_i;\, \vec{\mu}_j,{\bf \Sigma}_j)\right).
 \end{equation}\]</span>
-However, this method easily suffers from computation limitations (underflow) and additional care is required to enforce constraints on the parameters: the covariance matrices <span class="math inline">\(\{{\bf \Sigma}_j\}_{j=1}^K\)</span> must be positive definite and the probabilities <span class="math inline">\(p_1,\dots,p_K\)</span> must be non-negative and sum to one. Instead, we’ll use the powerful Expectation-Maximization (EM) algorithm which was named in the 1977 paper by Dempster, Laird, and Rubin <span class="citation">[<a href="#ref-Dempster1977">34</a>]</span>. In addition to proving convergence to a local maxima in our GMM setting, that paper also discusses many use cases for EM beyond mixture models.</p>
+However, this method easily suffers from computation limitations (underflow) and additional care is required to enforce constraints on the parameters: the covariance matrices <span class="math inline">\(\{{\bf \Sigma}_j\}_{j=1}^K\)</span> must be positive definite and the probabilities <span class="math inline">\(p_1,\dots,p_K\)</span> must be non-negative and sum to one. Instead, we’ll use the powerful Expectation-Maximization (EM) algorithm which was named in the 1977 paper by Dempster, Laird, and Rubin <span class="citation">[<a href="#ref-Dempster1977">37</a>]</span>. In addition to proving convergence to a local maxima in our GMM setting, that paper also discusses many use cases for EM beyond mixture models.</p>
 </div>
 <div id="expectation-maximization-em-algorithm" class="section level3 hasAnchor" number="7.3.2">
 <h3><span class="header-section-number">7.3.2</span> Expectation-Maximization (EM) Algorithm<a href="ch-clustering.html#expectation-maximization-em-algorithm" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -630,7 +633,7 @@ p_j^{(t+1)} &amp;= \frac{\sum_{i=1}^N \gamma_{ij}^{(t)}}{\sum_{i=1}^N\sum_{\ell=
 {\bf \Sigma}_j^{(t+1)} &amp;= \frac{\sum_{i=1}^N \gamma_{ij}^{(t)}(\vec{x}_i-\vec{\mu}_j^{(t+1)})(\vec{x}_i-\vec{\mu}_j^{(t+1)})^T}{\sum_{i=1}^N \gamma_{ij}^{(t)}}
 \end{align*}\]</span></p>
 <p>The above quantities resemble the simple estimates from @ref(eq:simple_gmm_estimates). Rather than taking average using the known labels, we take weighted estimates using the relative probability of vectors have associated cluster labels!</p>
-<p>Once we have computed <span class="math inline">\(\Phi^{(t+1)}\)</span> when then return to the E-step and continuing iterating until convergence. Convergence of the EM algorithm to a local maximum follows directly from Jensen’s inequality <span class="citation">[<a href="#ref-Dempster1977">34</a>]</span>. Since the algorithm is only guaranteed to converge to a local maximum, one should typically investigate multiple initial conditions then select the parameter value among all optima that attains the highest log-likelihood <span class="math inline">\(p(\vec{x}_1,\dots,\vec{x}_N\mid \Phi)\)</span>.</p>
+<p>Once we have computed <span class="math inline">\(\Phi^{(t+1)}\)</span> when then return to the E-step and continuing iterating until convergence. Convergence of the EM algorithm to a local maximum follows directly from Jensen’s inequality <span class="citation">[<a href="#ref-Dempster1977">37</a>]</span>. Since the algorithm is only guaranteed to converge to a local maximum, one should typically investigate multiple initial conditions then select the parameter value among all optima that attains the highest log-likelihood <span class="math inline">\(p(\vec{x}_1,\dots,\vec{x}_N\mid \Phi)\)</span>.</p>
 <p>Given a final estimate <span class="math inline">\(\Phi^*\)</span> we can now determine a clustering of the data. Let <span class="math display">\[\gamma_{ij}^* = \frac{p_j^{*} \mathcal{N}(\vec{x}_i; \vec{\mu}^*_j,{\bf \Sigma}^{*}_j)}{\sum_{\ell=1}^Kp_\ell^* \mathcal{N}(\vec{x}_i; \vec{\mu}^*_\ell,{\bf \Sigma}^*_\ell)}\]</span> denote our estimate cluster label probabilities for each observation given parameter <span class="math inline">\(\Phi^*\)</span>. Each <span class="math inline">\(\gamma_{ij}^*\)</span> reflects our belief that observation <span class="math inline">\(i\)</span> was generated by the <span class="math inline">\(j\)</span>th cluster density. To make a discrete clustering, we then assign observation <span class="math inline">\(\vec{x}_i\)</span> to the cluster maximizing <span class="math inline">\(\gamma_{ij}^*\)</span>.</p>
 </div>
 <div id="model-selection-and-parameter-constraints" class="section level3 hasAnchor" number="7.3.3">
@@ -639,7 +642,7 @@ p_j^{(t+1)} &amp;= \frac{\sum_{i=1}^N \gamma_{ij}^{(t)}}{\sum_{i=1}^N\sum_{\ell=
 <p><span class="math display">\[BIC_k = 2 \log L_k^* - 2 \log \mathcal{P}_k\]</span></p>
 <p>which balances goodness of fit with model complexity. Under this framework, we select the value of <span class="math inline">\(k\)</span> which maximizes BIC. (Note, some sources define BIC as the negative of our formula above and select <span class="math inline">\(k\)</span> opt to minimize. Be mindful of the convention when using pre-existing packages!)</p>
 <p>We can use the BIC approach to investigate additional constraints on the model parameters. Recall from the <a href="ch-clustering.html#exm:gmm">7.2</a>, the shape of clusters is controlled by the covariance matrices. By applying addition constraints to <span class="math inline">\({\bf \Sigma}_1,\dots,{\bf \Sigma}_K\)</span> we can reduce the number of model parameters. The standard convention for covariance constraints comes from Banfield and Raftery (1993) who observed that every covariance matrix can be decomposed via its eigenvalue decomposition <span class="math display">\[{\bf \Sigma}_j = \lambda_j {\bf W}_j{\bf \Lambda}_j{\bf W}_j\]</span>
-where <span class="math inline">\(\lambda_j\)</span> is a scalar parameter controlling the volume of the cluster, <span class="math inline">\({\bf W}_j\)</span> is an orthonormal matrix controlling the orientation of the cluster, and <span class="math inline">\({\bf \Lambda}_j\)</span> is a diagonal matrix with diagonal entries in the interval <span class="math inline">\((0,1]\)</span> giving the relative lengths of the semi-major axes of the ellipsoid <span class="citation">[<a href="#ref-banfield1993">35</a>]</span>. We can apply constraints on one or more of the corresponding components of the covariance matrices summarized in the table below</p>
+where <span class="math inline">\(\lambda_j\)</span> is a scalar parameter controlling the volume of the cluster, <span class="math inline">\({\bf W}_j\)</span> is an orthonormal matrix controlling the orientation of the cluster, and <span class="math inline">\({\bf \Lambda}_j\)</span> is a diagonal matrix with diagonal entries in the interval <span class="math inline">\((0,1]\)</span> giving the relative lengths of the semi-major axes of the ellipsoid <span class="citation">[<a href="#ref-banfield1993">38</a>]</span>. We can apply constraints on one or more of the corresponding components of the covariance matrices summarized in the table below</p>
 <table>
 <colgroup>
 <col width="7%" />
@@ -683,22 +686,22 @@ where <span class="math inline">\(\lambda_j\)</span> is a scalar parameter contr
 <h3><span class="header-section-number">7.3.4</span> Weakneses and Limitations<a href="ch-clustering.html#weakneses-and-limitations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Unlike center-based methods, GMMs allow for a greater level of flexibility in the shapes of clusters (ellipses vs spheres). However, ellipsoids may still be inadequate choices a cluster supported on or near a nonlinear manifold. For example, in the <strong>smile</strong> data below.</p>
 <div class="example">
-<p><span id="exm:unlabeled-div-4" class="example"><strong>Example 7.3  (GMMs fail to capture complex nonlinear structure) </strong></span>Consider the following data in <span class="math inline">\(\mathbb{R}^2\)</span> which exhibitis four clusters upon visual inspection</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-198-1.png" width="672" /></p>
+<p><span id="exm:unlabeled-div-10" class="example"><strong>Example 7.3  (GMMs fail to capture complex nonlinear structure) </strong></span>Consider the following data in <span class="math inline">\(\mathbb{R}^2\)</span> which exhibitis four clusters upon visual inspection</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-231-1.png" width="672" /></p>
 <p>The eyes and nose are each compact and approximately elliptical in shape, but the mouth is concentrated around a nonlinear parabolic curve. Applying the GMM model above for a range <span class="math inline">\(K=2,\dots,15\)</span> clusters gives the following BIC curves</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-199"></span>
-<img src="_main_files/figure-html/unnamed-chunk-199-1.png" alt="BIC curves for GMMs applied to the smile data" width="672" />
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-232"></span>
+<img src="_main_files/figure-html/unnamed-chunk-232-1.png" alt="BIC curves for GMMs applied to the smile data" width="672" />
 <p class="caption">
 Figure 7.2: BIC curves for GMMs applied to the smile data
 </p>
 </div>
 <p>Using BIC, the optimal GMM one should select contains nine clusters with EVV covariance structure. In the associated clustering shown below, the eyes are appropriately clustered, but the nose is split into two separate clusters. Most egregiously though, we can see the mouth was broken apart into five thin elliptic pieces reflecting the inherent limitations of the cluster shapes that can be identified by GMMs.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="ch-clustering.html#cb47-1" tabindex="-1"></a><span class="fu">plot</span>(smile.gmm, <span class="at">what =</span> <span class="st">&quot;classification&quot;</span>,</span>
-<span id="cb47-2"><a href="ch-clustering.html#cb47-2" tabindex="-1"></a>     <span class="at">xaxt=</span><span class="st">&#39;n&#39;</span>,<span class="at">yaxt=</span><span class="st">&#39;n&#39;</span>,</span>
-<span id="cb47-3"><a href="ch-clustering.html#cb47-3" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&#39;&#39;</span>, <span class="at">ylab =</span><span class="st">&#39;&#39;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-200-1.png" width="672" /></p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="ch-clustering.html#cb25-1" tabindex="-1"></a><span class="fu">plot</span>(smile.gmm, <span class="at">what =</span> <span class="st">&quot;classification&quot;</span>,</span>
+<span id="cb25-2"><a href="ch-clustering.html#cb25-2" tabindex="-1"></a>     <span class="at">xaxt=</span><span class="st">&#39;n&#39;</span>,<span class="at">yaxt=</span><span class="st">&#39;n&#39;</span>,</span>
+<span id="cb25-3"><a href="ch-clustering.html#cb25-3" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&#39;&#39;</span>, <span class="at">ylab =</span><span class="st">&#39;&#39;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-233-1.png" width="672" /></p>
 </div>
-<p>Given this limitation, there has been considerable work dedicated to improving model-based clustering including the design of more expressive mixture densities [<span class="citation">[<a href="#ref-Karlis2009">36</a>]</span>;<span class="citation">[<a href="#ref-OHagan2016">37</a>]</span>;<span class="citation">[<a href="#ref-Dang2023">38</a>]</span>} and methods which produce more parsimonious clustering arrangements by iteratively merging nearby clusters <span class="citation">[<a href="#ref-Dombowsky2025">39</a>]</span>.</p>
+<p>Given this limitation, there has been considerable work dedicated to improving model-based clustering including the design of more expressive mixture densities [<span class="citation">[<a href="#ref-Karlis2009">39</a>]</span>;<span class="citation">[<a href="#ref-OHagan2016">40</a>]</span>;<span class="citation">[<a href="#ref-Dang2023">41</a>]</span>} and methods which produce more parsimonious clustering arrangements by iteratively merging nearby clusters <span class="citation">[<a href="#ref-Dombowsky2025">42</a>]</span>.</p>
 <!-- Spectral Clustering -->
 </div>
 </div>
@@ -747,30 +750,12 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 <p>In reality, especially when we use Fully-connected graph, we can’t get <span class="math inline">\(k\)</span> exact zero-eigenvalues with corresponding <span class="math inline">\(k\)</span> eigenvectors. (Different clusters are not necessarily completely separate, and Fully-connected graph even allows every <span class="math inline">\(\mathbf{W}_{ij} &gt; 0\)</span>). So we will just conduct eigen decomposition and choose <span class="math inline">\(k\)</span> smallest eigenvalues together with their corresponding eigen-vectors.</p>
 <p><strong>A toy example</strong></p>
 <p>First, we’ll create the simulation data with two distinct clusters.</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="ch-clustering.html#cb48-1" tabindex="-1"></a><span class="co"># Generate two clusters</span></span>
-<span id="cb48-2"><a href="ch-clustering.html#cb48-2" tabindex="-1"></a>cluster1 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="fl">1.5</span>, <span class="fl">2.5</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb48-3"><a href="ch-clustering.html#cb48-3" tabindex="-1"></a>cluster2 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="fl">4.5</span>, <span class="fl">5.5</span>, <span class="dv">5</span>, <span class="dv">6</span>), <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb48-4"><a href="ch-clustering.html#cb48-4" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">rbind</span>(cluster1, cluster2)</span></code></pre></div>
 <p>Visualize the data points to make it more intuitive.</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="ch-clustering.html#cb49-1" tabindex="-1"></a><span class="fu">plot</span>(data, <span class="at">col =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;red&quot;</span>, <span class="fu">nrow</span>(cluster1)), <span class="fu">rep</span>(<span class="st">&quot;blue&quot;</span>, <span class="fu">nrow</span>(cluster2))), <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">xlab =</span> <span class="st">&quot;X-axis&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Y-axis&quot;</span>)</span>
-<span id="cb49-2"><a href="ch-clustering.html#cb49-2" tabindex="-1"></a><span class="fu">text</span>(data, <span class="at">labels =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(data), <span class="at">pos =</span> <span class="dv">4</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>)  <span class="co"># Adding labels</span></span>
-<span id="cb49-3"><a href="ch-clustering.html#cb49-3" tabindex="-1"></a><span class="fu">title</span>(<span class="st">&quot;Data Points Visualization&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-211-1.png" width="672" /></p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="ch-clustering.html#cb26-1" tabindex="-1"></a><span class="fu">plot</span>(data, <span class="at">col =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;red&quot;</span>, <span class="fu">nrow</span>(cluster1)), <span class="fu">rep</span>(<span class="st">&quot;blue&quot;</span>, <span class="fu">nrow</span>(cluster2))), <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">xlab =</span> <span class="st">&quot;X-axis&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Y-axis&quot;</span>)</span>
+<span id="cb26-2"><a href="ch-clustering.html#cb26-2" tabindex="-1"></a><span class="fu">text</span>(data, <span class="at">labels =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(data), <span class="at">pos =</span> <span class="dv">4</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>)  <span class="co"># Adding labels</span></span>
+<span id="cb26-3"><a href="ch-clustering.html#cb26-3" tabindex="-1"></a><span class="fu">title</span>(<span class="st">&quot;Data Points Visualization&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-244-1.png" width="672" /></p>
 <p>We use the <strong><span class="math inline">\(\epsilon\)</span>-neighborhood</strong> approach to construct the similarity graph.</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="ch-clustering.html#cb50-1" tabindex="-1"></a>epsilon <span class="ot">&lt;-</span> <span class="fl">1.5</span>  <span class="co"># Set epsilon value</span></span>
-<span id="cb50-2"><a href="ch-clustering.html#cb50-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(data)</span>
-<span id="cb50-3"><a href="ch-clustering.html#cb50-3" tabindex="-1"></a>similarity_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, n, n)</span>
-<span id="cb50-4"><a href="ch-clustering.html#cb50-4" tabindex="-1"></a></span>
-<span id="cb50-5"><a href="ch-clustering.html#cb50-5" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb50-6"><a href="ch-clustering.html#cb50-6" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb50-7"><a href="ch-clustering.html#cb50-7" tabindex="-1"></a>    <span class="cf">if</span> (i <span class="sc">!=</span> j <span class="sc">&amp;&amp;</span> <span class="fu">dist</span>(<span class="fu">rbind</span>(data[i, ], data[j, ])) <span class="sc">&lt;</span> epsilon) {</span>
-<span id="cb50-8"><a href="ch-clustering.html#cb50-8" tabindex="-1"></a>      similarity_matrix[i, j] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb50-9"><a href="ch-clustering.html#cb50-9" tabindex="-1"></a>      similarity_matrix[j, i] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb50-10"><a href="ch-clustering.html#cb50-10" tabindex="-1"></a>    }</span>
-<span id="cb50-11"><a href="ch-clustering.html#cb50-11" tabindex="-1"></a>  }</span>
-<span id="cb50-12"><a href="ch-clustering.html#cb50-12" tabindex="-1"></a>}</span>
-<span id="cb50-13"><a href="ch-clustering.html#cb50-13" tabindex="-1"></a></span>
-<span id="cb50-14"><a href="ch-clustering.html#cb50-14" tabindex="-1"></a><span class="fu">print</span>(similarity_matrix)</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
 ## [1,]    0    1    1    0    0    0
 ## [2,]    1    0    1    0    0    0
@@ -779,9 +764,9 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 ## [5,]    0    0    0    1    0    1
 ## [6,]    0    0    0    1    1    0</code></pre>
 <p>Compute the Laplacian matrix.</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="ch-clustering.html#cb52-1" tabindex="-1"></a>degree_matrix <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="fu">apply</span>(similarity_matrix, <span class="dv">1</span>, sum))</span>
-<span id="cb52-2"><a href="ch-clustering.html#cb52-2" tabindex="-1"></a>laplacian_matrix <span class="ot">&lt;-</span> degree_matrix <span class="sc">-</span> similarity_matrix</span>
-<span id="cb52-3"><a href="ch-clustering.html#cb52-3" tabindex="-1"></a><span class="fu">print</span>(laplacian_matrix)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="ch-clustering.html#cb28-1" tabindex="-1"></a>degree_matrix <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="fu">apply</span>(similarity_matrix, <span class="dv">1</span>, sum))</span>
+<span id="cb28-2"><a href="ch-clustering.html#cb28-2" tabindex="-1"></a>laplacian_matrix <span class="ot">&lt;-</span> degree_matrix <span class="sc">-</span> similarity_matrix</span>
+<span id="cb28-3"><a href="ch-clustering.html#cb28-3" tabindex="-1"></a><span class="fu">print</span>(laplacian_matrix)</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
 ## [1,]    2   -1   -1    0    0    0
 ## [2,]   -1    2   -1    0    0    0
@@ -790,19 +775,19 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 ## [5,]    0    0    0   -1    2   -1
 ## [6,]    0    0    0   -1   -1    2</code></pre>
 <p>Perform eigen decomposition on the Laplacian matrix. We choose the smallest two eigenvalues here since we want to</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="ch-clustering.html#cb54-1" tabindex="-1"></a>eigen_result <span class="ot">&lt;-</span> <span class="fu">eigen</span>(laplacian_matrix)</span>
-<span id="cb54-2"><a href="ch-clustering.html#cb54-2" tabindex="-1"></a></span>
-<span id="cb54-3"><a href="ch-clustering.html#cb54-3" tabindex="-1"></a><span class="co"># Sort eigenvalues and their corresponding eigenvectors</span></span>
-<span id="cb54-4"><a href="ch-clustering.html#cb54-4" tabindex="-1"></a>sorted_indices <span class="ot">&lt;-</span> <span class="fu">order</span>(eigen_result<span class="sc">$</span>values)</span>
-<span id="cb54-5"><a href="ch-clustering.html#cb54-5" tabindex="-1"></a>sorted_eigenvalues <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>values[sorted_indices]</span>
-<span id="cb54-6"><a href="ch-clustering.html#cb54-6" tabindex="-1"></a>sorted_eigenvectors <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>vectors[, sorted_indices]</span>
-<span id="cb54-7"><a href="ch-clustering.html#cb54-7" tabindex="-1"></a></span>
-<span id="cb54-8"><a href="ch-clustering.html#cb54-8" tabindex="-1"></a><span class="co"># Select the smallest two eigenvalues and their corresponding eigenvectors</span></span>
-<span id="cb54-9"><a href="ch-clustering.html#cb54-9" tabindex="-1"></a>smallest_eigenvalues <span class="ot">&lt;-</span> sorted_eigenvalues[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
-<span id="cb54-10"><a href="ch-clustering.html#cb54-10" tabindex="-1"></a>smallest_eigenvectors <span class="ot">&lt;-</span> sorted_eigenvectors[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
-<span id="cb54-11"><a href="ch-clustering.html#cb54-11" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvalues)</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="ch-clustering.html#cb30-1" tabindex="-1"></a>eigen_result <span class="ot">&lt;-</span> <span class="fu">eigen</span>(laplacian_matrix)</span>
+<span id="cb30-2"><a href="ch-clustering.html#cb30-2" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="ch-clustering.html#cb30-3" tabindex="-1"></a><span class="co"># Sort eigenvalues and their corresponding eigenvectors</span></span>
+<span id="cb30-4"><a href="ch-clustering.html#cb30-4" tabindex="-1"></a>sorted_indices <span class="ot">&lt;-</span> <span class="fu">order</span>(eigen_result<span class="sc">$</span>values)</span>
+<span id="cb30-5"><a href="ch-clustering.html#cb30-5" tabindex="-1"></a>sorted_eigenvalues <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>values[sorted_indices]</span>
+<span id="cb30-6"><a href="ch-clustering.html#cb30-6" tabindex="-1"></a>sorted_eigenvectors <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>vectors[, sorted_indices]</span>
+<span id="cb30-7"><a href="ch-clustering.html#cb30-7" tabindex="-1"></a></span>
+<span id="cb30-8"><a href="ch-clustering.html#cb30-8" tabindex="-1"></a><span class="co"># Select the smallest two eigenvalues and their corresponding eigenvectors</span></span>
+<span id="cb30-9"><a href="ch-clustering.html#cb30-9" tabindex="-1"></a>smallest_eigenvalues <span class="ot">&lt;-</span> sorted_eigenvalues[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb30-10"><a href="ch-clustering.html#cb30-10" tabindex="-1"></a>smallest_eigenvectors <span class="ot">&lt;-</span> sorted_eigenvectors[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb30-11"><a href="ch-clustering.html#cb30-11" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvalues)</span></code></pre></div>
 <pre><code>## [1] 1.776357e-15 1.776357e-15</code></pre>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="ch-clustering.html#cb56-1" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvectors)</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="ch-clustering.html#cb32-1" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvectors)</span></code></pre></div>
 <pre><code>##            [,1]       [,2]
 ## [1,]  0.0000000 -0.5773503
 ## [2,]  0.0000000 -0.5773503
@@ -812,20 +797,20 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 ## [6,] -0.5773503  0.0000000</code></pre>
 <p>We find that the smallest two eigen-values are 0 (not exact zero here because of computational precision issue), and their corresponding eigen-vectors give us information about the clustering. The first cluster contains data point 4, 5, 6; while the second cluster contains the rest three data points 1, 2, 3.</p>
 <p>We try <strong>fully-connected graph</strong> with radial basis function to construct the adjacency matrix this time.</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="ch-clustering.html#cb58-1" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="dv">1</span>  <span class="co"># Scale parameter for the RBF kernel</span></span>
-<span id="cb58-2"><a href="ch-clustering.html#cb58-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(data)</span>
-<span id="cb58-3"><a href="ch-clustering.html#cb58-3" tabindex="-1"></a>similarity_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, n, n)</span>
-<span id="cb58-4"><a href="ch-clustering.html#cb58-4" tabindex="-1"></a></span>
-<span id="cb58-5"><a href="ch-clustering.html#cb58-5" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb58-6"><a href="ch-clustering.html#cb58-6" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb58-7"><a href="ch-clustering.html#cb58-7" tabindex="-1"></a>    <span class="cf">if</span> (i <span class="sc">!=</span> j) {</span>
-<span id="cb58-8"><a href="ch-clustering.html#cb58-8" tabindex="-1"></a>      distance <span class="ot">&lt;-</span> <span class="fu">dist</span>(<span class="fu">rbind</span>(data[i, ], data[j, ]))<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb58-9"><a href="ch-clustering.html#cb58-9" tabindex="-1"></a>      similarity_matrix[i, j] <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>gamma <span class="sc">*</span> distance)</span>
-<span id="cb58-10"><a href="ch-clustering.html#cb58-10" tabindex="-1"></a>    }</span>
-<span id="cb58-11"><a href="ch-clustering.html#cb58-11" tabindex="-1"></a>  }</span>
-<span id="cb58-12"><a href="ch-clustering.html#cb58-12" tabindex="-1"></a>}</span>
-<span id="cb58-13"><a href="ch-clustering.html#cb58-13" tabindex="-1"></a></span>
-<span id="cb58-14"><a href="ch-clustering.html#cb58-14" tabindex="-1"></a><span class="fu">print</span>(similarity_matrix)</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="ch-clustering.html#cb34-1" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="dv">1</span>  <span class="co"># Scale parameter for the RBF kernel</span></span>
+<span id="cb34-2"><a href="ch-clustering.html#cb34-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(data)</span>
+<span id="cb34-3"><a href="ch-clustering.html#cb34-3" tabindex="-1"></a>similarity_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, n, n)</span>
+<span id="cb34-4"><a href="ch-clustering.html#cb34-4" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="ch-clustering.html#cb34-5" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb34-6"><a href="ch-clustering.html#cb34-6" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb34-7"><a href="ch-clustering.html#cb34-7" tabindex="-1"></a>    <span class="cf">if</span> (i <span class="sc">!=</span> j) {</span>
+<span id="cb34-8"><a href="ch-clustering.html#cb34-8" tabindex="-1"></a>      distance <span class="ot">&lt;-</span> <span class="fu">dist</span>(<span class="fu">rbind</span>(data[i, ], data[j, ]))<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb34-9"><a href="ch-clustering.html#cb34-9" tabindex="-1"></a>      similarity_matrix[i, j] <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>gamma <span class="sc">*</span> distance)</span>
+<span id="cb34-10"><a href="ch-clustering.html#cb34-10" tabindex="-1"></a>    }</span>
+<span id="cb34-11"><a href="ch-clustering.html#cb34-11" tabindex="-1"></a>  }</span>
+<span id="cb34-12"><a href="ch-clustering.html#cb34-12" tabindex="-1"></a>}</span>
+<span id="cb34-13"><a href="ch-clustering.html#cb34-13" tabindex="-1"></a></span>
+<span id="cb34-14"><a href="ch-clustering.html#cb34-14" tabindex="-1"></a><span class="fu">print</span>(similarity_matrix)</span></code></pre></div>
 <pre><code>##              [,1]         [,2]         [,3]         [,4]         [,5]         [,6]
 ## [1,] 0.000000e+00 2.865048e-01 6.065307e-01 1.522998e-08 2.172440e-10 2.289735e-11
 ## [2,] 2.865048e-01 0.000000e+00 2.865048e-01 8.764248e-08 1.522998e-08 2.172440e-10
@@ -833,9 +818,9 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 ## [4,] 1.522998e-08 8.764248e-08 3.726653e-06 0.000000e+00 2.865048e-01 6.065307e-01
 ## [5,] 2.172440e-10 1.522998e-08 8.764248e-08 2.865048e-01 0.000000e+00 2.865048e-01
 ## [6,] 2.289735e-11 2.172440e-10 1.522998e-08 6.065307e-01 2.865048e-01 0.000000e+00</code></pre>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="ch-clustering.html#cb60-1" tabindex="-1"></a>degree_matrix <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="fu">apply</span>(similarity_matrix, <span class="dv">1</span>, sum))</span>
-<span id="cb60-2"><a href="ch-clustering.html#cb60-2" tabindex="-1"></a>laplacian_matrix <span class="ot">&lt;-</span> degree_matrix <span class="sc">-</span> similarity_matrix</span>
-<span id="cb60-3"><a href="ch-clustering.html#cb60-3" tabindex="-1"></a><span class="fu">print</span>(laplacian_matrix)</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="ch-clustering.html#cb36-1" tabindex="-1"></a>degree_matrix <span class="ot">&lt;-</span> <span class="fu">diag</span>(<span class="fu">apply</span>(similarity_matrix, <span class="dv">1</span>, sum))</span>
+<span id="cb36-2"><a href="ch-clustering.html#cb36-2" tabindex="-1"></a>laplacian_matrix <span class="ot">&lt;-</span> degree_matrix <span class="sc">-</span> similarity_matrix</span>
+<span id="cb36-3"><a href="ch-clustering.html#cb36-3" tabindex="-1"></a><span class="fu">print</span>(laplacian_matrix)</span></code></pre></div>
 <pre><code>##               [,1]          [,2]          [,3]          [,4]          [,5]          [,6]
 ## [1,]  8.930355e-01 -2.865048e-01 -6.065307e-01 -1.522998e-08 -2.172440e-10 -2.289735e-11
 ## [2,] -2.865048e-01  5.730097e-01 -2.865048e-01 -8.764248e-08 -1.522998e-08 -2.172440e-10
@@ -843,19 +828,19 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 ## [4,] -1.522998e-08 -8.764248e-08 -3.726653e-06  8.930393e-01 -2.865048e-01 -6.065307e-01
 ## [5,] -2.172440e-10 -1.522998e-08 -8.764248e-08 -2.865048e-01  5.730097e-01 -2.865048e-01
 ## [6,] -2.289735e-11 -2.172440e-10 -1.522998e-08 -6.065307e-01 -2.865048e-01  8.930355e-01</code></pre>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="ch-clustering.html#cb62-1" tabindex="-1"></a>eigen_result <span class="ot">&lt;-</span> <span class="fu">eigen</span>(laplacian_matrix)</span>
-<span id="cb62-2"><a href="ch-clustering.html#cb62-2" tabindex="-1"></a></span>
-<span id="cb62-3"><a href="ch-clustering.html#cb62-3" tabindex="-1"></a><span class="co"># Sort eigenvalues and their corresponding eigenvectors</span></span>
-<span id="cb62-4"><a href="ch-clustering.html#cb62-4" tabindex="-1"></a>sorted_indices <span class="ot">&lt;-</span> <span class="fu">order</span>(eigen_result<span class="sc">$</span>values)</span>
-<span id="cb62-5"><a href="ch-clustering.html#cb62-5" tabindex="-1"></a>sorted_eigenvalues <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>values[sorted_indices]</span>
-<span id="cb62-6"><a href="ch-clustering.html#cb62-6" tabindex="-1"></a>sorted_eigenvectors <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>vectors[, sorted_indices]</span>
-<span id="cb62-7"><a href="ch-clustering.html#cb62-7" tabindex="-1"></a></span>
-<span id="cb62-8"><a href="ch-clustering.html#cb62-8" tabindex="-1"></a><span class="co"># Select the smallest two eigenvalues and their corresponding eigenvectors</span></span>
-<span id="cb62-9"><a href="ch-clustering.html#cb62-9" tabindex="-1"></a>smallest_eigenvalues <span class="ot">&lt;-</span> sorted_eigenvalues[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
-<span id="cb62-10"><a href="ch-clustering.html#cb62-10" tabindex="-1"></a>smallest_eigenvectors <span class="ot">&lt;-</span> sorted_eigenvectors[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
-<span id="cb62-11"><a href="ch-clustering.html#cb62-11" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvalues)</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="ch-clustering.html#cb38-1" tabindex="-1"></a>eigen_result <span class="ot">&lt;-</span> <span class="fu">eigen</span>(laplacian_matrix)</span>
+<span id="cb38-2"><a href="ch-clustering.html#cb38-2" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="ch-clustering.html#cb38-3" tabindex="-1"></a><span class="co"># Sort eigenvalues and their corresponding eigenvectors</span></span>
+<span id="cb38-4"><a href="ch-clustering.html#cb38-4" tabindex="-1"></a>sorted_indices <span class="ot">&lt;-</span> <span class="fu">order</span>(eigen_result<span class="sc">$</span>values)</span>
+<span id="cb38-5"><a href="ch-clustering.html#cb38-5" tabindex="-1"></a>sorted_eigenvalues <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>values[sorted_indices]</span>
+<span id="cb38-6"><a href="ch-clustering.html#cb38-6" tabindex="-1"></a>sorted_eigenvectors <span class="ot">&lt;-</span> eigen_result<span class="sc">$</span>vectors[, sorted_indices]</span>
+<span id="cb38-7"><a href="ch-clustering.html#cb38-7" tabindex="-1"></a></span>
+<span id="cb38-8"><a href="ch-clustering.html#cb38-8" tabindex="-1"></a><span class="co"># Select the smallest two eigenvalues and their corresponding eigenvectors</span></span>
+<span id="cb38-9"><a href="ch-clustering.html#cb38-9" tabindex="-1"></a>smallest_eigenvalues <span class="ot">&lt;-</span> sorted_eigenvalues[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb38-10"><a href="ch-clustering.html#cb38-10" tabindex="-1"></a>smallest_eigenvectors <span class="ot">&lt;-</span> sorted_eigenvectors[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb38-11"><a href="ch-clustering.html#cb38-11" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvalues)</span></code></pre></div>
 <pre><code>## [1] 2.564067e-16 2.632047e-06</code></pre>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="ch-clustering.html#cb64-1" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvectors)</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="ch-clustering.html#cb40-1" tabindex="-1"></a><span class="fu">print</span>(smallest_eigenvectors)</span></code></pre></div>
 <pre><code>##            [,1]       [,2]
 ## [1,] -0.4082483  0.4082488
 ## [2,] -0.4082483  0.4082494
@@ -929,61 +914,70 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 <div class="csl-left-margin">[20] </div><div class="csl-right-inline"><span class="smallcaps">Campadelli</span>, P., <span class="smallcaps">Casiraghi</span>, E., <span class="smallcaps">Ceruti</span>, C. and <span class="smallcaps">Rozza</span>, A. (2015). <a href="https://doi.org/10.1155/2015/759567">Intrinsic dimension estimation: Relevant techniques and a benchmark framework</a>. <em>Mathematical Problems in Engineering</em> <strong>2015</strong> 759567.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[21] </div><div class="csl-right-inline"><span class="smallcaps">Tenenbaum</span>, J. B., <span class="smallcaps">Silva</span>, V. de and <span class="smallcaps">Langford</span>, J. C. (2000). <a href="https://doi.org/10.1126/science.290.5500.2319">A global geometric framework for nonlinear dimensionality reduction</a>. <em>Science</em> <strong>290</strong> 2319–23.</div>
+<div class="csl-left-margin">[21] </div><div class="csl-right-inline"><span class="smallcaps">Spivak</span>, M. D. (1979). <em>A comprehensive introduction to differential geometry</em>. Publish or Perish, Inc.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[22] </div><div class="csl-right-inline"><span class="smallcaps">Bernstein</span>, M., <span class="smallcaps">Silva</span>, V., <span class="smallcaps">Langford</span>, J. and <span class="smallcaps">Tenenbaum</span>, J. (2001). Graph approximations to geodesics on embedded manifolds.</div>
+<div class="csl-left-margin">[22] </div><div class="csl-right-inline"><span class="smallcaps">Lee</span>, J. M. (2019). <em><a href="https://doi.org/10.1007/978-3-319-91755-9">Introduction to riemannian manifolds (second edition)</a></em>. Springer Nature.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[23] </div><div class="csl-right-inline"><span class="smallcaps">Roweis</span>, S. T. and <span class="smallcaps">Saul</span>, L. K. (2000). <a href="https://doi.org/10.1126/science.290.5500.2323">Nonlinear dimensionality reduction by locally linear embedding</a>. <em>Science</em> <strong>290</strong> 2323–6.</div>
+<div class="csl-left-margin">[23] </div><div class="csl-right-inline"><span class="smallcaps">Little</span>, A., <span class="smallcaps">Lee</span>, J., <span class="smallcaps">Jung</span>, Y.-M. and <span class="smallcaps">Maggioni</span>, M. (2009). <a href="https://doi.org/10.1109/SSP.2009.5278634">Estimation of intrinsic dimensionality of samples from noisy low-dimensional manifolds in high dimensions with multiscale SVD</a>. In <em>IEEE Workshop on Statistical Signal Processing Proceedings</em> pp 85–8.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[24] </div><div class="csl-right-inline"><span class="smallcaps">Chen</span>, J. and <span class="smallcaps">Liu</span>, Y. (2011). <a href="https://doi.org/10.1007/s10462-010-9200-z">Locally linear embedding: A survey</a>. <em>Artif. Intell. Rev.</em> <strong>36</strong> 29–48.</div>
+<div class="csl-left-margin">[24] </div><div class="csl-right-inline"><span class="smallcaps">Tenenbaum</span>, J. B., <span class="smallcaps">Silva</span>, V. de and <span class="smallcaps">Langford</span>, J. C. (2000). <a href="https://doi.org/10.1126/science.290.5500.2319">A global geometric framework for nonlinear dimensionality reduction</a>. <em>Science</em> <strong>290</strong> 2319–23.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[25] </div><div class="csl-right-inline"><span class="smallcaps">Saul</span>, L. K. and <span class="smallcaps">Roweis</span>, S. T. (2003). <a href="https://doi.org/10.1162/153244304322972667">Think globally, fit locally: Unsupervised learning of low dimensional manifolds</a>. <strong>4</strong> 119–55.</div>
+<div class="csl-left-margin">[25] </div><div class="csl-right-inline"><span class="smallcaps">Bernstein</span>, M., <span class="smallcaps">Silva</span>, V., <span class="smallcaps">Langford</span>, J. and <span class="smallcaps">Tenenbaum</span>, J. (2001). Graph approximations to geodesics on embedded manifolds.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[26] </div><div class="csl-right-inline"><span class="smallcaps">Anon</span>. (2019). <a href="https://doi.org/10.1016/j.patrec.2019.02.030">Locally linear embedding with additive noise</a>. <em>Pattern Recognition Letters</em> <strong>123</strong> 47–52.</div>
+<div class="csl-left-margin">[26] </div><div class="csl-right-inline"><span class="smallcaps">Roweis</span>, S. T. and <span class="smallcaps">Saul</span>, L. K. (2000). <a href="https://doi.org/10.1126/science.290.5500.2323">Nonlinear dimensionality reduction by locally linear embedding</a>. <em>Science</em> <strong>290</strong> 2323–6.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[27] </div><div class="csl-right-inline"><span class="smallcaps">Chang</span>, H. and <span class="smallcaps">Yeung</span>, D.-Y. (2006). <a href="https://doi.org/10.1016/j.patcog.2005.07.011">Robust locally linear embedding</a>. <em>Pattern Recognition</em> <strong>39</strong> 1053–65.</div>
+<div class="csl-left-margin">[27] </div><div class="csl-right-inline"><span class="smallcaps">Chen</span>, J. and <span class="smallcaps">Liu</span>, Y. (2011). <a href="https://doi.org/10.1007/s10462-010-9200-z">Locally linear embedding: A survey</a>. <em>Artif. Intell. Rev.</em> <strong>36</strong> 29–48.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[28] </div><div class="csl-right-inline"><span class="smallcaps">Belkin</span>, M. and <span class="smallcaps">Niyogi</span>, P. (2001). <a href="https://proceedings.neurips.cc/paper_files/paper/2001/file/f106b7f99d2cb30c3db1c3cc0fde9ccb-Paper.pdf">Laplacian eigenmaps and spectral techniques for embedding and clustering</a>. In <em>Advances in neural information processing systems</em> vol 14, (T. Dietterich, S. Becker and Z. Ghahramani, ed). MIT Press.</div>
+<div class="csl-left-margin">[28] </div><div class="csl-right-inline"><span class="smallcaps">Saul</span>, L. K. and <span class="smallcaps">Roweis</span>, S. T. (2003). <a href="https://doi.org/10.1162/153244304322972667">Think globally, fit locally: Unsupervised learning of low dimensional manifolds</a>. <strong>4</strong> 119–55.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[29] </div><div class="csl-right-inline"><span class="smallcaps">Donoho</span>, D. L. and <span class="smallcaps">Grimes</span>, C. (2003). <a href="https://doi.org/10.1073/pnas.1031596100">Hessian eigenmaps: Locally linear embedding techniques for high-dimensional data</a>. <em>Proceedings of the National Academy of Sciences</em> <strong>100</strong> 5591–6.</div>
+<div class="csl-left-margin">[29] </div><div class="csl-right-inline"><span class="smallcaps">Anon</span>. (2019). <a href="https://doi.org/10.1016/j.patrec.2019.02.030">Locally linear embedding with additive noise</a>. <em>Pattern Recognition Letters</em> <strong>123</strong> 47–52.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[30] </div><div class="csl-right-inline"><span class="smallcaps">Roux</span>, M. (2018). <a href="https://doi.org/10.1007/s00357-018-9259-9">A comparative study of divisive and agglomerative hierarchical clustering algorithms</a>. <em>Journal of Classification</em> <strong>35</strong> 345–66.</div>
+<div class="csl-left-margin">[30] </div><div class="csl-right-inline"><span class="smallcaps">Chang</span>, H. and <span class="smallcaps">Yeung</span>, D.-Y. (2006). <a href="https://doi.org/10.1016/j.patcog.2005.07.011">Robust locally linear embedding</a>. <em>Pattern Recognition</em> <strong>39</strong> 1053–65.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[31] </div><div class="csl-right-inline"><span class="smallcaps">Szekely</span>, G. J., <span class="smallcaps">Rizzo</span>, M. L., et al. (2005). Hierarchical clustering via joint between-within distances: Extending ward’s minimum variance method. <em>Journal of classification</em> <strong>22</strong> 151–84.</div>
+<div class="csl-left-margin">[31] </div><div class="csl-right-inline"><span class="smallcaps">Belkin</span>, M. and <span class="smallcaps">Niyogi</span>, P. (2001). <a href="https://proceedings.neurips.cc/paper_files/paper/2001/file/f106b7f99d2cb30c3db1c3cc0fde9ccb-Paper.pdf">Laplacian eigenmaps and spectral techniques for embedding and clustering</a>. In <em>Advances in neural information processing systems</em> vol 14, (T. Dietterich, S. Becker and Z. Ghahramani, ed). MIT Press.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[32] </div><div class="csl-right-inline"><span class="smallcaps">Everitt</span>, B. S. (2001). <em>Cluster analysis</em>. Arnold ; Oxford University Press, London : New York.</div>
+<div class="csl-left-margin">[32] </div><div class="csl-right-inline"><span class="smallcaps">Donoho</span>, D. L. and <span class="smallcaps">Grimes</span>, C. (2003). <a href="https://doi.org/10.1073/pnas.1031596100">Hessian eigenmaps: Locally linear embedding techniques for high-dimensional data</a>. <em>Proceedings of the National Academy of Sciences</em> <strong>100</strong> 5591–6.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[33] </div><div class="csl-right-inline"><span class="smallcaps">Mojena</span>, R. (1977). <a href="https://doi.org/10.1093/comjnl/20.4.359"><span class="nocase">Hierarchical grouping methods and stopping rules: an evaluation*</span></a>. <em>The Computer Journal</em> <strong>20</strong> 359–63.</div>
+<div class="csl-left-margin">[33] </div><div class="csl-right-inline"><span class="smallcaps">Roux</span>, M. (2018). <a href="https://doi.org/10.1007/s00357-018-9259-9">A comparative study of divisive and agglomerative hierarchical clustering algorithms</a>. <em>Journal of Classification</em> <strong>35</strong> 345–66.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[34] </div><div class="csl-right-inline"><span class="smallcaps">Dempster</span>, A. P., <span class="smallcaps">Laird</span>, N. M. and <span class="smallcaps">Rubin</span>, D. B. (1977). <a href="https://doi.org/10.1111/J.2517-6161.1977.TB01600.X"><span class="nocase">Maximum Likelihood from Incomplete Data Via the EM Algorithm</span></a>. <em>Journal of the Royal Statistical Society Series B: Statistical Methodology</em> <strong>39</strong> 1–22.</div>
+<div class="csl-left-margin">[34] </div><div class="csl-right-inline"><span class="smallcaps">Szekely</span>, G. J., <span class="smallcaps">Rizzo</span>, M. L., et al. (2005). Hierarchical clustering via joint between-within distances: Extending ward’s minimum variance method. <em>Journal of classification</em> <strong>22</strong> 151–84.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[35] </div><div class="csl-right-inline"><span class="smallcaps">Banfield</span>, J. D. and <span class="smallcaps">Raftery</span>, A. E. (1993). <a href="http://www.jstor.org/stable/2532201">Model-based gaussian and non-gaussian clustering</a>. <em>Biometrics</em> <strong>49</strong> 803–21.</div>
+<div class="csl-left-margin">[35] </div><div class="csl-right-inline"><span class="smallcaps">Everitt</span>, B. S. (2001). <em>Cluster analysis</em>. Arnold ; Oxford University Press, London : New York.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[36] </div><div class="csl-right-inline"><span class="smallcaps">Karlis</span>, D. and <span class="smallcaps">Santourian</span>, A. (2009). <a href="https://doi.org/10.1007/S11222-008-9072-0/METRICS"><span class="nocase">Model-based clustering with non-elliptically contoured distributions</span></a>. <em>Statistics and Computing</em> <strong>19</strong> 73–83.</div>
+<div class="csl-left-margin">[36] </div><div class="csl-right-inline"><span class="smallcaps">Mojena</span>, R. (1977). <a href="https://doi.org/10.1093/comjnl/20.4.359"><span class="nocase">Hierarchical grouping methods and stopping rules: an evaluation*</span></a>. <em>The Computer Journal</em> <strong>20</strong> 359–63.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[37] </div><div class="csl-right-inline"><span class="smallcaps">O’Hagan</span>, A., <span class="smallcaps">Murphy</span>, T. B., <span class="smallcaps">Gormley</span>, I. C., <span class="smallcaps">McNicholas</span>, P. D. and <span class="smallcaps">Karlis</span>, D. (2016). <a href="https://doi.org/10.1016/J.CSDA.2014.09.006"><span class="nocase">Clustering with the multivariate normal inverse Gaussian distribution</span></a>. <em>Computational Statistics &amp; Data Analysis</em> <strong>93</strong> 18–30.</div>
+<div class="csl-left-margin">[37] </div><div class="csl-right-inline"><span class="smallcaps">Dempster</span>, A. P., <span class="smallcaps">Laird</span>, N. M. and <span class="smallcaps">Rubin</span>, D. B. (1977). <a href="https://doi.org/10.1111/J.2517-6161.1977.TB01600.X"><span class="nocase">Maximum Likelihood from Incomplete Data Via the EM Algorithm</span></a>. <em>Journal of the Royal Statistical Society Series B: Statistical Methodology</em> <strong>39</strong> 1–22.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[38] </div><div class="csl-right-inline"><span class="smallcaps">Dang</span>, U. J., <span class="smallcaps">Gallaugher</span>, M. P. B., <span class="smallcaps">Browne</span>, R. P. and <span class="smallcaps">McNicholas</span>, P. D. (2023). <a href="https://doi.org/10.1007/S00357-022-09427-7/TABLES/5"><span class="nocase">Model-Based Clustering and Classification Using Mixtures of Multivariate Skewed Power Exponential Distributions</span></a>. <em>Journal of Classification</em> <strong>40</strong> 145–67.</div>
+<div class="csl-left-margin">[38] </div><div class="csl-right-inline"><span class="smallcaps">Banfield</span>, J. D. and <span class="smallcaps">Raftery</span>, A. E. (1993). <a href="http://www.jstor.org/stable/2532201">Model-based gaussian and non-gaussian clustering</a>. <em>Biometrics</em> <strong>49</strong> 803–21.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[39] </div><div class="csl-right-inline"><span class="smallcaps">Dombowsky</span>, A. and <span class="smallcaps">Dunson</span>, D. B. (2025). <a href="https://doi.org/10.1080/01621459.2024.2427935;REQUESTEDJOURNAL:JOURNAL:UASA20;WGROUP:STRING:PUBLICATION"><span class="nocase">Bayesian Clustering via Fusing of Localized Densities</span></a>. <em>Journal of the American Statistical Association</em>.</div>
+<div class="csl-left-margin">[39] </div><div class="csl-right-inline"><span class="smallcaps">Karlis</span>, D. and <span class="smallcaps">Santourian</span>, A. (2009). <a href="https://doi.org/10.1007/S11222-008-9072-0/METRICS"><span class="nocase">Model-based clustering with non-elliptically contoured distributions</span></a>. <em>Statistics and Computing</em> <strong>19</strong> 73–83.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[40] </div><div class="csl-right-inline"><span class="smallcaps">O’Hagan</span>, A., <span class="smallcaps">Murphy</span>, T. B., <span class="smallcaps">Gormley</span>, I. C., <span class="smallcaps">McNicholas</span>, P. D. and <span class="smallcaps">Karlis</span>, D. (2016). <a href="https://doi.org/10.1016/J.CSDA.2014.09.006"><span class="nocase">Clustering with the multivariate normal inverse Gaussian distribution</span></a>. <em>Computational Statistics &amp; Data Analysis</em> <strong>93</strong> 18–30.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[41] </div><div class="csl-right-inline"><span class="smallcaps">Dang</span>, U. J., <span class="smallcaps">Gallaugher</span>, M. P. B., <span class="smallcaps">Browne</span>, R. P. and <span class="smallcaps">McNicholas</span>, P. D. (2023). <a href="https://doi.org/10.1007/S00357-022-09427-7/TABLES/5"><span class="nocase">Model-Based Clustering and Classification Using Mixtures of Multivariate Skewed Power Exponential Distributions</span></a>. <em>Journal of Classification</em> <strong>40</strong> 145–67.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[42] </div><div class="csl-right-inline"><span class="smallcaps">Dombowsky</span>, A. and <span class="smallcaps">Dunson</span>, D. B. (2025). <a href="https://doi.org/10.1080/01621459.2024.2427935;REQUESTEDJOURNAL:JOURNAL:UASA20;WGROUP:STRING:PUBLICATION"><span class="nocase">Bayesian Clustering via Fusing of Localized Densities</span></a>. <em>Journal of the American Statistical Association</em>.</div>
 </div>
 </div>
 </div>
@@ -992,34 +986,34 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 <h3>References</h3>
 <div id="refs" class="references csl-bib-body">
 <div id="ref-roux_comparative_2018" class="csl-entry">
-<div class="csl-left-margin">[30] </div><div class="csl-right-inline"><span class="smallcaps">Roux</span>, M. (2018). <a href="https://doi.org/10.1007/s00357-018-9259-9">A comparative study of divisive and agglomerative hierarchical clustering algorithms</a>. <em>Journal of Classification</em> <strong>35</strong> 345–66.</div>
+<div class="csl-left-margin">[33] </div><div class="csl-right-inline"><span class="smallcaps">Roux</span>, M. (2018). <a href="https://doi.org/10.1007/s00357-018-9259-9">A comparative study of divisive and agglomerative hierarchical clustering algorithms</a>. <em>Journal of Classification</em> <strong>35</strong> 345–66.</div>
 </div>
 <div id="ref-szekely2005hierarchical" class="csl-entry">
-<div class="csl-left-margin">[31] </div><div class="csl-right-inline"><span class="smallcaps">Szekely</span>, G. J., <span class="smallcaps">Rizzo</span>, M. L., et al. (2005). Hierarchical clustering via joint between-within distances: Extending ward’s minimum variance method. <em>Journal of classification</em> <strong>22</strong> 151–84.</div>
+<div class="csl-left-margin">[34] </div><div class="csl-right-inline"><span class="smallcaps">Szekely</span>, G. J., <span class="smallcaps">Rizzo</span>, M. L., et al. (2005). Hierarchical clustering via joint between-within distances: Extending ward’s minimum variance method. <em>Journal of classification</em> <strong>22</strong> 151–84.</div>
 </div>
 <div id="ref-EverittBrianS2001Ca" class="csl-entry">
-<div class="csl-left-margin">[32] </div><div class="csl-right-inline"><span class="smallcaps">Everitt</span>, B. S. (2001). <em>Cluster analysis</em>. Arnold ; Oxford University Press, London : New York.</div>
+<div class="csl-left-margin">[35] </div><div class="csl-right-inline"><span class="smallcaps">Everitt</span>, B. S. (2001). <em>Cluster analysis</em>. Arnold ; Oxford University Press, London : New York.</div>
 </div>
 <div id="ref-mojena" class="csl-entry">
-<div class="csl-left-margin">[33] </div><div class="csl-right-inline"><span class="smallcaps">Mojena</span>, R. (1977). <a href="https://doi.org/10.1093/comjnl/20.4.359"><span class="nocase">Hierarchical grouping methods and stopping rules: an evaluation*</span></a>. <em>The Computer Journal</em> <strong>20</strong> 359–63.</div>
+<div class="csl-left-margin">[36] </div><div class="csl-right-inline"><span class="smallcaps">Mojena</span>, R. (1977). <a href="https://doi.org/10.1093/comjnl/20.4.359"><span class="nocase">Hierarchical grouping methods and stopping rules: an evaluation*</span></a>. <em>The Computer Journal</em> <strong>20</strong> 359–63.</div>
 </div>
 <div id="ref-Dempster1977" class="csl-entry">
-<div class="csl-left-margin">[34] </div><div class="csl-right-inline"><span class="smallcaps">Dempster</span>, A. P., <span class="smallcaps">Laird</span>, N. M. and <span class="smallcaps">Rubin</span>, D. B. (1977). <a href="https://doi.org/10.1111/J.2517-6161.1977.TB01600.X"><span class="nocase">Maximum Likelihood from Incomplete Data Via the EM Algorithm</span></a>. <em>Journal of the Royal Statistical Society Series B: Statistical Methodology</em> <strong>39</strong> 1–22.</div>
+<div class="csl-left-margin">[37] </div><div class="csl-right-inline"><span class="smallcaps">Dempster</span>, A. P., <span class="smallcaps">Laird</span>, N. M. and <span class="smallcaps">Rubin</span>, D. B. (1977). <a href="https://doi.org/10.1111/J.2517-6161.1977.TB01600.X"><span class="nocase">Maximum Likelihood from Incomplete Data Via the EM Algorithm</span></a>. <em>Journal of the Royal Statistical Society Series B: Statistical Methodology</em> <strong>39</strong> 1–22.</div>
 </div>
 <div id="ref-banfield1993" class="csl-entry">
-<div class="csl-left-margin">[35] </div><div class="csl-right-inline"><span class="smallcaps">Banfield</span>, J. D. and <span class="smallcaps">Raftery</span>, A. E. (1993). <a href="http://www.jstor.org/stable/2532201">Model-based gaussian and non-gaussian clustering</a>. <em>Biometrics</em> <strong>49</strong> 803–21.</div>
+<div class="csl-left-margin">[38] </div><div class="csl-right-inline"><span class="smallcaps">Banfield</span>, J. D. and <span class="smallcaps">Raftery</span>, A. E. (1993). <a href="http://www.jstor.org/stable/2532201">Model-based gaussian and non-gaussian clustering</a>. <em>Biometrics</em> <strong>49</strong> 803–21.</div>
 </div>
 <div id="ref-Karlis2009" class="csl-entry">
-<div class="csl-left-margin">[36] </div><div class="csl-right-inline"><span class="smallcaps">Karlis</span>, D. and <span class="smallcaps">Santourian</span>, A. (2009). <a href="https://doi.org/10.1007/S11222-008-9072-0/METRICS"><span class="nocase">Model-based clustering with non-elliptically contoured distributions</span></a>. <em>Statistics and Computing</em> <strong>19</strong> 73–83.</div>
+<div class="csl-left-margin">[39] </div><div class="csl-right-inline"><span class="smallcaps">Karlis</span>, D. and <span class="smallcaps">Santourian</span>, A. (2009). <a href="https://doi.org/10.1007/S11222-008-9072-0/METRICS"><span class="nocase">Model-based clustering with non-elliptically contoured distributions</span></a>. <em>Statistics and Computing</em> <strong>19</strong> 73–83.</div>
 </div>
 <div id="ref-OHagan2016" class="csl-entry">
-<div class="csl-left-margin">[37] </div><div class="csl-right-inline"><span class="smallcaps">O’Hagan</span>, A., <span class="smallcaps">Murphy</span>, T. B., <span class="smallcaps">Gormley</span>, I. C., <span class="smallcaps">McNicholas</span>, P. D. and <span class="smallcaps">Karlis</span>, D. (2016). <a href="https://doi.org/10.1016/J.CSDA.2014.09.006"><span class="nocase">Clustering with the multivariate normal inverse Gaussian distribution</span></a>. <em>Computational Statistics &amp; Data Analysis</em> <strong>93</strong> 18–30.</div>
+<div class="csl-left-margin">[40] </div><div class="csl-right-inline"><span class="smallcaps">O’Hagan</span>, A., <span class="smallcaps">Murphy</span>, T. B., <span class="smallcaps">Gormley</span>, I. C., <span class="smallcaps">McNicholas</span>, P. D. and <span class="smallcaps">Karlis</span>, D. (2016). <a href="https://doi.org/10.1016/J.CSDA.2014.09.006"><span class="nocase">Clustering with the multivariate normal inverse Gaussian distribution</span></a>. <em>Computational Statistics &amp; Data Analysis</em> <strong>93</strong> 18–30.</div>
 </div>
 <div id="ref-Dang2023" class="csl-entry">
-<div class="csl-left-margin">[38] </div><div class="csl-right-inline"><span class="smallcaps">Dang</span>, U. J., <span class="smallcaps">Gallaugher</span>, M. P. B., <span class="smallcaps">Browne</span>, R. P. and <span class="smallcaps">McNicholas</span>, P. D. (2023). <a href="https://doi.org/10.1007/S00357-022-09427-7/TABLES/5"><span class="nocase">Model-Based Clustering and Classification Using Mixtures of Multivariate Skewed Power Exponential Distributions</span></a>. <em>Journal of Classification</em> <strong>40</strong> 145–67.</div>
+<div class="csl-left-margin">[41] </div><div class="csl-right-inline"><span class="smallcaps">Dang</span>, U. J., <span class="smallcaps">Gallaugher</span>, M. P. B., <span class="smallcaps">Browne</span>, R. P. and <span class="smallcaps">McNicholas</span>, P. D. (2023). <a href="https://doi.org/10.1007/S00357-022-09427-7/TABLES/5"><span class="nocase">Model-Based Clustering and Classification Using Mixtures of Multivariate Skewed Power Exponential Distributions</span></a>. <em>Journal of Classification</em> <strong>40</strong> 145–67.</div>
 </div>
 <div id="ref-Dombowsky2025" class="csl-entry">
-<div class="csl-left-margin">[39] </div><div class="csl-right-inline"><span class="smallcaps">Dombowsky</span>, A. and <span class="smallcaps">Dunson</span>, D. B. (2025). <a href="https://doi.org/10.1080/01621459.2024.2427935;REQUESTEDJOURNAL:JOURNAL:UASA20;WGROUP:STRING:PUBLICATION"><span class="nocase">Bayesian Clustering via Fusing of Localized Densities</span></a>. <em>Journal of the American Statistical Association</em>.</div>
+<div class="csl-left-margin">[42] </div><div class="csl-right-inline"><span class="smallcaps">Dombowsky</span>, A. and <span class="smallcaps">Dunson</span>, D. B. (2025). <a href="https://doi.org/10.1080/01621459.2024.2427935;REQUESTEDJOURNAL:JOURNAL:UASA20;WGROUP:STRING:PUBLICATION"><span class="nocase">Bayesian Clustering via Fusing of Localized Densities</span></a>. <em>Journal of the American Statistical Association</em>.</div>
 </div>
 </div>
             </section>
