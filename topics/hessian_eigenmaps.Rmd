@@ -3,16 +3,53 @@
 
 ### Introduction
 
-To motivate Hessian eigenmaps, let us revisit the revisit the idea of derivatives on real valued functions on the manifold.  Suppose we have a manifold $\mathcal{M} \subset \mathbb{R}^d$ and function $f:\mathcal{M}\to\mathbb{R}$.  Assuming that $\mathcal{M}$ has intrinsic dimension $t  < d$, to each point $\vec{x}\in\mathcal{M}$, we can associate a $t$ dimensional tangent space $T_{\vec{x}}(\mathcal{M})$ which we equip with a choice of orthonormal basis vectors.  Furthermore, there is an open neighborhood $U$ containing $\vec{x}$ with every point in the neighborhood in one to one correspondence with a point in the tangent space allowing us to conduct calculus on the manifold using approximations within the tangent space.
+This method derives its name from the Hessian of a scalar valued function, properties of which we'll briefly revisit in the context of two examples
+\begin{align*}
+g_1(x,y) & = x^2+y^2
+g_2(x,y) &=\sin(2\pi x)\sin(2\pi y).
+\end{align*}
+Let's visualize these functions using surface plots.
+```{r, echo = FALSE, fig.align='center',fig.cap="Surface plots of $g_1$ (left) and $g_2$(right) over the rectangle $[-2,2]^2$"}
+library(plotly)
+# Example data (replace with your own)
+N <- 100
+x_vals <- seq(-2, 2, length.out = N)
+y_vals <- seq(-2, 2, length.out = N)
+z1_matrix <- outer(x_vals, y_vals, function(x, y) x^2 + y^2)
+z2_matrix <- outer(x_vals, y_vals, function(x, y) sin(2*pi*x)*sin(2*pi*y))
+fig1<-plot_ly(x = x_vals, y = y_vals, z = z1_matrix, scene = 'scene1') %>%
+      add_surface() 
+fig2<-plot_ly(x = x_vals, y = y_vals, z = z2_matrix, scene = 'scene2') %>%
+      add_surface() 
+subplot(fig1, fig2, nrows = 2, margin = 0.05) %>%
+  layout(
+    scene1 = list(domain = list(x = c(0, 0.4), y = c(0, 1))), # Left half
+    scene2 = list(domain = list(x = c(0.6, 1), y = c(0, 1))) # Right half
+  )
+```
+
+Which of these two functions is more curved? Informally, which function is wigglier?  The answer is clearly $g_2$, but let's revisit ideas from calculus to quantify the difference.  
+
+Suppose $g:\mathbb{R}^t\to\mathbb{R}$. The second degree Taylor expansion of a function $g$ around $\vec{x}$ is $$g(\vec{z}) \approx g(\vec{x}) + \nabla g(\vec{x})^T(\vec{z}-\vec{x}) + \frac{1}{2}(\vec{z}-\vec{x})^T(\mathcal{H}g(\vec{x}))(\vec{z}-\vec{x}).$$ The gradient provides information for orienting the approximating tangent plane of the surface whereas the Hessian provides information on additional variations from the tangent plane which captures curvature of the surface near $\vec{x}$.  For $g_1$ and $g_2$ above we have $$\nabla g_1 = \begin{bmatrix}2x \\ 2y \end{bmatrix} \text{ and } \nabla g_2 = \begin{bmatrix} 2\pi\cos(2\pi x)\sin(2\pi y) \\ 2\pi\sin(2\pi x)\cos(2\pi y) \end{bmatrix}$$
+and $$\mathcal{H} g_1 = \begin{bmatrix} 2 & 0 \\ 0 & 2\end{bmatrix} \text{ and } \mathcal{H} g_2 = \begin{bmatrix} -4\pi^2\sin(2\pi x)\sin(2\pi y) & 4\pi^2 \cos(2\pi x)\cos(2\pi y) \\4\pi^2 \cos(2\pi x)\cos(2\pi y) & -4\pi^2 \sin(2\pi x)\sin(2\pi y)\end{bmatrix}.$$ The Hessian of $g_1$ is constant whereas the Hessian of $g_2$ is both varying but generally comprised of larger values.  
+
+Subsequently, the squared Frobenius norms of the Hessians are $$\|\mathcal H g_1\|^2_F = 8 \text{ and } \mathcal{H} g_2 = 16\pi^4\left[1 + \cos(4\pi x)\cos(4\pi y)\right]$$ where the later expression follows after some trig identities.  Importantly, the squared Frobenius norm of the Hessian for $g_2$ ranges from $16\pi^4$ to $32\pi^4$ which is much larger than the corresponding quantity for $\mathcal{H} g_1$! As a result, if we were to compare the average squared Frobenius norms of $\mathcal{H} g_1$ and $\mathcal{H}g_2$ over the regions shown in the plot above, the value would be much higher for $g_2$ thereby quantifying its higher curvature.  
 
 
-::: {.theorem #thm-hlle name="Null Space of Hessian Operator on Manifolds"}
-Suppose $\mathcal{M} = \Psi(\Theta)$ where $\Theta$ is an open, connected subset of $\mathbb{R}^t$, and $\Psi$ is a locally isometric embedding of $\Theta$ into $\mathbb{R}^d$. Then $\mathcal{H}(f)$ has a $t+1$ dimensional null space spanned by the constant function and a $t$-dimensional space of functions spanned by the original isometric coordinates.
+To adapt the notion of gradients and Hessians to manifolds, let us revisit the idea of derivatives of real valued functions on a manifold.  Suppose we have a manifold $\mathcal{M} \subset \mathbb{R}^d$ and function $f:\mathcal{M}\to\mathbb{R}$.  Assuming that $\mathcal{M}$ has intrinsic dimension $t  < d$, to each point $\vec{x}\in\mathcal{M}$, we can associate a $t$ dimensional tangent space $T_{\vec{x}}(\mathcal{M})$ which we equip with a choice of orthonormal basis vectors and a corresponding chart $(U,\phi$ which maps a neighborhood, $U$ containing $\vec{x}$ to $\mathbb{R}^t$. For now, it is sufficient to think of the $\phi$ as the projection of neighboring points of $\vec{x}$ onto the approximating tangent plane (if we then subtract $\vec{x}$ from these projections, we get projections onto the tangent space). For $\vec{z}\in U$, we referred to $\phi(\vec{z})$ as the local coordinates of $\vec{z}$.
+
+From the perspective of calculus, the function $f \circ \phi^{-1}$ is a function mapping an open subset of $\mathbb{R}^t$ to $\mathbb{R}$. We can then compute gradients and Hessians of $f \circ \phi^{-1}$ using standard multivariable calculus and $\nabla^{tan}f:=\nabla (f\circ \phi^{-1})$ and $\mathcal{H}^{tan}(f) :=  \mathcal{H}(f\circ \phi^{-1})$. We'll refer to $\nabla^{tan}f$ and $\mathcal{H}^{tan}f$ as the gradient and Hessian of $f$ *in local coordinates*.  For a choice of $f$, the specific values in gradient or Hessian depends on our choice of $\phi^{-1}$ (or equivalently the basis we choose for the tangent space).  However, the (squared) Euclidean length of the gradient or the (squared) Frobenius norm of the Hessian do not depend on this choice since these quantities are unchanged by orthonormal transformations. We'll being using this fact for the remainder of this section.
+
+In principal, we could take every point $\vec{x}\in\mathcal{M}$ and, using this approach, compute the local Hessian of $f$ at $\vec{x}$.  If we take an average of the local Hessian over the manifold, denoted
+$$\mathbb{H}(f) = \int_{\mathcal{M}}\|\mathcal{H}^{tan}\|_F^2\, d\mu(\vec{x})$$ we have a measure of the average curvature of the function $f$. Here, $\mu(\vec{x})$ is the probability distribution of on the manifold fold (a measure for those with the requisite background). The utility of this measure of $f$ is given in the followin theorem.
+
+::: {.theorem #hlle name="Null Space of Hessian Operator on Manifolds"}
+Suppose $\mathcal{M} = \Psi(A)$ where $A$ is an open, connected subset of $\mathbb{R}^t$, and $\Psi$ is a locally isometric embedding of $\Theta$ into $\mathbb{R}^d$. Then $\mathbb{H}(f)$ has a $t+1$ dimensional null space spanned by the constant function and a $t$-dimensional space of functions spanned by the original isometric coordinates in $A$.
 :::
 
-Suppose now that we have a function $f:\mathcal{M}\to \mathbb{R} \subset\mathbb{R}^d$ and we wish to estimate $\mathcal{H}(f)$ using observed data $\vec{x}_1,\dots,\vec{x}_N\in\mathcal{M}$.  HLLEs are based around the construction of a discretized estimation of $\mathcal{H}(f)$ which we can write in the quadratic form $$\vec{f}^T{\bf H}\vec{f} \text{ where } \vec{f} = \left(f(\vec{x}_1),\dots,f(\vec{x}_N)\right)^T\in\mathbb{R}^N.$$ The matrix ${\bf H}\in\mathbb{R}^{N\times N}$ is symmetric and positive semidefinite and depends only on the observed data $\vec{x}_1,\dots,\vec{x}_N$. Its construction will be discussed in greater detail in the algorithms section below. 
+In general, we cannot calculate $\mathbb{H}f$ for a general function $f$. However, we can estimate $\mathbb{H}(f)$ using observed data $\vec{x}_1,\dots,\vec{x}_N\in\mathcal{M}$, which is the central idea behind HLLEs. Specifically,  we will construct a discretized estimate of $\mathbb{H}(f)$ which we can write in the quadratic form $$\vec{f}^T{\bf H}\vec{f} \text{ where } \vec{f} = \left(f(\vec{x}_1),\dots,f(\vec{x}_N)\right)^T\in\mathbb{R}^N.$$ The matrix ${\bf H}\in\mathbb{R}^{N\times N}$ is symmetric and positive semidefinite and depends only on the observed data $\vec{x}_1,\dots,\vec{x}_N$. Its construction will be discussed in greater detail in the algorithms section below. 
 
-For now, assume that we have access to ${\bf H}$. Suppose that $f$ is in the null space of $\mathcal{H}(f)$ then i) $\vec{f}^T{\bf H}\vec{f} \approx 0$ and ii) from Theorem \@ref(thm-hlle) it must be the case that $f(\vec{x}_i) = \alpha  + \beta^T\vec{z}_i$.  Importantly, if we can identify the null space of the matrix ${\bf H}$ then we can use this to recover the original low-dimensional coordinates (up to rigid motion and coordinate rescaling).
+For now, assume that we have access to ${\bf H}$. Suppose that $f$ is in the null space of $\mathcal{H}(f)$ then i) $\vec{f}^T{\bf H}\vec{f} \approx 0$ and ii) from Theorem \@ref(thm-hlle) it must be the case that $f(\vec{x}_i) = \alpha  + \beta^T\vec{z}_i$ where $\vec{z}_i$ is a point in the lower dimensional configuration $\Theta$.  Importantly, if we can identify the null space of the matrix ${\bf H}$ then we can use this to recover the original low-dimensional coordinates (up to rigid motion and coordinate rescaling).
 
 Similar to LLEs and ISOMAP, this algorithm begins with a k-nearest neighbor search and finishes with a eigenvalue decomposition. As inputs we provide the data, the intrinsic dimension, $t$, of the manifold, and a specified number of nearest neighbors $k$. For reasons we'll discuss later, we must select $k > t(t+3)/2$. This constraint can be problematic in practice. For example, if we believe the intrinsic dimension of $\mathcal{M}$ is 100, then we need to pick $k > 5150$ meaning we need at least 5151 samples in our dataset!  Such a constraint may be difficult to satisfy in practice, but for dimension reduction focused on visualization with the ambition assumption that $t=1,2,$ or $3$,  $k \ge 10$ is sufficient.
 

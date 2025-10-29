@@ -66,7 +66,7 @@ scatterplot3js(Swiss+matrix(rnorm(prod(dim(Swiss)),mean = 0,sd = 0.5), nrow = nr
 In addition to the goals in the noiseless case, we may also add the goal of learning the noiseless version of the data which reside on a manifold.
 
 
-However, there are a number of practical issues to this setup.  First, the dimension, $t$, of the original lower-dimensional points is typically unknown.  Similar to previous methods, we could pick a value of $t$ with the goal of visualization, base our choice off of prior knowledge, or run our algorithms different choices of $t$ and compare the results.  More advanced methods for estimating the true value of $k$ are an open area of research [@dim_est1].  
+However, there are a number of practical issues to this setup.  First, the dimension, $t$, of the original lower-dimensional points is typically unknown.  Similar to previous methods, we could pick a value of $t$ with the goal of visualization, base our choice off of prior knowledge, or run our algorithms different choices of $t$ and compare the results.  More advanced methods for estimating the true value of $t$ are an open area of research [@dim_est1].  
 
 There is also a issue with the uniqueness problem statement.  Given only the high dimensional observations, there is no way we could identify the original lower-dimensional points without more information.  In fact, one could find an unlimited sources of equally suitable results.  
 
