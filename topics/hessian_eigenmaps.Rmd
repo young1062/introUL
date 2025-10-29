@@ -5,7 +5,7 @@
 
 This method derives its name from the Hessian of a scalar valued function, properties of which we'll briefly revisit in the context of two examples
 \begin{align*}
-g_1(x,y) & = x^2+y^2
+g_1(x,y) & = x^2+y^2 \\
 g_2(x,y) &=\sin(2\pi x)\sin(2\pi y).
 \end{align*}
 Let's visualize these functions using surface plots.
@@ -41,13 +41,15 @@ To adapt the notion of gradients and Hessians to manifolds, let us revisit the i
 From the perspective of calculus, the function $f \circ \phi^{-1}$ is a function mapping an open subset of $\mathbb{R}^t$ to $\mathbb{R}$. We can then compute gradients and Hessians of $f \circ \phi^{-1}$ using standard multivariable calculus and $\nabla^{tan}f:=\nabla (f\circ \phi^{-1})$ and $\mathcal{H}^{tan}(f) :=  \mathcal{H}(f\circ \phi^{-1})$. We'll refer to $\nabla^{tan}f$ and $\mathcal{H}^{tan}f$ as the gradient and Hessian of $f$ *in local coordinates*.  For a choice of $f$, the specific values in gradient or Hessian depends on our choice of $\phi^{-1}$ (or equivalently the basis we choose for the tangent space).  However, the (squared) Euclidean length of the gradient or the (squared) Frobenius norm of the Hessian do not depend on this choice since these quantities are unchanged by orthonormal transformations. We'll being using this fact for the remainder of this section.
 
 In principal, we could take every point $\vec{x}\in\mathcal{M}$ and, using this approach, compute the local Hessian of $f$ at $\vec{x}$.  If we take an average of the local Hessian over the manifold, denoted
-$$\mathbb{H}(f) = \int_{\mathcal{M}}\|\mathcal{H}^{tan}\|_F^2\, d\mu(\vec{x})$$ we have a measure of the average curvature of the function $f$. Here, $\mu(\vec{x})$ is the probability distribution of on the manifold fold (a measure for those with the requisite background). The utility of this measure of $f$ is given in the followin theorem.
+$$\mathbb{H}(f) = \int_{\mathcal{M}}\|\mathcal{H}^{tan}\|_F^2\, d\mu(\vec{x})$$ we have a measure of the average curvature of the function $f$. Here, $\mu(\vec{x})$ is the probability distribution of on the manifold fold (a measure for those with the requisite background). The utility of this quantity of $f$ is given in the following theorem.
 
 ::: {.theorem #hlle name="Null Space of Hessian Operator on Manifolds"}
-Suppose $\mathcal{M} = \Psi(A)$ where $A$ is an open, connected subset of $\mathbb{R}^t$, and $\Psi$ is a locally isometric embedding of $\Theta$ into $\mathbb{R}^d$. Then $\mathbb{H}(f)$ has a $t+1$ dimensional null space spanned by the constant function and a $t$-dimensional space of functions spanned by the original isometric coordinates in $A$.
+Suppose $\mathcal{M} = \Psi(A)$ where $A$ is an open, connected subset of $\mathbb{R}^t$, and $\Psi$ is a locally isometric embedding of $A$ into $\mathbb{R}^d$. Then $\mathbb{H}(f)$ has a $t+1$ dimensional null space spanned by the constant function and a $t$-dimensional space of functions spanned by the original isometric coordinates in $A$.
 :::
 
-In general, we cannot calculate $\mathbb{H}f$ for a general function $f$. However, we can estimate $\mathbb{H}(f)$ using observed data $\vec{x}_1,\dots,\vec{x}_N\in\mathcal{M}$, which is the central idea behind HLLEs. Specifically,  we will construct a discretized estimate of $\mathbb{H}(f)$ which we can write in the quadratic form $$\vec{f}^T{\bf H}\vec{f} \text{ where } \vec{f} = \left(f(\vec{x}_1),\dots,f(\vec{x}_N)\right)^T\in\mathbb{R}^N.$$ The matrix ${\bf H}\in\mathbb{R}^{N\times N}$ is symmetric and positive semidefinite and depends only on the observed data $\vec{x}_1,\dots,\vec{x}_N$. Its construction will be discussed in greater detail in the algorithms section below. 
+In short, if $\mathbb{H}(f) = 0$ then there is some $\alpha\in\mathbb{R}$ and $\vec{\beta}\in\mathbb{R}^t$ such that $f(\vec{x}) = \alpha + \beta^T\vec{z}$ where $\vec{z}\in A$ is the preimage of $\vec{x}$, e.g. $\Psi(\vec{z}) = \vec{x}.$  By looking for functions in the null space of $\mathbb{H}(f)$, we can then find functions which help us recover the original low-dimensional coordinates in $A$!
+
+Unfortunately, we cannot calculate $\mathbb{H}f$ for a general function $f$. However, we can estimate $\mathbb{H}(f)$ using observed data $\vec{x}_1,\dots,\vec{x}_N\in\mathcal{M}$, which is the central idea behind HLLEs. Specifically,  we will construct a discretized estimate of $\mathbb{H}(f)$ which we can write in the quadratic form $$\vec{f}^T{\bf H}\vec{f} \text{ where } \vec{f} = \left(f(\vec{x}_1),\dots,f(\vec{x}_N)\right)^T\in\mathbb{R}^N.$$ The matrix ${\bf H}\in\mathbb{R}^{N\times N}$ is symmetric and positive semidefinite and depends only on the observed data $\vec{x}_1,\dots,\vec{x}_N$. Its construction will be discussed in greater detail in the algorithms section below. 
 
 For now, assume that we have access to ${\bf H}$. Suppose that $f$ is in the null space of $\mathcal{H}(f)$ then i) $\vec{f}^T{\bf H}\vec{f} \approx 0$ and ii) from Theorem \@ref(thm-hlle) it must be the case that $f(\vec{x}_i) = \alpha  + \beta^T\vec{z}_i$ where $\vec{z}_i$ is a point in the lower dimensional configuration $\Theta$.  Importantly, if we can identify the null space of the matrix ${\bf H}$ then we can use this to recover the original low-dimensional coordinates (up to rigid motion and coordinate rescaling).
 
