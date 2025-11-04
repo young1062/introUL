@@ -67,9 +67,13 @@ head(encoded_df)
 
 
 # Plotting the bottleneck
-labels_train <- as.factor(mnist$train$y)
-ae <- ggplot(encoded_df, aes(x = V1, y = V2, color = labels_train)) +
-  geom_point(alpha = 0.4, size = 0.5) +
+subsample <- sample(1:length(mnist$train$y),size = 2e3)
+labels_train <- mnist$train$y[subsample]
+ae <- ggplot(encoded_df[subsample,], aes(x = V1, y = V2, 
+                             color = as.factor(labels_train), 
+                             label=labels_train)) +
+  geom_point(alpha = 0.4, size = 0.5,) +
+  geom_text() + 
   labs(title = "Autoencoder projection",
        x = "Latent Space 1",
        y = "Latent Space 2",

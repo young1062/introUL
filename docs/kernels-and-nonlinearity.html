@@ -282,6 +282,7 @@ div.csl-indent {
 <li class="chapter" data-level="6.6" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#hessian-eigenmaps-hlles"><i class="fa fa-check"></i><b>6.6</b> Hessian Eigenmaps (HLLEs)</a>
 <ul>
 <li class="chapter" data-level="6.6.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#introduction-2"><i class="fa fa-check"></i><b>6.6.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.6.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#assumptions-strength-and-weaknesses"><i class="fa fa-check"></i><b>6.6.2</b> Assumptions, Strength, and Weaknesses</a></li>
 </ul></li>
 <li class="chapter" data-level="6.7" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#comparison-of-manifold-learning-methods"><i class="fa fa-check"></i><b>6.7</b> Comparison of Manifold Learning Methods</a>
 <ul>
@@ -402,6 +403,14 @@ where <span class="math inline">\({\bf K}\)</span> has the inner products in the
 <p><span id="exm:kpca-helix" class="example"><strong>Example 5.1  (Kernel PCA applied to the Helix) </strong></span>First, we show the kPCA variances for three different kernels and tuning parameters. The data are regularly spaced points along the helix.</p>
 <p><img src="_main_files/figure-html/unnamed-chunk-138-1.png" width="672" /></p>
 <p>From these graphs, one would infer very different lower dimensional choices depending on the kernel and parameters. The polynomial kernel provides the most robust estimate of the one-dimensional nature of the data.</p>
+<pre><code>## 
+## Attaching package: &#39;kernlab&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:BiocGenerics&#39;:
+## 
+##     type</code></pre>
+<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
+## 
+##     alpha</code></pre>
 <div class="figure"><span style="display:block;" id="fig:unnamed-chunk-139"></span>
 <img src="_main_files/figure-html/unnamed-chunk-139-1.png" alt="kPCA Variances for different Kernels" width="672" />
 <p class="caption">

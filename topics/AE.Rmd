@@ -12,21 +12,26 @@ use_python("/Users/alexyoung/anaconda3/bin/python3", required=TRUE)
 
 ## Autoencoders (AEs)
 
-### Introduction
+### Introduction 
 
-Autoencoders, which originated from the domain of neural network research, represent a class of unsupervised deep learning models. At its core, autoencoders seek to learn a compressed, efficient representation of input data by leveraging a network structure that nonlinearly encodes the data into a lower dimension space and subsequently decodes it to reconstruct the original data. [@NN]
+In each of the previously discussed manifold learning techniques, we have never made an attempt to explicity model the manifold mapping (or its inverse). Rather, we have focused on methods which recover lower-dimensional representations of the data assuming certain properties of the manifold map or its preimage.  As a result, the journey from high-dimensional data to lower-dimensional representations has been a one-way trip.
+
+Autoencoders, which originated from the domain of neural network research, represent a class of self-supervised deep learning models. At its core, an autoencoder seeks to learn a compressed, efficient representation of input data by nonlinearly encoding the data into a lower dimension space and subsequently decoding it to reconstruct the original data [@NN].
 
 The typical architecture of an autoencoder comprises three main components: 
 
-1) **Encoder**: A function $f(\vec{x})$ that compresses the input $\vec{x}$ into a latent representation.
+1) **Encoder**: A function $\mathcal{E}(\vec{x})$ that compresses the input $\vec{x}$ into a latent representation. The encoder is acting like the inverse manifold map.
 
-2) **Latent Space**: The reduced dimensionality representation, often denoted as $\vec{z}$, where $\vec{z} = f(\vec{x})$.
+2) **Latent Space**: The reduced dimensionality representation, often denoted as $\vec{z}$, where $\vec{z} = \mathcal{E}(\vec{x})$.
 
-3) **Decoder**: A function $g(\vec{z})$ that aims to reconstruct the original input from the latent representation.
+3) **Decoder**: A function $\mathcal{D}(\vec{z})$ that aims to reconstruct the original input from the latent representation. This function is acting like the manifold map.
 
 The primary objective during the training phase of an autoencoder is to minimize the reconstruction error, often quantified using metrics such as Mean Squared Error (MSE) between the input data and its reconstructed counterpart. The minimization forces the model to capture salient features of the data in the latent space, thereby enabling efficient data compression, noise reduction, and feature extraction.
 
-The utility of Autoencoders has been demonstrated in a wide array of applications, from dimensionality reduction, anomaly detection, denoising, to more complex tasks such as generating new data instances. Variations and extensions of the basic Autoencoder model, including Variational Autoencoders (VAEs) [@VAE] and Denoising Autoencoders [@DenoiseAE], have further broadened their applicability by introducing probabilistic interpretations and noise robustness, respectively.
+Neural networks are incredibly powerful tools for approximating nonlinear functions, so it is natural to hope that we might be able to approximate the manifold map using a neural network. Like previous methods, however, the lower dimensional space is not unique so we can hope to learn the manifold map up to some invertible transformation without a lot more information.  
+
+
+Nonetheless, the utility of Autoencoders has been demonstrated in a wide array of applications, from dimensionality reduction, anomaly detection, denoising, to more complex tasks such as generating new data instances. Variations and extensions of the basic Autoencoder model, including Variational Autoencoders (VAEs) [@VAE] and Denoising Autoencoders [@DenoiseAE], have further broadened their applicability by introducing probabilistic interpretations and noise robustness, respectively.
 
 In the broader context of machine learning and artificial intelligence, Autoencoders exemplify the power of unsupervised learning paradigms, emphasizing the capability of neural networks to derive meaningful representations from data without explicit labeling.
 

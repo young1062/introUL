@@ -179,6 +179,7 @@ introduction-2
 compute-nearest-neighbors-and-local-coordinates
 estimate-the-hessian
 the-eigenvalue-problem
+assumptions-strength-and-weaknesses
 comparison-of-manifold-learning-methods
 visual-comparison-of-results
 helix
