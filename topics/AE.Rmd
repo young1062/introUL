@@ -85,8 +85,7 @@ Importantly, since the network is comprised of interated affine transformations 
 Once the autoencoder has been trained and we have identified optimal parameters, we can use the encoder for dimension reduction.  As a motivating example, let's revisit MNIST.
 
 
-### MNIST Example
-
+:::{.example name="AEs and MNIST"}
 Compared to other manifold learning methods we have introduced, the implementation and training of an Autoencoder is much more complicated as we've outlined above. Here, we focus again on MNIST.  Following the setup of others methods, we continue to flatten each $28\times 28$ image into a $784$-dimensional vector, but we take one more step. Pixels intensities take values in the interval [0,255], which we divide by 255 so that every entry is between zero and one.  We then apply the following dense neural network, which we train on the full MNIST data set. This network has 10 layers (we don't count the input layer). All layers use a ReLu activation except to the last layer of the encoder (so the bottleneck is in $[0,1]^2$) and the output (so that pixel itensities in the reconstruction are bounded between [0,1] matching the division by 255 done in preprocessing)
 
 ```{r, echo = F, fig.align='center',fig.cap="A deep, dense neural network for modeling MNIST data",out.width="100%"}
@@ -121,8 +120,9 @@ p <- ggplot(scores, aes(x = PC1, y = PC2, color = as.factor(labels_train))) +
   theme_minimal()
 p
 ```
+:::
 
-#### Strengths and weaknesses
+### Strengths and weaknesses
 
 Neural networks are incredibly powerful tools for approximating nonlinear functions, so it is natural to hope that we might be able to approximate the manifold map using the decoder. Like previous methods, however, the lower dimensional space is not unique so we can hope to learn the manifold map up to some invertible transformation without a lot more information. Furthemore, AEs are focused on minimizing the reconstruction error rather than directly using properties of the manifold containing our data. The greedy gradient based approach means we relinquish control on which relationships within the dataset we would like to preserve and what or relationships that might exist between the bottleneck and manifold (isometry for example). In particular, there are no constraints that an AE prioritize the neighborhood structure between points. Samples $\vec{x}_i$ and $\vec{x}_j$ may be close originally, but the nonlinear nature of a neural network could result in $\mathcal{E}(\vec{x}_i)$ and $\mathcal{E}(\vec{x}_j)$ being far apart.
 

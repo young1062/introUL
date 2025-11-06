@@ -288,7 +288,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="6.7.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#introduction-3"><i class="fa fa-check"></i><b>6.7.1</b> Introduction</a></li>
 <li class="chapter" data-level="6.7.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#neural-networks-design-and-training"><i class="fa fa-check"></i><b>6.7.2</b> Neural networks: design and training</a></li>
-<li class="chapter" data-level="6.7.3" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#mnist-example"><i class="fa fa-check"></i><b>6.7.3</b> MNIST Example</a></li>
+<li class="chapter" data-level="6.7.3" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#strengths-and-weaknesses"><i class="fa fa-check"></i><b>6.7.3</b> Strengths and weaknesses</a></li>
 </ul></li>
 <li class="chapter" data-level="6.8" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#comparison-of-manifold-learning-methods"><i class="fa fa-check"></i><b>6.8</b> Comparison of Manifold Learning Methods</a>
 <ul>
@@ -693,7 +693,7 @@ where <span class="math inline">\(\lambda_j\)</span> is a scalar parameter contr
 <h3><span class="header-section-number">7.3.4</span> Weakneses and Limitations<a href="ch-clustering.html#weakneses-and-limitations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Unlike center-based methods, GMMs allow for a greater level of flexibility in the shapes of clusters (ellipses vs spheres). However, ellipsoids may still be inadequate choices a cluster supported on or near a nonlinear manifold. For example, in the <strong>smile</strong> data below.</p>
 <div class="example">
-<p><span id="exm:unlabeled-div-10" class="example"><strong>Example 7.3  (GMMs fail to capture complex nonlinear structure) </strong></span>Consider the following data in <span class="math inline">\(\mathbb{R}^2\)</span> which exhibitis four clusters upon visual inspection</p>
+<p><span id="exm:unlabeled-div-11" class="example"><strong>Example 7.3  (GMMs fail to capture complex nonlinear structure) </strong></span>Consider the following data in <span class="math inline">\(\mathbb{R}^2\)</span> which exhibitis four clusters upon visual inspection</p>
 <p><img src="_main_files/figure-html/unnamed-chunk-219-1.png" width="672" /></p>
 <p>The eyes and nose are each compact and approximately elliptical in shape, but the mouth is concentrated around a nonlinear parabolic curve. Applying the GMM model above for a range <span class="math inline">\(K=2,\dots,15\)</span> clusters gives the following BIC curves</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-220"></span>

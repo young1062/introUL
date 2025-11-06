@@ -74,6 +74,7 @@ eq:psd-gl
 fig:unnamed-chunk-169
 thm:hlle
 fig:unnamed-chunk-173
+exm:unlabeled-div-10
 fig:unnamed-chunk-174
 fig:unnamed-chunk-175
 tab:tab-manifolds
@@ -83,7 +84,7 @@ eq:GMM-likelihood-with-latents
 eq:handy-joint-likelihood
 exm:gmm
 fig:ex-GMM
-exm:unlabeled-div-10
+exm:unlabeled-div-11
 fig:unnamed-chunk-220
 intro
 prerequisites
@@ -188,7 +189,6 @@ introduction-3
 neural-networks-design-and-training
 activation-functions
 training
-mnist-example
 strengths-and-weaknesses
 comparison-of-manifold-learning-methods
 visual-comparison-of-results
