@@ -27,7 +27,7 @@ Generally, an autoencoder is comprised of three main components.
 3) **Decoder**: A neural network $\mathcal{D}(\vec{z})$ that aims to reconstruct the original input from the latent representation. This function acts like the manifold map.
 
 ```{r, echo = F, fig.align='center',fig.cap="Informal schematic of an autoencoder. The encoder and decoder are neural networks which map the original data into a lower dimensional latent space."}
-knitr::include_graphics("../images/autoencoder_vertical.png")
+knitr::include_graphics("images/autoencoder_vertical.png")
 ```
 ### Neural networks: design and training
 
