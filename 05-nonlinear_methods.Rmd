@@ -96,8 +96,8 @@ In short manifold as a nice smooth, curved surface. There are several reasons wh
 Consider a figure eight curve.  At the midpoint where the upper and lower circle meet, there is not neighborhood that resembles Euclidean space so the surface is not a manifold. 
 
 For a second example, take any two vectors $\vec{h}_1$ and $\vec{h}_2$ and consider there convex hull, that is $\{a\vec{h}_1+b\vec{h}_2: a,b > 0, a+b\le 1\}$ such the orange triangle in the figure below.  At the three vertices of the orange triangle, there is no local neighbor that looks flat. However, if we were to exclude the edges and vertices of the triangle, the subset would be a two-dimensional manifold; thus, $\{a\vec{h}_1+b\vec{h}_2: a,b > 0, a+b< 1\}$ is a manifold while $\{a\vec{h}_1+b\vec{h}_2: a,b > 0, a+b\le 1\}$ is not.
-```{r, echo = FALSE, fig.align='center',fig.height = 8}
-knitr::include_graphics("images/convex_hull.pdf")
+```{r, echo = FALSE, fig.align='center',out.width = 6, out.height=6}
+knitr::include_graphics("images/convex_hull.png")
 ```
 :::
 

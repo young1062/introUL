@@ -1,13 +1,13 @@
 
 ```{r setup-ae, include=FALSE}
-require("keras")
-require("ggplot2")
-# require("tidyverse")
-# require("h2o")
-require("reticulate")
-# specify the directory of your conda environment, you need to have python installed in order to implement keras package
+# require("keras")
+# require("ggplot2")
+# # require("tidyverse")
+# # require("h2o")
+# require("reticulate")
+# # specify the directory of your conda environment, you need to have python installed in order to implement keras package
+# # use_python("/Users/alexyoung/anaconda3/bin/python3", required=TRUE)
 # use_python("/Users/alexyoung/anaconda3/bin/python3", required=TRUE)
-use_python("/Users/alexyoung/anaconda3/bin/python3", required=TRUE)
 ```
 
 ## Autoencoders (AEs)
@@ -89,20 +89,21 @@ Once the autoencoder has been trained and we have identified optimal parameters,
 
 Compared to other manifold learning methods we have introduced, the implementation and training of an Autoencoder is much more complicated as we've outlined above. Here, we focus again on MNIST.  Following the setup of others methods, we continue to flatten each $28\times 28$ image into a $784$-dimensional vector, but we take one more step. Pixels intensities take values in the interval [0,255], which we divide by 255 so that every entry is between zero and one.  We then apply the following dense neural network, which we train on the full MNIST data set. This network has 10 layers (we don't count the input layer). All layers use a ReLu activation except to the last layer of the encoder (so the bottleneck is in $[0,1]^2$) and the output (so that pixel itensities in the reconstruction are bounded between [0,1] matching the division by 255 done in preprocessing)
 
-```{r, echo = F, fig.align='center',fig.cap="A deep, dense neural network for modeling MNIST data"}
+```{r, echo = F, fig.align='center',fig.cap="A deep, dense neural network for modeling MNIST data",out.width="100%"}
 knitr::include_graphics("../images/manual_autoencoder_custom_colors.png")
 ```
 
 Between the encoder and decoder, this model has 1,892,954 parameters, which we train via the Adam optimizer [@adam_sgd] using 200 epochs, batch size = 256, and a 80\%/20\% test/train split. After training, we can run each image through the encoder portion of the network to view where each image is mapped in the latent space.  As we can see from the image below, the neural network does a far better job of separating the images of different digits into separate groups.
 
-```{r, echo = FALSE, fig.cap="Latent space representation of MNIST",fig.align='center',fig.width= 8}
-knitr::include_graphics("../images/MNIST_ae_latent_space.pdf")
+
+```{r, echo = FALSE, fig.cap="Latent space representation of MNIST",fig.align='center',out.width="80%"}
+knitr::include_graphics("../images/MNIST_ae_latent_space.png")
 ```
 
 For comparison, here is the two-dimensional configuration of points obtained by PCA.
 
 
-```{r keras_mnist_pca, echo = FALSE, cache = TRUE, fig.align='center',fig.cap="2D Representation of MNIST via PCA",fig.width=8}
+```{r keras_mnist_pca, echo = FALSE, cache = TRUE, fig.align='center',fig.cap="2D Representation of MNIST via PCA",out.width="80%",out.height="auto"}
 require("keras")
 mnist <- dataset_mnist()
 train_images <- mnist$train$x
@@ -114,7 +115,7 @@ pca_result <- prcomp(train_images)
 # Extract the scores of the first two principal components
 scores <- as.data.frame(pca_result$x[, 1:2])
 colnames(scores) <- c("PC1", "PC2")
-p <- ggplot(scores, aes(x = PC1, y = PC2, color = labels_train)) +
+p <- ggplot(scores, aes(x = PC1, y = PC2, color = as.factor(labels_train))) +
   geom_point(alpha = 0.6) +
   labs(title = "PCA", x = "PC1", y = "PC2", color="response") +
   theme_minimal()
