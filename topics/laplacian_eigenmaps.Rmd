@@ -7,7 +7,7 @@ myColorRamp <- function(colors, values) {
 }
 ```
 
-## Laplacian Eigenmap
+## Laplacian Eigenmap (LEs)
 
 The Laplacian eigenmap [@laplac_eigen] is method of manifold learning with algorithmic and geometric similarities to LLEs.  Like LLEs and ISOMAP, Laplacian eigenmaps make use of $k$-nearest neighbor relationships and the solution of an eigenvalue problem to reconstruct the low-dimensional manifold.  As suggested by the name, we will be using the graph Laplacian matrix and emphasize the preservation of nearby points on the manifold making Laplacian Eigenmaps a local method with a different emphasis than LLEs. 
 

@@ -26,14 +26,22 @@ Generally, an autoencoder is comprised of three main components.
 
 3) **Decoder**: A neural network $\mathcal{D}(\vec{z})$ that aims to reconstruct the original input from the latent representation. This function acts like the manifold map.
 
-```{r, echo = F, fig.align='center',fig.cap="Informal schematic of an autoencoder. The encoder and decoder at neural networks which map the original data into a lower dimensional latent space."}
+```{r, echo = F, fig.align='center',fig.cap="Informal schematic of an autoencoder. The encoder and decoder are neural networks which map the original data into a lower dimensional latent space."}
 knitr::include_graphics("../images/autoencoder_vertical.png")
 ```
 ### Neural networks: design and training
 
 In their simplest form, neural networks iterate between affine transformations and elementwise nonlinear operations. If $\vec{x}\in\mathbb{R}^d$ is the input to a neural network, the affine transformation is determined by the equation ${\bf W}\vec{x}+\vec{b}$ where ${\bf W}\in\mathbb{R}^{k_1\times d}$, called weights, and ${\bf b}\in\mathbb{R}^{k_1}$, called the bias, are tuneable parameters. We then apply a nonlinear function, $\sigma_1:\mathbb{R}\to \mathbb{R}$, to ${\bf W}\in\mathbb{R}^{k_1\times d}$ resulting in a $k_1$ dimensional vector, $\sigma_1\left({\bf W}\in\mathbb{R}^{k_1\times d}\right)$ where the application of $\sigma_1$ is interpreted elementwise. The nonlinear function is also called an activation. Together, the affine transformation and nonlinear transformation are called a layer of the network with width $k_1$ reflecting the dimension of the output of the layer.
 
-We can then iterate this idea, using the output of the previous layer as the input to the subsequent layers. In practice, we are free to choose the number of layers (depth of the network) and the width and activation within each layer providing innumerable configurations.  Choosing the structure of the network  -- its architecture -- has an enormous impact on how well this model can perform as a method of dimension reduction. Given the importance of these choices, building a neural network can appear overwhelming.  
+We can then iterate this idea, using the output of the previous layer as the input to the subsequent layers resulting in the sequence of operations,
+\begin{align*}
+\vec{\ell}_0 &= \vec{x} \\
+\vec{\ell}_1 &=\sigma_1({\bf W}_1\vec{\ell}_0+\vec{b}_1) \\
+\vec{\ell}_1 &=\sigma_2({\bf W}_2\vec{\ell}_1+\vec{b}_2) = \sigma_2\left({\bf W}_2\sigma_1({\bf W}_1\vec{\ell}_0+\vec{b}_1)+\vec{b}_2\right) \\
+\vdots \\
+\vec{\ell}_t &=\sigma_t({\bf W}_t\vec{\ell}_{t-1}+\vec{b}_t). 
+\end{align*}
+In practice, we are free to choose the number of layers (depth of the network) and the width and activation within each layer providing innumerable configurations.  Choosing the structure of the network  -- its architecture -- has an enormous impact on how well this model can perform as a method of dimension reduction. Given the importance of these choices, building a neural network can appear overwhelming.  
 
 And while there is still some art to the practice there are several conventions specific to autoencoders which offer guidance. First, we want to compress our high dimensional data into a lower dimensional space. To this end, we'll have an internal layer which maps to a lower dimensional space, referred to as the bottleneck. We refer to all layers between the input and the bottleneck as the encoder. The layers following the bottleneck then map back to the original high dimensional. We call this portion of the network the decoder  By convention, the network is symmetric around the bottleneck so the encoder and decoder have the same number of layers with widths in the opposite order.  See the MNIST example below for a specific case.
 
