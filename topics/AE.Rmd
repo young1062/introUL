@@ -14,125 +14,37 @@ use_python("/Users/alexyoung/anaconda3/bin/python3", required=TRUE)
 
 ### Introduction 
 
-In each of the previously discussed manifold learning techniques, we have never made an attempt to explicity model the manifold mapping (or its inverse). Rather, we have focused on methods which recover lower-dimensional representations of the data assuming certain properties of the manifold map or its preimage.  As a result, the journey from high-dimensional data to lower-dimensional representations has been a one-way trip.
+In each of the previously discussed manifold learning techniques, we have never made an attempt to explicity model the manifold mapping (or its inverse). Rather, we have focused on methods which recover lower-dimensional representations of the data assuming certain properties of the manifold map (e.g. isometry) and its preimage (convexity).  As a result, the journey from high-dimensional data to lower-dimensional representations has been a one-way trip.
 
-Autoencoders, which originated from the domain of neural network research, represent a class of self-supervised deep learning models. At its core, an autoencoder seeks to learn a compressed, efficient representation of input data by nonlinearly encoding the data into a lower dimension space and subsequently decoding it to reconstruct the original data [@NN].
+Suppose now, that we take a more ambitious approach and try to model the manifold mapping and its inverse.  In practice, we know nothing about these functions -- their mere existence is assumed via the manifold hypothesis -- but at minimum we can expect them to be complicated nonlinear functions.   Enter autoencoders (AEs) which are specially designed neural networks that simultaneously model the manifold map and its inverse.  
 
-The typical architecture of an autoencoder comprises three main components: 
+Generally, an autoencoder is comprised of three main components.
 
-1) **Encoder**: A function $\mathcal{E}(\vec{x})$ that compresses the input $\vec{x}$ into a latent representation. The encoder is acting like the inverse manifold map.
+1) **Encoder**: A neural network $\mathcal{E}(\vec{x})$ that compresses the input $\vec{x}$ into a latent representation. The encoder is acting like the inverse manifold map.
 
 2) **Latent Space**: The reduced dimensionality representation, often denoted as $\vec{z}$, where $\vec{z} = \mathcal{E}(\vec{x})$.
 
-3) **Decoder**: A function $\mathcal{D}(\vec{z})$ that aims to reconstruct the original input from the latent representation. This function is acting like the manifold map.
+3) **Decoder**: A neural network $\mathcal{D}(\vec{z})$ that aims to reconstruct the original input from the latent representation. This function acts like the manifold map.
 
-The primary objective during the training phase of an autoencoder is to minimize the reconstruction error, often quantified using metrics such as Mean Squared Error (MSE) between the input data and its reconstructed counterpart. The minimization forces the model to capture salient features of the data in the latent space, thereby enabling efficient data compression, noise reduction, and feature extraction.
-
-Neural networks are incredibly powerful tools for approximating nonlinear functions, so it is natural to hope that we might be able to approximate the manifold map using a neural network. Like previous methods, however, the lower dimensional space is not unique so we can hope to learn the manifold map up to some invertible transformation without a lot more information.  
-
-
-Nonetheless, the utility of Autoencoders has been demonstrated in a wide array of applications, from dimensionality reduction, anomaly detection, denoising, to more complex tasks such as generating new data instances. Variations and extensions of the basic Autoencoder model, including Variational Autoencoders (VAEs) [@VAE] and Denoising Autoencoders [@DenoiseAE], have further broadened their applicability by introducing probabilistic interpretations and noise robustness, respectively.
-
-In the broader context of machine learning and artificial intelligence, Autoencoders exemplify the power of unsupervised learning paradigms, emphasizing the capability of neural networks to derive meaningful representations from data without explicit labeling.
-
-### Algorithm
-
-#### Notations
-
-**Input**
-- Dataset $X = \{\vec{x}_1, \vec{x}_2, \dots \vec{x}_n\}$ where $\vec{x}_i$ is a vectorized representation of each data sample.
-- Encoder neural network $E$ with parameters $\theta_e$ mapping inputs to latent space.
-- Decoder neural network $D$ with parameters $\theta_d$ mapping latent space back to the original space.
-- Reconstruction loss function $L$, e.g., Mean Squared Error (MSE).
-
-**Output**: 
-- Optimized parameters $\theta_e^*$ for $E$ and $\theta_d^*$ for $D$.
-
-#### Steps Breakdown
-
-1) **Initialization**:
-   - Initialize encoder $E$ and decoder $D$ neural network weights using techniques like Xavier or He initialization to ensure weight variance remains controlled during training.
-
-2) **Forward Propagation**:
-   For each data sample $\vec{x}_i$:
-   - Use encoder $E$ to transform $\vec{x}_i$ to latent space:
-     \[ \vec{z}_i = E_{\theta_e}(\vec{x}_i) \]
-   - Use decoder $D$ to reconstruct $\vec{x}_i$ from $\vec{z}_i$:
-     \[ \vec{x}^{\prime}_i = D_{\theta_d}(\vec{z}_i) \]
-
-3) **Loss Computation**:
-   - Calculate reconstruction loss for the given sample using $L$:
-     \[ L_i = L(\vec{x}_i, \vec{x}^{\prime}_i) \]
-   - Compute average loss for the batch:
-     \[ L_{batch} = \frac{1}{N} \sum_{i=1}^{N} L_i \]
-     where $N$ is the batch size.
-
-4) **Backward Propagation**:
-   - Compute the gradient of $L_{batch}$ with respect to encoder and decoder parameters using back-propagation.
-   - Use gradient descent (or its variants) to update both $\theta_e$ and $\theta_d$:
-     \[ \theta_e = \theta_e - \alpha \frac{\partial L_{batch}}{\partial \theta_e} \]
-     \[ \theta_d = \theta_d - \alpha \frac{\partial L_{batch}}{\partial \theta_d} \]
-     where $\alpha$ is the learning rate.
-
-5) **Training Loop**:
-   - Execute steps 2-4 for multiple iterations (epochs) over the entire data set. Regularly shuffle the data set before each epoch to ensure IID (independent and identically distributed) property.
-
-6) **Model Retrieval**:
-   - Once convergence is achieved, i.e., when the reduction in $L_{batch}$ between subsequent epochs is negligible or after a pre-defined number of epochs, extract the optimized parameters  $\theta_e^*$ and $\theta_d^*$. These define the trained Autoencoder.
-
-7) **Optional Fine-tuning**:
-   - For better performance, further fine-tune the trained Autoencoder using techniques like early stopping based on validation loss, or introduce regularization techniques like dropout to prevent overfitting.
-   
-
-### Example
-
-Compared to other manifold learning methods we have introduced (ISOMAP and LLE), the implementation and parameter tuning of Autoencoders is much more complicated. We'll explore how to implement an autoencoder in R using the **Keras** library with the famous MNIST dataset. As a Neuro Network method, Autoencoders have a number of parameters, thus requiring a large dataset to train. This explains why we choose MNIST dataset here. 
-
-1) Load and Preprocess the Data
-```{r}
-mnist <- dataset_mnist()
-train_images <- mnist$train$x
+```{r, echo = F, fig.align='center',fig.cap="Informal schematic of an autoencoder. The encoder and decoder at neural networks which map the original data into a lower dimensional latent space."}
+knitr::include_graphics("../images/autoencoder_vertical.png")
 ```
+### Neural networks: design and training
 
-The above code loads the MNIST dataset from **keras** package. mnist variable is divided into a training set and a test set, both containing the image information and label information. Since we are using Autoencoders to conduct dimensio reduction here (unsupervised learning), we only require the image information from the traing set. The train_images contains the images from the training set.
+In their simplest form, neural networks iterate between affine transformations and elementwise nonlinear operations. If $\vec{x}\in\mathbb{R}^d$ is the input to a neural network, the affine transformation is determined by the equation ${\bf W}\vec{x}+\vec{b}$ where ${\bf W}\in\mathbb{R}^{k_1\times d}$, called weights, and ${\bf b}\in\mathbb{R}^{k_1}$, called the bias, are tuneable parameters. We then apply a nonlinear function, $\sigma_1:\mathbb{R}\to \mathbb{R}$, to ${\bf W}\in\mathbb{R}^{k_1\times d}$ resulting in a $k_1$ dimensional vector, $\sigma_1\left({\bf W}\in\mathbb{R}^{k_1\times d}\right)$ where the application of $\sigma_1$ is interpreted elementwise. The nonlinear function is also called an activation. Together, the affine transformation and nonlinear transformation are called a layer of the network with width $k_1$ reflecting the dimension of the output of the layer.
 
-```{r}
-# Flatten and normalize the images
-train_images <- array_reshape(train_images, c(nrow(train_images), 28*28))
-train_images <- train_images / 255
-```
+We can then iterate this idea, using the output of the previous layer as the input to the subsequent layers. In practice, we are free to choose the number of layers (depth of the network) and the width and activation within each layer providing innumerable configurations.  Choosing the structure of the network  -- its architecture -- has an enormous impact on how well this model can perform as a method of dimension reduction. Given the importance of these choices, building a neural network can appear overwhelming.  
 
-For an Autoencoder to process these images, they need to be reshaped into a flat vector. This step reshapes each 28x28 image into a vector of length 784. Furthermore, to facilitate the neural network's training, the pixel values (originally between 0 to 255) are normalized to fall between 0 and 1.
+And while there is still some art to the practice there are several conventions specific to autoencoders which offer guidance. First, we want to compress our high dimensional data into a lower dimensional space. To this end, we'll have an internal layer which maps to a lower dimensional space, referred to as the bottleneck. We refer to all layers between the input and the bottleneck as the encoder. The layers following the bottleneck then map back to the original high dimensional. We call this portion of the network the decoder  By convention, the network is symmetric around the bottleneck so the encoder and decoder have the same number of layers with widths in the opposite order.  See the MNIST example below for a specific case.
 
-2) Build the Autoencoders
+There are also other data specific insights from geometric deep learning that motivate more complicated neural network architecture beyond the traditional, dense, feed-forward approach we have outlined here.  For now, we'll focus common activations and methods for training the model (tuning the weights and biases in layers) to accomplish dimension reduction. 
 
-The autoencoder comprises two main parts: Encoder and Decoder, as we have stated before.
 
-```{r}
-# initiates the input layer for the autoencoder which expects input vectors of length 784
-input_img <- layer_input(shape = c(28*28)) 
+#### Activation Functions
 
-# Encoder
-encoded <- input_img %>% 
-  layer_dense(units = 128, activation = "relu") %>% 
-  layer_dropout(rate=0.8) %>%
-  layer_dense(units = 2, activation = "tanh")
-```
+Activation functions play a vital role in neural networks, determining the output of a neuron based on its input. They introduce non-linear properties into the network, enabling it to learn from the error and make adjustments, which is essential for learning complex, nonlinear patterns.
 
-The Encoder starts with the input image and passes it through a dense layer with 128 neurons and ReLU activation. A dropout layer is added for regularization, reducing the risk of over-fitting. The last layer of the Encoder further compresses the data into a 2D representation. 
-
-**Dropout Layer**
-In the context of Keras, layer_dropout(rate=0.8) adds a dropout layer where there's an 80% chance that any given neuron in the previous layer will be turned off during training for a particular update.
-
-In practice, it means that during training step, for each training iteration, $80\%$ of the neurons of the preceding layer will be randomly selected and turned off. These turned-off neurons won't have any influence on the computation for that specific iteration. Dropout is only active during training, during testing step, all neurons will be active, and dropout won't be applied.
-
-This step is super important, if dropout layer is not introduced, the model will be largely over-fitted. You may try this yourself.
-
-**Activation Function**
-
-Activation functions play a vital role in neural networks, determining the output of a neuron based on its input. They introduce non-linear properties into the network, enabling it to learn from the error and make adjustments, which is essential for learning complex patterns.
-
-There are several common activation functions we can choose from.
+Two common activation functions we can choose from.
 
 1) **Sigmoid (Logistic) Function:** 
 
@@ -144,17 +56,7 @@ Pros: Smooth gradient, preventing "jumps" in output values
 
 Cons: Can cause vanishing gradient problems in deep networks
 
-2) **Hyperbolic Tangent (tanh) Function:** 
-
-Equation: $f(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$
-
-Range: Between -1 and 1
-
-Pros: Zero-centered, making it easier for the model to generalize
-
-Cons: Like the sigmoid, it can also lead to vanishing gradient issues
-
-3) **Rectified Linear Unit (ReLU) Function:** 
+2) **Rectified Linear Unit (ReLU) Function:** 
 
 Equation: $f(x) = max(0, x)$
 
@@ -164,95 +66,41 @@ Pros: Helps mitigate the vanishing gradient problem, leading to faster convergen
 
 Cons: Neurons can sometimes "die", especially with a large learning rate
 
-4) **Softmax Function:** 
+There are many other choices, but the ReLu activation is a fantastic first choice since it results in a network which can be trained more easily.  
 
-Equation:  $\sigma(z)_j = \frac{e^{z_j}}{\sum_{k=1}^{K} e^{z_k}}$ for $j = 1, ..., K$
+#### Training
 
-Used primarily in the output layer of a classifier, where it turns logits into probabilities by distributing them over several classes
+At its core, an autoencoder seeks to learn a compressed, efficient representation of input data by nonlinearly encoding the data into a lower dimension space and subsequently decoding it to reconstruct the original data [@NN]. This translate the training of a neural network into a self-supervised problem, wherein we want to approximate $\vec{x}$ by its reconstruction $\mathcal{D}\left(\mathcal{E}(\vec{x})\right).$  The primary objective during the training phase of an autoencoder is to minimize the reconstruction error, often quantified using metrics such as Mean Squared Error (MSE) between the input data and its reconstructed counterpart. Mathematically, this gives rise to the loss function $$L(\theta_e,\theta_d) =  \frac{1}{N}\sum_{i=1}^N\|\vec{x}_i - \mathcal{D}_{\theta_d}\left( \mathcal{E}_{\theta_e}(\vec{x_i})\right)\|^2.$$ Here $\theta_e$ and $\theta_d$ are the weights and biases of the encoder and decoder respectively.  
 
-Range: Between 0 to 1
+Importantly, since the network is comprised of interated affine transformations and nonlinear operations, it is a differentiable function of its parameters.  Computing these derivatives is call backpropogation in the ML literature an relies on repeated applications of the chain rule. With gradients in hand, gradient based optimization is a natural choice to tuning the paramters of the model to minimize the MSE.  At present, the most common choice of gradient based optimization is an algorithm called Adam [@adam_sgd] which uses an accelerated verion stochastic gradient descent to fit the autoencoder. The details of Adam and stochastic gradient descent to the curious reader. 
 
-Each activation function has its unique characteristics and is suitable for different kinds of tasks. The choice of an activation function depends on the specific problem at hand, the nature of the data, and the architecture of the neural network.
+Once the autoencoder has been trained and we have identified optimal parameters, we can use the encoder for dimension reduction.  As a motivating example, let's revisit MNIST.
 
 
-```{r}
-# Decoder
-decoded <- encoded %>% 
-  layer_dense(units = 128, activation = "relu") %>% 
-  layer_dropout(rate=0.8) %>%
-  layer_dense(units = 28*28, activation = "tanh")
+### MNIST Example
 
-# combines the encoder and decoder into the Autoencoder model
-autoencoder <- keras_model(input = input_img, output = decoded)
+Compared to other manifold learning methods we have introduced, the implementation and training of an Autoencoder is much more complicated as we've outlined above. Here, we focus again on MNIST.  Following the setup of others methods, we continue to flatten each $28\times 28$ image into a $784$-dimensional vector, but we take one more step. Pixels intensities take values in the interval [0,255], which we divide by 255 so that every entry is between zero and one.  We then apply the following dense neural network, which we train on the full MNIST data set. This network has 10 layers (we don't count the input layer). All layers use a ReLu activation except to the last layer of the encoder (so the bottleneck is in $[0,1]^2$) and the output (so that pixel itensities in the reconstruction are bounded between [0,1] matching the division by 255 done in preprocessing)
+
+```{r, echo = F, fig.align='center',fig.cap="A deep, dense neural network for modeling MNIST data"}
+knitr::include_graphics("../images/manual_autoencoder_custom_colors.png")
 ```
 
-The Decoder takes the encoded 2D representation and attempts to reconstruct the original image. It uses a dense layer with 128 neurons followed by another dropout layer. The final dense layer outputs vectors of length $784 \, (28 \times 28)$, matching the original image's shape.
+Between the encoder and decoder, this model has 1,892,954 parameters, which we train via the Adam optimizer [@adam_sgd] using 200 epochs, batch size = 256, and a 80\%/20\% test/train split. After training, we can run each image through the encoder portion of the network to view where each image is mapped in the latent space.  As we can see from the image below, the neural network does a far better job of separating the images of different digits into separate groups.
 
-3) Compile and Train Autoencoders
-
-Before training, the model needs to be compiled. The 'adam' optimizer and the 'mean_squared_error' loss function are chosen for this task. You may choose different loss functions according to your specific data type and objective, here MSE might be the most suitable.
-
-```{r compile_AE}
-autoencoder %>% compile(
-  optimizer = 'adam', 
-  loss = 'mean_squared_error'
-)
-
-summary(autoencoder)
+```{r, echo = FALSE, fig.cap="Latent space representation of MNIST",fig.align='center',fig.width= 8}
+knitr::include_graphics("../images/MNIST_ae_latent_space.pdf")
 ```
 
-The Autoencoder is trained using the training images as both inputs and targets. This is because the Autoencoder's goal is to reconstruct its input as closely as possible.
-
-```{r, message = FALSE}
-# history <- autoencoder %>% fit(
-#   train_images, train_images, 
-#   epochs = 40, 
-#   batch_size = 256, 
-#   shuffle = TRUE,
-#   validation_split = 0.2,
-#   getOption("keras.fit_verbose", default = 0)
-# )
-# 
-# plot(history)
-```
-
-4) Visualize the Encoded Representations
-
-To visualize the 2D representations learned by the Encoder, a separate Encoder model is created. This model shares its weights with the Autoencoders' Encoder portion. It's then used to predict or transform the training images into their 2D encoded form.
-
-```{r}
-encoder <- keras_model(inputs = input_img, outputs = encoded)
-encoded_images <- predict(encoder, train_images)
-
-# Convert to a data frame for easier viewing
-encoded_df <- as.data.frame(encoded_images)
-head(encoded_df)
-```
-
-Using the ggplot2 package, the encoded images are visualized, color-coded by their true labels. This visualization provides insights into how well the encoder has learned to cluster different digits in this reduced-dimensional space. We also compare the result of Autoencoders with that of PCA, as shown below. 
-
-```{r}
-library(ggplot2)
-library(plotly)
-labels_train <- as.factor(mnist$train$y)
-
-# Plotting the data
-ae <- ggplot(encoded_df, aes(x = V1, y = V2, color = labels_train)) +
-  geom_point(alpha = 0.6, size = 1) +
-  labs(title = "Autoencoder projection",
-       x = "DF1",
-       y = "DF2",
-       color = "Response") +
-  theme_minimal()
-# plotting 3d results
-# ae3 <- plot_ly(encoded_df, x=~V1, y=~V2, z =~V3, 
-#                 color = labels_train,
-#                 size = 0.1)
-
-```
+For comparison, here is the two-dimensional configuration of points obtained by PCA.
 
 
-```{r}
+```{r keras_mnist_pca, echo = FALSE, cache = TRUE, fig.align='center',fig.cap="2D Representation of MNIST via PCA",fig.width=8}
+require("keras")
+mnist <- dataset_mnist()
+train_images <- mnist$train$x
+train_images <- array_reshape(train_images, c(nrow(train_images), 28*28))
+train_images <- train_images / 255
+labels_train <- mnist$train$y
 pca_result <- prcomp(train_images)
 
 # Extract the scores of the first two principal components
@@ -262,25 +110,13 @@ p <- ggplot(scores, aes(x = PC1, y = PC2, color = labels_train)) +
   geom_point(alpha = 0.6) +
   labs(title = "PCA", x = "PC1", y = "PC2", color="response") +
   theme_minimal()
-# # 3D 
-# scores <- as.data.frame(pca_result$x[, 1:3])
-# colnames(scores) <- c("PC1", "PC2", "PC3")
-# p3 <- plot_ly(scores, x = ~PC1, y =~PC2, z=~PC3, 
-#               color = labels_train,
-#               size = 0.1)
-```
-
-```{r}
-par(mfrow = c(2,1))
 p
-ae
 ```
 
-**Alternative Choices for the use of R packages for Autoencoders**
+#### Strengths and weaknesses
 
-Besides package **keras** we have used as an example, **h2o** package is also a popular package for implementing Autoencoders. Unlike h2o package has an automated machine learning (AutoML) feature, making it easy for users to train and compare multiple models. In addition, it requires less manual tuning and configuration for deep learning, making it more accessible for beginners or those not primarily focused on deep learning. You may have a try yourself if you are interested after class. <https://cran.r-project.org/web/packages/h2o/index.html> (Keep in mind that h2o is Java-based, so having Java installed is a prerequisite of using h2o package)
+Neural networks are incredibly powerful tools for approximating nonlinear functions, so it is natural to hope that we might be able to approximate the manifold map using the decoder. Like previous methods, however, the lower dimensional space is not unique so we can hope to learn the manifold map up to some invertible transformation without a lot more information. Furthemore, AEs are focused on minimizing the reconstruction error rather than directly using properties of the manifold containing our data. The greedy gradient based approach means we relinquish control on which relationships within the dataset we would like to preserve and what or relationships that might exist between the bottleneck and manifold (isometry for example). In particular, there are no constraints that an AE prioritize the neighborhood structure between points. Samples $\vec{x}_i$ and $\vec{x}_j$ may be close originally, but the nonlinear nature of a neural network could result in $\mathcal{E}(\vec{x}_i)$ and $\mathcal{E}(\vec{x}_j)$ being far apart.
 
-We choose keras here because it allows the development of custom layers, loss functions, and metrics, enabling you to have a clearer understanding of the mechanism and implementation of Autoencoders. 
-
+Nonetheless, the utility of Autoencoders has been demonstrated in a wide array of applications beyond dimensionality reduction. Anomaly detection, denoising [@DenoiseAE], and generative modeling [@VAE] are a few exciting extensions and applications. The capacity of an AE to generalize and generate new samples is by far its greatest strength, which delineates it from the preceding methods. LLMs and many other generative models are based on the self-supervised approach central to AEs. The specifics that go into training state of the art language models are beyond the scope of this text. However, a basic mechanism is built into the decoder portion of the network.  In principle, we could choose a point in the bottleneck (perhaps one between the lower-dimensional representation of two sample arising from the encoder), then pass it through the decoder to generate a new data point. For an iteractive demonstration of this idea applied to MNIST, check out this [java applet](https://n8programs.com/mnistLatentSpace/).
 
 

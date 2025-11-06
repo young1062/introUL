@@ -284,11 +284,17 @@ div.csl-indent {
 <li class="chapter" data-level="6.6.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#introduction-2"><i class="fa fa-check"></i><b>6.6.1</b> Introduction</a></li>
 <li class="chapter" data-level="6.6.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#assumptions-strength-and-weaknesses"><i class="fa fa-check"></i><b>6.6.2</b> Assumptions, Strength, and Weaknesses</a></li>
 </ul></li>
-<li class="chapter" data-level="6.7" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#comparison-of-manifold-learning-methods"><i class="fa fa-check"></i><b>6.7</b> Comparison of Manifold Learning Methods</a>
+<li class="chapter" data-level="6.7" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#autoencoders-aes"><i class="fa fa-check"></i><b>6.7</b> Autoencoders (AEs)</a>
 <ul>
-<li class="chapter" data-level="6.7.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#visual-comparison-of-results"><i class="fa fa-check"></i><b>6.7.1</b> Visual comparison of results</a></li>
+<li class="chapter" data-level="6.7.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#introduction-3"><i class="fa fa-check"></i><b>6.7.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.7.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#neural-networks-design-and-training"><i class="fa fa-check"></i><b>6.7.2</b> Neural networks: design and training</a></li>
+<li class="chapter" data-level="6.7.3" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#mnist-example"><i class="fa fa-check"></i><b>6.7.3</b> MNIST Example</a></li>
 </ul></li>
-<li class="chapter" data-level="6.8" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#exercises-4"><i class="fa fa-check"></i><b>6.8</b> Exercises</a></li>
+<li class="chapter" data-level="6.8" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#comparison-of-manifold-learning-methods"><i class="fa fa-check"></i><b>6.8</b> Comparison of Manifold Learning Methods</a>
+<ul>
+<li class="chapter" data-level="6.8.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#visual-comparison-of-results"><i class="fa fa-check"></i><b>6.8.1</b> Visual comparison of results</a></li>
+</ul></li>
+<li class="chapter" data-level="6.9" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#exercises-4"><i class="fa fa-check"></i><b>6.9</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="ch-clustering.html"><a href="ch-clustering.html"><i class="fa fa-check"></i><b>7</b> Clustering</a>
 <ul>
@@ -297,7 +303,7 @@ div.csl-indent {
 <li class="chapter" data-level="7.1.1" data-path="ch-clustering.html"><a href="ch-clustering.html#k-means"><i class="fa fa-check"></i><b>7.1.1</b> <span class="math inline">\(k\)</span>-means</a></li>
 <li class="chapter" data-level="7.1.2" data-path="ch-clustering.html"><a href="ch-clustering.html#k-center-and-k-medoids"><i class="fa fa-check"></i><b>7.1.2</b> <span class="math inline">\(k\)</span>-center and <span class="math inline">\(k\)</span>-medoids</a></li>
 <li class="chapter" data-level="7.1.3" data-path="ch-clustering.html"><a href="ch-clustering.html#minimizing-clustering-loss-functions"><i class="fa fa-check"></i><b>7.1.3</b> Minimizing clustering loss functions</a></li>
-<li class="chapter" data-level="7.1.4" data-path="ch-clustering.html"><a href="ch-clustering.html#strengths-and-weaknesses"><i class="fa fa-check"></i><b>7.1.4</b> Strengths and Weaknesses</a></li>
+<li class="chapter" data-level="7.1.4" data-path="ch-clustering.html"><a href="ch-clustering.html#strengths-and-weaknesses-1"><i class="fa fa-check"></i><b>7.1.4</b> Strengths and Weaknesses</a></li>
 <li class="chapter" data-level="7.1.5" data-path="ch-clustering.html"><a href="ch-clustering.html#choosing-the-number-of-clusters"><i class="fa fa-check"></i><b>7.1.5</b> Choosing the number of clusters</a></li>
 </ul></li>
 <li class="chapter" data-level="7.2" data-path="ch-clustering.html"><a href="ch-clustering.html#hierarchical-clustering"><i class="fa fa-check"></i><b>7.2</b> Hierarchical Clustering</a>
@@ -314,7 +320,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="7.4" data-path="ch-clustering.html"><a href="ch-clustering.html#sec-spec-clustering"><i class="fa fa-check"></i><b>7.4</b> Spectral Clustering</a>
 <ul>
-<li class="chapter" data-level="7.4.1" data-path="ch-clustering.html"><a href="ch-clustering.html#introduction-3"><i class="fa fa-check"></i><b>7.4.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.4.1" data-path="ch-clustering.html"><a href="ch-clustering.html#introduction-4"><i class="fa fa-check"></i><b>7.4.1</b> Introduction</a></li>
 <li class="chapter" data-level="7.4.2" data-path="ch-clustering.html"><a href="ch-clustering.html#algorithm-3"><i class="fa fa-check"></i><b>7.4.2</b> Algorithm</a></li>
 </ul></li>
 </ul></li>
@@ -394,17 +400,17 @@ In this example, we’ll consider the three dimensional <strong>iris</strong> da
 :::</p>
 </div>
 </div>
-<div id="strengths-and-weaknesses" class="section level3 hasAnchor" number="7.1.4">
-<h3><span class="header-section-number">7.1.4</span> Strengths and Weaknesses<a href="ch-clustering.html#strengths-and-weaknesses" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="strengths-and-weaknesses-1" class="section level3 hasAnchor" number="7.1.4">
+<h3><span class="header-section-number">7.1.4</span> Strengths and Weaknesses<a href="ch-clustering.html#strengths-and-weaknesses-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The advantages and disadvantages of center-based clustering algorithms can be separated into two main categories: computational and geometric. For now, we’ll focus on the computational aspects.</p>
 <p>In the theoretical worst case, Lloyd’s algorithm can take<span class="math inline">\(\propto N^{k+1}\)</span> iterations to converge, but it is typically very fast in practice. Most implementations, allow the user to set a maximum number of iterations and converge to approximate suboptimal solutions if the maximum number of iterations is reached. PAM and greedy <span class="math inline">\(k\)</span>-center algorithms are typically much, much slower. However, once any of the clustering algorithms are complete, new data can be merged into cluster with nearest center. Other methods we’ll discuss later cannot incorporate new data without running the algorithm from scratch.</p>
 <p>Ther are other issues that can increase the computational demands of center-based clustering. Each of the methods requires one to choose the number of clusters in advance. We discuss this issue in more depth shortly, but for now we want to emphasize that there is no connection between the <span class="math inline">\(k\)</span>cluster solution and <span class="math inline">\((k+1)\)</span> cluster solution. Thus, when investigating a suitable number of clusters, we need to run our clustering algorithm for a range of potential values of <span class="math inline">\(k\)</span>.</p>
 <p>Convergence is also dependent on initial condition. In the figure below, we see two separate clustering arrangements resulting from different initial choices of the centers for <span class="math inline">\(k\)</span>-means.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-183-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-195-1.png" width="672" /></p>
 <p>Thus, we also need to avoid convergence to local minima either by running many different initial conditions to convergence and picking the best solution or by using better initialization such as <span class="math inline">\(k\)</span>-means++, which picks the initial points iteratively to maximize distance between the centers before running Lloyd’s algorithm. Using <span class="math inline">\(k\)</span>-means++ can reduce the number of initializations that one should use, but does not eliminate the potential for convergence to a poor clustering. Thus, center-based algorithms can become quite computationally demanding analyze appropriately.</p>
 <p>We have already discussed the impact of scale imbalance and outliers so as we turn to the geometric aspects of center based clustering, let’s first focus on the centers, which we often treat as <strong>representative</strong> examples of the cluster. However, the sample averages in <span class="math inline">\(k\)</span>-means may not resemble actual data points. Though <span class="math inline">\(k\)</span>-means may be much faster in prqctice, the centers in <span class="math inline">\(k\)</span>-center and <span class="math inline">\(k\)</span>-medoids are restricted to observations making them more representative of the data.</p>
 <p>Clusters are based off interpretable notion of (Euclidean) distance so that points in a cluster are closer to one another than to points in other clusters. However, this feature biases center-based methods to clusters which are spherical in shape. If (dis)similarity not best captured through (squared) Euclidean distance, poor clustering is inevitable, and many of the methods used to estimate the number of cluster with tend to overestiamte the true value. As an example, consider the three rings shown at the beginning of this chapter. Silhouette scores (see 6.1.) suggest 12 clusters which is much larger than the three rings we see in the figure.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-184-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-196-1.png" width="672" /></p>
 </div>
 <div id="choosing-the-number-of-clusters" class="section level3 hasAnchor" number="7.1.5">
 <h3><span class="header-section-number">7.1.5</span> Choosing the number of clusters<a href="ch-clustering.html#choosing-the-number-of-clusters" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -420,7 +426,7 @@ In this example, we’ll consider the three dimensional <strong>iris</strong> da
 <span id="cb23-6"><a href="ch-clustering.html#cb23-6" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
 <span id="cb23-7"><a href="ch-clustering.html#cb23-7" tabindex="-1"></a><span class="fu">plot</span>(data1<span class="sc">$</span>V1,data1<span class="sc">$</span>V2,<span class="at">xlab =</span> <span class="st">&#39;&#39;</span>, <span class="at">ylab =</span> <span class="st">&#39;&#39;</span>)</span>
 <span id="cb23-8"><a href="ch-clustering.html#cb23-8" tabindex="-1"></a><span class="fu">plot</span>(k,inertia, <span class="at">ylab=</span><span class="st">&quot;k-means loss&quot;</span> )</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-185-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-197-1.png" width="672" /></p>
 </div>
 <div id="gap-statistic" class="section level4 hasAnchor" number="7.1.5.2">
 <h4><span class="header-section-number">7.1.5.2</span> Gap Statistic<a href="ch-clustering.html#gap-statistic" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -437,7 +443,7 @@ and define <span class="math inline">\(s_K = \sqrt{var(K)(1+1/B)}\)</span></p></
 <span class="math display">\[Gap(K) \ge Gap(K+1) - s_{K+1}\]</span>
 ::: {.example name=“GAP statistic and iris data”}
 Below, we show a plot of the Gap Statistic (left) which indicates that three clusters is correct. The associated clustering is used to color a plot of the first two PC scores (right)
-<img src="_main_files/figure-html/unnamed-chunk-186-1.png" width="672" />
+<img src="_main_files/figure-html/unnamed-chunk-198-1.png" width="672" />
 :::</p></li>
 </ol>
 </div>
@@ -474,15 +480,15 @@ over a range of values of <span class="math inline">\(K\)</span> and choose the 
 <h3><span class="header-section-number">7.2.1</span> Dendrograms<a href="ch-clustering.html#dendrograms" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The key output of hierarchical clustering is a dendrogram (tree diagram) depicting the subsequent merges/divisions of data, where each merge/division is shown by a horizontal line, with height indicating dissimilarity between merged or divided clusters. Before discussing the generation of a dendrogram and the many choices on which the process depends, let’s first discuss how a dendrogram can be read and the information it provides for clustering.</p>
 <p>In the figure below, samples 8 and 15 are merged into a cluster at height <span class="math inline">\(\approx 0.5\)</span> indicating they have an original dissimilarity (Euclidean distance in this case) of 0.5. Sample 4 is then merged into the cluster with samples 8 and 15 at height <span class="math inline">\(\approx\)</span> indicating the dissimilarity of sample 4 with the cluster of samples 8 and 15 is <span class="math inline">\(\approx 0.75\)</span></p>
-<p><img src="_main_files/figure-html/unnamed-chunk-196-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-208-1.png" width="672" /></p>
 <p>In addition to indicating the subsequent mergings/divisions of our data, the dendrogram can be used to determine a clustering of the data into a chosen number of clusters. For example, to cluster the data into three groups, we draw a horizontal line at a height (four in this case) which only cuts the tree into three branches.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-197-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-209-1.png" width="672" /></p>
 <p>Samples on the same branch are in the same cluster. Thus, the branch cut above suggest the following clustering:</p>
 <pre><code>- Cluster 1, samples: 12, 9, 13, 15, 2, 6
 - Cluster 2, samples: 4, 5, 7, 8
 - Cluster 3, samples: 3, 14, 10, 1, 11</code></pre>
 <p>which appears to match the clusters shown in the original data quite well.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-198-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-210-1.png" width="672" /></p>
 </div>
 <div id="building-a-dendrogram" class="section level3 hasAnchor" number="7.2.2">
 <h3><span class="header-section-number">7.2.2</span> Building a dendrogram<a href="ch-clustering.html#building-a-dendrogram" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -504,7 +510,7 @@ over a range of values of <span class="math inline">\(K\)</span> and choose the 
 <li><strong>Average Linkage</strong>: Average distance between all pairs of points in cluster <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> defines the cluster distance. Then,
 the distance between the clusters is
 <span class="math display">\[d(C_A,C_B) = \frac{1}{|C_A|\,|C_B|}\sum_{\vec{x}\in C_A, \vec{y} \in C_B} d(\vec{x},\vec{y}).\]</span></li>
-<li><strong>Ward’s Linkage</strong>: This method uses an iterative formula based on the squared distances to minimize the within cluster variation at each merge akin to <span class="math inline">\(k\)</span>-means. When the input to agglomerative clustering is Euclidean distance, Ward’s Linkage is proportional to the squared Euclidean distance between the sample means in each cluster <span class="citation">[<a href="#ref-roux_comparative_2018">33</a>]</span> though an explicit formula using the original dissimilarities is often used so that the original data is not required. For a complete discussion on this method and how it fits into the infinite family of Lance-Williams algorithms, see additional references <span class="citation">[<a href="#ref-szekely2005hierarchical">34</a>, <a href="#ref-EverittBrianS2001Ca">35</a>]</span>.</li>
+<li><strong>Ward’s Linkage</strong>: This method uses an iterative formula based on the squared distances to minimize the within cluster variation at each merge akin to <span class="math inline">\(k\)</span>-means. When the input to agglomerative clustering is Euclidean distance, Ward’s Linkage is proportional to the squared Euclidean distance between the sample means in each cluster <span class="citation">[<a href="#ref-roux_comparative_2018">37</a>]</span> though an explicit formula using the original dissimilarities is often used so that the original data is not required. For a complete discussion on this method and how it fits into the infinite family of Lance-Williams algorithms, see additional references <span class="citation">[<a href="#ref-szekely2005hierarchical">38</a>, <a href="#ref-EverittBrianS2001Ca">39</a>]</span>.</li>
 </ul>
 <p>In the above, the notation <span class="math inline">\(d(\cdot,\cdot)\)</span> represents the distance or dissimilarity of observations and/or clusters. Both the choice of original distances/dissimiliarities and the type of linkage have a strong impact on the quality of the clustering.</p>
 <div id="comparing-linkage-methods" class="section level4 hasAnchor" number="7.2.2.1">
@@ -518,7 +524,7 @@ the distance between the clusters is
 </div>
 <div id="determining-the-number-of-clusters" class="section level4 hasAnchor" number="7.2.2.2">
 <h4><span class="header-section-number">7.2.2.2</span> Determining the number of clusters<a href="ch-clustering.html#determining-the-number-of-clusters" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>In addition to selecting the number of clusters, Gap statistics and silhouette coefficients can also be used to select the optimal number of clusters. Other methods, such as the Mojena coefficient <span class="citation">[<a href="#ref-mojena">36</a>]</span> are designed specifically for hierarchical clustering.</p>
+<p>In addition to selecting the number of clusters, Gap statistics and silhouette coefficients can also be used to select the optimal number of clusters. Other methods, such as the Mojena coefficient <span class="citation">[<a href="#ref-mojena">40</a>]</span> are designed specifically for hierarchical clustering.</p>
 <!-- Model based -->
 </div>
 </div>
@@ -586,7 +592,7 @@ Figure 7.1: Samples from a GMM
 </div>
 <p>In the preceding example, the clusters had an elliptical shape which is a distinct variation from <span class="math inline">\(k\)</span>-means clustering which presumes spherical clusters. The location and shape/orientation of each cluster is controlled by its mean vector and covariance matrix respectively. As such, GMMs can still generate spherical clusters if the eigenvalues of each covariance matrix are (approximately) equal. This is a natural consequence of the Gaussian distribution and diagonalization of the covariance matrix. In high dimensions, Gaussian distributions concentrate near the surface of ellipsoids (rather than on the interior) but the general observation regarding the increased flexibility of GMMs over k-means holds true. Ignoring computational demands, one might expect GMMs to outperform k-means in many settings.</p>
 <p>Suppose you were asked to assign a sample at the location marked with a purple <em>x</em> below.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-206-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-218-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Do you expect the <em>x</em> was generated from the same density as the points in the red cluster or from the density that generated the point in the black cluster? In center based clustering, this is a binary choice. However, it is unclear from the picture so perhaps that most honest answer is that there is a 50/50 chance that it was generated from either (we can likely agree there is vanishingly small chance it belongs to the blue cluster). The option to make such <em>fuzzy</em> clustering is a natural consequence of the probabilistic modeling approach behind GMMs. For a given parameter vector <span class="math inline">\(\Phi\)</span> we can compute a posterior <span class="math inline">\(p(z_i | \vec{x}_i,\Phi)\)</span> reflecting our belief about the clustering labeling.</p>
 <p>Ultimately, clustering via GMMs requires estimation of the parameter <span class="math inline">\(\Phi\)</span> for a given model. If we had access to the cluster labels, <span class="math inline">\(z_1,\dots,z_N\)</span> this would be an easy problems. We could simply take sample means and covariances for the samples assigned to cluster <span class="math inline">\(j\)</span> to estimate <span class="math inline">\(\vec{\mu}_j\)</span> and <span class="math inline">\({\bf \Sigma}_j\)</span> and we could use the proportion of samples given cluster label <span class="math inline">\(j\)</span> as our estimate for <span class="math inline">\(p_j\)</span>. Mathematically, we would use the estimates
 <span class="math display">\[\begin{equation}
@@ -601,7 +607,7 @@ where <span class="math inline">\(\mathbb{1}(z_i=j)\)</span> is the indicator fu
 <span class="math display">\[\begin{equation}
 \log p(\vec{x}_1,\dots,\vec{x}_N\mid \Phi) = \sum_{i=1}^N\log\left(\sum_{j=1}^N p_j\mathcal{N}(\vec{x}_i;\, \vec{\mu}_j,{\bf \Sigma}_j)\right).
 \end{equation}\]</span>
-However, this method easily suffers from computation limitations (underflow) and additional care is required to enforce constraints on the parameters: the covariance matrices <span class="math inline">\(\{{\bf \Sigma}_j\}_{j=1}^K\)</span> must be positive definite and the probabilities <span class="math inline">\(p_1,\dots,p_K\)</span> must be non-negative and sum to one. Instead, we’ll use the powerful Expectation-Maximization (EM) algorithm which was named in the 1977 paper by Dempster, Laird, and Rubin <span class="citation">[<a href="#ref-Dempster1977">37</a>]</span>. In addition to proving convergence to a local maxima in our GMM setting, that paper also discusses many use cases for EM beyond mixture models.</p>
+However, this method easily suffers from computation limitations (underflow) and additional care is required to enforce constraints on the parameters: the covariance matrices <span class="math inline">\(\{{\bf \Sigma}_j\}_{j=1}^K\)</span> must be positive definite and the probabilities <span class="math inline">\(p_1,\dots,p_K\)</span> must be non-negative and sum to one. Instead, we’ll use the powerful Expectation-Maximization (EM) algorithm which was named in the 1977 paper by Dempster, Laird, and Rubin <span class="citation">[<a href="#ref-Dempster1977">41</a>]</span>. In addition to proving convergence to a local maxima in our GMM setting, that paper also discusses many use cases for EM beyond mixture models.</p>
 </div>
 <div id="expectation-maximization-em-algorithm" class="section level3 hasAnchor" number="7.3.2">
 <h3><span class="header-section-number">7.3.2</span> Expectation-Maximization (EM) Algorithm<a href="ch-clustering.html#expectation-maximization-em-algorithm" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -634,7 +640,7 @@ p_j^{(t+1)} &amp;= \frac{\sum_{i=1}^N \gamma_{ij}^{(t)}}{\sum_{i=1}^N\sum_{\ell=
 {\bf \Sigma}_j^{(t+1)} &amp;= \frac{\sum_{i=1}^N \gamma_{ij}^{(t)}(\vec{x}_i-\vec{\mu}_j^{(t+1)})(\vec{x}_i-\vec{\mu}_j^{(t+1)})^T}{\sum_{i=1}^N \gamma_{ij}^{(t)}}
 \end{align*}\]</span></p>
 <p>The above quantities resemble the simple estimates from @ref(eq:simple_gmm_estimates). Rather than taking average using the known labels, we take weighted estimates using the relative probability of vectors have associated cluster labels!</p>
-<p>Once we have computed <span class="math inline">\(\Phi^{(t+1)}\)</span> when then return to the E-step and continuing iterating until convergence. Convergence of the EM algorithm to a local maximum follows directly from Jensen’s inequality <span class="citation">[<a href="#ref-Dempster1977">37</a>]</span>. Since the algorithm is only guaranteed to converge to a local maximum, one should typically investigate multiple initial conditions then select the parameter value among all optima that attains the highest log-likelihood <span class="math inline">\(p(\vec{x}_1,\dots,\vec{x}_N\mid \Phi)\)</span>.</p>
+<p>Once we have computed <span class="math inline">\(\Phi^{(t+1)}\)</span> when then return to the E-step and continuing iterating until convergence. Convergence of the EM algorithm to a local maximum follows directly from Jensen’s inequality <span class="citation">[<a href="#ref-Dempster1977">41</a>]</span>. Since the algorithm is only guaranteed to converge to a local maximum, one should typically investigate multiple initial conditions then select the parameter value among all optima that attains the highest log-likelihood <span class="math inline">\(p(\vec{x}_1,\dots,\vec{x}_N\mid \Phi)\)</span>.</p>
 <p>Given a final estimate <span class="math inline">\(\Phi^*\)</span> we can now determine a clustering of the data. Let <span class="math display">\[\gamma_{ij}^* = \frac{p_j^{*} \mathcal{N}(\vec{x}_i; \vec{\mu}^*_j,{\bf \Sigma}^{*}_j)}{\sum_{\ell=1}^Kp_\ell^* \mathcal{N}(\vec{x}_i; \vec{\mu}^*_\ell,{\bf \Sigma}^*_\ell)}\]</span> denote our estimate cluster label probabilities for each observation given parameter <span class="math inline">\(\Phi^*\)</span>. Each <span class="math inline">\(\gamma_{ij}^*\)</span> reflects our belief that observation <span class="math inline">\(i\)</span> was generated by the <span class="math inline">\(j\)</span>th cluster density. To make a discrete clustering, we then assign observation <span class="math inline">\(\vec{x}_i\)</span> to the cluster maximizing <span class="math inline">\(\gamma_{ij}^*\)</span>.</p>
 </div>
 <div id="model-selection-and-parameter-constraints" class="section level3 hasAnchor" number="7.3.3">
@@ -643,7 +649,7 @@ p_j^{(t+1)} &amp;= \frac{\sum_{i=1}^N \gamma_{ij}^{(t)}}{\sum_{i=1}^N\sum_{\ell=
 <p><span class="math display">\[BIC_k = 2 \log L_k^* - 2 \log \mathcal{P}_k\]</span></p>
 <p>which balances goodness of fit with model complexity. Under this framework, we select the value of <span class="math inline">\(k\)</span> which maximizes BIC. (Note, some sources define BIC as the negative of our formula above and select <span class="math inline">\(k\)</span> opt to minimize. Be mindful of the convention when using pre-existing packages!)</p>
 <p>We can use the BIC approach to investigate additional constraints on the model parameters. Recall from the <a href="ch-clustering.html#exm:gmm">7.2</a>, the shape of clusters is controlled by the covariance matrices. By applying addition constraints to <span class="math inline">\({\bf \Sigma}_1,\dots,{\bf \Sigma}_K\)</span> we can reduce the number of model parameters. The standard convention for covariance constraints comes from Banfield and Raftery (1993) who observed that every covariance matrix can be decomposed via its eigenvalue decomposition <span class="math display">\[{\bf \Sigma}_j = \lambda_j {\bf W}_j{\bf \Lambda}_j{\bf W}_j\]</span>
-where <span class="math inline">\(\lambda_j\)</span> is a scalar parameter controlling the volume of the cluster, <span class="math inline">\({\bf W}_j\)</span> is an orthonormal matrix controlling the orientation of the cluster, and <span class="math inline">\({\bf \Lambda}_j\)</span> is a diagonal matrix with diagonal entries in the interval <span class="math inline">\((0,1]\)</span> giving the relative lengths of the semi-major axes of the ellipsoid <span class="citation">[<a href="#ref-banfield1993">38</a>]</span>. We can apply constraints on one or more of the corresponding components of the covariance matrices summarized in the table below</p>
+where <span class="math inline">\(\lambda_j\)</span> is a scalar parameter controlling the volume of the cluster, <span class="math inline">\({\bf W}_j\)</span> is an orthonormal matrix controlling the orientation of the cluster, and <span class="math inline">\({\bf \Lambda}_j\)</span> is a diagonal matrix with diagonal entries in the interval <span class="math inline">\((0,1]\)</span> giving the relative lengths of the semi-major axes of the ellipsoid <span class="citation">[<a href="#ref-banfield1993">42</a>]</span>. We can apply constraints on one or more of the corresponding components of the covariance matrices summarized in the table below</p>
 <table>
 <colgroup>
 <col width="7%" />
@@ -688,10 +694,10 @@ where <span class="math inline">\(\lambda_j\)</span> is a scalar parameter contr
 <p>Unlike center-based methods, GMMs allow for a greater level of flexibility in the shapes of clusters (ellipses vs spheres). However, ellipsoids may still be inadequate choices a cluster supported on or near a nonlinear manifold. For example, in the <strong>smile</strong> data below.</p>
 <div class="example">
 <p><span id="exm:unlabeled-div-10" class="example"><strong>Example 7.3  (GMMs fail to capture complex nonlinear structure) </strong></span>Consider the following data in <span class="math inline">\(\mathbb{R}^2\)</span> which exhibitis four clusters upon visual inspection</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-208-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-220-1.png" width="672" /></p>
 <p>The eyes and nose are each compact and approximately elliptical in shape, but the mouth is concentrated around a nonlinear parabolic curve. Applying the GMM model above for a range <span class="math inline">\(K=2,\dots,15\)</span> clusters gives the following BIC curves</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-209"></span>
-<img src="_main_files/figure-html/unnamed-chunk-209-1.png" alt="BIC curves for GMMs applied to the smile data" width="672" />
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-221"></span>
+<img src="_main_files/figure-html/unnamed-chunk-221-1.png" alt="BIC curves for GMMs applied to the smile data" width="672" />
 <p class="caption">
 Figure 7.2: BIC curves for GMMs applied to the smile data
 </p>
@@ -700,16 +706,16 @@ Figure 7.2: BIC curves for GMMs applied to the smile data
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="ch-clustering.html#cb25-1" tabindex="-1"></a><span class="fu">plot</span>(smile.gmm, <span class="at">what =</span> <span class="st">&quot;classification&quot;</span>,</span>
 <span id="cb25-2"><a href="ch-clustering.html#cb25-2" tabindex="-1"></a>     <span class="at">xaxt=</span><span class="st">&#39;n&#39;</span>,<span class="at">yaxt=</span><span class="st">&#39;n&#39;</span>,</span>
 <span id="cb25-3"><a href="ch-clustering.html#cb25-3" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&#39;&#39;</span>, <span class="at">ylab =</span><span class="st">&#39;&#39;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-210-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-222-1.png" width="672" /></p>
 </div>
-<p>Given this limitation, there has been considerable work dedicated to improving model-based clustering including the design of more expressive mixture densities [<span class="citation">[<a href="#ref-Karlis2009">39</a>]</span>;<span class="citation">[<a href="#ref-OHagan2016">40</a>]</span>;<span class="citation">[<a href="#ref-Dang2023">41</a>]</span>} and methods which produce more parsimonious clustering arrangements by iteratively merging nearby clusters <span class="citation">[<a href="#ref-Dombowsky2025">42</a>]</span>.</p>
+<p>Given this limitation, there has been considerable work dedicated to improving model-based clustering including the design of more expressive mixture densities [<span class="citation">[<a href="#ref-Karlis2009">43</a>]</span>;<span class="citation">[<a href="#ref-OHagan2016">44</a>]</span>;<span class="citation">[<a href="#ref-Dang2023">45</a>]</span>} and methods which produce more parsimonious clustering arrangements by iteratively merging nearby clusters <span class="citation">[<a href="#ref-Dombowsky2025">46</a>]</span>.</p>
 <!-- Spectral Clustering -->
 </div>
 </div>
 <div id="sec-spec-clustering" class="section level2 hasAnchor" number="7.4">
 <h2><span class="header-section-number">7.4</span> Spectral Clustering<a href="ch-clustering.html#sec-spec-clustering" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="introduction-3" class="section level3 hasAnchor" number="7.4.1">
-<h3><span class="header-section-number">7.4.1</span> Introduction<a href="ch-clustering.html#introduction-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="introduction-4" class="section level3 hasAnchor" number="7.4.1">
+<h3><span class="header-section-number">7.4.1</span> Introduction<a href="ch-clustering.html#introduction-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Spectral Clustering represents a significant leap in the evolution of clustering techniques. Distinguished from traditional methods like K-means, it excels in detecting complex structures and patterns within data. It’s based on ideas from graph theory and simple math concepts, mainly focusing on how to use information from graphs. Imagine each piece of data as a point on a graph, with lines connecting the points that are similar. Spectral Clustering uses these connections to figure out how the data should be grouped, which is especially handy when the groups are twisted or oddly shaped.</p>
 <p>The key step in Spectral Clustering is breaking down a special graph matrix (called the Laplacian matrix) to find its eigen values and eigen vectors. These eigen vectors help us see the data in a new way that makes the groups more obvious. This makes it easier to use simple grouping methods like K-means to sort the data into clusters. This approach is great for finding hidden patterns in the data.</p>
 <p>However, Spectral Clustering comes with its own challenges. Choosing the right number of groups can be tricky, and it might not work as well with very large sets of data because of the relatively large computing cost. Nevertheless, its robustness and adaptability have cemented its role across various domains, from image processing to bioinformatics.</p>
@@ -755,7 +761,7 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="ch-clustering.html#cb26-1" tabindex="-1"></a><span class="fu">plot</span>(data, <span class="at">col =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;red&quot;</span>, <span class="fu">nrow</span>(cluster1)), <span class="fu">rep</span>(<span class="st">&quot;blue&quot;</span>, <span class="fu">nrow</span>(cluster2))), <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">xlab =</span> <span class="st">&quot;X-axis&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Y-axis&quot;</span>)</span>
 <span id="cb26-2"><a href="ch-clustering.html#cb26-2" tabindex="-1"></a><span class="fu">text</span>(data, <span class="at">labels =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(data), <span class="at">pos =</span> <span class="dv">4</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>)  <span class="co"># Adding labels</span></span>
 <span id="cb26-3"><a href="ch-clustering.html#cb26-3" tabindex="-1"></a><span class="fu">title</span>(<span class="st">&quot;Data Points Visualization&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-221-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-233-1.png" width="672" /></p>
 <p>We use the <strong><span class="math inline">\(\epsilon\)</span>-neighborhood</strong> approach to construct the similarity graph.</p>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
 ## [1,]    0    1    1    0    0    0
@@ -951,34 +957,46 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 <div class="csl-left-margin">[32] </div><div class="csl-right-inline"><span class="smallcaps">Donoho</span>, D. L. and <span class="smallcaps">Grimes</span>, C. (2003). <a href="https://doi.org/10.1073/pnas.1031596100">Hessian eigenmaps: Locally linear embedding techniques for high-dimensional data</a>. <em>Proceedings of the National Academy of Sciences</em> <strong>100</strong> 5591–6.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[33] </div><div class="csl-right-inline"><span class="smallcaps">Roux</span>, M. (2018). <a href="https://doi.org/10.1007/s00357-018-9259-9">A comparative study of divisive and agglomerative hierarchical clustering algorithms</a>. <em>Journal of Classification</em> <strong>35</strong> 345–66.</div>
+<div class="csl-left-margin">[33] </div><div class="csl-right-inline"><span class="smallcaps">Hinton</span>, G. E. and <span class="smallcaps">Salakhutdinov</span>, R. R. (2006). <a href="https://doi.org/10.1126/science.1127647">Reducing the dimensionality of data with neural networks</a>. <em>Science</em> <strong>313</strong> 504–7.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[34] </div><div class="csl-right-inline"><span class="smallcaps">Szekely</span>, G. J., <span class="smallcaps">Rizzo</span>, M. L., et al. (2005). Hierarchical clustering via joint between-within distances: Extending ward’s minimum variance method. <em>Journal of classification</em> <strong>22</strong> 151–84.</div>
+<div class="csl-left-margin">[34] </div><div class="csl-right-inline"><span class="smallcaps">Kingma</span>, D. P. and <span class="smallcaps">Ba</span>, J. (2015). Adam: A method for stochastic optimization. In <em>International conference on learning representations (ICLR)</em>.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[35] </div><div class="csl-right-inline"><span class="smallcaps">Everitt</span>, B. S. (2001). <em>Cluster analysis</em>. Arnold ; Oxford University Press, London : New York.</div>
+<div class="csl-left-margin">[35] </div><div class="csl-right-inline"><span class="smallcaps">Vincent</span>, P., <span class="smallcaps">Larochelle</span>, H., <span class="smallcaps">Bengio</span>, Y. and <span class="smallcaps">Manzagol</span>, P.-A. (2008). <a href="https://doi.org/10.1145/1390156.1390294">Extracting and composing robust features with denoising autoencoders</a>. In ICML ’08 pp 1096–103. Association for Computing Machinery.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[36] </div><div class="csl-right-inline"><span class="smallcaps">Mojena</span>, R. (1977). <a href="https://doi.org/10.1093/comjnl/20.4.359"><span class="nocase">Hierarchical grouping methods and stopping rules: an evaluation*</span></a>. <em>The Computer Journal</em> <strong>20</strong> 359–63.</div>
+<div class="csl-left-margin">[36] </div><div class="csl-right-inline"><span class="smallcaps">Kingma</span>, D. P. and <span class="smallcaps">Welling</span>, M. (2013). <a href="https://api.semanticscholar.org/CorpusID:216078090">Auto-encoding variational bayes</a>. <em>CoRR</em> <strong>abs/1312.6114</strong>.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[37] </div><div class="csl-right-inline"><span class="smallcaps">Dempster</span>, A. P., <span class="smallcaps">Laird</span>, N. M. and <span class="smallcaps">Rubin</span>, D. B. (1977). <a href="https://doi.org/10.1111/J.2517-6161.1977.TB01600.X"><span class="nocase">Maximum Likelihood from Incomplete Data Via the EM Algorithm</span></a>. <em>Journal of the Royal Statistical Society Series B: Statistical Methodology</em> <strong>39</strong> 1–22.</div>
+<div class="csl-left-margin">[37] </div><div class="csl-right-inline"><span class="smallcaps">Roux</span>, M. (2018). <a href="https://doi.org/10.1007/s00357-018-9259-9">A comparative study of divisive and agglomerative hierarchical clustering algorithms</a>. <em>Journal of Classification</em> <strong>35</strong> 345–66.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[38] </div><div class="csl-right-inline"><span class="smallcaps">Banfield</span>, J. D. and <span class="smallcaps">Raftery</span>, A. E. (1993). <a href="http://www.jstor.org/stable/2532201">Model-based gaussian and non-gaussian clustering</a>. <em>Biometrics</em> <strong>49</strong> 803–21.</div>
+<div class="csl-left-margin">[38] </div><div class="csl-right-inline"><span class="smallcaps">Szekely</span>, G. J., <span class="smallcaps">Rizzo</span>, M. L., et al. (2005). Hierarchical clustering via joint between-within distances: Extending ward’s minimum variance method. <em>Journal of classification</em> <strong>22</strong> 151–84.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[39] </div><div class="csl-right-inline"><span class="smallcaps">Karlis</span>, D. and <span class="smallcaps">Santourian</span>, A. (2009). <a href="https://doi.org/10.1007/S11222-008-9072-0/METRICS"><span class="nocase">Model-based clustering with non-elliptically contoured distributions</span></a>. <em>Statistics and Computing</em> <strong>19</strong> 73–83.</div>
+<div class="csl-left-margin">[39] </div><div class="csl-right-inline"><span class="smallcaps">Everitt</span>, B. S. (2001). <em>Cluster analysis</em>. Arnold ; Oxford University Press, London : New York.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[40] </div><div class="csl-right-inline"><span class="smallcaps">O’Hagan</span>, A., <span class="smallcaps">Murphy</span>, T. B., <span class="smallcaps">Gormley</span>, I. C., <span class="smallcaps">McNicholas</span>, P. D. and <span class="smallcaps">Karlis</span>, D. (2016). <a href="https://doi.org/10.1016/J.CSDA.2014.09.006"><span class="nocase">Clustering with the multivariate normal inverse Gaussian distribution</span></a>. <em>Computational Statistics &amp; Data Analysis</em> <strong>93</strong> 18–30.</div>
+<div class="csl-left-margin">[40] </div><div class="csl-right-inline"><span class="smallcaps">Mojena</span>, R. (1977). <a href="https://doi.org/10.1093/comjnl/20.4.359"><span class="nocase">Hierarchical grouping methods and stopping rules: an evaluation*</span></a>. <em>The Computer Journal</em> <strong>20</strong> 359–63.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[41] </div><div class="csl-right-inline"><span class="smallcaps">Dang</span>, U. J., <span class="smallcaps">Gallaugher</span>, M. P. B., <span class="smallcaps">Browne</span>, R. P. and <span class="smallcaps">McNicholas</span>, P. D. (2023). <a href="https://doi.org/10.1007/S00357-022-09427-7/TABLES/5"><span class="nocase">Model-Based Clustering and Classification Using Mixtures of Multivariate Skewed Power Exponential Distributions</span></a>. <em>Journal of Classification</em> <strong>40</strong> 145–67.</div>
+<div class="csl-left-margin">[41] </div><div class="csl-right-inline"><span class="smallcaps">Dempster</span>, A. P., <span class="smallcaps">Laird</span>, N. M. and <span class="smallcaps">Rubin</span>, D. B. (1977). <a href="https://doi.org/10.1111/J.2517-6161.1977.TB01600.X"><span class="nocase">Maximum Likelihood from Incomplete Data Via the EM Algorithm</span></a>. <em>Journal of the Royal Statistical Society Series B: Statistical Methodology</em> <strong>39</strong> 1–22.</div>
 </div>
 <div class="csl-entry">
-<div class="csl-left-margin">[42] </div><div class="csl-right-inline"><span class="smallcaps">Dombowsky</span>, A. and <span class="smallcaps">Dunson</span>, D. B. (2025). <a href="https://doi.org/10.1080/01621459.2024.2427935;REQUESTEDJOURNAL:JOURNAL:UASA20;WGROUP:STRING:PUBLICATION"><span class="nocase">Bayesian Clustering via Fusing of Localized Densities</span></a>. <em>Journal of the American Statistical Association</em>.</div>
+<div class="csl-left-margin">[42] </div><div class="csl-right-inline"><span class="smallcaps">Banfield</span>, J. D. and <span class="smallcaps">Raftery</span>, A. E. (1993). <a href="http://www.jstor.org/stable/2532201">Model-based gaussian and non-gaussian clustering</a>. <em>Biometrics</em> <strong>49</strong> 803–21.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[43] </div><div class="csl-right-inline"><span class="smallcaps">Karlis</span>, D. and <span class="smallcaps">Santourian</span>, A. (2009). <a href="https://doi.org/10.1007/S11222-008-9072-0/METRICS"><span class="nocase">Model-based clustering with non-elliptically contoured distributions</span></a>. <em>Statistics and Computing</em> <strong>19</strong> 73–83.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[44] </div><div class="csl-right-inline"><span class="smallcaps">O’Hagan</span>, A., <span class="smallcaps">Murphy</span>, T. B., <span class="smallcaps">Gormley</span>, I. C., <span class="smallcaps">McNicholas</span>, P. D. and <span class="smallcaps">Karlis</span>, D. (2016). <a href="https://doi.org/10.1016/J.CSDA.2014.09.006"><span class="nocase">Clustering with the multivariate normal inverse Gaussian distribution</span></a>. <em>Computational Statistics &amp; Data Analysis</em> <strong>93</strong> 18–30.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[45] </div><div class="csl-right-inline"><span class="smallcaps">Dang</span>, U. J., <span class="smallcaps">Gallaugher</span>, M. P. B., <span class="smallcaps">Browne</span>, R. P. and <span class="smallcaps">McNicholas</span>, P. D. (2023). <a href="https://doi.org/10.1007/S00357-022-09427-7/TABLES/5"><span class="nocase">Model-Based Clustering and Classification Using Mixtures of Multivariate Skewed Power Exponential Distributions</span></a>. <em>Journal of Classification</em> <strong>40</strong> 145–67.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[46] </div><div class="csl-right-inline"><span class="smallcaps">Dombowsky</span>, A. and <span class="smallcaps">Dunson</span>, D. B. (2025). <a href="https://doi.org/10.1080/01621459.2024.2427935;REQUESTEDJOURNAL:JOURNAL:UASA20;WGROUP:STRING:PUBLICATION"><span class="nocase">Bayesian Clustering via Fusing of Localized Densities</span></a>. <em>Journal of the American Statistical Association</em>.</div>
 </div>
 </div>
 </div>
@@ -987,34 +1005,34 @@ So we know that <span class="math inline">\(\vec{y}\)</span> is just an eigen-ve
 <h3>References</h3>
 <div id="refs" class="references csl-bib-body">
 <div id="ref-roux_comparative_2018" class="csl-entry">
-<div class="csl-left-margin">[33] </div><div class="csl-right-inline"><span class="smallcaps">Roux</span>, M. (2018). <a href="https://doi.org/10.1007/s00357-018-9259-9">A comparative study of divisive and agglomerative hierarchical clustering algorithms</a>. <em>Journal of Classification</em> <strong>35</strong> 345–66.</div>
+<div class="csl-left-margin">[37] </div><div class="csl-right-inline"><span class="smallcaps">Roux</span>, M. (2018). <a href="https://doi.org/10.1007/s00357-018-9259-9">A comparative study of divisive and agglomerative hierarchical clustering algorithms</a>. <em>Journal of Classification</em> <strong>35</strong> 345–66.</div>
 </div>
 <div id="ref-szekely2005hierarchical" class="csl-entry">
-<div class="csl-left-margin">[34] </div><div class="csl-right-inline"><span class="smallcaps">Szekely</span>, G. J., <span class="smallcaps">Rizzo</span>, M. L., et al. (2005). Hierarchical clustering via joint between-within distances: Extending ward’s minimum variance method. <em>Journal of classification</em> <strong>22</strong> 151–84.</div>
+<div class="csl-left-margin">[38] </div><div class="csl-right-inline"><span class="smallcaps">Szekely</span>, G. J., <span class="smallcaps">Rizzo</span>, M. L., et al. (2005). Hierarchical clustering via joint between-within distances: Extending ward’s minimum variance method. <em>Journal of classification</em> <strong>22</strong> 151–84.</div>
 </div>
 <div id="ref-EverittBrianS2001Ca" class="csl-entry">
-<div class="csl-left-margin">[35] </div><div class="csl-right-inline"><span class="smallcaps">Everitt</span>, B. S. (2001). <em>Cluster analysis</em>. Arnold ; Oxford University Press, London : New York.</div>
+<div class="csl-left-margin">[39] </div><div class="csl-right-inline"><span class="smallcaps">Everitt</span>, B. S. (2001). <em>Cluster analysis</em>. Arnold ; Oxford University Press, London : New York.</div>
 </div>
 <div id="ref-mojena" class="csl-entry">
-<div class="csl-left-margin">[36] </div><div class="csl-right-inline"><span class="smallcaps">Mojena</span>, R. (1977). <a href="https://doi.org/10.1093/comjnl/20.4.359"><span class="nocase">Hierarchical grouping methods and stopping rules: an evaluation*</span></a>. <em>The Computer Journal</em> <strong>20</strong> 359–63.</div>
+<div class="csl-left-margin">[40] </div><div class="csl-right-inline"><span class="smallcaps">Mojena</span>, R. (1977). <a href="https://doi.org/10.1093/comjnl/20.4.359"><span class="nocase">Hierarchical grouping methods and stopping rules: an evaluation*</span></a>. <em>The Computer Journal</em> <strong>20</strong> 359–63.</div>
 </div>
 <div id="ref-Dempster1977" class="csl-entry">
-<div class="csl-left-margin">[37] </div><div class="csl-right-inline"><span class="smallcaps">Dempster</span>, A. P., <span class="smallcaps">Laird</span>, N. M. and <span class="smallcaps">Rubin</span>, D. B. (1977). <a href="https://doi.org/10.1111/J.2517-6161.1977.TB01600.X"><span class="nocase">Maximum Likelihood from Incomplete Data Via the EM Algorithm</span></a>. <em>Journal of the Royal Statistical Society Series B: Statistical Methodology</em> <strong>39</strong> 1–22.</div>
+<div class="csl-left-margin">[41] </div><div class="csl-right-inline"><span class="smallcaps">Dempster</span>, A. P., <span class="smallcaps">Laird</span>, N. M. and <span class="smallcaps">Rubin</span>, D. B. (1977). <a href="https://doi.org/10.1111/J.2517-6161.1977.TB01600.X"><span class="nocase">Maximum Likelihood from Incomplete Data Via the EM Algorithm</span></a>. <em>Journal of the Royal Statistical Society Series B: Statistical Methodology</em> <strong>39</strong> 1–22.</div>
 </div>
 <div id="ref-banfield1993" class="csl-entry">
-<div class="csl-left-margin">[38] </div><div class="csl-right-inline"><span class="smallcaps">Banfield</span>, J. D. and <span class="smallcaps">Raftery</span>, A. E. (1993). <a href="http://www.jstor.org/stable/2532201">Model-based gaussian and non-gaussian clustering</a>. <em>Biometrics</em> <strong>49</strong> 803–21.</div>
+<div class="csl-left-margin">[42] </div><div class="csl-right-inline"><span class="smallcaps">Banfield</span>, J. D. and <span class="smallcaps">Raftery</span>, A. E. (1993). <a href="http://www.jstor.org/stable/2532201">Model-based gaussian and non-gaussian clustering</a>. <em>Biometrics</em> <strong>49</strong> 803–21.</div>
 </div>
 <div id="ref-Karlis2009" class="csl-entry">
-<div class="csl-left-margin">[39] </div><div class="csl-right-inline"><span class="smallcaps">Karlis</span>, D. and <span class="smallcaps">Santourian</span>, A. (2009). <a href="https://doi.org/10.1007/S11222-008-9072-0/METRICS"><span class="nocase">Model-based clustering with non-elliptically contoured distributions</span></a>. <em>Statistics and Computing</em> <strong>19</strong> 73–83.</div>
+<div class="csl-left-margin">[43] </div><div class="csl-right-inline"><span class="smallcaps">Karlis</span>, D. and <span class="smallcaps">Santourian</span>, A. (2009). <a href="https://doi.org/10.1007/S11222-008-9072-0/METRICS"><span class="nocase">Model-based clustering with non-elliptically contoured distributions</span></a>. <em>Statistics and Computing</em> <strong>19</strong> 73–83.</div>
 </div>
 <div id="ref-OHagan2016" class="csl-entry">
-<div class="csl-left-margin">[40] </div><div class="csl-right-inline"><span class="smallcaps">O’Hagan</span>, A., <span class="smallcaps">Murphy</span>, T. B., <span class="smallcaps">Gormley</span>, I. C., <span class="smallcaps">McNicholas</span>, P. D. and <span class="smallcaps">Karlis</span>, D. (2016). <a href="https://doi.org/10.1016/J.CSDA.2014.09.006"><span class="nocase">Clustering with the multivariate normal inverse Gaussian distribution</span></a>. <em>Computational Statistics &amp; Data Analysis</em> <strong>93</strong> 18–30.</div>
+<div class="csl-left-margin">[44] </div><div class="csl-right-inline"><span class="smallcaps">O’Hagan</span>, A., <span class="smallcaps">Murphy</span>, T. B., <span class="smallcaps">Gormley</span>, I. C., <span class="smallcaps">McNicholas</span>, P. D. and <span class="smallcaps">Karlis</span>, D. (2016). <a href="https://doi.org/10.1016/J.CSDA.2014.09.006"><span class="nocase">Clustering with the multivariate normal inverse Gaussian distribution</span></a>. <em>Computational Statistics &amp; Data Analysis</em> <strong>93</strong> 18–30.</div>
 </div>
 <div id="ref-Dang2023" class="csl-entry">
-<div class="csl-left-margin">[41] </div><div class="csl-right-inline"><span class="smallcaps">Dang</span>, U. J., <span class="smallcaps">Gallaugher</span>, M. P. B., <span class="smallcaps">Browne</span>, R. P. and <span class="smallcaps">McNicholas</span>, P. D. (2023). <a href="https://doi.org/10.1007/S00357-022-09427-7/TABLES/5"><span class="nocase">Model-Based Clustering and Classification Using Mixtures of Multivariate Skewed Power Exponential Distributions</span></a>. <em>Journal of Classification</em> <strong>40</strong> 145–67.</div>
+<div class="csl-left-margin">[45] </div><div class="csl-right-inline"><span class="smallcaps">Dang</span>, U. J., <span class="smallcaps">Gallaugher</span>, M. P. B., <span class="smallcaps">Browne</span>, R. P. and <span class="smallcaps">McNicholas</span>, P. D. (2023). <a href="https://doi.org/10.1007/S00357-022-09427-7/TABLES/5"><span class="nocase">Model-Based Clustering and Classification Using Mixtures of Multivariate Skewed Power Exponential Distributions</span></a>. <em>Journal of Classification</em> <strong>40</strong> 145–67.</div>
 </div>
 <div id="ref-Dombowsky2025" class="csl-entry">
-<div class="csl-left-margin">[42] </div><div class="csl-right-inline"><span class="smallcaps">Dombowsky</span>, A. and <span class="smallcaps">Dunson</span>, D. B. (2025). <a href="https://doi.org/10.1080/01621459.2024.2427935;REQUESTEDJOURNAL:JOURNAL:UASA20;WGROUP:STRING:PUBLICATION"><span class="nocase">Bayesian Clustering via Fusing of Localized Densities</span></a>. <em>Journal of the American Statistical Association</em>.</div>
+<div class="csl-left-margin">[46] </div><div class="csl-right-inline"><span class="smallcaps">Dombowsky</span>, A. and <span class="smallcaps">Dunson</span>, D. B. (2025). <a href="https://doi.org/10.1080/01621459.2024.2427935;REQUESTEDJOURNAL:JOURNAL:UASA20;WGROUP:STRING:PUBLICATION"><span class="nocase">Bayesian Clustering via Fusing of Localized Densities</span></a>. <em>Journal of the American Statistical Association</em>.</div>
 </div>
 </div>
             </section>
