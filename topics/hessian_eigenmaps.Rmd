@@ -3,16 +3,55 @@
 
 ### Introduction
 
-To motivate Hessian eigenmaps, let us revisit the revisit the idea of derivatives on real valued functions on the manifold.  Suppose we have a manifold $\mathcal{M} \subset \mathbb{R}^d$ and function $f:\mathcal{M}\to\mathbb{R}$.  Assuming that $\mathcal{M}$ has intrinsic dimension $t  < d$, to each point $\vec{x}\in\mathcal{M}$, we can associate a $t$ dimensional tangent space $T_{\vec{x}}(\mathcal{M})$ which we equip with a choice of orthonormal basis vectors.  Furthermore, there is an open neighborhood $U$ containing $\vec{x}$ with every point in the neighborhood in one to one correspondence with a point in the tangent space allowing us to conduct calculus on the manifold using approximations within the tangent space.
+This method derives its name from the Hessian of a scalar valued function, properties of which we'll briefly revisit in the context of two examples
+\begin{align*}
+g_1(x,y) & = x^2+y^2 \\
+g_2(x,y) &=\sin(2\pi x)\sin(2\pi y).
+\end{align*}
+Let's visualize these functions using surface plots.
+```{r, echo = FALSE, fig.align='center',fig.cap="Surface plots of $g_1$ (left) and $g_2$(right) over the rectangle $[-2,2]^2$"}
+library(plotly)
+# Example data (replace with your own)
+N <- 100
+x_vals <- seq(-2, 2, length.out = N)
+y_vals <- seq(-2, 2, length.out = N)
+z1_matrix <- outer(x_vals, y_vals, function(x, y) x^2 + y^2)
+z2_matrix <- outer(x_vals, y_vals, function(x, y) sin(2*pi*x)*sin(2*pi*y))
+fig1<-plot_ly(x = x_vals, y = y_vals, z = z1_matrix, scene = 'scene1') %>%
+      add_surface() 
+fig2<-plot_ly(x = x_vals, y = y_vals, z = z2_matrix, scene = 'scene2') %>%
+      add_surface() 
+subplot(fig1, fig2, nrows = 2, margin = 0.05) %>%
+  layout(
+    scene1 = list(domain = list(x = c(0, 0.4), y = c(0, 1))), # Left half
+    scene2 = list(domain = list(x = c(0.6, 1), y = c(0, 1))) # Right half
+  )
+```
+
+Which of these two functions is more curved? Informally, which function is wigglier?  The answer is clearly $g_2$, but let's revisit ideas from calculus to quantify the difference.  
+
+Suppose $g:\mathbb{R}^t\to\mathbb{R}$. The second degree Taylor expansion of a function $g$ around $\vec{x}$ is $$g(\vec{z}) \approx g(\vec{x}) + \nabla g(\vec{x})^T(\vec{z}-\vec{x}) + \frac{1}{2}(\vec{z}-\vec{x})^T(\mathcal{H}g(\vec{x}))(\vec{z}-\vec{x}).$$ The gradient provides information for orienting the approximating tangent plane of the surface whereas the Hessian provides information on additional variations from the tangent plane which captures curvature of the surface near $\vec{x}$.  For $g_1$ and $g_2$ above we have $$\nabla g_1 = \begin{bmatrix}2x \\ 2y \end{bmatrix} \text{ and } \nabla g_2 = \begin{bmatrix} 2\pi\cos(2\pi x)\sin(2\pi y) \\ 2\pi\sin(2\pi x)\cos(2\pi y) \end{bmatrix}$$
+and $$\mathcal{H} g_1 = \begin{bmatrix} 2 & 0 \\ 0 & 2\end{bmatrix} \text{ and } \mathcal{H} g_2 = \begin{bmatrix} -4\pi^2\sin(2\pi x)\sin(2\pi y) & 4\pi^2 \cos(2\pi x)\cos(2\pi y) \\4\pi^2 \cos(2\pi x)\cos(2\pi y) & -4\pi^2 \sin(2\pi x)\sin(2\pi y)\end{bmatrix}.$$ The Hessian of $g_1$ is constant whereas the Hessian of $g_2$ is both varying but generally comprised of larger values.  
+
+Subsequently, the squared Frobenius norms of the Hessians are $$\|\mathcal H g_1\|^2_F = 8 \text{ and } \mathcal{H} g_2 = 16\pi^4\left[1 + \cos(4\pi x)\cos(4\pi y)\right]$$ where the later expression follows after some trig identities.  Importantly, the squared Frobenius norm of the Hessian for $g_2$ ranges from $0$ to $32\pi^4$. On average (over the rectangle $[-2,2]^2$) $\|\mathcal{H}g_1\|_F^2$ is much larger than $\|\mathcal{H} g_1\|_F^2$! Mathematically, we have $$\int_{-2}^2 \|\mathcal{H} g_2 \|_F^2 dx dy = 16\pi^2 > 8 = \int_{-2}^2\|\mathcal{H} g_1\|_F^2 dxdy.$$ 
 
 
-::: {.theorem #thm-hlle name="Null Space of Hessian Operator on Manifolds"}
-Suppose $\mathcal{M} = \Psi(\Theta)$ where $\Theta$ is an open, connected subset of $\mathbb{R}^t$, and $\Psi$ is a locally isometric embedding of $\Theta$ into $\mathbb{R}^d$. Then $\mathcal{H}(f)$ has a $t+1$ dimensional null space spanned by the constant function and a $t$-dimensional space of functions spanned by the original isometric coordinates.
+To adapt the notion of gradients and Hessians to manifolds, let us revisit the idea of derivatives of real valued functions on a manifold.  Suppose we have a manifold $\mathcal{M} \subset \mathbb{R}^d$ and function $f:\mathcal{M}\to\mathbb{R}$.  Assuming that $\mathcal{M}$ has intrinsic dimension $t  < d$, to each point $\vec{x}\in\mathcal{M}$, we can associate a $t$ dimensional tangent space $T_{\vec{x}}(\mathcal{M})$ which we equip with a choice of orthonormal basis vectors and a corresponding chart $(U,\phi$ which maps a neighborhood, $U$ containing $\vec{x}$ to $\mathbb{R}^t$. For now, it is sufficient to think of the $\phi$ as the projection of neighboring points of $\vec{x}$ onto the approximating tangent plane (if we then subtract $\vec{x}$ from these projections, we get projections onto the tangent space). For $\vec{z}\in U$, we referred to $\phi(\vec{z})$ as the local coordinates of $\vec{z}$.
+
+From the perspective of calculus, the function $f \circ \phi^{-1}$ is a function mapping an open subset of $\mathbb{R}^t$ to $\mathbb{R}$. We can then compute gradients and Hessians of $f \circ \phi^{-1}$ using standard multivariable calculus and $\nabla^{tan}f:=\nabla (f\circ \phi^{-1})$ and $\mathcal{H}^{tan}(f) :=  \mathcal{H}(f\circ \phi^{-1})$. We'll refer to $\nabla^{tan}f$ and $\mathcal{H}^{tan}f$ as the gradient and Hessian of $f$ *in local coordinates*.  For a choice of $f$, the specific values in gradient or Hessian depends on our choice of $\phi^{-1}$ (or equivalently the basis we choose for the tangent space).  However, the (squared) Euclidean length of the gradient or the (squared) Frobenius norm of the Hessian do not depend on this choice since these quantities are unchanged by orthonormal transformations. We'll being using this fact for the remainder of this section.
+
+In principal, we could take every point $\vec{x}\in\mathcal{M}$ and, using this approach, compute the local Hessian of $f$ at $\vec{x}$.  If we take an average of the local Hessian over the manifold, denoted
+$$\mathbb{H}(f) = \int_{\mathcal{M}}\|\mathcal{H}^{tan} f \|_F^2\, d\mu(\vec{x})$$ we have a measure of the average curvature of the function $f$. Here, $\mu(\vec{x})$ is the probability distribution of data on the manifold fold (a measure for those with the requisite background). The utility of this quantity of $f$ is given in the following theorem.
+
+::: {.theorem #hlle name="Null Space of Hessian Operator on Manifolds"}
+Suppose $\mathcal{M} = \Psi(A)$ where $A$ is an open, connected subset of $\mathbb{R}^t$, and $\Psi$ is a locally isometric embedding of $A$ into $\mathbb{R}^d$. Then $\mathbb{H}(f)$ has a $t+1$ dimensional null space spanned by the constant function and a $t$-dimensional space of functions spanned by the original coordinates in $A$.
 :::
 
-Suppose now that we have a function $f:\mathcal{M}\to \mathbb{R} \subset\mathbb{R}^d$ and we wish to estimate $\mathcal{H}(f)$ using observed data $\vec{x}_1,\dots,\vec{x}_N\in\mathcal{M}$.  HLLEs are based around the construction of a discretized estimation of $\mathcal{H}(f)$ which we can write in the quadratic form $$\vec{f}^T{\bf H}\vec{f} \text{ where } \vec{f} = \left(f(\vec{x}_1),\dots,f(\vec{x}_N)\right)^T\in\mathbb{R}^N.$$ The matrix ${\bf H}\in\mathbb{R}^{N\times N}$ is symmetric and positive semidefinite and depends only on the observed data $\vec{x}_1,\dots,\vec{x}_N$. Its construction will be discussed in greater detail in the algorithms section below. 
+In short, if $\mathbb{H}(f) = 0$ then there is some $\alpha\in\mathbb{R}$ and $\vec{\beta}\in\mathbb{R}^t$ such that $f(\vec{x}) = \alpha + \beta^T\vec{z}$ where $\vec{z}\in A$ is the preimage of $\vec{x}$, e.g. $\Psi(\vec{z}) = \vec{x}.$  By looking for functions in the null space of $\mathbb{H}(f)$, we can then find functions which help us recover the original low-dimensional coordinates in $A$!
 
-For now, assume that we have access to ${\bf H}$. Suppose that $f$ is in the null space of $\mathcal{H}(f)$ then i) $\vec{f}^T{\bf H}\vec{f} \approx 0$ and ii) from Theorem \@ref(thm-hlle) it must be the case that $f(\vec{x}_i) = \alpha  + \beta^T\vec{z}_i$.  Importantly, if we can identify the null space of the matrix ${\bf H}$ then we can use this to recover the original low-dimensional coordinates (up to rigid motion and coordinate rescaling).
+Unfortunately, we cannot calculate $\mathbb{H}f$ for a general function $f$. However, we can estimate $\mathbb{H}(f)$ using observed data $\vec{x}_1,\dots,\vec{x}_N\in\mathcal{M}$, which is the central idea behind HLLEs. Specifically,  we will construct a discretized estimate of $\mathbb{H}(f)$ which we can write in the quadratic form $$\vec{f}^T{\bf H}\vec{f} \text{ where } \vec{f} = \left(f(\vec{x}_1),\dots,f(\vec{x}_N)\right)^T\in\mathbb{R}^N.$$ The matrix ${\bf H}\in\mathbb{R}^{N\times N}$ is symmetric and positive semidefinite and depends only on the observed data $\vec{x}_1,\dots,\vec{x}_N$. Its construction will be discussed in greater detail in the algorithms section below. 
+
+For now, assume that we have access to ${\bf H}$. Suppose that $f$ is in the null space of $\mathcal{H}(f)$ then i) $\vec{f}^T{\bf H}\vec{f} \approx 0$ and ii) from Theorem \@ref(thm-hlle) it must be the case that $f(\vec{x}_i) = \alpha  + \beta^T\vec{z}_i$ where $\vec{z}_i$ is a point in the lower dimensional configuration $A$.  Importantly, if we can identify the null space of the matrix ${\bf H}$ then we can use this to recover the original low-dimensional coordinates (up to rigid motion and coordinate rescaling).
 
 Similar to LLEs and ISOMAP, this algorithm begins with a k-nearest neighbor search and finishes with a eigenvalue decomposition. As inputs we provide the data, the intrinsic dimension, $t$, of the manifold, and a specified number of nearest neighbors $k$. For reasons we'll discuss later, we must select $k > t(t+3)/2$. This constraint can be problematic in practice. For example, if we believe the intrinsic dimension of $\mathcal{M}$ is 100, then we need to pick $k > 5150$ meaning we need at least 5151 samples in our dataset!  Such a constraint may be difficult to satisfy in practice, but for dimension reduction focused on visualization with the ambition assumption that $t=1,2,$ or $3$,  $k \ge 10$ is sufficient.
 
@@ -22,7 +61,7 @@ For each $\vec{x}_i$ compute its $k$-nearest neighbors which we'll denote $\math
 
 Let ${\bf M}_i \in \mathbb{R}^{k\times d}$ be the matrix of centered nearest neighbors of $\vec{x}_i$. Specifically, the $j$th row of ${\bf M}_i$ is $(\vec{x}_{i_j} - \vec{x}_i)^T$ where $\vec{x}_{i_j}$ is the $j$th nearest neighbor of $\vec{x}_i$. We apply a singular value decomposition to ${\bf M}_i$ giving factorization $${\bf M}_i = {\bf U}_i {\bf S}_i {\bf V}_i^T$$ where ${\bf U}\in\mathbb{R}^{k\times k}$ abd $V_i\in\mathbb{R}^{k\times k}$ have orthonormal columns and ${\bf S}_i\in\mathbb{R}^{k\times d}$ is diagonal. If the neighbors in $\mathcal{N}_i$ were fully contained in a t-dimensional affine subspace we expect that ${\bf S}_i$ has $t$ large singular values with the remainder equal to zero. Additionally in this case, the tangent space $T_{\vec{x}_i}$ is $\vec{x}_i + \text{span}\{\vec{v}_1,\dots,\vec{v}_t\}$ where $\vec{v}_1,\dots,\vec{v}_t$ are the first $t$ columns of ${\bf V}$.  
 
-In practice, we should only expect the first $t$ singular values to be large with the remainder smaller but non-zero.  However, we'll still use the first $t$ columns of ${\bf V}$ as an (approximate) orthonormal basis for the tangent space.  The first $t$ columns of ${\bf U}_i{\bf S}_i$ give approximations of the local coordinates of the neighbors $\mathcal{N}_i$ in this neighborhood (the $j$th row gives the local coordinates for the $j$th nearest neighbor). Hereafter, we'll let $\vec{u}^i_j = (u^i_{j1},\dots,u^i_{jt})^T$ denote the local coordinates of the $j$th nearest neighbor in the tangent space.
+In practice, we should only expect the first $t$ singular values to be large with the remainder smaller but non-zero.  However, we'll still use the first $t$ columns of ${\bf V}$ as an (approximate) orthonormal basis for the tangent space.  The first $t$ columns of ${\bf U}_i{\bf S}_i$ give approximations of the local coordinates of the neighbors $\mathcal{N}_i$ (the $j$th row gives the local coordinates for the $j$th nearest neighbor). Hereafter, we'll let $\vec{u}^i_j = (u^i_{j1},\dots,u^i_{jt})^T$ denote the local coordinates of the $j$th nearest neighbor.
 
 #### Estimate the Hessian
 
@@ -42,9 +81,9 @@ $${\bf X}_i =
 \end{bmatrix}
 $$
 If we let $\vec{f}_i = \left(f(\vec{x}_{i_1}),\dots,f(\vec{x}_{i_k})\right)^T$ be a vector containing the function values at the nearest neighbors of $\vec{x}_i$, then we can estimate the coefficients of the Taylor expansion using the following regression formula
-$$\vec{f}_i = {\bf X}^i \vec{\beta}$$ where the last $t + t(t+1)/2$ terms of $\vec{\beta}_i$ correspond to the entries of the $H^{tan}(f)$ at $\vec{x}_i$.  We then estimate $\vec{\beta}_i$ using the Moore-Penrose pseudoinverse $$\vec{\beta}_i \approx ({\bf X}_i^T{\bf X})^{-1}{\bf X}_i^T \vec{f}_i.$$ For the pseudoinverse to be invertible, ${\bf X}_i$ must have at least as many rows as columns. Thus, we need $k \ge 1+t + t(t+1)/2 = 1 + t(t+3)/2 > t(t+3)/2$.
+$$\vec{f}_i = {\bf X}_i \vec{\beta}$$ where the last $t + t(t+1)/2$ terms of $\vec{\beta}_i$ correspond to the entries of the $H^{tan}(f)$ at $\vec{x}_i$.  We then estimate $\vec{\beta}_i$ using the Moore-Penrose pseudoinverse $$\vec{\beta}_i \approx ({\bf X}_i^T{\bf X}_i)^{-1}{\bf X}_i^T \vec{f}_i.$$ For the pseudoinverse to be invertible, ${\bf X}_i$ must have at least as many rows as columns. Thus, we need $k \ge 1+t + t(t+1)/2 = 1 + t(t+3)/2 > t(t+3)/2$.
 
-We can drop the first $t+1$ entries which contain the intercept and the first order regression terms.  Let $\vec{\beta}_{i,drop}$ denote the final $t(t+1)/2$ entries of $\vec{\beta}_1$.  If we square then sum the entries of $\vec{\beta}_{i,drop}$, we now have an estimate of $\| H^{tan}(f)\|_F^2$ at $\vec{x}_i$.  
+We can drop the first $t+1$ entries which contain the intercept and the first order regression terms corresponding to the gradient.  Let $\vec{\beta}_{i,drop}$ denote the final $t(t+1)/2$ entries of $\vec{\beta}$.  If we square then sum the entries of $\vec{\beta}_{i,drop}$, we now have an estimate of $\| H^{tan}(f)\|_F^2$ at $\vec{x}_i$.  
 
 One final note on this issue.  The $1/2$ and ${\sqrt{2}}/2$ terms in ${\bf X}_i$ are introduced to ensure we are correctly estimating (and single counting) the diagonal entries of the Hessian while double counting its upper triangular elements. This detail is missing from the original paper [@hlles]. As such, many implementation may also replicate the mistake. Be cautious when choosing a package for implementing HLLEs!
 
@@ -72,10 +111,15 @@ Now, we can make use of the identity $\vec{f}_i={\bf S}_i \vec{f}$ to write this
 
 Letting $${\bf H} = \frac{1}{N} \sum_{i=1}^N{\bf S}_i^T {\bf H}_i^T{\bf H}_i{\bf S}_i$$ our approximation becomes $$\vec{f}^T{\bf H}\vec{f}.$$ Here is the final critical observation. If $f$ is a vector in the null space of $\mathcal{H}$ then it must be in the span of the coordinate functions, *and* we would expect the approximation to be small  (close to zero except for sampling variability and estimation error).  As such, we can look eigenvector(s) associated with the smallest eigenvalue(s) of ${\bf H}$ to give approximations to the coordinate functions! 
 
-Like LLEs, ${\bf H}$ will have one eigenvalues which is exactly zero corresponding to the constant function. We'll take the next $t$ eigenvectors associated with the next smallest $t$ eigenvalues and use them to build a data matrix. The rows of this data matrix give the corresponding low dimensional coordinates of our data.  
+Like Laplacian Eigenmaps and LLEs, ${\bf H}$ will have one eigenvalues which is exactly zero corresponding to the constant function. We'll take the next $t$ eigenvectors associated with the next smallest $t$ eigenvalues and use them to build a data matrix. The rows of this data matrix give the corresponding low dimensional coordinates of our data.  
 
-Since ${\bf H}$ is symmetric and positive semidefinite (its is the sum of symmetric, psd matrices), its eigenvectors will be orthogonal.  Selecting these eigenvectors as approximates for functions $f_1,\dots,f_t$ giving the corresponding 1st through $t$th coordinates is equiavalent to imposing an orthogonality constraint on these vectors.  We'll also take the vectors to be unit length.  As a result, we can expect HLLE to recover original coordinates up to rigid motion (scaling and rotation/reflection) and coordinate rescaling.
+Since ${\bf H}$ is symmetric and positive semidefinite (it is the sum of symmetric, psd matrices), its eigenvectors will be orthogonal.  Selecting these eigenvectors as approximates for functions $f_1,\dots,f_t$ is equivalent to imposing an orthogonality constraint on these vectors.  We'll also take the vectors to be unit length.  As a result, we can expect HLLE to recover original coordinates up to rigid motion (scaling and rotation/reflection) and coordinate rescaling.
 
+### Assumptions, Strength, and Weaknesses
+
+HLLEs rely on two assumptions: the manifold map is locally isometric and the lower-dimensional set $A$ is connected. These are far more flexible than ISOMAP, which requires an isometric manifold map and convex $A$. Additionally, HLLEs have fewer tuning parameters than Laplacian eigenmaps, which also require one to specify the bandwidth $\sigma^2$ is the rbf kernel.  
+
+However, there are also drawbacks.  The theoretical justification for HLLEs relies on a quality approximation to the local Hessian, which is difficult without a large number of samples.  Furthermore, for manifold with intrinsically high-dimension $t$, a prohibitively large number of nearest neighbors is required.  
 
 
 

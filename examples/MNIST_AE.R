@@ -16,6 +16,7 @@ input_img <- layer_input(shape = c(28*28))
 
 # Encoder
 encoded <- input_img %>% 
+  layer_dense(units = 1024, activation = "relu") %>% 
   layer_dense(units = 128, activation = "relu") %>% 
   layer_dense(units = 64, activation = "relu") %>% 
   layer_dense(units = 32, activation = "relu") %>% 
@@ -32,11 +33,15 @@ decoded <- encoded %>%
   layer_dense(units = 32, activation = "relu") %>% 
   layer_dense(units = 64, activation = "relu") %>% 
   layer_dense(units = 128, activation = "relu") %>%
+  layer_dense(units = 1024, activation = "relu") %>% 
   layer_dense(units = 28*28, activation = "sigmoid")
 
 # combines the encoder and decoder into the Autoencoder model
 autoencoder <- keras_model(input = input_img, output = decoded)
-pdf("mnist_ae.pdf");plot(autoencoder, show_shapes = T, show_layer_activations = T);dev.off()
+pdf("mnist_ae.pdf");
+plot(autoencoder, show_shapes = T, show_layer_activations = T);
+dev.off()
+
 
 autoencoder %>% compile(
   optimizer = 'adam', 
@@ -67,9 +72,13 @@ head(encoded_df)
 
 
 # Plotting the bottleneck
-labels_train <- as.factor(mnist$train$y)
-ae <- ggplot(encoded_df, aes(x = V1, y = V2, color = labels_train)) +
-  geom_point(alpha = 0.4, size = 0.5) +
+subsample <- sample(1:length(mnist$train$y),size = 2e4)
+labels_train <- mnist$train$y[subsample]
+ae <- ggplot(encoded_df[subsample,], aes(x = V1, y = V2, 
+                             color = as.factor(labels_train), 
+                             label=labels_train)) +
+  geom_point(alpha = 0.4, size = 0.5,) +
+  geom_text() + 
   labs(title = "Autoencoder projection",
        x = "Latent Space 1",
        y = "Latent Space 2",
