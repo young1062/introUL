@@ -51,7 +51,7 @@ In $k$-center and $k$-medoids, we require the cluster centers to be data points 
 
 \begin{align*}
 L_{k-center}(\vec{c}_1,\dots,\vec{c}_k) &= \max_{\ell=1,\dots,k} \max_{x_i \in C_\ell} \|\vec{x}_i - \vec{c}_\ell\| \\
-L_{k-center}(\vec{c}_1,\dots,\vec{c}_k) &= \sum_{\ell=1,\dots,k} \sum_{x_i \in C_\ell} \|\vec{x}_i - \vec{c}_\ell\|
+L_{k-medoids}(\vec{c}_1,\dots,\vec{c}_k) &= \sum_{\ell=1,\dots,k} \sum_{x_i \in C_\ell} \|\vec{x}_i - \vec{c}_\ell\|
 \end{align*}
 In the preceding expression we have used (non-squared) Euclidean distance, which immediately makes these algorithms less sensitive to outliers and scale imbalance compared to $k$-means. Furthermore, alternative distance/dissimilarity measures can be used instead of Euclidean distance which adds an additional level of flexibility.  In fact, we do not even need to original data in practice to implement the $k$-center or $k$-medoids.  A distance matrix alone is sufficient.  
 
