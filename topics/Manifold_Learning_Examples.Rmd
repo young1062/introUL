@@ -66,106 +66,110 @@ scatterplot3d(washer.swiss,
 
 The helix is the simplest example and satisfies all assumptions we have discussed in the preceding sections.  As such, it is not surprising that each of the methods discussed does a reasonable job compressing the data to a line segment. For the helix, we have used the isometric manifold mapping $$\Psi(t) = \left(\frac{\sqrt{2}}{2}\cos (t), \frac{\sqrt{2}}{2}\sin t, \frac{\sqrt{2}}{2} t\right)^T$$ where $t \in [0,15]$ is the original 1-dimensional coordinate for the data.  Below we plot the recovered 1-d representation of the data against the corresponding value of $t$. As we have discussed, a perfect recovery of the original $t$ is impossible. The best we can hope for is a affine relationship reflecting a one-to-one correspondence (up to translation, rescaling, and rigid motion) between the original low dimension coordinates and those recovered by our manifold learning methods.
 
-```{r helix_examples, echo = FALSE, fig.cap = "Recovered latent space vs original coordinates"}
-helix.iso <- read.csv("../data/helix_isomap.csv")$X0
-helix.LLE <- read.csv("../data/helix_lle.csv")$X0
-helix.LA <- read.csv("../data/helix_lapleig.csv")$X0
-helix.HLLE <- read.csv("../data/helix_hlle.csv")$X0
-helix.AE <- read.csv("../data/helix_AE.csv")$X0
-par(mfrow = c(3,2), mar = c(2,0,2,0))
-plot(helix.iso, helix[,3], 
-     col = myColorRamp(c("red","purple","blue","green","yellow"), helix[,3] ),
-     main = "Isomap", xlab = "",ylab = "")
-plot(helix.LLE, helix[,3], 
-     col = myColorRamp(c("red","purple","blue","green","yellow"), helix[,3] ),
-     main = "LLEs", xlab = "",ylab = "")
-plot(helix.LA, helix[,3], 
-     col = myColorRamp(c("red","purple","blue","green","yellow"), helix[,3] ),
-     main = "Laplacian Eigenmaps", xlab = "",ylab = "")
-plot(helix.HLLE, helix[,3], 
-     col = myColorRamp(c("red","purple","blue","green","yellow"), helix[,3] ),
-     main = "HLLEs", xlab = "",ylab = "")
-plot(helix.AE, helix[,3], 
-     col = myColorRamp(c("red","purple","blue","green","yellow"), helix[,3] ),
-     main = "Autoencoder", xlab = "",ylab = "")
+```{r helix-examples, echo = FALSE, fig.cap = "Recovered latent space vs original coordinates"}
+# helix.iso <- read.csv("../data/helix_isomap.csv")$X0
+# helix.LLE <- read.csv("../data/helix_lle.csv")$X0
+# helix.LA <- read.csv("../data/helix_lapleig.csv")$X0
+# helix.HLLE <- read.csv("../data/helix_hlle.csv")$X0
+# helix.AE <- read.csv("../data/helix_AE.csv")$X0
+# par(mfrow = c(3,2), mar = c(2,0,2,0))
+# plot(helix.iso, helix[,3], 
+#      col = myColorRamp(c("red","purple","blue","green","yellow"), helix[,3] ),
+#      main = "Isomap", xlab = "",ylab = "")
+# plot(helix.LLE, helix[,3], 
+#      col = myColorRamp(c("red","purple","blue","green","yellow"), helix[,3] ),
+#      main = "LLEs", xlab = "",ylab = "")
+# plot(helix.LA, helix[,3], 
+#      col = myColorRamp(c("red","purple","blue","green","yellow"), helix[,3] ),
+#      main = "Laplacian Eigenmaps", xlab = "",ylab = "")
+# plot(helix.HLLE, helix[,3], 
+#      col = myColorRamp(c("red","purple","blue","green","yellow"), helix[,3] ),
+#      main = "HLLEs", xlab = "",ylab = "")
+# plot(helix.AE, helix[,3], 
+#      col = myColorRamp(c("red","purple","blue","green","yellow"), helix[,3] ),
+#      main = "Autoencoder", xlab = "",ylab = "")
+knitr::include_graphics("images/Helix-DR-comparison.png")
 ```
 
 #### Swiss Roll
 
 For the Swiss roll, we use the manifold map $$\Psi: \left[\frac{3\pi}{2},\frac{9\pi}{2}\right] \times [0,15] \to \mathbb{R}^3$$ given by the equation $$\Psi(s,t) = \left(s\cos s, t, s\sin s\right)^T.$$ Below, we plot the first and second coordinates recovered by Isomap using $k=35$ nearest neighbors.  
 
-```{r swiss_examples, echo = FALSE, fig.cap = "Recovered latent space vs original coordinates"}
-swiss.iso <- read.csv("../data/swiss_isomap.csv")[,-1]
-swiss.LLE <- read.csv("../data/swiss_lle.csv")[,-1]
-swiss.LA <- read.csv("../data/swiss_lapleig.csv")[,-1]
-swiss.HLLE <- read.csv("../data/swiss_hlle.csv")[,-1]
-swiss.AE <- read.csv("../data/swiss_AE.csv")[,-1]
-par(mfrow = c(3,2), mar = c(2,0,2,0))
-plot(swiss.iso[,1], swiss.iso[,2], 
-     col = myColorRamp(c("red","purple","blue","green","yellow"), swiss_color ),
-     main = "Isomap", xlab = "",ylab = "")
-plot(swiss.LLE[,1], swiss.LLE[,2], 
-     col = myColorRamp(c("red","purple","blue","green","yellow"), swiss_color ),
-     main = "LLEs", xlab = "",ylab = "")
-plot(swiss.LA[,1], swiss.LA[,2], 
-     col = myColorRamp(c("red","purple","blue","green","yellow"), swiss_color ),
-     main = "Laplacian Eigenmaps", xlab = "",ylab = "")
-plot(swiss.HLLE[,1], swiss.HLLE[,2], 
-     col = myColorRamp(c("red","purple","blue","green","yellow"), swiss_color ),
-     main = "HLLEs", xlab = "",ylab = "")
-plot(swiss.AE[,1], swiss.AE[,2], 
-     col = myColorRamp(c("red","purple","blue","green","yellow"), swiss_color ),
-     main = "Autoencoder", xlab = "",ylab = "")
+```{r swiss-examples, echo = FALSE, fig.cap = "Recovered latent space vs original coordinates"}
+# swiss.iso <- read.csv("../data/swiss_isomap.csv")[,-1]
+# swiss.LLE <- read.csv("../data/swiss_lle.csv")[,-1]
+# swiss.LA <- read.csv("../data/swiss_lapleig.csv")[,-1]
+# swiss.HLLE <- read.csv("../data/swiss_hlle.csv")[,-1]
+# swiss.AE <- read.csv("../data/swiss_AE.csv")[,-1]
+# par(mfrow = c(3,2), mar = c(2,0,2,0))
+# plot(swiss.iso[,1], swiss.iso[,2], 
+#      col = myColorRamp(c("red","purple","blue","green","yellow"), swiss_color ),
+#      main = "Isomap", xlab = "",ylab = "")
+# plot(swiss.LLE[,1], swiss.LLE[,2], 
+#      col = myColorRamp(c("red","purple","blue","green","yellow"), swiss_color ),
+#      main = "LLEs", xlab = "",ylab = "")
+# plot(swiss.LA[,1], swiss.LA[,2], 
+#      col = myColorRamp(c("red","purple","blue","green","yellow"), swiss_color ),
+#      main = "Laplacian Eigenmaps", xlab = "",ylab = "")
+# plot(swiss.HLLE[,1], swiss.HLLE[,2], 
+#      col = myColorRamp(c("red","purple","blue","green","yellow"), swiss_color ),
+#      main = "HLLEs", xlab = "",ylab = "")
+# plot(swiss.AE[,1], swiss.AE[,2], 
+#      col = myColorRamp(c("red","purple","blue","green","yellow"), swiss_color ),
+#      main = "Autoencoder", xlab = "",ylab = "")
+knitr::include_graphics("images/Swiss-DR-comparison.png")
 ```
 
 #### Folded Washer
 
-```{r fold_washer_examples, echo = FALSE, fig.cap = "Recovered latent space vs original coordinates"}
-fold_washer.iso <- read.csv("../data/fold_washer_isomap.csv")[,-1]
-fold_washer.LLE <- read.csv("../data/fold_washer_lle.csv")[,-1]
-fold_washer.LA <- read.csv("../data/fold_washer_lapleig.csv")[,-1]
-fold_washer.HLLE <- read.csv("../data/fold_washer_hlle.csv")[,-1]
-fold_washer.AE <- read.csv("../data/fold_washer_AE.csv")[,-1]
-par(mfrow = c(3,2), mar = c(2,0,2,0))
-plot(fold_washer.iso[,1], fold_washer.iso[,2], 
-     col = myColorRamp(c("red","purple","blue","green","yellow"), washer3[,1] ),
-     main = "Isomap", xlab = "",ylab = "")
-plot(fold_washer.LLE[,1], fold_washer.LLE[,2], 
-     col = myColorRamp(c("red","purple","blue","green","yellow"), washer3[,1] ),
-     main = "LLEs", xlab = "",ylab = "")
-plot(fold_washer.LA[,1], fold_washer.LA[,2], 
-     col = myColorRamp(c("red","purple","blue","green","yellow"), washer3[,1] ),
-     main = "Laplacian Eigenmaps", xlab = "",ylab = "")
-plot(fold_washer.HLLE[,1], fold_washer.HLLE[,2], 
-     col = myColorRamp(c("red","purple","blue","green","yellow"), washer3[,1] ),
-     main = "HLLEs", xlab = "",ylab = "")
-plot(fold_washer.AE[,1], fold_washer.AE[,2], 
-     col = myColorRamp(c("red","purple","blue","green","yellow"), washer3[,1] ),
-     main = "Autoencoder", xlab = "",ylab = "")
+```{r fold-washer-examples, echo = FALSE, fig.cap = "Recovered latent space vs original coordinates"}
+# fold_washer.iso <- read.csv("../data/fold_washer_isomap.csv")[,-1]
+# fold_washer.LLE <- read.csv("../data/fold_washer_lle.csv")[,-1]
+# fold_washer.LA <- read.csv("../data/fold_washer_lapleig.csv")[,-1]
+# fold_washer.HLLE <- read.csv("../data/fold_washer_hlle.csv")[,-1]
+# fold_washer.AE <- read.csv("../data/fold_washer_AE.csv")[,-1]
+# par(mfrow = c(3,2), mar = c(2,0,2,0))
+# plot(fold_washer.iso[,1], fold_washer.iso[,2], 
+#      col = myColorRamp(c("red","purple","blue","green","yellow"), washer3[,1] ),
+#      main = "Isomap", xlab = "",ylab = "")
+# plot(fold_washer.LLE[,1], fold_washer.LLE[,2], 
+#      col = myColorRamp(c("red","purple","blue","green","yellow"), washer3[,1] ),
+#      main = "LLEs", xlab = "",ylab = "")
+# plot(fold_washer.LA[,1], fold_washer.LA[,2], 
+#      col = myColorRamp(c("red","purple","blue","green","yellow"), washer3[,1] ),
+#      main = "Laplacian Eigenmaps", xlab = "",ylab = "")
+# plot(fold_washer.HLLE[,1], fold_washer.HLLE[,2], 
+#      col = myColorRamp(c("red","purple","blue","green","yellow"), washer3[,1] ),
+#      main = "HLLEs", xlab = "",ylab = "")
+# plot(fold_washer.AE[,1], fold_washer.AE[,2], 
+#      col = myColorRamp(c("red","purple","blue","green","yellow"), washer3[,1] ),
+#      main = "Autoencoder", xlab = "",ylab = "")
+knitr::include_graphics("images/Folded-Washer-DR-Comparison.png")
 ```
 
 #### Rolled Washer
 
-```{r roll_washer_examples, echo = FALSE, fig.cap = "Recovered latent space vs original coordinates"}
-roll_washer.iso <- read.csv("../data/roll_washer_isomap.csv")[,-1]
-roll_washer.LLE <- read.csv("../data/roll_washer_lle.csv")[,-1]
-roll_washer.LA <- read.csv("../data/roll_washer_lapleig.csv")[,-1]
-roll_washer.HLLE <- read.csv("../data/roll_washer_hlle.csv")[,-1]
-roll_washer.AE <- read.csv("../data/roll_washer_AE.csv")[,-1]
-par(mfrow = c(3,2), mar = c(2,0,2,0))
-plot(roll_washer.iso[,1], roll_washer.iso[,2], 
-     col = myColorRamp(c("red","purple","blue","green","yellow"), washer.swiss[,1] ),
-     main = "Isomap", xlab = "",ylab = "")
-plot(roll_washer.LLE[,1], roll_washer.LLE[,2], 
-     col = myColorRamp(c("red","purple","blue","green","yellow"), washer.swiss[,1] ),
-     main = "LLEs", xlab = "",ylab = "")
-plot(roll_washer.LA[,1], roll_washer.LA[,2], 
-     col = myColorRamp(c("red","purple","blue","green","yellow"), washer.swiss[,1] ),
-     main = "Laplacian Eigenmaps", xlab = "",ylab = "")
-plot(roll_washer.HLLE[,1], roll_washer.HLLE[,2], 
-     col = myColorRamp(c("red","purple","blue","green","yellow"), washer.swiss[,1] ),
-     main = "HLLEs", xlab = "",ylab = "")
-plot(roll_washer.AE[,1], roll_washer.AE[,2], 
-     col = myColorRamp(c("red","purple","blue","green","yellow"), washer.swiss[,1] ),
-     main = "Autoencoder", xlab = "",ylab = "")
+```{r roll-washer-examples, echo = FALSE, fig.cap = "Recovered latent space vs original coordinates"}
+# roll_washer.iso <- read.csv("../data/roll_washer_isomap.csv")[,-1]
+# roll_washer.LLE <- read.csv("../data/roll_washer_lle.csv")[,-1]
+# roll_washer.LA <- read.csv("../data/roll_washer_lapleig.csv")[,-1]
+# roll_washer.HLLE <- read.csv("../data/roll_washer_hlle.csv")[,-1]
+# roll_washer.AE <- read.csv("../data/roll_washer_AE.csv")[,-1]
+# par(mfrow = c(3,2), mar = c(2,0,2,0))
+# plot(roll_washer.iso[,1], roll_washer.iso[,2], 
+#      col = myColorRamp(c("red","purple","blue","green","yellow"), washer.swiss[,1] ),
+#      main = "Isomap", xlab = "",ylab = "")
+# plot(roll_washer.LLE[,1], roll_washer.LLE[,2], 
+#      col = myColorRamp(c("red","purple","blue","green","yellow"), washer.swiss[,1] ),
+#      main = "LLEs", xlab = "",ylab = "")
+# plot(roll_washer.LA[,1], roll_washer.LA[,2], 
+#      col = myColorRamp(c("red","purple","blue","green","yellow"), washer.swiss[,1] ),
+#      main = "Laplacian Eigenmaps", xlab = "",ylab = "")
+# plot(roll_washer.HLLE[,1], roll_washer.HLLE[,2], 
+#      col = myColorRamp(c("red","purple","blue","green","yellow"), washer.swiss[,1] ),
+#      main = "HLLEs", xlab = "",ylab = "")
+# plot(roll_washer.AE[,1], roll_washer.AE[,2], 
+#      col = myColorRamp(c("red","purple","blue","green","yellow"), washer.swiss[,1] ),
+#      main = "Autoencoder", xlab = "",ylab = "")
+knitr::include_graphics("images/Rolled-Washer-DR-Comparison.png")
 ```
