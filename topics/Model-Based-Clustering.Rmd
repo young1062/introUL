@@ -49,38 +49,36 @@ to denote the set of model parameters.  We'll use $p(\vec{x}_1,z_1,\dots,vec{x}_
 
 ::: {.example #gmm name="Samples from a GMM"}
 Briefly, we'll demonstrate the type of data one can generate from a Gaussian mixture model.  We focus on a two-dimensional case with $K=3$ clusters.  For the sampling process, we'll use means
-$$
-\vec{\mu}_1 = \begin{bmatrix} 6 \\ 0 \end{bmatrix}, \,
+$$=\vec{\mu}_1 = \begin{bmatrix} 6 \\ 0 \end{bmatrix}, \,
 \vec{\mu}_2 = \begin{bmatrix} 0 \\ 3 \end{bmatrix}, \,
-\vec{\mu}_3 = \begin{bmatrix} -3 \\ 0 \end{bmatrix}, \,
-$$
-and covariances
-$$
-{\bf \Sigma}_1 = \begin{bmatrix} 1 & 0.5\\ 0.5 & 1 \end{bmatrix}, \,
+\vec{\mu}_3 = \begin{bmatrix} -3 \\ 0 \end{bmatrix}$$
+and covariance matrices
+$${\bf \Sigma}_1 = \begin{bmatrix} 1 & 0.5\\ 0.5 & 1 \end{bmatrix}, \,
 {\bf \Sigma}_2 = \begin{bmatrix} 0.5 & 0  \\ 0 &0.5 \end{bmatrix}, \,
-{\bf \Sigma}_3 = \begin{bmatrix} 5 & -3 \\ -3 & 2\end{bmatrix}, \,
-$$
+{\bf \Sigma}_3 = \begin{bmatrix} 5 & -3 \\ -3 & 2\end{bmatrix}$$
 for the Gaussian densities. And we'll use probabilities $\vec{p}=(0.5,0.3,0.2)$ for the cluster label assignment.  Below, we show 1000 samples from this GMM with points color-coded by sampled cluster label $z_i$.
 
-```{r ex-GMM, fig.align = 'center', fig.cap="Samples from a GMM", echo = FALSE}
-set.seed(5)
-N <- 1e3
-p <- c(0.5,0.3,0.2)
-mu1 <- c(6,0)
-mu2 <- c(0,3)
-mu3 <- c(-3,0)
-Sigma1 <- matrix(c(1,0.5,0.5,1),nrow = 2)
-Sigma2 <- matrix(c(0.5,0,0,0.5), nrow = 2)
-Sigma3 <- matrix(c(5,-3,-3,2),nrow = 2)
-Z <- sample(c(1,2,3), N, prob = p, replace = TRUE)
-X.gmm.ex <- matrix(NA, nrow = N, ncol =2 )
-for (j in 1:N){
-  X.gmm.ex[j,] <- (Z[j]==1)*mvrnorm(n=1, mu1,Sigma1) +
-    (Z[j]==2)*mvrnorm(n=1, mu2,Sigma2) +
-    (Z[j]==3)*mvrnorm(n=1, mu3,Sigma3) 
-}
-plot(X.gmm.ex[,1],X.gmm.ex[,2],col = c("red","blue","black")[Z],
-     xlab = "",ylab = "")
+```{r ex-GMM, fig.align = 'center', fig.cap="Samples from a GMM", echo = FALSE, out.width="0.8\\linewidth"}
+# library(MASS)
+# set.seed(5)
+# N <- 1e3
+# p <- c(0.5,0.3,0.2)
+# mu1 <- c(6,0)
+# mu2 <- c(0,3)
+# mu3 <- c(-3,0)
+# Sigma1 <- matrix(c(1,0.5,0.5,1),nrow = 2)
+# Sigma2 <- matrix(c(0.5,0,0,0.5), nrow = 2)
+# Sigma3 <- matrix(c(5,-3,-3,2),nrow = 2)
+# Z <- sample(c(1,2,3), N, prob = p, replace = TRUE)
+# X.gmm.ex <- matrix(NA, nrow = N, ncol =2 )
+# for (j in 1:N){
+#   X.gmm.ex[j,] <- (Z[j]==1)*mvrnorm(n=1, mu1,Sigma1) +
+#     (Z[j]==2)*mvrnorm(n=1, mu2,Sigma2) +
+#     (Z[j]==3)*mvrnorm(n=1, mu3,Sigma3)
+# }
+# plot(X.gmm.ex[,1],X.gmm.ex[,2],col = c("red","blue","black")[Z],
+#      xlab = "",ylab = "")
+knitr::include_graphics("images/ex-gmm.png")
 ```
 :::
 
@@ -89,9 +87,10 @@ In the preceding example, the clusters had an elliptical shape which is a distin
 Suppose you were asked to assign a sample at the location marked with a purple *x* below.
 
 ```{r, echo = FALSE, fig.align='center'}
-plot(X.gmm.ex[,1],X.gmm.ex[,2],col = c("red","blue","black")[Z],
-     xlab = "",ylab = "")
-points(x=2.3,y=-2.2,pch = 4, col = 'purple')
+# plot(X.gmm.ex[,1],X.gmm.ex[,2],col = c("red","blue","black")[Z],
+#      xlab = "",ylab = "")
+# points(x=2.3,y=-2.2,pch = 4, col = 'purple')
+knitr::include_graphics("images/ex-gmm-new-point.png")
 ```
 
 Do you expect the *x* was generated from the same density as the points in the red cluster or from the density that generated the point in the black cluster?  In center based clustering, this is a binary choice.  However, it is unclear from the picture so perhaps that most honest answer is that there is a 50/50 chance that it was generated from either (we can likely agree there is vanishingly small chance it belongs to the blue cluster). The option to make such *fuzzy* clustering is a natural consequence of the probabilistic modeling approach behind GMMs.  For a given parameter vector $\Phi$ we can compute a posterior $p(z_i | \vec{x}_i,\Phi)$ reflecting our belief about the clustering labeling.

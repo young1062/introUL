@@ -9,8 +9,9 @@ As we will see through a series of examples, these two points are linked. Given 
 
 For now, let us focus on the the latter question regarding similarity.  Consider the following three examples of data sets in $\mathbb{R}^2$.  Visually, how would you cluster the observations? In particular, how many subgroups would you say exist and how would your partition the data into these subgroups?
 
-::: {.example #cluster-what name="Different notions of similar subgroups"}
-```{r fig-cluster-what, fig.align='center', fig.width=10, echo = FALSE}
+::: {.example #clusterwhat name="Different notions of similar subgroups"}
+
+```{r ex-cluster, fig.align='center', fig.width=10, echo = FALSE}
 set.seed(185)
 library("MASS")
 N <- 200
