@@ -32,7 +32,7 @@ However, it is not full rank. The previous equation shows that $\vec{1}$ is an e
 
 In the previous statement we can view the entries of vector $\vec{y}$ as $N$ separate scalars.  However, we can also extend the preceding expression to include Euclidean distances between vectors $\vec{y}_1,\dots,\vec{y}_N\in\mathbb{R}^t$ to give the following important expression
 \begin{equation}
-\sum_{i=1}^N\sum_{j=1}^N {\bf W}_{ij} \|\vec{y}_i-\vec{y}_j\|^2 = \frac{1}{2}tr\left({\bf Y}^T{\bf LY}\right)
+\frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N {\bf W}_{ij} \|\vec{y}_i-\vec{y}_j\|^2 = tr\left({\bf Y}^T{\bf LY}\right)
 \end{equation}
 where ${\bf Y}\in\mathbb{R}^{N\times t}$ has rows $\vec{y}_1^T,\dots,\vec{y}_N^T.$  We will return to this identity and its implications for Laplacian Eigenmaps after discussing the algorithmic details of the method
 
