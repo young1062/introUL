@@ -102,23 +102,8 @@ knitr::include_graphics("images/MNIST_ae_latent_space.png")
 For comparison, here is the two-dimensional configuration of points obtained by PCA.
 
 
-```{r keras_mnist_pca, echo = FALSE, cache = TRUE, fig.align='center',fig.cap="2D Representation of MNIST via PCA",out.width="80%",out.height="auto"}
-require("keras")
-mnist <- dataset_mnist()
-train_images <- mnist$train$x
-train_images <- array_reshape(train_images, c(nrow(train_images), 28*28))
-train_images <- train_images / 255
-labels_train <- mnist$train$y
-pca_result <- prcomp(train_images)
-
-# Extract the scores of the first two principal components
-scores <- as.data.frame(pca_result$x[, 1:2])
-colnames(scores) <- c("PC1", "PC2")
-p <- ggplot(scores, aes(x = PC1, y = PC2, color = as.factor(labels_train))) +
-  geom_point(alpha = 0.6) +
-  labs(title = "PCA", x = "PC1", y = "PC2", color="response") +
-  theme_minimal()
-p
+```{r echo = FALSE, fig.align='center',fig.cap="2D Representation of MNIST via PCA",out.width="80%"}
+knitr::include_graphics("images/MNIST_pca_scores.png")
 ```
 :::
 
