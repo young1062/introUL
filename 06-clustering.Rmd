@@ -58,7 +58,7 @@ As with kernel PCA (\@ref(ch-nonlinear)), the choice and tuning of the kernel is
 
 Consider $N=400$ points sampled uniformly around two concentric circles with additive noise, a shape ordinary $k$-means cannot separate correctly since neither ring is convex (let alone spherical).
 
-```{r, fig.cap = "Nested rings which are not separable by ordinary k-means"}
+```{r, echo = FALSE, fig.cap = "Nested rings which are not separable by ordinary k-means"}
 library("kernlab")
 set.seed(185)
 N <- 400
@@ -70,7 +70,7 @@ plot(rings, xlab = "", ylab = "", pch = 16, cex = 0.5, asp = 1)
 
 Below, we compare the partition found by ordinary $k$-means to the partition found by kernel $k$-means using an rbf kernel.
 
-```{r, fig.cap = "Ordinary k-means (left) vs. kernel k-means with an rbf kernel (right)"}
+```{r, echo = FALSE, fig.cap = "Ordinary k-means (left) vs. kernel k-means with an rbf kernel (right)"}
 out.km <- kmeans(rings, centers = 2)
 out.kkm <- kkmeans(rings, centers = 2, kernel = "rbfdot", kpar = list(sigma = 4))
 par(mfrow = c(1,2))

@@ -34,6 +34,7 @@ we can only superimpose (add) features to approximate our data, so we might expe
 ### Geometric Interpretation
 
 As a motivating example consider the case, where we have data $\vec{x}_1,\dots,\vec{x}_N\in\mathbb{R}^3_{\ge 0}$ for which there is an exact decomposition $${\bf X} = {\bf WH}$$ which is to say there are nonnegative coefficients, ${\bf W}$ and feature vectors $\vec{h}_1,\vec{h}_2 \in \mathbb{R}_{\ge 0}^3$ such that $$\vec{x}_i = {\bf W}_{i1}\vec{h}_1 + {\bf W}_{i2}\vec{h}_2 \qquad \text{ for } i =1,\dots,N.$$  The nonnegativity condition on data implies that $\vec{x}_1,\dots,\vec{x}_N$ reside in the positive orthant of $\mathbb{R}^3.$  The exact decomposition assumptions implies $\{\vec{x}_1,\dots,\vec{x}_N\} \in \text{span}\{\vec{h}_1,\vec{h}_2\}$ and furthermore the following more restricted picture holds.
+
 ```{r nmf-ex, echo = FALSE, fig.cap="Data in the positive span of two vectors"}
 set.seed(185)
 N <- 100

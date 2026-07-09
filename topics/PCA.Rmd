@@ -107,6 +107,7 @@ y <- data %*% Sigmahat.eigen$vectors[,1] # calculate the scores
 The largest eigenvalue (first PC variance) is $\lambda = `r round(Sigmahat.eigen$values[1],2)`$ with associated eigenvector $(`r round(Sigmahat.eigen$vectors[,1],2)`)^T$ which is the first PC loading.  
 
 We can visualize these results in a few different ways.  First, we can add the span of $\vec{w}_1$ (shown in red) to the scatterplot of the data. One can see that $\vec{w}_1$ is oriented along the direction where the data is most spread out.
+
 ```{r, echo = FALSE, fig.cap="Samples with Span of First Loading"}
 plot_ly(data.frame(x = 20*Sigmahat.eigen$vectors[1,1]*c(-1,1),
                    y = 20*Sigmahat.eigen$vectors[2,1]*c(-1,1),
@@ -211,7 +212,7 @@ Now let's apply PCA to the updated data matrix ${\bf X}^{(1)}$ from which we get
 \end{equation}
 The 2nd PC variance is the largest eigenvalue of $\hat{\bf \Sigma}^{(1)}$ and its associated unit length eigenvector is the 2nd PC loading, denoted $\vec{w}_2$.  The second PC scores $\vec{w}_2^T\vec{x}_i^{(1)}$ for $i=1,\dots,N.$ 
 
-Continuing \@ref(ex-pca-demo-1), we have 
+Continuing \@ref(exm:ex-pca-demo-1), we have
 $$
 \hat{\bf \Sigma}^{(1)} = 
 ```{r, echo = FALSE, results = 'asis'} 
@@ -358,7 +359,7 @@ A natural first question for PCA, is how many principal components should I use?
 
 The best known method for choosing an optimal number of principal components is the scree plot [@scree_og], which is based on a visual inspection of a plot of the principal component variances in decreasing order.  Ideally, one would observe an *elbow* delineating a regions where the variances decrease sharply then saturate near a small value.
 
-```{r, fig.cap="Idealized version of the scree plot"}
+```{r, echo = FALSE, fig.cap="Idealized version of the scree plot"}
 library("ggrepel")
 df <- data.frame(lambda = c(15,10,5,2,1.25,1,1,1,1,1,1,1,1,1,1), comp = 1:15)
 elbow_point <- 5
@@ -376,7 +377,8 @@ In the preceding figure, we would opt to keep the first four components since th
 
 Another heuristic suggests keeping the number of components needed to explain a specified percentage of the variance, typically 80 or 90%.  Using 80% as a guide would suggest keeping the first 7 principal components (using the first 6 only gets us to 79.2%) based on the related figure below.  
 Using the same data as above, we have the following *percentage explained variance* plot below
-```{r, fig.cap = "Percentage of explained variance"}
+
+```{r, echo = FALSE, fig.cap = "Percentage of explained variance"}
 df$varp = cumsum(df$lambda)/sum(df$lambda)
 ggplot(df, aes(x=comp, y = varp)) + geom_point() + xlab("Component, k") + 
   ylab("% of explained variance")  

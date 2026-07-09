@@ -45,7 +45,7 @@ Minimizing this loss via stochastic gradient descent produces an attractive forc
 
 Let's revisit the swiss roll from earlier in this chapter and see how UMAP recovers its two-dimensional structure.
 
-```{r, fig.cap = "The Swiss Roll (left) and its UMAP embedding (right)"}
+```{r, echo = FALSE, fig.cap = "The Swiss Roll (left) and its UMAP embedding (right)"}
 N <- 2000
 s <- runif(N, min = pi/2, max = 9*pi/2)
 t <- runif(N, min = 0, max = 15)

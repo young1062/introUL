@@ -335,6 +335,7 @@ For a matrix ${\bf A}\in\mathbb{R}^{m\times n}$ the mapping $T_{\bf A}: \mathbb{
 ::: {.example #svd-23}
 In Figure \@ref(fig:svd-ex), we show the unit sphere in $\mathbb{R}^2$ and the resulting hyperellipse in $\mathbb{R}^3$ after multiplication by the matrix
 $${\bf A} = \begin{bmatrix} 3 & 2 \\ 2&1 \\ 1& 0 \end{bmatrix}.$$
+
 ```{r svd-ex, echo = F, fig.cap="(Left) Unit sphere in 2D, (Right) Hyperellipse that results after multiplication by A", fig.width=10}
 A <- matrix(c(3,2,2,1,1,0), nrow = 3, byrow = T)
 svd.A <- svd(A)

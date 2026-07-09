@@ -45,7 +45,7 @@ Suppose we want to generate a set of $d$-dimensional data which is on a $k<d$ di
 
 In Figure \@ref(fig:hyperplane), we show an example of data generated to reside on a random plane in $\mathbb{R}^3$.  We first generate $\vec{z}_1,\dots,\vec{z}_k$ randomly by drawing each vector from a $\mathcal{N}(\vec{0},{\bf I})$ distribution.  These vectors will be independent with probability 1.  When then take coefficients $c_1,\dots,c_k$ which are **iid** $N(0,1)$.
 
-```{r hyperplane, fig.cap="Randomly generated points concentrated on a two-dimensional hyperplane."}
+```{r hyperplane, echo = FALSE, fig.cap="Randomly generated points concentrated on a two-dimensional hyperplane."}
 set.seed(185)
 N <- 100
 # basis
@@ -69,7 +69,8 @@ Alternatively, we could consider a function which parameterizes a curve or surfa
 
 ::: {.example #ribbon-manifold name="Generating data on a Ribbon"}
 The function $$R(s) = (\cos(2\pi s),\sin(2\pi s),2s)^T$$ maps the interval $(0,5)$ to a helix in $\mathbb{R}^3.$  For a given choice of $s$, if we let the third coordinate vary from $2s$ to $2s+1$ we would then trace out a ribbon in $\mathbb{R}^3.$  To do this, let's add a second coordinate $t$ which ranges from 0 to 1.  We then have function $R(s,t) = (\cos(2\pi s),\sin(2\pi s), 2s+t)$ which maps the rectangle $(0,5)\times (0,2)$ to a curved ribbon shape in $\mathbb{R}^3.$  To generate data on the ribbon, we draw **iid** points uniformly from  $(0,5)\times (0,1)$ then apply the ribbon function.  The results for $N=1000$ samples are shown below.
-```{r ribbon, fig.cap ="Realizations of points on a ribbon"}
+
+```{r ribbon, echo = FALSE, fig.cap ="Realizations of points on a ribbon"}
 N <- 1e4
 s <- runif(N,0,5)
 t <- runif(N,0,1)

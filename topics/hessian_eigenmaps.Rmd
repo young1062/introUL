@@ -9,6 +9,7 @@ g_1(x,y) & = x^2+y^2 \\
 g_2(x,y) &=\sin(2\pi x)\sin(2\pi y).
 \end{align*}
 Let's visualize these functions using surface plots.
+
 ```{r, echo = FALSE, fig.align='center',fig.cap="Surface plots of $g_1$ (left) and $g_2$(right) over the rectangle $[-2,2]^2$"}
 library(plotly)
 # Example data (replace with your own)

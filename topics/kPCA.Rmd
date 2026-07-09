@@ -29,7 +29,7 @@ scatterplot3d::scatterplot3d(helix, xlab = '', ylab = '', zlab = '')
 From these graphs, one would infer very different lower dimensional choices depending on the kernel and parameters. The polynomial kernel provides the most robust estimate of the one-dimensional nature of the data.
 
 
-```{r, fig.cap="kPCA Variances for different Kernels"}
+```{r, echo = FALSE, fig.cap="kPCA Variances for different Kernels"}
 library("kernlab")
 out1 <- kpca(helix, kernel = "rbfdot", kpar = list(sigma = 1))
 out2 <- kpca(helix, kernel = "rbfdot", kpar = list(sigma = 0.5))
