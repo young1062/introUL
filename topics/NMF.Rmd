@@ -16,7 +16,7 @@ For NMF, we focus on cases where ${\bf X}$ is an $N\times d$ data matrix with th
 - Itakura-Saito Divergence: $$D_{IS}({\bf X}, {\bf WH}) = \sum_{i=1}^N\sum_{j=1}^d \left[\frac{{\bf X}_{ij}}{({\bf WH})_{ij}} - \log\frac{{\bf X}_{ij}}{({\bf WH})_{ij}} -1  \right]$$
 
 These loss functions emphasize and prioritize different features of the data and are often coupled with additional penalties or assumptions on the elements of ${\bf W}$ and ${\bf H}$ which we will discuss at the end of the section.  From a statistical perspective, they may also be motivated based on differing beliefs about the data generating process.  For example, suppose we assume conditional independence of the entries of ${\bf X}$ given ${\bf W}$, ${\bf H}$, and error variance $\sigma$. Under a Gaussian error model $${\bf X}_{ij} \mid {\bf W},\,{\bf H} \sim \mathcal{N}\left(({\bf WH})_{ij},\sigma^2\right)$$
-maximizing the associated likelihood w.r.t. ${\bf W}$ and ${\bf H}$ is equivalent to minimization of the Frobenius norm $\|{\bf X}-{\bf WH}\|_F^2.$ We'll revisit this idea in greater detail in Section 4.3.6.
+maximizing the associated likelihood w.r.t. ${\bf W}$ and ${\bf H}$ is equivalent to minimization of the Frobenius norm $\|{\bf X}-{\bf WH}\|_F^2.$ We'll revisit this idea in greater detail in Section \@ref(sec-nmf-mle).
 
 
 
@@ -29,11 +29,11 @@ $$\vec{x}_i \approx \sum_{j=1}^k \sigma_j {\bf U}_{ij} \vec{v}_j.$$ Let us restr
 The freedom of the coefficients $\sigma_j {\bf U}_{ij}$ and the features $(\vec{v}_j)_\ell$ for $j=1,\dots,k$ to take any value in $\mathbb{R}$ prevents us from concluding that there is a comparable `near-zeroness` in the features or coefficients.  In could be that case that ${\bf U}_{ij} (\vec{v}_j)_\ell$ is near zero for all $j=1,\dots,k$ or that some subset are large and positive but are canceled out by a different subset that is large and negative.   If, however, we restrict the coefficients and features to be zero this cancellation effect cannot occur.  Features can only then be added but never subtracted. Under this restriction, $\sum_{j=1}^k \sigma_j {\bf U}_{ij} (\vec{v}_j)_\ell$ will only be close to zero if the coefficients are (near) zero for any feature vector which has a (large) positive entry in its $\ell$th coordinate.  
 
 Thus, in a factorization of the form $$\vec{x}_i \approx \sum_{j=1}^k \underbrace{{\bf W}_{ij}}_{\ge 0} \underbrace{\vec{h}_j}_{\in \mathbb{R}^d_{\ge}},$$
-we can only superimpose (add) features to approximate our data, we might expect the features themselves to look more like our data. In matrix notation, we have $${\bf X} = {\bf WH}$$ where the coefficients for each sample are stored in the rows of ${\bf W}\in\mathbb{R}^{N\times k}_{\ge 0}$ and the features are transposed and listed as the rows of ${\bf H}\in\mathbb{R}^{k\times d}$.
+we can only superimpose (add) features to approximate our data, so we might expect the features themselves to look more like our data. In matrix notation, we have $${\bf X} = {\bf WH}$$ where the coefficients for each sample are stored in the rows of ${\bf W}\in\mathbb{R}^{N\times k}_{\ge 0}$ and the features are transposed and listed as the rows of ${\bf H}\in\mathbb{R}^{k\times d}_{\ge 0}$.
 
 ### Geometric Interpretation
 
-As a motivating example consider the case, where we have data $\vec{x}_1,\dots,\vec{x}_N\in\mathbb{R}^3_{\ge 0}$ for which there is a exact decomposition $${\bf X} = {\bf WH}$$ which is to say there are nonnegative coefficients, ${\bf W}$ and feature vectors $\vec{h}_1,\vec{h}_2 \in \mathbb{R}_{\ge 0}^3$ such that $$\vec{x}_i = {\bf W}_{i1}\vec{h}_1 + {\bf W}_{i2}\vec{h}_2 \qquad \text{ for } i =1,\dots,N.$$  The nonnegativity condition on data implies that $\vec{x}_1,\dots,\vec{x}_N$ reside in the positive orthant of $\mathbb{R}^3.$  The exact decomposition assumptions implies $\{\vec{x}_1,\dots,\vec{x}_N\} \in \text{span}\{\vec{h}_1,\vec{h}_2\}$ and furthermore the following more restricted picture holds.
+As a motivating example consider the case, where we have data $\vec{x}_1,\dots,\vec{x}_N\in\mathbb{R}^3_{\ge 0}$ for which there is an exact decomposition $${\bf X} = {\bf WH}$$ which is to say there are nonnegative coefficients, ${\bf W}$ and feature vectors $\vec{h}_1,\vec{h}_2 \in \mathbb{R}_{\ge 0}^3$ such that $$\vec{x}_i = {\bf W}_{i1}\vec{h}_1 + {\bf W}_{i2}\vec{h}_2 \qquad \text{ for } i =1,\dots,N.$$  The nonnegativity condition on data implies that $\vec{x}_1,\dots,\vec{x}_N$ reside in the positive orthant of $\mathbb{R}^3.$  The exact decomposition assumptions implies $\{\vec{x}_1,\dots,\vec{x}_N\} \in \text{span}\{\vec{h}_1,\vec{h}_2\}$ and furthermore the following more restricted picture holds.
 ```{r nmf-ex, echo = FALSE, fig.cap="Data in the positive span of two vectors"}
 set.seed(185)
 N <- 100
@@ -80,48 +80,48 @@ This set is also called the simplicial cone or conical hull of $\{\vec{h}_1,\dot
 
 In the motivating example above, our data live in the positive span of the two feature vectors, thus we say the data matrix ${\bf X}$ has a nonnegative  matrix factorization ${\bf WH}$. 
 
-Thus, we may view NMF as a restricted version of PCA or SVD where we have moved from spans to positive spans.  This seemingly small change gives rise to some big problems.  Even in this simple case above we have a uniqueness problem.  Up to sign changes and ordering, the feature vectors in PCA and SVD were unique. However, we can find two alternative vectors $\vec{h}_1'$ and $\vec{h}_2'$ which still give a exact NMF.  There are trivial cases. First, one can change ordering ($\vec{h}_1' =\vec{h}_2$ and $\vec{h}_2' = \vec{h}_1$) which we avoid in PCA and SVD by assuming the corresponding singular values of PC variances are listed in decreasaing order.  Secondly, we could rescale by setting $\vec{h}_1' = c\vec{h}_1$ and rescaling the corresponding coefficients by a factor of $1/c$ for some $c > 0$ which PCA and SVD avoid by fixing feature vectors to have unit length. The ordering issue is a labeling concern and may be ignored, whereas the rescaling issue can be addressed by adding constraints on the length of the feature vectors.
+Thus, we may view NMF as a restricted version of PCA or SVD where we have moved from spans to positive spans.  This seemingly small change gives rise to some big problems.  Even in this simple case above we have a uniqueness problem.  Up to sign changes and ordering, the feature vectors in PCA and SVD were unique. However, we can find two alternative vectors $\vec{h}_1'$ and $\vec{h}_2'$ which still give an exact NMF.  There are trivial cases. First, one can change ordering ($\vec{h}_1' =\vec{h}_2$ and $\vec{h}_2' = \vec{h}_1$) which we avoid in PCA and SVD by assuming the corresponding singular values or PC variances are listed in decreasing order.  Secondly, we could rescale by setting $\vec{h}_1' = c\vec{h}_1$ and rescaling the corresponding coefficients by a factor of $1/c$ for some $c > 0$ which PCA and SVD avoid by fixing feature vectors to have unit length. The ordering issue is a labeling concern and may be ignored, whereas the rescaling issue can be addressed by adding constraints on the length of the feature vectors.
 
-A third and far more subtle issue occurs because we do not enforce orthogonality.  In \@ref[fig:nmf-ex], imagine that the feature vectors are the arms of a folding fan.  We could change the angle between our feature vectors by opening or closing the arms of the fan.  So long as we do not close the fan too much (and leave our data outside the positive span) or open them too much (so that feature vectors have negative entries), we can still find a perfect reconstruction.  This `folding fan' issue can be addressed through additional penalties which we discuss in \@ref{sec-nmf-ext}, but nonuniqueness cannot be eliminated entirely. Thus, we seek **an** NMF for our data rather than **the** NMF.
+A third and far more subtle issue occurs because we do not enforce orthogonality.  In \@ref(fig:nmf-ex), imagine that the feature vectors are the arms of a folding fan.  We could change the angle between our feature vectors by opening or closing the arms of the fan.  So long as we do not close the fan too much (and leave our data outside the positive span) or open them too much (so that feature vectors have negative entries), we can still find a perfect reconstruction.  This `folding fan' issue can be addressed through additional penalties which we discuss in \@ref(sec-nmf-ext), but nonuniqueness cannot be eliminated entirely. Thus, we seek **an** NMF for our data rather than **the** NMF.
 
 ### Finding a NMF: Multiplicative Updates
 For a given choice of error, the lack of a unique solution also means there is no closed form solution for ${\bf W}$ and ${\bf H}$. Thus, we will need to apply numerical optimization to find a ${\bf W}$ and ${\bf H}$ which minimizes the selected error,  $$\text{argmin}_{{\bf W}\in\mathbb{R}^{N\times k}_{\ge 0}, {\bf H}\in\mathbb{R}^{k\times d}_{\ge 0}}\,\,\,\,\, D({\bf X},{\bf WH})$$.  The loss is a function of all of the entries of ${\bf W}$ and ${\bf H}$. To apply any type of gradient based optimization, we need to compute the partial derivative of our loss with respect to each of the entries of these matrices.  
 
-As an example, we will focus on the divergence and show the relevant details.  For gradient based optimization, we then need to compute $\frac{\partial }{\partial {\bf W}_{ij}} D({\bf X}\| {\bf WH})$ for $`\le i \le N$ and $1\le j\le k$ and $\frac{\partial }{\partial {\bf H}_{j\ell}} D({\bf X}\| {\bf WH})$ for $1\le j \le k$ and $1\le \ell \le d.$  Note that $$({\bf WH})_{st} = \sum_{j=1}^k{\bf W}_{sk}{\bf H}_{kt}$$ so that 
+As an example, we will focus on the divergence and show the relevant details.  For gradient based optimization, we then need to compute $\frac{\partial }{\partial {\bf W}_{ij}} D({\bf X}\| {\bf WH})$ for $1\le i \le N$ and $1\le j\le k$ and $\frac{\partial }{\partial {\bf H}_{j\ell}} D({\bf X}\| {\bf WH})$ for $1\le j \le k$ and $1\le \ell \le d.$  Note that $$({\bf WH})_{st} = \sum_{j=1}^k{\bf W}_{sk}{\bf H}_{kt}$$ so that
 $$\frac{\partial ({\bf WH})_{st}}{\partial ({\bf WH})_{ij}} = \begin{cases}
 {\bf H}_{jt} & s = i \\
 0 & s\ne i
 \end{cases}$$
-Thus, we may may make use of the chain rule to conclude that
+Thus, we may make use of the chain rule to conclude that
 \begin{align*}
-\frac{\partial }{\partial {\bf W}_{ij}} D({bf X}\| {\bf WH}) &= \frac{\partial }{\partial {\bf W}_{ij}}\sum_{st} \left({\bf X}_{st} \log(({\bf X})_{st}) - {\bf X}_{st} \log(({\bf WH})_{st}) + ({\bf WH})_st - ({\bf X})_{st}\right)\\
+\frac{\partial }{\partial {\bf W}_{ij}} D({\bf X}\| {\bf WH}) &= \frac{\partial }{\partial {\bf W}_{ij}}\sum_{st} \left({\bf X}_{st} \log(({\bf X})_{st}) - {\bf X}_{st} \log(({\bf WH})_{st}) + ({\bf WH})_{st} - ({\bf X})_{st}\right)\\
 &=\frac{\partial }{\partial {\bf W}_{ij}}\sum_{st} \left(- {\bf X}_{st} \log(({\bf WH})_{st}) + ({\bf WH})_{st} \right) \\
-&=\sum_{st}\left(\frac{{\bf X}_{st}}{({\bf WH}_{st})} + 1\right)\frac{\partial ({\bf WH})_{st}}{\partial {\bf W}_{ij}} \\
-&=\sum_{t=1}^d \left(-\frac{{\bf X}_{it}}{({\bf WH}_{it})} + 1\right){\bf H}_{jt}.
+&=\sum_{st}\left(\frac{{\bf X}_{st}}{({\bf WH})_{st}} + 1\right)\frac{\partial ({\bf WH})_{st}}{\partial {\bf W}_{ij}} \\
+&=\sum_{t=1}^d \left(-\frac{{\bf X}_{it}}{({\bf WH})_{it}} + 1\right){\bf H}_{jt}.
 \end{align*}
 A similar calculation gives
-$$\frac{\partial }{\partial {\bf H}_{ij}} D({bf X}\| {\bf WH}) = \sum_{s=1}^N \left(-\frac{{\bf X}_{sj}}{({\bf WH})_{sj}} + 1\right) {\bf W}_{sj}.$$
+$$\frac{\partial }{\partial {\bf H}_{ij}} D({\bf X}\| {\bf WH}) = \sum_{s=1}^N \left(-\frac{{\bf X}_{sj}}{({\bf WH})_{sj}} + 1\right) {\bf W}_{sj}.$$
 In a standard implementation of gradient descent, we choose a step size $\epsilon >0$ and apply the updates 
 \begin{equation}
 \begin{split}
-{\bf W}_{ij} \leftarrow {\bf W}_{ij} - \epsilon \sum_{t=1}^d \left(-\frac{{\bf X}_{it}}{({\bf WH}_{it})} + 1\right){\bf H}_{jt} \\
+{\bf W}_{ij} \leftarrow {\bf W}_{ij} - \epsilon \sum_{t=1}^d \left(-\frac{{\bf X}_{it}}{({\bf WH})_{it}} + 1\right){\bf H}_{jt} \\
 {\bf H}_{ij} \leftarrow {\bf H}_{ij} - \epsilon \sum_{s=1}^N \left(-\frac{{\bf X}_{sj}}{({\bf WH})_{sj}} + 1\right) {\bf W}_{sj}
 \end{split}
 \end{equation}
-to each entry of ${\bf W}$ and ${\bf H}$ simultaneously. Alternatively, we could consider coordinate descent where we update each entry of ${\bf W}$ (holding all other entries of ${\bf W}$ and ${\bf H}$ constant) separately then do the same for ${\bf H}$ then repeat.  Each approach will converge to a local mode (though possibly different ones) when $\epsilon$ is sufficiently small.  However, if $\epsilon$ is too small it may take many iterations to converge.  Unfortunately, choosing $\epsilon$ can create a numerically unstable algorithm (that doesn't converge at all) or one where we lose the nonnegativity condition on the entries of ${\bf W}$ or ${\bf H}$.  
+to each entry of ${\bf W}$ and ${\bf H}$ simultaneously. Alternatively, we could consider coordinate descent where we update each entry of ${\bf W}$ (holding all other entries of ${\bf W}$ and ${\bf H}$ constant) separately then do the same for ${\bf H}$ then repeat.  Each approach will converge to a local mode (though possibly different ones) when $\epsilon$ is sufficiently small.  However, if $\epsilon$ is too small it may take many iterations to converge.  Unfortunately, choosing $\epsilon$ can create a numerically unstable algorithm (that doesn't converge at all) or one where we lose the nonnegativity condition on the entries of ${\bf W}$ or ${\bf H}$.
 
 To preserve nonnegativity, [@lee_seung] developed a set of state dependent step-sizes (one for each entry of ${\bf W}$ and ${\bf H}$) which result in multiplicative rather than additive updates.  For divergence, they take step sizes
 $$\epsilon_{ij}^{W} = \frac{{\bf W}_{ij}}{\sum_t {\bf H}_{jt}} \text{ and } \epsilon_{ij}^H = \frac{{\bf H}_{ij}}{\sum_s {\bf W}_{sj}}.$$
-These step size are proportional to the entries we are updating so that we take larger steps for larger entries of ${\bf W}$ of ${\bf H}$. If we substitute these step sizes in the updates simplify to 
+These step sizes are proportional to the entries we are updating so that we take larger steps for larger entries of ${\bf W}$ or ${\bf H}$. If we substitute these step sizes in, the updates simplify to
 
 \begin{equation}
 \begin{split}
-{\bf W}_{ij} &\leftarrow {\bf W}_{ij} \left[\frac{\sum_t \left({\bf H}_{jt}{\bf X}_{it}/({\bf WH}_{it})\right)}{\sum_t {\bf H}_{jt}} \right] \\
-{\bf H}_{ij} &\leftarrow {\bf H}_{ij} \left[\frac{\sum_s\left({\bf W}_{si}{\bf X_{sj}}/({\bf WH})_{si}    \right)}{\sum_s {\bf W}_{si}}\right]
+{\bf W}_{ij} &\leftarrow {\bf W}_{ij} \left[\frac{\sum_t \left({\bf H}_{jt}{\bf X}_{it}/({\bf WH})_{it}\right)}{\sum_t {\bf H}_{jt}} \right] \\
+{\bf H}_{ij} &\leftarrow {\bf H}_{ij} \left[\frac{\sum_s\left({\bf W}_{si}{\bf X}_{sj}/({\bf WH})_{si}    \right)}{\sum_s {\bf W}_{si}}\right]
 \end{split}
 \end{equation}
 
-indicating that we rescale the entries of ${\bf W}$ and ${\bf H}$ by some nonnegative value which is guaranteed to preserve the nonnegativity of each entry. A short proof showing convergence to a local mode may be found in the original paper by Lee and Seung along with multiplicative update rules for other choices of loss are also available in [@lee_seung]. Deriving these updates are also provided as exercises for the reader.  Furthermore, one can verify that the multiplicative updates simplify to one when ${\bf X}= {\bf WH}.$ 
+indicating that we rescale the entries of ${\bf W}$ and ${\bf H}$ by some nonnegative value which is guaranteed to preserve the nonnegativity of each entry. A short proof showing convergence to a local mode, along with multiplicative update rules for other choices of loss, may be found in the original paper by Lee and Seung [@lee_seung]. Deriving these updates is also provided as an exercise for the reader.  Furthermore, one can verify that the multiplicative updates simplify to one when ${\bf X}= {\bf WH}.$
 
 We can more compactly write the updates for each matrix using Hadamard notation, which gives the following multiplicative updates for ${\bf W}$ and ${\bf H}$
 
@@ -140,17 +140,17 @@ In most implementations of NMF, multiplicative updates for ${\bf W}$ and ${\bf H
 
 For a given choice of loss, standard NMF proceeds in the following manner.  
 
-1) Choose a rank $k$ and initial ${\bf W}_\in\mathbb{R}^{N\times k}_{\ge 0}$ and ${\bf H}\in\mathbb{R}^{k\times d}_{\ge 0}$.
+1) Choose a rank $k$ and initial ${\bf W}\in\mathbb{R}^{N\times k}_{\ge 0}$ and ${\bf H}\in\mathbb{R}^{k\times d}_{\ge 0}$.
 2) Apply the multiplicative rule until a local minimum is reached.
-3) Repeats steps (1) and (2) for different initial conditions then select the final ${\bf W}$ and ${\bf H}$ which give the lowest overall loss.
+3) Repeat steps (1) and (2) for different initial conditions then select the final ${\bf W}$ and ${\bf H}$ which give the lowest overall loss.
 
-Different initial conditions (ICs) will converge to different local modes; reptition over multiple differents (ICs) will help find a better overall minimizer and avoid getting a final NMF which is trapped in a poor local mode.  There is no guidance of how many ICs. Many packages default to five. More would be better but computational resources are not infinite, and finding even one mode though coordinate ascent can be slow.  There are also methods based on nonnegativity constraints of the SVD (aptly named nonnegative SVD or NNSVD) for initialization which have shown good performance [@nnsvd]. However, NNSVD initialization does increase computation burden.
+Different initial conditions (ICs) will converge to different local modes; repetition over multiple different ICs will help find a better overall minimizer and avoid getting a final NMF which is trapped in a poor local mode.  There is no guidance on how many ICs to use. Many packages default to five. More would be better but computational resources are not infinite, and finding even one mode though coordinate ascent can be slow.  There are also methods based on nonnegativity constraints of the SVD (aptly named nonnegative SVD or NNSVD) for initialization which have shown good performance [@nnsvd]. However, NNSVD initialization does increase computation burden.
 
 The choice of $k$ is also challenging.  If prior information or other project constraints dictate a specific choice of $k$ one should use that value. Alternatively, if visualization is a priority taking $k=1,2,$ or $3$ is a natural choice.  Unfortunately, in many cases prior information is typically absent, thus data driven methods for selecting $k$ from a range of possible choices are required.  Importantly, since there are no connections between the rank $k$ NMF and rank $k+1$ NMF, one cannot truncate the vectors and coefficients and attain an optimal solution for a lower-dimensional representation as we can in PCA or SVD. Thus, separate fits at each choice of $k$ must be attained through separate runs of the numerical optimization making NMF far more computationally demanding in practice.  
 
-Suppose for now, we have optimal NMF fits for a range of nonnegative ranks obtained by fitting separate NMF models for a range of ranks using multiple initial conditions or NNSVD based initialization at each rank. Given these fits, one natural approach is to follow a `scree plot` like approach similar to what we have used for PCA and NMF. One can then compare plot the loss as a function of $k$ and look for an elbow where the error appears to saturate.  
+Suppose for now, we have optimal NMF fits for a range of nonnegative ranks obtained by fitting separate NMF models for a range of ranks using multiple initial conditions or NNSVD based initialization at each rank. Given these fits, one natural approach is to follow a `scree plot` like approach similar to what we have used for PCA and SVD. One can then plot the loss as a function of $k$ and look for an elbow where the error appears to saturate.
 
-Much like SVD and PCA, unfortunately, there is often no clear elbow indicating an obvious choice of $k$.  As such, additional approaches have been suggested in the literature such as cross-validation where in the data is split into test-train sets and the robustness of loss is investigated at each rank. Bayesian methods for balancing low loss with model complexity (small $k$) are also viable but again rely on some prior on model complexity.Other authors have used connections between NMF and clustering to adapt methods for assessing the quality of (hierarchical) clustering  to the case of finding an optimal $k$ in NMF.  For example, one can use the robustness (or lack thereof) of clustering of data at each rank measured by the cophenetic correlation to identify an optimal $k$ [@nmf_cophentic_corr]. We'll discuss hierarchical clustering and the cophenetic correlation in more detail Chapter 7. For now, we'll restate the advice from [@nmf_cophentic_corr] and advocate for the value of $k$ at which the cophenetic correlation begins to drop.
+Much like SVD and PCA, unfortunately, there is often no clear elbow indicating an obvious choice of $k$.  As such, additional approaches have been suggested in the literature such as cross-validation wherein the data is split into test-train sets and the robustness of loss is investigated at each rank. Bayesian methods for balancing low loss with model complexity (small $k$) are also viable but again rely on some prior on model complexity. Other authors have used connections between NMF and clustering to adapt methods for assessing the quality of (hierarchical) clustering to the case of finding an optimal $k$ in NMF.  For example, one can use the robustness (or lack thereof) of clustering of data at each rank measured by the cophenetic correlation to identify an optimal $k$ [@nmf_cophentic_corr]. We'll discuss hierarchical clustering and the cophenetic correlation in more detail in \@ref(ch-clustering). For now, we'll restate the advice from [@nmf_cophentic_corr] and advocate for the value of $k$ at which the cophenetic correlation begins to drop.
 
 
 
@@ -177,7 +177,7 @@ knitr::include_graphics("images/mnist_svd_features.pdf")
 
 ### Regularization and Interpretability {#sec-nmf-ext}
 
-For a random initialization, the values of ${\bf W}$ and ${\bf H}$ obtained when the multiplicative rules are run to convergence not resemble the original data, which is contrary to our original goal of finding features which are more comparable to the data. More specifically, the feature vectors $\vec{h}_1,\dots,\vec{h}_k$ which are superimposed to approximate the observations may appear quite different from the observations themselves.  Many extensions of NMF address this issue through the inclusion of additional penalties on the elements of ${\bf W}$ or ${\bf H}$ which induce sparsity in the coefficients ${\bf W}$ and/or constrain the features to be more similar to the data.  In practice, it is insufficient to apply penalties which depend solely on the scaling of either ${\bf W}$ or ${\bf H}$ as these can typically be made arbitrarily small by increasing corresponding elements of ${\bf H}$ or ${\bf W}$ respectively.  Thus, any penalty which depends on the scaling of one matrix often includes additional constraints or penalties on the other.
+For a random initialization, the values of ${\bf W}$ and ${\bf H}$ obtained when the multiplicative rules are run to convergence do not resemble the original data, which is contrary to our original goal of finding features which are more comparable to the data. More specifically, the feature vectors $\vec{h}_1,\dots,\vec{h}_k$ which are superimposed to approximate the observations may appear quite different from the observations themselves.  Many extensions of NMF address this issue through the inclusion of additional penalties on the elements of ${\bf W}$ or ${\bf H}$ which induce sparsity in the coefficients ${\bf W}$ and/or constrain the features to be more similar to the data.  In practice, it is insufficient to apply penalties which depend solely on the scaling of either ${\bf W}$ or ${\bf H}$ as these can typically be made arbitrarily small by increasing corresponding elements of ${\bf H}$ or ${\bf W}$ respectively.  Thus, any penalty which depends on the scaling of one matrix often includes additional constraints or penalties on the other.
 
 Briefly, we discuss two version which are constructed to generate features which strongly mimic the original observations.
 
@@ -185,9 +185,9 @@ Briefly, we discuss two version which are constructed to generate features which
 
 Before discussing Archetypal Analysis, we need an additional geometric idea.
 
-:::{.def #conv name="Convex Hull"}
-Given a set of vectors $\mathcal{H}=\{\vec{h}_1,\dots,\vec{h}_k\}\subset\mathbb{R}^d$, the convex hull of $\mathcal{H}$ is the set 
-$$\text{conv}(\mathcal{H}) = \{b_1\vec{h}_1+\cdots + b_k \vec{h}_k: b_1,\dots,b_k \ge 0,\, c_1+\dots+c_k = 1\}$$
+:::{.definition #conv name="Convex Hull"}
+Given a set of vectors $\mathcal{H}=\{\vec{h}_1,\dots,\vec{h}_k\}\subset\mathbb{R}^d$, the convex hull of $\mathcal{H}$ is the set
+$$\text{conv}(\mathcal{H}) = \{b_1\vec{h}_1+\cdots + b_k \vec{h}_k: b_1,\dots,b_k \ge 0,\, b_1+\dots+b_k = 1\}$$
 :::
 
 The weights in the above definition are constrained to be positive, similar to the definition of positive span, but with the added constraint that they sum to one.  Thus, for a set of vectors $\mathcal{H}$
@@ -204,7 +204,7 @@ Importantly, we can view the coefficient $c_1,\dots,c_k$ as defining (probabilit
 Under this setup, we then want to solve the following constrained optimization problem
 $$\text{argmin}_{{\bf W}\in \mathbb{R}_{\ge 0}^{N\times k},\,{\bf B}\in\mathbb{R}_{\ge 0}^{k\times N}, {\bf B}\vec{1}_N = \vec{1}_k}\| {\bf X}- {\bf WBX}\|_F.$$
 
-The rows of ${\bf BX}$, called archetypes, reside are typically extremal in the sense that they reside on the boundary of the convex hull of the data. We show them below for a rank two approximation to the eights consistent with the choice in the example above.
+The rows of ${\bf BX}$, called archetypes, are typically extremal in the sense that they reside on the boundary of the convex hull of the data. We show them below for a rank two approximation to the eights consistent with the choice in the example above.
 
 ```{r, echo = F}
 knitr::include_graphics("images/mnist_archetypes_features.pdf")
@@ -212,28 +212,28 @@ knitr::include_graphics("images/mnist_archetypes_features.pdf")
 
 #### Volume Regularized NMF
 
-Much like Archetype Analysis, Volume regularized NMF creates feature vectors which resemble the observation through a more geometric approach [@vrnmf1,@vrnmf2].  Suppose that we are seeking a rank $k$ approximation of data in $d$ dimensions with $k<d$.  If the vectors $\vec{h}_1,\dots,\vec{h}_k$ are affinely independent, i.e. they don't live on a hyperplane of dimension less than $k$, then the volume of the convex of hall of the vectors is given by the following formula
-$$\text{vol}\left(\text{conv}(\{\vec{h}_1,\dots,\vec{h}_k\})\right) = \frac{\sqrt{\text{det}(\tilde{\bf H}\tilde{\bf H}^T})}{(k-1)!}$$
+Much like Archetype Analysis, Volume regularized NMF creates feature vectors which resemble the observation through a more geometric approach [@vrnmf1,@vrnmf2].  Suppose that we are seeking a rank $k$ approximation of data in $d$ dimensions with $k<d$.  If the vectors $\vec{h}_1,\dots,\vec{h}_k$ are affinely independent, i.e. they don't live on a hyperplane of dimension less than $k$, then the volume of the convex hull of the vectors is given by the following formula
+$$\text{vol}\left(\text{conv}(\{\vec{h}_1,\dots,\vec{h}_k\})\right) = \frac{\sqrt{\text{det}(\tilde{\bf H}\tilde{\bf H}^T)}}{(k-1)!}$$
 where $$\tilde{\bf H} = \begin{bmatrix} \vec{h}_1^T-\vec{h}_k^T \\ \vdots \\ \vec{h}_{k-1}^T-\vec{h}_k^T\end{bmatrix} \in \mathbb{R}^{(k-1)\times d}.$$
 An extension of this result is that for linearly independent vectors $\vec{h}_1,\dots,\vec{h}_k$, the volume of the convex hull of the vectors $\vec{0},\vec{h}_1,\dots,\vec{h}_k$ can be computed directly from our feature matrix ${\bf H}$, i.e. $$\text{vol}\left(\text{conv}(\{0,\vec{h}_1,\dots,\vec{h}_k\})\right) = \frac{\sqrt{\det({\bf H}{\bf H}^T})}{k!}.$$  
 
 One brief aside on the notion of volume here that is not typically made clear in the related literature. When $k < d$, the convex hull of $\vec{0},\vec{h}_1,\dots,\vec{h}_k$ is contained in a $k$-dimensional hyperplane.  Thus, its $d$-dimensional volume must be zero.  When we talk of the volume of a convex hull, we instead mean its $k$-dimensional volume.  As an example, consider the case of a single vector $\vec{h}_1$ in $\mathbb{R}^3.$ The convex hull of $\vec{0},\vec{h_1}$ is the line segment from the origin to $\vec{h}_1$.  Line segments have zero 3-dimensional volume, but they do have length (1-dimensional volume).  In this case, the 1-dimensional volume of the convex hull is the length of the line segment, e.g. $\|\vec{h}_1\|$.
 
 Incorporating a penalty on the volume of the convex hull of the feature vectors gives rise to the aptly named volume-regularized NMF
-$$\text{argmin}_{{\bf W}_\in\mathbb{R}_{\ge 0}^{N\times k},{\bf W}\vec{1}_N = \vec{1}_k, {\bf H}\in \mathbb{R}_{\ge 0}^{k\times d}}\quad \|{\bf X}-{\bf WH}\|_F^2 + \lambda \sqrt{\text{det}({\bf HH}^T)}$$
-here the constraint ${\bf W}\vec{1}_N = \vec{1}_k$ requiring that the rows of ${\bf W}$ sum to one prevents an arbitrary shrinkage of the feature vectors towards zero.  In some numerical implementation, this constraint is relaxed so that the sum of the rows of ${\bf W}$ are bounded above by one.  The value $\lambda$ is tuning parameter that must be specified by the user to balance goodness of fit vs minimal volume.  Below we show the results of volume regularized NMF applied to the subset of the eights data studied above which strongly resemble results from the standard NMF implementation. However, this method was far more computationally efficient. Only one run of the VR-NMF was required, and it converged much more quickly than the vanilla NMF.
+$$\text{argmin}_{{\bf W}\in\mathbb{R}_{\ge 0}^{N\times k},{\bf W}\vec{1}_N = \vec{1}_k, {\bf H}\in \mathbb{R}_{\ge 0}^{k\times d}}\quad \|{\bf X}-{\bf WH}\|_F^2 + \lambda \sqrt{\text{det}({\bf HH}^T)}$$
+here the constraint ${\bf W}\vec{1}_N = \vec{1}_k$ requiring that the rows of ${\bf W}$ sum to one prevents an arbitrary shrinkage of the feature vectors towards zero.  In some numerical implementation, this constraint is relaxed so that the sum of the rows of ${\bf W}$ are bounded above by one.  The value $\lambda$ is a tuning parameter that must be specified by the user to balance goodness of fit vs minimal volume.  Below we show the results of volume regularized NMF applied to the subset of the eights data studied above which strongly resemble results from the standard NMF implementation. However, this method was far more computationally efficient. Only one run of the VR-NMF was required, and it converged much more quickly than the vanilla NMF.
 
 
 ```{r, echo = F, message =F}
 knitr::include_graphics("images/mnist_vrnmf_features.pdf")
 ```
 
-### NMF and Maximum Likelihood Estimation 
+### NMF and Maximum Likelihood Estimation {#sec-nmf-mle}
 
-Throughout this section we have focused on the geometric aspects of NMF, but there are parallel statistical perspectives based on maximum likelihood estimation.  For example, consider the model $${\bf X}_{ij} \mid ({\bf WH}_{ij}) \sim \mathcal{N}\left(({\bf WH}_{ij},\sigma^2\right), \qquad 1\le i\le N, 1\le j\le d$$
-with the additional assumption that the observations in ${\bf X}$ are conditionally independent given ${\bf WH}\in \mathbb{R}^{N\times k}_{\ge 0}$, ${\bf H}\in\mathbb{R}^{k\times d}_\ge 0$ and $\sigma$.  Under this framework the likelihood of the data is then 
-$$\mathcal{L}({\bf X}\mid{\bf WH}) \propto \frac{1}{\sqrt{2\pi\sigma^2}}\prod_{i=1}^N\prod_{j=1}^d \exp\left(-\frac{({\bf X}_{ij}-({\bf WH}_{ij}))^2}{\sigma^2}\right)$$ which has log-likelihood
-$$\log \mathcal{L}({\bf X}\mid{\bf WH}) = -\frac{N}{2}\log\sigma^2-\frac{1}{\sigma^2}\sum_{i=1}^N\sum_{j=1}^d ({\bf X}_{ij}-({\bf WH}_{ij}))^2 = - \frac{N}{2}\log\sigma^2 -\frac{1}{\sigma^2}\|{\bf X}-{\bf WH}\|_F^2.$$
+Throughout this section we have focused on the geometric aspects of NMF, but there are parallel statistical perspectives based on maximum likelihood estimation.  For example, consider the model $${\bf X}_{ij} \mid ({\bf WH})_{ij} \sim \mathcal{N}\left(({\bf WH})_{ij},\sigma^2\right), \qquad 1\le i\le N, 1\le j\le d$$
+with the additional assumption that the observations in ${\bf X}$ are conditionally independent given ${\bf WH}\in \mathbb{R}^{N\times d}_{\ge 0}$, ${\bf H}\in\mathbb{R}^{k\times d}_{\ge 0}$ and $\sigma$.  Under this framework the likelihood of the data is then
+$$\mathcal{L}({\bf X}\mid{\bf WH}) \propto \frac{1}{\sqrt{2\pi\sigma^2}}\prod_{i=1}^N\prod_{j=1}^d \exp\left(-\frac{({\bf X}_{ij}-({\bf WH})_{ij})^2}{\sigma^2}\right)$$ which has log-likelihood
+$$\log \mathcal{L}({\bf X}\mid{\bf WH}) = -\frac{N}{2}\log\sigma^2-\frac{1}{\sigma^2}\sum_{i=1}^N\sum_{j=1}^d ({\bf X}_{ij}-({\bf WH})_{ij})^2 = - \frac{N}{2}\log\sigma^2 -\frac{1}{\sigma^2}\|{\bf X}-{\bf WH}\|_F^2.$$
 Thus, minimizing the Frobenius norm is equivalent to maximizing the likelihood in this normal model with homoskedastic errors.  
 
 Similarly, divergence arises from a Poisson model $${\bf X}_{ij} \mid ({\bf WH})_{ij} \sim \text{Pois}\left(({\bf WH})_{ij}\right)$$ again with a low rank structure for ${\bf W}$ and ${\bf H}$ and the conditional independence assumption on the entries of ${\bf X}$ given ${\bf WH}$.  

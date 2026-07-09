@@ -24,7 +24,7 @@ From the adjacency matrix, we can compute the total affinity of each node (sampl
 \end{equation}
 where ${\bf D}$ is a diagonal matrix with entries ${\bf W}\vec{1}_N$ along its diagonal.  The graph Laplacian is a symmetric matrix, and while not obvious at first glance, it is also positive semidefinite thanks to the following important identity.  Given any vector $\vec{y}\in\mathbb{R}^N$,
 \begin{equation}
-\vec{y}^T{\bf L} \vec{y} = \frac{1}{2} \sum_{i=1}^n\sum_{j=1}^N {\bf W}_{ij} (y_i-y_j)^2
+\vec{y}^T{\bf L} \vec{y} = \frac{1}{2} \sum_{i=1}^N\sum_{j=1}^N {\bf W}_{ij} (y_i-y_j)^2
 (\#eq:psd-gl)
 \end{equation}
 However, it is not full rank. The previous equation shows that $\vec{1}$ is an eigenvector with eigenvalue 0.
@@ -74,7 +74,7 @@ $${\bf Y}^T{\bf D Y}= {\bf Y}^T{\bf D}^{1/2} {\bf D}^{1/2}{\bf Y} = ({\bf D}^{1/
 We can minimize this equation by making use of the eigenvalues and eigenvectors of the (symmetric) normalized graph Laplacian
 $${\bf L}_{sym} = {\bf I} - {\bf D}^{-1/2}{\bf W}{\bf D}^{-1/2}.$$  
 
-Importantly, note that ${\bf L}_{sym}$ is symmetric. Furthemore, it is positive semidefinite since it can be viewed as the graph Laplacian of a graph with weights ${\bf W}_{ij}/\sqrt{{\bf D}_{ii}{\bf D}_{jj}}$ thus subject to the identity \@ref(eq:psd-gl).  Thus, it is diagonalizable with orthonormal eigenvectors $\vec{v}_1,\dots,\vec{v}_N\in\mathbb{R}^N$ and associated nonnegative eigenvalues $\lambda_1 \le \dots \le \lambda_N$ which we list in **increasing order** in this case.  This leads to the first important observation
+Importantly, note that ${\bf L}_{sym}$ is symmetric. Furthermore, it is positive semidefinite since it can be viewed as the graph Laplacian of a graph with weights ${\bf W}_{ij}/\sqrt{{\bf D}_{ii}{\bf D}_{jj}}$ thus subject to the identity \@ref(eq:psd-gl).  Thus, it is diagonalizable with orthonormal eigenvectors $\vec{v}_1,\dots,\vec{v}_N\in\mathbb{R}^N$ and associated nonnegative eigenvalues $\lambda_1 \le \dots \le \lambda_N$ which we list in **increasing order** in this case.  This leads to the first important observation
 
 
 1) We could use any $t$ of these vectors as the columns of $\tilde{Y}$ and immediately satisfy the constraint $\tilde{\bf Y}^T\tilde{\bf Y} = {\bf I}.$ 
@@ -84,12 +84,12 @@ $${\bf L}_{sym} ({\bf D}^{1/2}\vec{1}) ={\bf D}^{-1/2}({\bf D}^{1/2} - {\bf W D}
 
 2) This suggests that if we drop the first eigenvector associated with eigenvalue $\lambda_1  = 0$ and use $t$ the remaining eigenvectors of ${\bf L}_{sym}$ as the columns of $\tilde{\bf Y}$ we will satisfy the constraint $\tilde{\bf Y}^T {\bf D}^{1/2}\vec{1} = \vec{0}.$  
 
-The finaly observation is that we should choose the eigenvectors to minimize the objective.   
+The final observation is that we should choose the eigenvectors to minimize the objective.
 
 3) We make use of the eigenvalues themselves and take $$\tilde{Y} = \begin{bmatrix} \vec{v}_2 & \dots & \vec{v}_{t+1} \end{bmatrix}$$ so that $$tr\left( \tilde{\bf Y}^T{\bf L}_{sym}\tilde{\bf Y}\right) = \lambda_2+\dots+\lambda_{t+1}$$ is minimized.
 
-After undoing the change of variables, we take use the rows of $${\bf Y} = {\bf D}^{-1/2}\tilde{\bf Y}\in \mathbb{R}^{N\times t}$$
-as our $t$-dimensional configuration.  
+After undoing the change of variables, we use the rows of $${\bf Y} = {\bf D}^{-1/2}\tilde{\bf Y}\in \mathbb{R}^{N\times t}$$
+as our $t$-dimensional configuration.
 
 
 

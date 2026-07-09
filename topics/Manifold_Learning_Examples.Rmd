@@ -18,7 +18,7 @@ washer3 <- read.csv("../data/folded_washer.csv")[,-1]
 washer.swiss <- read.csv("../data/rolled_washer.csv")[,-1]
 ```
 
-As an initial comparison, we'll look at several 3-dimensional examples with known lower dimensional latent spaces where we can visualize the data.  Importantly, these examples fail to satisfy some of the conditions of the preceding methods so we can assess how susceptible the methods we have discussed to violations in their assumptions. Table x.x summarizes the results
+As an initial comparison, we'll look at several 3-dimensional examples with known lower dimensional latent spaces where we can visualize the data.  Importantly, these examples fail to satisfy some of the conditions of the preceding methods so we can assess how susceptible the methods we have discussed to violations in their assumptions. Table \@ref(tab:tab-manifolds) summarizes the results.
 
 ```{r tab-manifolds, echo = FALSE}
 examples <- data.frame(Manifold = c("Helix","Swiss Roll","Folded Washer","Rolled Washer"),
@@ -64,7 +64,7 @@ scatterplot3d(washer.swiss,
 
 #### Helix
 
-The helix is the simplest example and satisfies all assumptions we have discussed in the preceding sections.  As such, it is not surprising that each of the methods discussed does a reasonable job compressing the data to a line segment. For the helix, we have used the isometric manifold mapping $$\Psi(t) = \left(\frac{\sqrt{2}}{2}\cos (t), \frac{\sqrt{2}}{2}\sin t, \frac{\sqrt{2}}{2} t\right)^T$$ where $t \in [0,15]$ is the original 1-dimensional coordinate for the data.  Below we plot the recovered 1-d representation of the data against the corresponding value of $t$. As we have discussed, a perfect recovery of the original $t$ is impossible. The best we can hope for is a affine relationship reflecting a one-to-one correspondence (up to translation, rescaling, and rigid motion) between the original low dimension coordinates and those recovered by our manifold learning methods.
+The helix is the simplest example and satisfies all assumptions we have discussed in the preceding sections.  As such, it is not surprising that each of the methods discussed does a reasonable job compressing the data to a line segment. For the helix, we have used the isometric manifold mapping $$\Psi(t) = \left(\frac{\sqrt{2}}{2}\cos (t), \frac{\sqrt{2}}{2}\sin t, \frac{\sqrt{2}}{2} t\right)^T$$ where $t \in [0,15]$ is the original 1-dimensional coordinate for the data.  Below we plot the recovered 1-d representation of the data against the corresponding value of $t$. As we have discussed, a perfect recovery of the original $t$ is impossible. The best we can hope for is an affine relationship reflecting a one-to-one correspondence (up to translation, rescaling, and rigid motion) between the original low dimension coordinates and those recovered by our manifold learning methods.
 
 ```{r helix-examples, echo = FALSE, fig.cap = "Recovered latent space vs original coordinates"}
 # helix.iso <- read.csv("../data/helix_isomap.csv")$X0
@@ -93,7 +93,7 @@ knitr::include_graphics("images/Helix-DR-comparison.png")
 
 #### Swiss Roll
 
-For the Swiss roll, we use the manifold map $$\Psi: \left[\frac{3\pi}{2},\frac{9\pi}{2}\right] \times [0,15] \to \mathbb{R}^3$$ given by the equation $$\Psi(s,t) = \left(s\cos s, t, s\sin s\right)^T.$$ Below, we plot the first and second coordinates recovered by Isomap using $k=35$ nearest neighbors.  
+For the Swiss roll, we use the manifold map $$\Psi: \left[\frac{3\pi}{2},\frac{9\pi}{2}\right] \times [0,15] \to \mathbb{R}^3$$ given by the equation $$\Psi(s,t) = \left(s\cos s, t, s\sin s\right)^T.$$ Below, we compare the two-dimensional configurations recovered by each of the methods discussed in this chapter.
 
 ```{r swiss-examples, echo = FALSE, fig.cap = "Recovered latent space vs original coordinates"}
 # swiss.iso <- read.csv("../data/swiss_isomap.csv")[,-1]

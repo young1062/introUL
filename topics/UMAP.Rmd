@@ -1,0 +1,93 @@
+
+```{r umap-setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, cache = TRUE)
+set.seed(1)
+require("uwot")
+require("scatterplot3d")
+
+myColorRamp <- function(colors, values) {
+    v <- (values - min(values))/diff(range(values))
+    x <- colorRamp(colors)(v)
+    rgb(x[,1], x[,2], x[,3], maxColorValue = 255)
+}
+```
+
+## Uniform Manifold Approximation and Projection (UMAP)
+
+### Introduction
+
+UMAP was introduced by McInnes, Healy, and Melville in 2018 [@umap] and has quickly become one of the most widely used tools for visualizing high-dimensional data.  Like Laplacian eigenmaps, UMAP is a local method built from a $k$-nearest neighbor graph rather than the pairwise (geodesic) distances used by ISOMAP.  Unlike every method we have discussed so far, however, UMAP does not produce its embedding by solving a single eigenvalue problem.  Instead, it builds a weighted graph representing the neighborhood structure of the data in $\mathbb{R}^d$, builds a comparable weighted graph on a set of candidate points in $\mathbb{R}^t$, and then directly optimizes the positions of those points so that the two graphs are as similar as possible.  This shift from an eigenvalue problem to a direct optimization problem is the central idea that distinguishes UMAP from ISOMAP, LLE, Laplacian eigenmaps, and HLLEs.
+
+### Algorithm
+
+#### Constructing a fuzzy neighborhood graph
+
+As with Laplacian eigenmaps, we begin by fixing a number of nearest neighbors $k>0$ and, for each $\vec{x}_i$, finding its $k$-nearest neighbors $\mathcal{N}_i$.  Rather than a single bandwidth $\sigma^2$ shared across the entire dataset, UMAP calibrates a *local* bandwidth $\sigma_i$ for each point $\vec{x}_i$, allowing the method to adapt to regions of the manifold with different sampling density.  Let $\rho_i = \min_{j\in\mathcal{N}_i} \|\vec{x}_i-\vec{x}_j\|$ be the distance from $\vec{x}_i$ to its nearest neighbor.  We then choose $\sigma_i$ so that
+$$\sum_{j\in\mathcal{N}_i} \exp\left(-\frac{\max(0,\|\vec{x}_i-\vec{x}_j\|-\rho_i)}{\sigma_i}\right) = \log_2(k),$$
+which can be solved numerically for each $i$.  Subtracting $\rho_i$ guarantees that $\vec{x}_i$ is connected to its closest neighbor with full weight, while the choice of $\sigma_i$ ensures that every point contributes the same total weight to the graph regardless of how densely sampled its neighborhood happens to be.  These choices give a directed, weighted graph with entries
+$$\tilde{\bf W}_{ij} = \begin{cases} \exp\left(-\dfrac{\max(0,\|\vec{x}_i-\vec{x}_j\|-\rho_i)}{\sigma_i}\right) & \vec{x}_j \in \mathcal{N}_i \\ 0 & \text{else.}\end{cases}$$
+
+#### Symmetrization
+
+The matrix $\tilde{\bf W}$ need not be symmetric, since $\vec{x}_j$ being a neighbor of $\vec{x}_i$ does not guarantee $\vec{x}_i$ is a neighbor of $\vec{x}_j$.  UMAP symmetrizes $\tilde{\bf W}$ using the fuzzy set union
+$${\bf W}_{ij} = \tilde{\bf W}_{ij} + \tilde{\bf W}_{ji} - \tilde{\bf W}_{ij}\tilde{\bf W}_{ji},$$
+so that $\vec{x}_i$ and $\vec{x}_j$ receive a high weight ${\bf W}_{ij}$ if *either* point considers the other a close neighbor.  The resulting ${\bf W}$ plays the same role as the adjacency matrix ${\bf W}$ from Laplacian eigenmaps, just calibrated with this locally adaptive procedure.
+
+#### Optimizing the low-dimensional embedding
+
+Given the high-dimensional affinities ${\bf W}$, UMAP next defines an analogous affinity between candidate low-dimensional points $\vec{y}_1,\dots,\vec{y}_N\in\mathbb{R}^t$,
+$$v_{ij} = \left(1+a\|\vec{y}_i-\vec{y}_j\|^{2b}\right)^{-1},$$
+where $a,b>0$ are constants chosen so that $v_{ij}$ closely matches a target curve controlled by the tuning parameter *min\_dist*, which specifies how tightly points are allowed to pack together in the embedding.  Initializing $\vec{y}_1,\dots,\vec{y}_N$ using the spectral embedding from Laplacian eigenmaps (a convenient reuse of a method we have already discussed), UMAP then adjusts the points to minimize the cross-entropy between ${\bf W}$ and ${\bf V}$,
+$$C(\vec{y}_1,\dots,\vec{y}_N) = \sum_{i \ne j} \left[{\bf W}_{ij} \log\left(\frac{{\bf W}_{ij}}{v_{ij}}\right) + (1-{\bf W}_{ij})\log\left(\frac{1-{\bf W}_{ij}}{1-v_{ij}}\right)\right].$$
+Minimizing this loss via stochastic gradient descent produces an attractive force which pulls $\vec{y}_i$ and $\vec{y}_j$ together whenever ${\bf W}_{ij}$ is large, and a repulsive force which pushes $\vec{y}_i$ and $\vec{y}_j$ apart otherwise.  Since most entries of ${\bf W}$ are (close to) zero, evaluating the repulsive force for every pair at every iteration would be wasteful; in practice, UMAP approximates it using a small number of randomly sampled non-neighbor pairs at each step, a trick known as negative sampling.  The final coordinates $\vec{y}_1,\dots,\vec{y}_N$ after optimization are the UMAP embedding.
+
+::: {.example #umap-swiss name="UMAP applied to the Swiss Roll"}
+
+Let's revisit the swiss roll from earlier in this chapter and see how UMAP recovers its two-dimensional structure.
+
+```{r, fig.cap = "The Swiss Roll (left) and its UMAP embedding (right)"}
+N <- 2000
+s <- runif(N, min = pi/2, max = 9*pi/2)
+t <- runif(N, min = 0, max = 15)
+swiss <- cbind(s*sin(s), s*cos(s), t)
+embedding <- umap(swiss, n_neighbors = 15, min_dist = 0.1)
+par(mfrow = c(1,2))
+scatterplot3d(swiss, color = myColorRamp(c("red","purple","blue","green","yellow"), s),
+              xlab = "", ylab = "", zlab = "", main = "Swiss Roll", cex.symbols = 0.3, angle = 90)
+plot(embedding[,1], embedding[,2], col = myColorRamp(c("red","purple","blue","green","yellow"), s),
+     xlab = "", ylab = "", main = "UMAP Embedding", pch = 16, cex = 0.5)
+```
+
+UMAP successfully unrolls the swiss roll, and the coloring shows that nearby points on the manifold remain nearby in the embedding.  Notice, however, that the embedding is not a faithful rectangle in the way that ISOMAP's embedding is -- distances within the embedding, and the overall aspect ratio, need not match the original data closely.  UMAP prioritizes preserving neighborhoods, not distances.
+
+:::
+
+### Strengths and Weaknesses
+
+#### Strengths
+
+1) **Speed and scalability**
+
+Because UMAP relies on approximate nearest neighbor search and stochastic gradient descent with negative sampling rather than the eigendecomposition of a dense $N\times N$ matrix, it scales far more gracefully to large datasets than ISOMAP, Laplacian eigenmaps, or HLLEs.
+
+2) **Balances local and global structure**
+
+The spectral initialization (itself a Laplacian eigenmap of ${\bf W}$) gives the optimization a sensible global starting point before the attractive and repulsive forces refine local neighborhoods, so UMAP tends to preserve more of the manifold's coarse, global organization than LLE or Laplacian eigenmaps alone.
+
+3) **Few tuning parameters**
+
+The two main tuning parameters, the number of neighbors $k$ and *min\_dist*, play a similar role to the tuning parameters of LLE and Laplacian eigenmaps and have reasonably interpretable effects on the resulting embedding.
+
+#### Weaknesses
+
+1) **No uniqueness guarantee**
+
+Because the embedding is the result of a nonconvex optimization rather than an eigenvalue problem, different random initializations or optimization runs can produce noticeably different embeddings, unlike the (essentially) unique solutions returned by ISOMAP, LLE, Laplacian eigenmaps, and HLLEs.
+
+2) **Distances between (and sizes of) clusters are not meaningful**
+
+UMAP is explicitly designed to preserve neighborhoods, not distances.  As a result, the relative sizes of clusters and the gaps between them in a UMAP embedding often do not reflect the true geometry of the data and should not be over-interpreted.
+
+3) **No natural inverse mapping**
+
+Like ISOMAP, LLE, and Laplacian eigenmaps, UMAP does not directly provide a mapping from the embedding back to the original space.  We turn to a class of methods, autoencoders, which are built explicitly to provide such an inverse.

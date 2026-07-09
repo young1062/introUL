@@ -7,7 +7,7 @@ ii) what do we mean by similar observations?
 
 As we will see through a series of examples, these two points are linked. Given a notion of similarity (which are implicitly defined for different clustering algorithms and tuneable for others), a certain number of clusters and clustering of data may be optimal. Given a different notion of similarity, an entirely different organization of the data into a different number of clusters may arise. 
 
-For now, let us focus on the the latter question regarding similarity.  Consider the following three examples of data sets in $\mathbb{R}^2$.  Visually, how would you cluster the observations? In particular, how many subgroups would you say exist and how would your partition the data into these subgroups?
+For now, let us focus on the latter question regarding similarity.  Consider the following three examples of data sets in $\mathbb{R}^2$.  Visually, how would you cluster the observations? In particular, how many subgroups would you say exist and how would your partition the data into these subgroups?
 
 ::: {.example #clusterwhat name="Different notions of similar subgroups"}
 
@@ -37,7 +37,54 @@ There is one main commonality (and associated set of notation) that will persist
 ```{r child = 'topics/Center-Based-Clustering.Rmd'}
 ```
 
-<!-- Hierarchical -->  
+## Kernel $k$-means
+
+The kernel trick is not limited to PCA.  Recall from \@ref(ch-nonlinear) that the kernel trick lets us replace inner products $\vec{x}_i^T\vec{x}_j$ with a kernel evaluation $k(\vec{x}_i,\vec{x}_j)$, giving many linear methods access to nonlinear structure without ever explicitly computing the feature map $\varphi$.  The $k$-means loss function introduced above is a natural candidate, since expanding the squared norm shows that it only involves inner products of the data,
+$$\|\vec{x}_i - \vec{\mu}_\ell\|^2 = \vec{x}_i^T\vec{x}_i - \frac{2}{|C_\ell|}\sum_{\vec{x}_j \in C_\ell} \vec{x}_i^T\vec{x}_j + \frac{1}{|C_\ell|^2}\sum_{\vec{x}_j,\vec{x}_{j'} \in C_\ell} \vec{x}_j^T\vec{x}_{j'}, \qquad \vec{\mu}_\ell = \frac{1}{|C_\ell|}\sum_{\vec{x}_j \in C_\ell} \vec{x}_j.$$
+Replacing each inner product $\vec{x}_i^T\vec{x}_j$ with a kernel evaluation $k(\vec{x}_i,\vec{x}_j)$ gives the squared distance from $\varphi(\vec{x}_i)$ to the (never explicitly computed) feature-space cluster mean $\bar\varphi_\ell = \frac{1}{|C_\ell|}\sum_{\vec{x}_j \in C_\ell} \varphi(\vec{x}_j)$,
+$$\|\varphi(\vec{x}_i) - \bar\varphi_\ell\|^2_{\mathcal{H}} = k(\vec{x}_i,\vec{x}_i) - \frac{2}{|C_\ell|}\sum_{\vec{x}_j \in C_\ell} k(\vec{x}_i,\vec{x}_j) + \frac{1}{|C_\ell|^2}\sum_{\vec{x}_j,\vec{x}_{j'} \in C_\ell} k(\vec{x}_j,\vec{x}_{j'}).$$
+
+Kernel $k$-means then proceeds just like Lloyd's Algorithm above, but replaces the assignment step's (squared) Euclidean distance with this kernelized distance.
+
+1. **Initialize**: Choose an initial partition $C_1,\dots,C_k$ (e.g. by randomly assigning points to $k$ groups).
+2. **Cluster Assignment**: Reassign each $\vec{x}_i$ to the cluster $\ell$ minimizing $\|\varphi(\vec{x}_i)-\bar\varphi_\ell\|^2_{\mathcal{H}}$ given the current partition.
+3. **Repeat** step 2, recomputing the expression above from the updated partition, until cluster assignments stop changing.
+
+Notice there is no analog of the "center update" step from ordinary $k$-means.  Since $\bar\varphi_\ell$ typically cannot be computed or even represented explicitly, the cluster membership itself is the only state carried between iterations.
+
+As with kernel PCA (\@ref(ch-nonlinear)), the choice and tuning of the kernel is critical.  A poorly tuned kernel gives a result no better (and no worse) than ordinary $k$-means, while a well chosen kernel can recover cluster structure that is not spherical in the original coordinates.
+
+::: {.example #kkmeans-rings name="Kernel $k$-means applied to Nested Rings"}
+
+Consider $N=400$ points sampled uniformly around two concentric circles with additive noise, a shape ordinary $k$-means cannot separate correctly since neither ring is convex (let alone spherical).
+
+```{r, fig.cap = "Nested rings which are not separable by ordinary k-means"}
+library("kernlab")
+set.seed(185)
+N <- 400
+theta <- runif(N, 0, 2*pi)
+r <- rep(c(1,3), each = N/2) + rnorm(N, sd = 0.1)
+rings <- cbind(r*cos(theta), r*sin(theta))
+plot(rings, xlab = "", ylab = "", pch = 16, cex = 0.5, asp = 1)
+```
+
+Below, we compare the partition found by ordinary $k$-means to the partition found by kernel $k$-means using an rbf kernel.
+
+```{r, fig.cap = "Ordinary k-means (left) vs. kernel k-means with an rbf kernel (right)"}
+out.km <- kmeans(rings, centers = 2)
+out.kkm <- kkmeans(rings, centers = 2, kernel = "rbfdot", kpar = list(sigma = 4))
+par(mfrow = c(1,2))
+plot(rings, col = out.km$cluster, main = "k-means", xlab = "", ylab = "", asp = 1)
+plot(rings, col = out.kkm, main = "Kernel k-means (rbf)", xlab = "", ylab = "", asp = 1)
+```
+
+Ordinary $k$-means splits the data by a hyperplane, cutting each ring in half.  Kernel $k$-means, by first (implicitly) mapping the data to a feature space where the rings become linearly separable, recovers the two rings exactly.
+
+:::
+
+Kernel $k$-means also has an important connection to a clustering method discussed later in this chapter: with an appropriately chosen (graph-based) kernel, minimizing the kernel $k$-means loss is equivalent to minimizing a normalized graph cut, which is exactly the objective used by spectral clustering (\@ref(sec-spec-clustering)) [@dhillon_kkmeans].  In other words, kernel $k$-means and spectral clustering are two algorithmic routes to the same underlying idea.
+
+<!-- Hierarchical -->
 ```{r child = 'topics/Hierarchical-Clustering.Rmd'}
 ```
 

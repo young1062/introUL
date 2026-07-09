@@ -83,11 +83,11 @@ scatterplot3js(ribbon,
 :::
 
 
-In both the surface is two-dimensional (if you were stand on the surface and look nearby data points, they would appear to be planar. A dimension reduction would be able to recover this two-dimensional structure which in the case of the plane corresponds to find the coefficients used to generate each point. For the ribbons, the coordinates $(s,t)$ used in the ribbon mapping would provide the simplified representation. 
+In both the surface is two-dimensional (if you were to stand on the surface and look at nearby data points, they would appear to be planar). A dimension reduction would be able to recover this two-dimensional structure which in the case of the plane corresponds to finding the coefficients used to generate each point. For the ribbons, the coordinates $(s,t)$ used in the ribbon mapping would provide the simplified representation.
 
-The previous examples have shown data in $\mathbb{R}^3$. While this is helpful of visualization, it is not representative of many modern data sources where the dimensionality is extremely high!  Suppose we want to generate data in $\mathbb{R}^d$ for some specific large $d$ which has a simpler representation in $\mathbb{R}^t$ (with $t\ll d$) that we know.  
+The previous examples have shown data in $\mathbb{R}^3$. While this is helpful for visualization, it is not representative of many modern data sources where the dimensionality is extremely high!  Suppose we want to generate data in $\mathbb{R}^d$ for some specific large $d$ which has a simpler representation in $\mathbb{R}^t$ (with $t\ll d$) that we know.
 
-In general we can do this through a mapping, $f:\mathbb{R}^t \to \mathbb{R}^d$. (More on this idea in \ref(ch-nonlinear) later).  First generate synthetic data $\vec{x}_1',\dots,\vec{x}_N'$ then apply the map to create high dimensional observations $$\vec{x}_i = f(\vec{x}_i'), \qquad i=1,\dots,N.$$
+In general we can do this through a mapping, $f:\mathbb{R}^t \to \mathbb{R}^d$. (More on this idea in \@ref(ch-nonlinear) later).  First generate synthetic data $\vec{x}_1',\dots,\vec{x}_N'$ then apply the map to create high dimensional observations $$\vec{x}_i = f(\vec{x}_i'), \qquad i=1,\dots,N.$$
 
 There are infinite possibilities for $f$, but for now, we will focus on affine mappings. For a matrix ${\bf A}\in\mathbb{R}^{d\times t}$ and vector $\vec{b}\in\mathbb{R}^d$, the affine function $$
 f(\vec{x}') = {\bf A}\vec{x}' + \vec{b}$$ maps vectors in $\mathbb{R}^t$ to points in $\mathbb{R}^d.$ Properties of this mapping with depend on the columns of ${\bf A}$. For example, if the columns are orthonormal, then Euclidean distances between corresponding pairs of vectors will be the same in the low and high dimensional spaces.

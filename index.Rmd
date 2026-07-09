@@ -16,6 +16,14 @@ config:
   toc_depth: 0
 ---
 
+```{r global-setup, include=FALSE}
+# Interactive htmlwidgets (plotly, threejs) are screenshotted via webshot2 for
+# non-HTML output (e.g. the PDF book). WebGL-based scenes can take a moment to
+# finish rendering, so give them extra time before the screenshot is taken --
+# otherwise the captured image can come out blank/incomplete in the PDF.
+knitr::opts_chunk$set(screenshot.opts = list(delay = 3))
+```
+
 # Introduction {#intro}
 
 Unsupervised machine learning (UL) is an overarching term for methods designed to understand the patterns and relationships within a set of **unlabeled data**.  UL is often discussed in contrast to (semi-)supervised learning. In the latter setting(s), one is primarly concerned with prediction and classification, and the machine learning algorithms therein focus on learning the relationship between a (often high dimensional) feature vector $\vec{x}$ and an observable outcome $y$ by training on a labeled dataset $\{(\vec{x}_i,y_i)\}_{i=1}^N$. As a concrete example, consider the MNIST dataset which contains a compendium of labeled digitized grayscale images of handwritten digits [@mnist].  The images themselves are the features, ($\vec{x}$), and the identity of the digit (0 to 9) gives the label, $y$ .  A supervised learning algorithm trained on the MNIST dataset would be able to classify a handwritten digit in a new grayscale image.

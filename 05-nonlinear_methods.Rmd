@@ -1,8 +1,46 @@
-# Manifold Learning {#ch-nonlinear}
+# Kernel Methods and Manifold Learning {#ch-nonlinear}
+
+## Kernels and the Kernel Trick
+
+The techniques considered in the previous chapter (PCA, NMF, SVD, and classical Scaling) are ill suited to identify nonlinear structure and dependence in data.  If we wish to most efficiently reduce dimensions without loss of information, we will need techniques which incorporate nonlinear structure.  One can expand a data matrix by including specific nonlinear relationships then apply PCA or SVD but there are numerous problems with this approach.  In particular, which relationships does one choose to include? Even including simple quadratic or cubic terms (features) can result in a data matrix with a massive increase in the number of columns. Even when the original dimensionality of the data is moderate, the including of polynomial terms can quickly result in a data matrix of nonlinear features with an untenable number of columns which can make application of the linear methods we have discussed much more computationally demanding to implement.
+
+Kernels are a important class of functions which can be used to `kernelize` the methods we have discussed before. In theory, these kernelized versions of the linear methods we have discussed can identify and use nonlinear structure for better dimensionality reduction while circumventing the issue of higher dimensional `featurized` data.  This approach follows from an application of the so called 'kernel trick` which we now discuss.
+
+Briefly, a kernel is a function $$k:\mathbb{R}^d\times \mathbb{R}^d \to \mathbb{R}$$ which has an associated  feature space, $\mathcal{H}$ and (implicity defined, possibly nonlinear) feature mapping $\varphi:\mathcal{R}^d \to \mathcal{H}$ such that inner products in the feature space, denoted $\langle \varphi(\vec{x}), \varphi(\vec{y})\rangle_{\mathcal{H}}$ can be obtained through an evaluation of the kernel, namely
+\begin{equation}
+k(\vec{x},\vec{y}) = \langle \varphi(\vec{x}), \varphi(\vec{y})\rangle_{\mathcal{H}}
+\end{equation}
+
+Any method which can be expressed involving inner products can be kernelized by replacing terms of the form $\vec{x}^T_i\vec{x}_j$ with the quantity $k(\vec{x}_i,\vec{x}_j)$. Thus, we are replacing inner products of our original $d$-dimensional data with inner products in the associated feature space $\mathcal{H}$.  Importantly, if we only need inner products, we never need to explicitly compute the feature map $\varphi$ for any of our data!  At first glance this connection may seem minor, but by using kernels we can turn many linear techniques into nonlinear methods including PCA, SVD, support vector machines, linear regression, and many others.
+
+There are some limits though. Not every choice of $k$ has an associated feature space. A function is only a kernel if it satisfies Mercer's Condition.
+
+::: {.theorem #mercer name="Mercer's Condition"}
+A function $$k:\mathbb{R}^d\times \mathbb{R}^d \to \mathbb{R}$$ has a an associated feature space $\mathcal{H}$ and feature mapping $\varphi:\mathbb{R}^d \to \mathcal{H}$ such that $$k(\vec{x},\vec{y}) = \langle \varphi(\vec{x}), \varphi(\vec{y})\rangle_{\mathcal{H}}, \qquad \forall \vec{x},\vec{y}\in\mathbb{R}^d$$
+if and only if for any $N \in \{1,2,\dots\}$ and $\vec{x}_1,\dots,\vec{x}_N\in\mathbb{R}^d$ the kernel matrix ${\bf K}\in \mathbb{R}^{N}$ with entries ${\bf K}_{ij} = k(\vec{x}_i,\vec{x}_j)$ is positive semidefinite.  Equivalently, it must be the case that $$\int_{\mathbb{R}^d}\int_{\mathbb{R}^d} g(\vec{x})g(\vec{y}) k(\vec{x},\vec{y}) d\vec{x}d\vec{y} \ge 0$$ whenever $\int_{\mathbb{R}^2}[g(\vec{x})]d\vec{x}<\infty.$
+:::
+
+We will only consider symmetric functions such that $k(\vec{x},\vec{y}) = k(\vec{y},\vec{x})$ for all $\vec{x},\vec{y}\in\mathbb{R}^d$.  It may not be immediately obvious if a symmetric function satisfies Mercer's condition, but there are many known examples. A few are shown in the following table.
+
+| Name | Equation | Tuning Parameters |
+|------|----------|-------------------|
+| Radial Basis Function | $k(\vec{x},\vec{y} = \exp\left(-\sigma\|\vec{x}-\vec{y}\|^2\right)$  | Scale $\sigma >0$ |
+| Laplace | $k(\vec{x},\vec{y} = \exp\left(-\sigma\|\vec{x}-\vec{y}\|\right)$  | Scale $\sigma >0$ |
+| Polynomial | $k(\vec{x},\vec{y}) = (c+ \vec{x}^T\vec{y})^d$ | Offset $c >0$, Degree $d \in \mathbb{N}$ |
+
+
+
+The radial basis function (rbf) is the most commonly used kernel and has an associated feature space $\mathcal{H}$ which is infinite dimensional! The associated feature map $\varphi$ for the rbf kernel is
+$$\varphi(\vec{x}) = e^{-\sigma\|\vec{x}\|^2}\left(a_{\ell_0}^{(0)}, a_{1}^{(1)},\dots,a_{\ell_1}^{(1)}, a_{1}^{(2)},\dots, a_{\ell_2}^{(2)},\dots \right)$$
+where $\ell_j = \binom{d+j-1}{j}$ and $a_\ell^{(j)} = \frac{(2\sigma)^{j/2}x_1^{\eta_1}\dots x^{\eta_d}}{\sqrt{\eta_1!\dots\eta_d!}}$ when $\eta_1+\dots+\eta_d = j.$  The preceding expression is quite cumbersome, but there is one important point to emphasize.  Every possible polynomial combination of the coordinates of $\vec{x}$ appears in some coordinate of $\varphi(\vec{x})$ (though higher order terms are shrunk by the factorial factors in the denominator of $a_\ell^{(j)}$).  Thus, the rbf kernel is associated with a very expressive feature space which makes it a potent but dangerous choice since risks overfitting.  To explore these details more, let's discuss one very important application of kernels in unsupervised learning.
+
+<!-- kernel PCA -->
+```{r child = 'topics/kPCA.Rmd'}
+```
 
 ## The Manifold Hypothesis
 
-In Chapter 4, we focused our attention on linear manifolds and saw cases where this structure was insufficient.  Using kernel PCA, we tried to find a workaround by first (implicity) mapping our data to a higher dimensional feature space then approximating results with linear subspaces (of feature space). In this Chapter, we will investigate several methods to estimate a lower-dimensional representation assuming the data live on a manifold, which we hereafter refer to as the manifold hypothesis. This hypothesis is the central assumptions of modern nonlinear dimension reduction methods and can be stated as follows. 
+In the preceding section, we focused our attention on linear manifolds and saw cases where this structure was insufficient.  Using kernel PCA, we tried to find a workaround by first (implicity) mapping our data to a higher dimensional feature space then approximating results with linear subspaces (of feature space). In this Chapter, we will investigate several methods to estimate a lower-dimensional representation assuming the data live on a manifold, which we hereafter refer to as the manifold hypothesis. This hypothesis is the central assumptions of modern nonlinear dimension reduction methods and can be stated as follows.
 
 ::: {.definition name="Manifold Hypothesis"}
 The observed data $\vec{x}_1,\dots,\vec{x}_N\in\mathbb{R}$ are concentrated on or near a manifold of intrinsic dimension $t\ll d.$
@@ -213,6 +251,10 @@ SVD and PCA still have their uses thanks to the locally Euclidean nature of mani
 ```{r child = 'topics/hessian_eigenmaps.Rmd'}
 ```
 
+<!-- UMAP -->
+```{r child = 'topics/UMAP.Rmd'}
+```
+
 <!-- AE -->
 ```{r child = 'topics/AE.Rmd'}
 ```
@@ -220,6 +262,18 @@ SVD and PCA still have their uses thanks to the locally Euclidean nature of mani
 <!-- Examples -->
 ```{r child = 'topics/Manifold_Learning_Examples.Rmd'}
 ```
+
+## A Unifying View: Manifold Learning as Kernel PCA
+
+Having covered ISOMAP, LLE, and Laplacian eigenmaps, it is worth stepping back to notice a common thread.  Each method feels different -- one preserves geodesic distances, one preserves local linear reconstructions, one preserves a weighted graph structure -- yet each method ultimately produces its embedding the same way: by eigendecomposing a particular symmetric matrix built from the data and taking the leading eigenvectors (suitably scaled) as coordinates.  This is exactly the recipe used by kernel PCA.  It turns out that this similarity is not a coincidence.  ISOMAP, LLE, and Laplacian eigenmaps can each be written as kernel PCA applied to a specific, data-dependent "kernel" matrix in place of the doubly centered kernel matrix ${\bf HKH}$ from earlier in this chapter [@ham_kernel_view].
+
+**ISOMAP.** Recall that ISOMAP applies classical scaling directly to the matrix of squared geodesic distances, forming $B = -\frac{1}{2}{\bf H}\Delta^{(2)}{\bf H}$ where $\Delta^{(2)}_{ij} = \left(d^{\mathcal{G}}_{ij}\right)^2$.  By the duality of PCA and classical scaling (\@ref(sec-mds)), this is precisely kernel PCA using the kernel matrix ${\bf K}_{\text{ISOMAP}} = B$.  Since geodesic distances are only estimated from a finite neighborhood graph, ${\bf K}_{\text{ISOMAP}}$ is not guaranteed to be positive semidefinite in practice (unlike a kernel matrix built from a valid Mercer kernel); small negative eigenvalues are typically discarded.
+
+**LLE.** LLE embeds the data using the *smallest* nontrivial eigenvectors of ${\bf M} = ({\bf I}-{\bf W})^T({\bf I}-{\bf W})$, whereas kernel PCA always uses the *largest* eigenvectors of a kernel matrix.  The two views are reconciled by a simple eigenvalue flip.  With $\lambda_{\max}$ the largest eigenvalue of ${\bf M}$, the top nontrivial eigenvectors of ${\bf K}_{\text{LLE}} = \lambda_{\max}{\bf I} - {\bf M}$ coincide with the bottom nontrivial eigenvectors of ${\bf M}$, so the LLE embedding is exactly the kernel PCA embedding using ${\bf K}_{\text{LLE}}$.
+
+**Laplacian eigenmaps.** By the same flip argument, the Laplacian eigenmap embedding built from the smallest nontrivial eigenvectors of ${\bf L}_{sym}$ is the kernel PCA embedding using the (Moore-Penrose) pseudoinverse ${\bf K}_{\text{LE}} = {\bf L}_{sym}^{\dagger}$ as the kernel matrix.
+
+Two consequences follow from this unifying view.  First, it explains why these methods behave so differently from kernel PCA with a fixed kernel like the rbf kernel.  The matrices ${\bf K}_{\text{ISOMAP}}$, ${\bf K}_{\text{LLE}}$, and ${\bf K}_{\text{LE}}$ are all built from the entire training sample (through a $k$-nearest-neighbor graph), rather than from a function $k(\vec{x},\vec{y})$ that can be evaluated on two arbitrary points.  This is precisely why ordinary kernel PCA readily extends to new, out-of-sample points while ISOMAP, LLE, and Laplacian eigenmaps do not -- doing so requires a Nyström-type approximation of the relevant kernel [@ham_kernel_view].  Second, it foreshadows a connection we revisit in the next chapter.  The graph Laplacian ${\bf L}_{sym}$ used above to build ${\bf K}_{\text{LE}}$ is the same graph Laplacian at the heart of spectral clustering (\@ref(sec-spec-clustering)), and kernel $k$-means with a graph-based kernel recovers the same spectral clustering objective.  Dimension reduction and clustering, at least for these methods, are two sides of the same eigenvalue problem.
 
 ## Exercises
 

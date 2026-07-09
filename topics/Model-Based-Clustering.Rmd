@@ -100,7 +100,6 @@ Ultimately, clustering via GMMs requires estimation of the parameter $\Phi$ for 
   \hat{\mu}_j = \frac{\sum_{i=1}^N\mathbb{1}(Z_i=j)\vec{x}_i}{\sum_{i=1}^N\mathbb{1}(Z_i=j)},
   \, \hat{\bf \Sigma}_j = \frac{\sum_{i=1}^N\mathbb{1}(Z_i=j)(\vec{x}_i-\hat{\mu_j})(\vec{x}_i-\hat{\mu_j})^T}{\sum_{i=1}^N\mathbb{1}(Z_i=j)},
   \, \hat{p}_j = \frac{\sum_{i=1}^N\mathbb{1}(z_i=j)}{N}
-
   (\#eq:simple_gmm_estimates)
 \end{equation}
 where $\mathbb{1}(z_i=j)$ is the indicator function taking value one if $z_i=j$ and zero otherwise.  
@@ -116,7 +115,7 @@ However, this method easily suffers from computation limitations (underflow) and
 EM can be opaque when one is first exposed to the method.  We'll discuss the mathematical details shortly. For now, let's discuss the algorithm from a high level. It begins with an initial guess for $\Phi$.  The EM algorithm is comprised of two aptly named steps.
 
 1. **E-Step**: We use our current guess for the model parameters to estimate the cluster labels $z_1,\dots,z_N$. These estimates are probabilistic in the sense that we compute $p(z_i\mid \vec{x}_i,\Phi)$ rather than discrete choices of the labels. 
-2. **M-Step**: Maximize the expected log-likelihood with respect to parameters, $\Phi$, using the estimated label probabilities. In this step, we modify the estimates in \eqref(eq:simple_gmm_estimates) to reflect our uncertainty in the cluster labels.
+2. **M-Step**: Maximize the expected log-likelihood with respect to parameters, $\Phi$, using the estimated label probabilities. In this step, we modify the estimates in \@ref(eq:simple_gmm_estimates) to reflect our uncertainty in the cluster labels.
 
 The EM algorithm then proceeds by iterating the E and M steps until convergence to a local maximum is achieved.  Let's explore these steps in greater detail for GMMs. Let $\Phi^{(t)}$ to denote the estimate of $\Phi$ after $t$ iterations of the E and M steps. We'll use the superscript $^{(t)}$ above individual parameters as well.
 

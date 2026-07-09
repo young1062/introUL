@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>An Introduction to Unsupervised Learning</title>
   <meta name="description" content="An introductory text on the goals and methods of unsupervised learning" />
-  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.47 and GitBook 2.6.7" />
 
   <meta property="og:title" content="An Introduction to Unsupervised Learning" />
   <meta property="og:type" content="book" />
@@ -51,14 +51,14 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<link href="libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
 <script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
-<script src="libs/plotly-binding-4.11.0/plotly.js"></script>
+<script src="libs/plotly-binding-4.12.0/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<link href="libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.25.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.25.2/plotly-latest.min.js"></script>
 <script src="libs/threejs-111/three.min.js"></script>
 <script src="libs/threejs-111/Detector.js"></script>
 <script src="libs/threejs-111/Projector.js"></script>
@@ -69,8 +69,9 @@
 
 
 <style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -80,7 +81,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -239,7 +240,7 @@ div.csl-indent {
 <li class="chapter" data-level="4.3.3" data-path="ch-linear.html"><a href="ch-linear.html#finding-a-nmf-multiplicative-updates"><i class="fa fa-check"></i><b>4.3.3</b> Finding a NMF: Multiplicative Updates</a></li>
 <li class="chapter" data-level="4.3.4" data-path="ch-linear.html"><a href="ch-linear.html#nmf-in-practice"><i class="fa fa-check"></i><b>4.3.4</b> NMF in practice</a></li>
 <li class="chapter" data-level="4.3.5" data-path="ch-linear.html"><a href="ch-linear.html#sec-nmf-ext"><i class="fa fa-check"></i><b>4.3.5</b> Regularization and Interpretability</a></li>
-<li class="chapter" data-level="4.3.6" data-path="ch-linear.html"><a href="ch-linear.html#nmf-and-maximum-likelihood-estimation"><i class="fa fa-check"></i><b>4.3.6</b> NMF and Maximum Likelihood Estimation</a></li>
+<li class="chapter" data-level="4.3.6" data-path="ch-linear.html"><a href="ch-linear.html#sec-nmf-mle"><i class="fa fa-check"></i><b>4.3.6</b> NMF and Maximum Likelihood Estimation</a></li>
 </ul></li>
 <li class="chapter" data-level="4.4" data-path="ch-linear.html"><a href="ch-linear.html#sec-mds"><i class="fa fa-check"></i><b>4.4</b> Multidimensional Scaling</a>
 <ul>
@@ -250,78 +251,83 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="4.5" data-path="ch-linear.html"><a href="ch-linear.html#exercises-2"><i class="fa fa-check"></i><b>4.5</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="kernels-and-nonlinearity.html"><a href="kernels-and-nonlinearity.html"><i class="fa fa-check"></i><b>5</b> Kernels and Nonlinearity</a>
+<li class="chapter" data-level="5" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html"><i class="fa fa-check"></i><b>5</b> Kernel Methods and Manifold Learning</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="kernels-and-nonlinearity.html"><a href="kernels-and-nonlinearity.html#kernel-pca"><i class="fa fa-check"></i><b>5.1</b> Kernel PCA</a></li>
-<li class="chapter" data-level="5.2" data-path="kernels-and-nonlinearity.html"><a href="kernels-and-nonlinearity.html#exercises-3"><i class="fa fa-check"></i><b>5.2</b> Exercises</a></li>
+<li class="chapter" data-level="5.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#kernels-and-the-kernel-trick"><i class="fa fa-check"></i><b>5.1</b> Kernels and the Kernel Trick</a></li>
+<li class="chapter" data-level="5.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#kernel-pca"><i class="fa fa-check"></i><b>5.2</b> Kernel PCA</a></li>
+<li class="chapter" data-level="5.3" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#the-manifold-hypothesis"><i class="fa fa-check"></i><b>5.3</b> The Manifold Hypothesis</a></li>
+<li class="chapter" data-level="5.4" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#sec-manifolds"><i class="fa fa-check"></i><b>5.4</b> Brief primer on manifolds</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#charts-atlases-tangent-spaces-and-approximating-tangent-planes"><i class="fa fa-check"></i><b>5.4.1</b> Charts, atlases, tangent spaces and approximating tangent planes</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html"><i class="fa fa-check"></i><b>6</b> Manifold Learning</a>
+<li class="chapter" data-level="5.5" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#isometric-feature-map-isomap"><i class="fa fa-check"></i><b>5.5</b> Isometric Feature Map (ISOMAP)</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#the-manifold-hypothesis"><i class="fa fa-check"></i><b>6.1</b> The Manifold Hypothesis</a></li>
-<li class="chapter" data-level="6.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#sec-manifolds"><i class="fa fa-check"></i><b>6.2</b> Brief primer on manifolds</a>
-<ul>
-<li class="chapter" data-level="6.2.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#charts-atlases-tangent-spaces-and-approximating-tangent-planes"><i class="fa fa-check"></i><b>6.2.1</b> Charts, atlases, tangent spaces and approximating tangent planes</a></li>
+<li class="chapter" data-level="5.5.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#introduction"><i class="fa fa-check"></i><b>5.5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.5.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#key-definitions"><i class="fa fa-check"></i><b>5.5.2</b> Key Definitions</a></li>
+<li class="chapter" data-level="5.5.3" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#algorithm"><i class="fa fa-check"></i><b>5.5.3</b> Algorithm</a></li>
+<li class="chapter" data-level="5.5.4" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#limitations-of-isomap"><i class="fa fa-check"></i><b>5.5.4</b> Limitations of ISOMAP</a></li>
 </ul></li>
-<li class="chapter" data-level="6.3" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#isometric-feature-map-isomap"><i class="fa fa-check"></i><b>6.3</b> Isometric Feature Map (ISOMAP)</a>
+<li class="chapter" data-level="5.6" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#locally-linear-embeddings-lles"><i class="fa fa-check"></i><b>5.6</b> Locally Linear Embeddings (LLEs)</a>
 <ul>
-<li class="chapter" data-level="6.3.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#introduction"><i class="fa fa-check"></i><b>6.3.1</b> Introduction</a></li>
-<li class="chapter" data-level="6.3.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#key-definitions"><i class="fa fa-check"></i><b>6.3.2</b> Key Definitions</a></li>
-<li class="chapter" data-level="6.3.3" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#algorithm"><i class="fa fa-check"></i><b>6.3.3</b> Algorithm</a></li>
-<li class="chapter" data-level="6.3.4" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#limitations-of-isomap"><i class="fa fa-check"></i><b>6.3.4</b> Limitations of ISOMAP</a></li>
+<li class="chapter" data-level="5.6.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#introduction-1"><i class="fa fa-check"></i><b>5.6.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.6.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#algorithm-1"><i class="fa fa-check"></i><b>5.6.2</b> Algorithm</a></li>
+<li class="chapter" data-level="5.6.3" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#strengths-and-weaknesses-of-lle"><i class="fa fa-check"></i><b>5.6.3</b> Strengths and Weaknesses of LLE</a></li>
 </ul></li>
-<li class="chapter" data-level="6.4" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#locally-linear-embeddings-lles"><i class="fa fa-check"></i><b>6.4</b> Locally Linear Embeddings (LLEs)</a>
+<li class="chapter" data-level="5.7" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#laplacian-eigenmap-les"><i class="fa fa-check"></i><b>5.7</b> Laplacian Eigenmap (LEs)</a>
 <ul>
-<li class="chapter" data-level="6.4.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#introduction-1"><i class="fa fa-check"></i><b>6.4.1</b> Introduction</a></li>
-<li class="chapter" data-level="6.4.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#algorithm-1"><i class="fa fa-check"></i><b>6.4.2</b> Algorithm</a></li>
-<li class="chapter" data-level="6.4.3" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#strengths-and-weaknesses-of-lle"><i class="fa fa-check"></i><b>6.4.3</b> Strengths and Weaknesses of LLE</a></li>
+<li class="chapter" data-level="5.7.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#algorithm-2"><i class="fa fa-check"></i><b>5.7.1</b> Algorithm</a></li>
 </ul></li>
-<li class="chapter" data-level="6.5" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#laplacian-eigenmap-les"><i class="fa fa-check"></i><b>6.5</b> Laplacian Eigenmap (LEs)</a>
+<li class="chapter" data-level="5.8" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#hessian-eigenmaps-hlles"><i class="fa fa-check"></i><b>5.8</b> Hessian Eigenmaps (HLLEs)</a>
 <ul>
-<li class="chapter" data-level="6.5.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#algorithm-2"><i class="fa fa-check"></i><b>6.5.1</b> Algorithm</a></li>
+<li class="chapter" data-level="5.8.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#introduction-2"><i class="fa fa-check"></i><b>5.8.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.8.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#assumptions-strength-and-weaknesses"><i class="fa fa-check"></i><b>5.8.2</b> Assumptions, Strength, and Weaknesses</a></li>
 </ul></li>
-<li class="chapter" data-level="6.6" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#hessian-eigenmaps-hlles"><i class="fa fa-check"></i><b>6.6</b> Hessian Eigenmaps (HLLEs)</a>
+<li class="chapter" data-level="5.9" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#uniform-manifold-approximation-and-projection-umap"><i class="fa fa-check"></i><b>5.9</b> Uniform Manifold Approximation and Projection (UMAP)</a>
 <ul>
-<li class="chapter" data-level="6.6.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#introduction-2"><i class="fa fa-check"></i><b>6.6.1</b> Introduction</a></li>
-<li class="chapter" data-level="6.6.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#assumptions-strength-and-weaknesses"><i class="fa fa-check"></i><b>6.6.2</b> Assumptions, Strength, and Weaknesses</a></li>
+<li class="chapter" data-level="5.9.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#introduction-3"><i class="fa fa-check"></i><b>5.9.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.9.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#algorithm-3"><i class="fa fa-check"></i><b>5.9.2</b> Algorithm</a></li>
+<li class="chapter" data-level="5.9.3" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#strengths-and-weaknesses"><i class="fa fa-check"></i><b>5.9.3</b> Strengths and Weaknesses</a></li>
 </ul></li>
-<li class="chapter" data-level="6.7" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#autoencoders-aes"><i class="fa fa-check"></i><b>6.7</b> Autoencoders (AEs)</a>
+<li class="chapter" data-level="5.10" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#autoencoders-aes"><i class="fa fa-check"></i><b>5.10</b> Autoencoders (AEs)</a>
 <ul>
-<li class="chapter" data-level="6.7.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#introduction-3"><i class="fa fa-check"></i><b>6.7.1</b> Introduction</a></li>
-<li class="chapter" data-level="6.7.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#neural-networks-design-and-training"><i class="fa fa-check"></i><b>6.7.2</b> Neural networks: design and training</a></li>
-<li class="chapter" data-level="6.7.3" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#strengths-and-weaknesses"><i class="fa fa-check"></i><b>6.7.3</b> Strengths and weaknesses</a></li>
+<li class="chapter" data-level="5.10.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#introduction-4"><i class="fa fa-check"></i><b>5.10.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.10.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#neural-networks-design-and-training"><i class="fa fa-check"></i><b>5.10.2</b> Neural networks: design and training</a></li>
+<li class="chapter" data-level="5.10.3" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#strengths-and-weaknesses-1"><i class="fa fa-check"></i><b>5.10.3</b> Strengths and weaknesses</a></li>
 </ul></li>
-<li class="chapter" data-level="6.8" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#comparison-of-manifold-learning-methods"><i class="fa fa-check"></i><b>6.8</b> Comparison of Manifold Learning Methods</a>
+<li class="chapter" data-level="5.11" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#comparison-of-manifold-learning-methods"><i class="fa fa-check"></i><b>5.11</b> Comparison of Manifold Learning Methods</a>
 <ul>
-<li class="chapter" data-level="6.8.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#visual-comparison-of-results"><i class="fa fa-check"></i><b>6.8.1</b> Visual comparison of results</a></li>
+<li class="chapter" data-level="5.11.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#visual-comparison-of-results"><i class="fa fa-check"></i><b>5.11.1</b> Visual comparison of results</a></li>
 </ul></li>
-<li class="chapter" data-level="6.9" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#exercises-4"><i class="fa fa-check"></i><b>6.9</b> Exercises</a></li>
+<li class="chapter" data-level="5.12" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#a-unifying-view-manifold-learning-as-kernel-pca"><i class="fa fa-check"></i><b>5.12</b> A Unifying View: Manifold Learning as Kernel PCA</a></li>
+<li class="chapter" data-level="5.13" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#exercises-3"><i class="fa fa-check"></i><b>5.13</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="ch-clustering.html"><a href="ch-clustering.html"><i class="fa fa-check"></i><b>7</b> Clustering</a>
+<li class="chapter" data-level="6" data-path="ch-clustering.html"><a href="ch-clustering.html"><i class="fa fa-check"></i><b>6</b> Clustering</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="ch-clustering.html"><a href="ch-clustering.html#center-based-clustering"><i class="fa fa-check"></i><b>7.1</b> Center-Based Clustering</a>
+<li class="chapter" data-level="6.1" data-path="ch-clustering.html"><a href="ch-clustering.html#center-based-clustering"><i class="fa fa-check"></i><b>6.1</b> Center-Based Clustering</a>
 <ul>
-<li class="chapter" data-level="7.1.1" data-path="ch-clustering.html"><a href="ch-clustering.html#k-means"><i class="fa fa-check"></i><b>7.1.1</b> <span class="math inline">\(k\)</span>-means</a></li>
-<li class="chapter" data-level="7.1.2" data-path="ch-clustering.html"><a href="ch-clustering.html#k-center-and-k-medoids"><i class="fa fa-check"></i><b>7.1.2</b> <span class="math inline">\(k\)</span>-center and <span class="math inline">\(k\)</span>-medoids</a></li>
-<li class="chapter" data-level="7.1.3" data-path="ch-clustering.html"><a href="ch-clustering.html#minimizing-clustering-loss-functions"><i class="fa fa-check"></i><b>7.1.3</b> Minimizing clustering loss functions</a></li>
-<li class="chapter" data-level="7.1.4" data-path="ch-clustering.html"><a href="ch-clustering.html#strengths-and-weaknesses-1"><i class="fa fa-check"></i><b>7.1.4</b> Strengths and Weaknesses</a></li>
-<li class="chapter" data-level="7.1.5" data-path="ch-clustering.html"><a href="ch-clustering.html#choosing-the-number-of-clusters"><i class="fa fa-check"></i><b>7.1.5</b> Choosing the number of clusters</a></li>
+<li class="chapter" data-level="6.1.1" data-path="ch-clustering.html"><a href="ch-clustering.html#k-means"><i class="fa fa-check"></i><b>6.1.1</b> <span class="math inline">\(k\)</span>-means</a></li>
+<li class="chapter" data-level="6.1.2" data-path="ch-clustering.html"><a href="ch-clustering.html#k-center-and-k-medoids"><i class="fa fa-check"></i><b>6.1.2</b> <span class="math inline">\(k\)</span>-center and <span class="math inline">\(k\)</span>-medoids</a></li>
+<li class="chapter" data-level="6.1.3" data-path="ch-clustering.html"><a href="ch-clustering.html#minimizing-clustering-loss-functions"><i class="fa fa-check"></i><b>6.1.3</b> Minimizing clustering loss functions</a></li>
+<li class="chapter" data-level="6.1.4" data-path="ch-clustering.html"><a href="ch-clustering.html#strengths-and-weaknesses-2"><i class="fa fa-check"></i><b>6.1.4</b> Strengths and Weaknesses</a></li>
+<li class="chapter" data-level="6.1.5" data-path="ch-clustering.html"><a href="ch-clustering.html#choosing-the-number-of-clusters"><i class="fa fa-check"></i><b>6.1.5</b> Choosing the number of clusters</a></li>
 </ul></li>
-<li class="chapter" data-level="7.2" data-path="ch-clustering.html"><a href="ch-clustering.html#hierarchical-clustering"><i class="fa fa-check"></i><b>7.2</b> Hierarchical Clustering</a>
+<li class="chapter" data-level="6.2" data-path="ch-clustering.html"><a href="ch-clustering.html#kernel-k-means"><i class="fa fa-check"></i><b>6.2</b> Kernel <span class="math inline">\(k\)</span>-means</a></li>
+<li class="chapter" data-level="6.3" data-path="ch-clustering.html"><a href="ch-clustering.html#hierarchical-clustering"><i class="fa fa-check"></i><b>6.3</b> Hierarchical Clustering</a>
 <ul>
-<li class="chapter" data-level="7.2.1" data-path="ch-clustering.html"><a href="ch-clustering.html#dendrograms"><i class="fa fa-check"></i><b>7.2.1</b> Dendrograms</a></li>
-<li class="chapter" data-level="7.2.2" data-path="ch-clustering.html"><a href="ch-clustering.html#building-a-dendrogram"><i class="fa fa-check"></i><b>7.2.2</b> Building a dendrogram</a></li>
+<li class="chapter" data-level="6.3.1" data-path="ch-clustering.html"><a href="ch-clustering.html#dendrograms"><i class="fa fa-check"></i><b>6.3.1</b> Dendrograms</a></li>
+<li class="chapter" data-level="6.3.2" data-path="ch-clustering.html"><a href="ch-clustering.html#building-a-dendrogram"><i class="fa fa-check"></i><b>6.3.2</b> Building a dendrogram</a></li>
 </ul></li>
-<li class="chapter" data-level="7.3" data-path="ch-clustering.html"><a href="ch-clustering.html#sec-model-based-clustering"><i class="fa fa-check"></i><b>7.3</b> Model-Based Clustering</a>
+<li class="chapter" data-level="6.4" data-path="ch-clustering.html"><a href="ch-clustering.html#sec-model-based-clustering"><i class="fa fa-check"></i><b>6.4</b> Model-Based Clustering</a>
 <ul>
-<li class="chapter" data-level="7.3.1" data-path="ch-clustering.html"><a href="ch-clustering.html#gaussian-mixture-models-gmm"><i class="fa fa-check"></i><b>7.3.1</b> Gaussian Mixture Models (GMM)</a></li>
-<li class="chapter" data-level="7.3.2" data-path="ch-clustering.html"><a href="ch-clustering.html#expectation-maximization-em-algorithm"><i class="fa fa-check"></i><b>7.3.2</b> Expectation-Maximization (EM) Algorithm</a></li>
-<li class="chapter" data-level="7.3.3" data-path="ch-clustering.html"><a href="ch-clustering.html#model-selection-and-parameter-constraints"><i class="fa fa-check"></i><b>7.3.3</b> Model Selection and Parameter Constraints</a></li>
-<li class="chapter" data-level="7.3.4" data-path="ch-clustering.html"><a href="ch-clustering.html#weakneses-and-limitations"><i class="fa fa-check"></i><b>7.3.4</b> Weakneses and Limitations</a></li>
+<li class="chapter" data-level="6.4.1" data-path="ch-clustering.html"><a href="ch-clustering.html#gaussian-mixture-models-gmm"><i class="fa fa-check"></i><b>6.4.1</b> Gaussian Mixture Models (GMM)</a></li>
+<li class="chapter" data-level="6.4.2" data-path="ch-clustering.html"><a href="ch-clustering.html#expectation-maximization-em-algorithm"><i class="fa fa-check"></i><b>6.4.2</b> Expectation-Maximization (EM) Algorithm</a></li>
+<li class="chapter" data-level="6.4.3" data-path="ch-clustering.html"><a href="ch-clustering.html#model-selection-and-parameter-constraints"><i class="fa fa-check"></i><b>6.4.3</b> Model Selection and Parameter Constraints</a></li>
+<li class="chapter" data-level="6.4.4" data-path="ch-clustering.html"><a href="ch-clustering.html#weakneses-and-limitations"><i class="fa fa-check"></i><b>6.4.4</b> Weakneses and Limitations</a></li>
 </ul></li>
-<li class="chapter" data-level="7.4" data-path="ch-clustering.html"><a href="ch-clustering.html#sec-spec-clustering"><i class="fa fa-check"></i><b>7.4</b> Spectral Clustering</a>
+<li class="chapter" data-level="6.5" data-path="ch-clustering.html"><a href="ch-clustering.html#sec-spec-clustering"><i class="fa fa-check"></i><b>6.5</b> Spectral Clustering</a>
 <ul>
-<li class="chapter" data-level="7.4.1" data-path="ch-clustering.html"><a href="ch-clustering.html#introduction-4"><i class="fa fa-check"></i><b>7.4.1</b> Introduction</a></li>
-<li class="chapter" data-level="7.4.2" data-path="ch-clustering.html"><a href="ch-clustering.html#algorithm-3"><i class="fa fa-check"></i><b>7.4.2</b> Algorithm</a></li>
+<li class="chapter" data-level="6.5.1" data-path="ch-clustering.html"><a href="ch-clustering.html#introduction-5"><i class="fa fa-check"></i><b>6.5.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.5.2" data-path="ch-clustering.html"><a href="ch-clustering.html#algorithm-4"><i class="fa fa-check"></i><b>6.5.2</b> Algorithm</a></li>
 </ul></li>
 </ul></li>
 <li class="divider"></li>
@@ -374,7 +380,7 @@ div.csl-indent {
 <li><p><strong>What</strong> One data set could be approached from one or more different perspectives. For example, one could apply dimension reduction to the cancer data to <em>visualize</em> the potentially complex data in a manner that preserves important relationships. Combining many approaches together makes unsupervised learning a powerful tool to exploratory data analysis and featurization, particularly when combined with expert level content knowledge. Choosing a UL method is linked with what we hope to learn about our data.</p></li>
 <li><p><strong>How</strong> If we want an algorithm that clusters similar vectors or provides a visualization that keeps close points together, then we should be mindful of the meaning of similarity or proximity. UL algorithms, sometimes implicitly, prioritize different relationships. We explore how these algorithms work from a geometric perspective which is a helpful intellectual scaffolding.</p></li>
 </ol>
-<p>In the remainder of this text, we focus primarily on dimension reduction (<a href="ch-linear.html#ch-linear">4</a> and <a href="ch-nonlinear.html#ch-nonlinear">6</a>) and clustering (<a href="ch-clustering.html#ch-clustering">7</a>).</p>
+<p>In the remainder of this text, we focus primarily on dimension reduction (<a href="ch-linear.html#ch-linear">4</a> and <a href="ch-nonlinear.html#ch-nonlinear">5</a>) and clustering (<a href="ch-clustering.html#ch-clustering">6</a>).</p>
 <div id="prerequisites" class="section level2 hasAnchor" number="1.1">
 <h2><span class="header-section-number">1.1</span> Prerequisites<a href="index.html#prerequisites" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This text is targeted at upper level undergraduates with a well rounded background in the following courses and topics</p>

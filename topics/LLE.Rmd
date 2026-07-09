@@ -37,31 +37,31 @@ As we can tell from these, LLE works well only if data points are dense and hope
 
 As put before, we try to reconstruct each $\vec{x}_i$ using an almost convex weighted combination of its neighbors. The respective weights of all its neighbors $\vec{x}_j, \; j \neq i$ for each $\vec{x}_i$ is quite essential in the later reconstruction of the underlying intrinsic configuration, as we consider these weights to remain invariant before and after mapping. 
 
-To explain it in mathematical formulas, the approximate of $\vec{x}_i$: $\tilde{x}_i$ is defined as $\tilde{x}_i = \sum_{j=1}^N w_{ij} \vec{x}_j$. There are two constraints for this formula: First, $w_{ij} \equiv 0$, if $j \notin N_i^k$ (consistent with the assumption of $k$ nearest neighbors); Second, the sum of weights for each $\vec{x}_i$ is always zero, i.e., $\sum_{j=1}^N w_{ij}=1$. 
+To explain it in mathematical formulas, the approximate of $\vec{x}_i$: $\tilde{x}_i$ is defined as $\tilde{x}_i = \sum_{j=1}^N w_{ij} \vec{x}_j$. There are two constraints for this formula: First, $w_{ij} \equiv 0$, if $j \notin N_i^k$ (consistent with the assumption of $k$ nearest neighbors); Second, the sum of weights for each $\vec{x}_i$ is always one, i.e., $\sum_{j=1}^N w_{ij}=1$.
 
 Then, the problem of finding the optimal $w_{ij}, \; 1 \leq i,j \leq N$ is equivalent to solving the following constrained Least Squares problem for $\forall 1 \leq i \leq N$:
 
-<span id="eq:opt_prob"> (1) </span>
-$$
+\begin{equation}
 \begin{aligned}
 & \min \left\| \vec{x}_i-\sum_{j \in N_i^k} w_{i j} \vec{x}_j\right\|^2 \\
 & \text { s.t. } \quad \sum_{j \in N_i^k} w_{i j}=1 .
 \end{aligned}
-$$
+(\#eq:opt_prob)
+\end{equation}
 
 It is worth noting that the weights can be negative theoretically, though in practice, we don't expect that to happen.
 
-**Invariance to Rotation, Rescaling and Transaction**
+**Invariance to Rotation, Rescaling and Translation**
 
-Define $\epsilon(w) = \sum_{i=1}^N \left\| \vec{x}_i-\sum_{j \in N_i^k} w_{i j} \vec{x}_j\right\|^2$, which is the cost function. 
+Define $\epsilon(w) = \sum_{i=1}^N \left\| \vec{x}_i-\sum_{j \in N_i^k} w_{i j} \vec{x}_j\right\|^2$, which is the cost function.
 
 1) $\epsilon(w)$ is unchanged by rotation or rescaling by common factor
 
 Actually $\sum_{i=1}^N \left\| a \text{U} \vec{x}_i-\sum_{j \in N_i^k} w_{i j} a \text{U} \vec{x}_j\right\|^2 = a^2 \epsilon(w)$, where $a$ is a non-zero scaler and $\text{U}$ is an orthonormal matrix.
 
-2) $\epsilon(w)$ is unchanged by transactions
+2) $\epsilon(w)$ is unchanged by translations
 
-Thanks to the constraint that $\sum_{j=1}^N w_{ij}=1$, for any transaction $\vec{x}_i \rightarrow \vec{x}_i + \vec{y}$, the cost function does not change.
+Thanks to the constraint that $\sum_{j=1}^N w_{ij}=1$, for any translation $\vec{x}_i \rightarrow \vec{x}_i + \vec{y}$, the cost function does not change.
 
 $$\sum_{i=1}^N \left\| (\vec{x}_i + \vec{y}) -\sum_{j \in N_i^k} w_{i j} (\vec{x}_j + \vec{y}) \right\|^2 = \sum_{i=1}^N \left\| \vec{x}_i-\sum_{j \in N_i^k} w_{i j} \vec{x}_j\right\|^2 = \epsilon(w)$$
 
@@ -93,9 +93,9 @@ The $(j,l)$ entry of $G_i$ is actually the inner product of $\vec{x}_j$ and $\ve
 
 where $[1]$ denotes the first entry in $N_i^k$. So $\tilde{G}_i$ is actually a real symmetric and positive semi-definite matrix. 
 
-Now let's go back to deal with the optimization function --- Equation <a href="#eq:opt_prob">1</a> can be solved with Lagrange multiplier given that it has only equality constraints. (More details about the use of Lagrange multiplier can be found in [Lagrange multiplier]<https://en.wikipedia.org/wiki/Lagrange_multiplier>)
+Now let's go back to deal with the optimization function --- Equation \@ref(eq:opt_prob) can be solved with Lagrange multiplier given that it has only equality constraints. (More details about the use of Lagrange multiplier can be found in [Lagrange multiplier](https://en.wikipedia.org/wiki/Lagrange_multiplier))
 
-Optimizing Equation <a href="#eq:opt_prob">1</a> is equivalent to minimizing (for $\forall 1 \leq i \leq N$) 
+Optimizing Equation \@ref(eq:opt_prob) is equivalent to minimizing (for $\forall 1 \leq i \leq N$)
 $$
 f(\vec{w}_i, \lambda) = \vec{w}^T_i G_i \vec{w}_i - \lambda (\vec{w}^T_i \mathbf{1}_k -1)
 $$
@@ -106,9 +106,9 @@ $$
 
 **Complement:**
 
-As discussed before, we can only proof that $\tilde{G}_i$ is positive semi-definite, however, we cannot ensure that it is positive definite, which means $\tilde{G}_i$ is not necessarily invertible. That is why we use the generalize inverse sign here. In practice, it can be done through performing SVD on $\tilde{G}_i$ and select the first few large singular values and eliminate the rest. Then when computing $\tilde{G}^{-}_i$, just do the reciprocal of these retained singular values. 
+As discussed before, we can only prove that $\tilde{G}_i$ is positive semi-definite, however, we cannot ensure that it is positive definite, which means $\tilde{G}_i$ is not necessarily invertible. That is why we use the generalized inverse sign here. In practice, it can be done through performing SVD on $\tilde{G}_i$ and select the first few large singular values and eliminate the rest. Then when computing $\tilde{G}^{-}_i$, just do the reciprocal of these retained singular values.
 
-Actually $\tilde{G}_i$ only has $d$ (the intrinsic original dimension if you forget) relatively large eigenvalues. The rest are either very small or zeros. So it is very likely that $\tilde{G}_i$ is singular, making the computation result highly unstable. In {@think_globally}, the authors proposed to address this issue through regularizing $\tilde{G}_i$.
+Actually $\tilde{G}_i$ only has $d$ (the intrinsic original dimension if you forget) relatively large eigenvalues. The rest are either very small or zeros. So it is very likely that $\tilde{G}_i$ is singular, making the computation result highly unstable. In [@think_globally], the authors proposed to address this issue through regularizing $\tilde{G}_i$.
 
 $$
 \tilde{G}_i \leftarrow \tilde{G}_i+ \left(\frac{\Delta^2}{k}\right) \operatorname{Tr}\left(\tilde{G}_i\right) \mathbf{I}
@@ -134,8 +134,7 @@ The optimal weights $\mathbb{W}$ reflects local, linear geometry around each $\v
 
 Following this idea, the objective function is:
 
-<span id="eq:embedding"> (2) </span>
-$$
+\begin{equation}
 \begin{aligned}
 & \underset{\mathbf{Y}}{\text{argmin}} \sum_{i=1}^N \left\| \vec{y}_i - \sum_{j=1}^{N} w_{ij} \vec{y}_j^T \right\|^2 \\
 = & \underset{\mathbf{Y}}{\text{argmin}} \sum_{i=1}^N \left\| \sum_{j=1}^N w_{ij} (\vec{y}_i -  \vec{y}_j)^T \right\|^2 \\
@@ -143,18 +142,19 @@ $$
 = & \underset{\mathbf{Y}}{\text{argmin}} \left\| (\mathbf{I}_N - \mathbf{W}) \mathbf{Y} \right\|_F^2 \\
 = & \underset{\mathbf{Y}}{\text{argmin}} \; \text{Tr} \left[ \mathbf{Y}^T (\mathbf{I}_N - \mathbf{W})^T (\mathbf{I}_N - \mathbf{W}) \mathbf{Y} \right]
 \end{aligned}
-$$
+(\#eq:embedding)
+\end{equation}
 where $\mathbf{Y}=(\vec{y}_1 | \vec{y}_2 | \dots | \vec{y}_N)^T$
 
 There are two constraints:
 
-a) $\mathbf{1}_N^T \mathbf{Y} = \vec{0}$. This forces $\vec{y}$ to be centered
+a) $\mathbf{1}_N^T \mathbf{Y} = \vec{0}$. This forces $\mathbf{Y}$ to be centered
 
 b) $\frac{1}{N} \mathbf{Y}^T \mathbf{Y} = \mathbf{I}_d$. This fixes rotation and scaling.
 
 **Key Observation**
 
-Considering the final expression of Equation <a href="#eq:embedding">2</a>, the optimization function is now equivalent to finding $\vec{y}_i$s that minimizes $\mathbf{Y}^T (\mathbf{I}_N - \mathbf{W})^T (\mathbf{I}_N - \mathbf{W}) \mathbf{Y}$.
+Considering the final expression of Equation \@ref(eq:embedding), the optimization function is now equivalent to finding $\vec{y}_i$s that minimizes $\mathbf{Y}^T (\mathbf{I}_N - \mathbf{W})^T (\mathbf{I}_N - \mathbf{W}) \mathbf{Y}$.
 
 Here we introduce $\mathbf{M} = (\mathbf{I}_N - \mathbf{W})^T (\mathbf{I}_N - \mathbf{W})$, which is a positive semi-definite matrix. Since $\mathbf{M} \mathbf{1}_N = (\mathbf{I} - \mathbf{W})^T (\mathbf{1}_N - \mathbf{W} \mathbf{1}_N) = \vec{0}$, $\mathbf{1}_N$ is an eigen-vector of $\mathbf{M}$ with eigenvalue zero.
 
@@ -200,7 +200,7 @@ Plot $Q(k)$ against $k$, select $k^{\star}$ where the increase of $Q(k)$ becomes
 
 1) **High Computation Efficiency**
 
-The low computation cost of LLE algorithm may be its most shinning advantage over other manifold learning methods, and it is actually one of its biggest selling point when it was first introduced. The LLE algorithm Involves solving a sparse eigen problem, with computational complexity of roughly $O(N^2 d^2 + N d^3)$ where $N$ is the number of data points and $d$ is the dimension of the recovered configuration.
+The low computation cost of LLE algorithm may be its most shining advantage over other manifold learning methods, and it is actually one of its biggest selling points when it was first introduced. The LLE algorithm involves solving a sparse eigen problem, with computational complexity of roughly $O(N^2 d^2 + N d^3)$ where $N$ is the number of data points and $d$ is the dimension of the recovered configuration.
  
 In comparison, ISOMAP requires computing shortest paths between all pairs of points, which is typically done using Dijkstra's or Floyd-Warshall algorithm, leading to a complexity of $O(N^2 log N)$ or $O(N^3)$ respectively. Then, it involves eigen decomposition similar to classical MDS which is $O(N^3)$. 
 
@@ -208,16 +208,16 @@ In practice, $d \ll N$, hence the computation cost of LLE is lower than that of 
 
 2) **Few parameters to tune**
 
-There are only two parameters to tune, respectively the number of neighbors included in the map:  $k$, and the dimensional of the original configuration: $d$. In addition, there exist clear methods to find the optimal $k$ and $d$, as stated in the previous part. This makes LLE algorithm easy to find the optimal parameters.
+There are only two parameters to tune, respectively the number of neighbors included in the map:  $k$, and the dimension of the recovered configuration: $d$. In addition, there exist clear methods to find the optimal $k$ and $d$, as stated in the previous part. This makes LLE algorithm easy to find the optimal parameters.
 
 
 #### Weaknesses
 
 1) **Sensitivity to tuning parameters** 
 
-The result of LLE is quite sensitive to its two control parameters: the number of neighbors $k \,$ and the dimensional of the original configuration: $d$.
+The result of LLE is quite sensitive to its two control parameters: the number of neighbors $k \,$ and the dimension of the recovered configuration: $d$.
 
-Here we use the Swiss Roll example to illustrate this. LLE is optimal at $k=45$. However, when $k=40$, the recovered lower-dimensional configuration is wrong (Green points and yellow points overlap, which is not the case in Swiss Roll); and when we slightly increase $k$ to 50, the recovered two-dimensional expression is not necessarily a rectangle.
+Here we use the Swiss Roll example to illustrate this. LLE is optimal at $k=45$. However, when $k=40$, the recovered lower-dimensional configuration is wrong (Green points and yellow points overlap, which is not the case in the Swiss Roll); and when we slightly increase $k$ to 50, the recovered two-dimensional expression is not necessarily a rectangle.
 
 
 2) **Vulnerable to sparse or unevenly-distributed samples**
@@ -227,4 +227,4 @@ The vulnerability towards sparsity and uneven distribution exists in almost all 
 
 3) **Sensitivity to noise**
 
-LLE is extremely sensitive to noise. Even a small noise would cause failure in deriving low dimensional configurations. Justin Wang, et.al utilize various visualization examples to illustrate this drawback in their paper [@llenoise], you may take a look if you are interested. Various algorithms have been developed to address this issue, i.e., Robustly Locally Linear Embedding (RLLE) [@RobustLLE], and Locally Linear Embedding with Additive Noise (LLEAN) [@llenoise]. The former works well when outliers exist, while the latter has a satisfactory performance when the original points are distorted with noises.
+LLE is extremely sensitive to noise. Even a small noise would cause failure in deriving low dimensional configurations. Justin Wang, et al. utilize various visualization examples to illustrate this drawback in their paper [@llenoise], you may take a look if you are interested. Various algorithms have been developed to address this issue, i.e., Robustly Locally Linear Embedding (RLLE) [@RobustLLE], and Locally Linear Embedding with Additive Noise (LLEAN) [@llenoise]. The former works well when outliers exist, while the latter has a satisfactory performance when the original points are distorted with noises.

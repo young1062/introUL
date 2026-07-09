@@ -43,7 +43,7 @@ In $k$-means, we want all clusters to have small intracluster variation so a nat
 $$L_{kmeans}(C_1,\dots,C_k) = \sum_{\ell=1}^k V(C_\ell).$$
 With a little algebra, one can show that $$V(C_\ell) = \sum_{\vec{x}_i\in C_\ell} \|\vec{x}_i-\vec{\mu}_\ell\|^2$$ where $\vec{\mu}_\ell = \frac{1}{|C_\ell|}\sum_{\vec{x}_i \in C_\ell}$ is the sample mean of points in cluster $\ell.$  Thus, the $k$ means loss function simplifies to $$T_{kmeans}(C_1,\dots,C_k) = \sum_{\ell=1}^k \sum_{\vec{x}_i \in C_\ell}\|\vec{x}_i-\vec{\mu}_\ell\|^2.$$  
 
-Before we turn to algorithms for minimizing , let's highlight a few potential issues with $k$-means.  Like PCA, $k$-means relies on squared Euclidean distance, thus it is sensitive to outliers and imbalances in scale. These issues can be ameliorated with standardization (and potentially, the removal of outliers). However, the choice of squared Euclidean distance implicitly emphasizes a specific type of cluster shape: spheres.  As will we will show with example later, $k$-means works well when the clusters are spherical in shape and/or far apart as measured by Euclidean distance.  More complicated structure can be quite vexing for $k$-means.  
+Before we turn to algorithms for minimizing this loss, let's highlight a few potential issues with $k$-means.  Like PCA, $k$-means relies on squared Euclidean distance, thus it is sensitive to outliers and imbalances in scale. These issues can be ameliorated with standardization (and potentially, the removal of outliers). However, the choice of squared Euclidean distance implicitly emphasizes a specific type of cluster shape: spheres.  As we will show with an example later, $k$-means works well when the clusters are spherical in shape and/or far apart as measured by Euclidean distance.  More complicated structure can be quite vexing for $k$-means.
 
 ### $k$-center and $k$-medoids 
 
@@ -51,16 +51,16 @@ In $k$-center and $k$-medoids, we require the cluster centers to be data points 
 
 \begin{align*}
 L_{k-center}(\vec{c}_1,\dots,\vec{c}_k) &= \max_{\ell=1,\dots,k} \max_{x_i \in C_\ell} \|\vec{x}_i - \vec{c}_\ell\| \\
-L_{k-center}(\vec{c}_1,\dots,\vec{c}_k) &= \sum_{\ell=1,\dots,k} \sum_{x_i \in C_\ell} \|\vec{x}_i - \vec{c}_\ell\|
+L_{k-medoids}(\vec{c}_1,\dots,\vec{c}_k) &= \sum_{\ell=1,\dots,k} \sum_{x_i \in C_\ell} \|\vec{x}_i - \vec{c}_\ell\|
 \end{align*}
-In the preceding expression we have used (non-squared) Euclidean distance, which immediately makes these algorithms less sensitive to outliers and scale imbalance compared to $k$-means. Furthermore, alternative distance/dissimilarity measures can be used instead of Euclidean distance which adds an additional level of flexibility.  In fact, we do not even need to original data in practice to implement the $k$-center or $k$-medoids.  A distance matrix alone is sufficient.  
+In the preceding expression we have used (non-squared) Euclidean distance, which immediately makes these algorithms less sensitive to outliers and scale imbalance compared to $k$-means. Furthermore, alternative distance/dissimilarity measures can be used instead of Euclidean distance which adds an additional level of flexibility.  In fact, we do not even need the original data in practice to implement the $k$-center or $k$-medoids.  A distance matrix alone is sufficient.
 
 Unfortunately, squared Euclidean distance has the added advantage of being much faster to implement in practice.  
 
 
 ### Minimizing clustering loss functions
 
-For any of the three preceding methods, we want to find an optimal partitioning and/or set of centers which minimize their associated loss.  One naive approach would be to search or all possible partitioning of our data into $k$ clusters ($k$-means) or all possible choices of $k$ center points from our data, but one can imagine how computationally unfeasible this approach becomes for even moderate amounts of data. Instead, we will turn to greedy, iterative algorithms which converge to (locally) optimal solutions.  The standard approach for $k$-means is based on Lloyd's algorithm with a special initialization to avoid convergence to local minima. Later versions of this text will discuss greedy approaches for $k$-center and the standard partitioning around medians (PAM) algorithm for $k$-medoids. 
+For any of the three preceding methods, we want to find an optimal partitioning and/or set of centers which minimize their associated loss.  One naive approach would be to search over all possible partitions of our data into $k$ clusters ($k$-means) or all possible choices of $k$ center points from our data, but one can imagine how computationally unfeasible this approach becomes for even moderate amounts of data. Instead, we will turn to greedy, iterative algorithms which converge to (locally) optimal solutions.  The standard approach for $k$-means is based on Lloyd's algorithm with a special initialization to avoid convergence to local minima. Later versions of this text will discuss greedy approaches for $k$-center and the standard partitioning around medians (PAM) algorithm for $k$-medoids. 
 
 #### Lloyd's Algorithm for $k$-Means
 
@@ -213,9 +213,9 @@ grid.arrange(pd,p0,p1,p2,p3,p4,nrow = 2)
 
 The advantages and disadvantages of center-based clustering algorithms can be separated into two main categories: computational and geometric.  For now, we'll focus on the computational aspects.
 
-In the theoretical worst case, Lloyd's algorithm can take$\propto N^{k+1}$ iterations to converge, but it is typically very fast in practice. Most implementations, allow the user to set a maximum number of iterations and converge to approximate suboptimal solutions if the maximum number of iterations is reached.  PAM and greedy $k$-center algorithms are typically much, much slower.  However, once any of the clustering algorithms are complete, new data can be merged into cluster with nearest center. Other methods we'll discuss later cannot incorporate new data without running the algorithm from scratch.
+In the theoretical worst case, Lloyd's algorithm can take $\propto N^{k+1}$ iterations to converge, but it is typically very fast in practice. Most implementations allow the user to set a maximum number of iterations and converge to approximate suboptimal solutions if the maximum number of iterations is reached.  PAM and greedy $k$-center algorithms are typically much, much slower.  However, once any of the clustering algorithms are complete, new data can be merged into the cluster with nearest center. Other methods we'll discuss later cannot incorporate new data without running the algorithm from scratch.
 
-Ther are other issues that can increase the computational demands of center-based clustering. Each of the methods requires one to choose the number of clusters in advance. We discuss this issue in more depth shortly, but for now we want to emphasize that there is no connection between the $k$cluster solution and $(k+1)$ cluster solution. Thus, when investigating a suitable number of clusters, we need to run our clustering algorithm for a range of potential values of $k$. 
+There are other issues that can increase the computational demands of center-based clustering. Each of the methods requires one to choose the number of clusters in advance. We discuss this issue in more depth shortly, but for now we want to emphasize that there is no connection between the $k$-cluster solution and $(k+1)$-cluster solution. Thus, when investigating a suitable number of clusters, we need to run our clustering algorithm for a range of potential values of $k$.
 
 Convergence is also dependent on initial condition. In the figure below, we see two separate clustering arrangements resulting from different initial choices of the centers for $k$-means.
 
@@ -239,12 +239,12 @@ ex2 <- ggplot(data1, aes(x=V1, y=V2, colour = as.factor(out2$cluster))) + geom_p
 grid.arrange(ex1,ex2,nrow = 1)
 ```
 
-Thus, we also need to avoid convergence to local minima either by running many different initial conditions to convergence and picking the best solution or by using better initialization such as $k$-means++, which picks the initial points iteratively to maximize distance between the centers before running Lloyd's algorithm. Using $k$-means++ can reduce the number of initializations that one should use, but does not eliminate the potential for convergence to a poor clustering. Thus, center-based algorithms can become quite computationally demanding analyze appropriately.
+Thus, we also need to avoid convergence to local minima either by running many different initial conditions to convergence and picking the best solution or by using better initialization such as $k$-means++, which picks the initial points iteratively to maximize distance between the centers before running Lloyd's algorithm. Using $k$-means++ can reduce the number of initializations that one should use, but does not eliminate the potential for convergence to a poor clustering. Thus, center-based algorithms can become quite computationally demanding to analyze appropriately.
 
 
-We have already discussed the impact of scale imbalance and outliers so as we turn to the geometric aspects of center based clustering, let's first focus on the centers, which we often treat as **representative** examples of the cluster. However, the sample averages in $k$-means may not resemble actual data points.  Though $k$-means may be much faster in prqctice, the centers in $k$-center and $k$-medoids are restricted to observations making them more representative of the data.  
+We have already discussed the impact of scale imbalance and outliers so as we turn to the geometric aspects of center based clustering, let's first focus on the centers, which we often treat as **representative** examples of the cluster. However, the sample averages in $k$-means may not resemble actual data points.  Though $k$-means may be much faster in practice, the centers in $k$-center and $k$-medoids are restricted to observations making them more representative of the data.
 
-Clusters are based off interpretable notion of (Euclidean) distance so that points in a cluster are closer to one another than to points in other clusters. However, this feature biases center-based methods to clusters which are spherical in shape. If (dis)similarity not best captured through (squared) Euclidean distance, poor clustering is inevitable, and many of the methods used to estimate the number of cluster with tend to overestiamte the true value. As an example, consider the three rings shown at the beginning of this chapter. Silhouette scores (see 6.1.) suggest 12 clusters which is much larger than the three rings we see in the figure.
+Clusters are based on an interpretable notion of (Euclidean) distance so that points in a cluster are closer to one another than to points in other clusters. However, this feature biases center-based methods to clusters which are spherical in shape. If (dis)similarity not best captured through (squared) Euclidean distance, poor clustering is inevitable, and many of the methods used to estimate the number of clusters tend to overestimate the true value. As an example, consider the three rings shown at the beginning of this chapter. Silhouette scores (see \@ref(sec-silhouette)) suggest 12 clusters which is much larger than the three rings we see in the figure.
 
 ```{r,echo = F}
 out <- kmeans(data2, centers= 12)
@@ -312,7 +312,7 @@ plot(ir.pc$x[,1],ir.pc$x[,2], col = c("red","blue","black")[kmeans(ir.pc$x,3)$cl
 :::
 
 
-#### Silhouette plots and coefficients
+#### Silhouette plots and coefficients {#sec-silhouette}
 
 For a given clustering, we would like to determine how well each sample is clustered.
 

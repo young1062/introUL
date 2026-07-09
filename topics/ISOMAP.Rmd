@@ -69,7 +69,7 @@ s <- scatterplot3js(helix, color = geoelectrics::myColorRamp(c("red","purple","b
               pch = '.',
               size = 0.1) 
 
-threejs::points3d(s, x = black_points,  color = "black", pch = '.', size = 0.15)
+threejs::points3d(s, x = black_points,  color = "black", pch = '.', size = 0.25)
 ```
 
 
@@ -135,7 +135,7 @@ In this step, we want to estimate the unknown true geodesic distances $\{d^{\mat
 
 This path finding step is usually done by Floyd-Warshall algorithm, which iteratively tries all transit points $k$ and find those that $\tilde{d}_{ik} + \tilde{d}_{kj} < \tilde{d}_{ij}$, and updates $\tilde{d}_{ij} = \tilde{d}_{ik} + \tilde{d}_{kj}$ for all possible combination of $i,j$. The algorithm works best in dense neighboring graph scenario, with a computational complexity of $O(n^3)$. 
 
-The theoretical guarantee of this graph distance computation method is given by Bernstein et, al.[@Bernstein] one year after they first proposed ISOMAP in their previous paper. They show that asymptotically (as $n \rightarrow \infty$), the estimate $d^{\mathcal{G}}$ converges to $d^{\mathcal{M}}$ as long as the data points are sampled from a probability distribution that is supported by the entire manifold, and the manifold itself is flat.
+The theoretical guarantee of this graph distance computation method is given by Bernstein et al. [@Bernstein] one year after they first proposed ISOMAP in their previous paper. They show that asymptotically (as $n \rightarrow \infty$), the estimate $d^{\mathcal{G}}$ converges to $d^{\mathcal{M}}$ as long as the data points are sampled from a probability distribution that is supported by the entire manifold, and the manifold itself is flat.
 
 The distance matrix $\Delta$ can be expressed as:
 $$\Delta_{ij} = d^{\mathcal{G}}_{ij}$$
@@ -197,21 +197,21 @@ print(result)
 
 **3) Applying MDS to $\Delta$**
 
-As mentioned before, ISOMAP can be viewed as the application of classical MDS in non-linear case. As a result, the reconstruction of $\{\vec{z}_i\}$ in the $k$ dimensional 
-$\mathcal{M}_1$ follows similar steps as that of classical MDS. The main goal is to preserve the geodesic distance of the manifold in $\mathcal{M}_2$ as much as possible. 
+As mentioned before, ISOMAP can be viewed as the application of classical MDS in a non-linear case. As a result, the reconstruction of $\{\vec{z}_i\}$ in the $k$ dimensional
+$\mathcal{M}_1$ follows similar steps as that of classical MDS. The main goal is to preserve the geodesic distance of the manifold in $\mathcal{M}_2$ as much as possible.
 
-Without any additional information, there are infinite $\{\vec{z}_i\}$ that can be viewed as the optimal solution. For some invertible function $\Phi:\mathbb{R}^k\to\mathbb{R}^k$, a new manifold mapping $\Psi \circ \Phi^{-1}$ can be constructed. $\vec{x}_i = \Psi \circ \Phi^{-1} (\Phi(\vec{z}_i))$, which proofs that $\{\Phi(\vec{z}_i)\}$ is equivalent to $\{\vec{z}_i\}$ when it comes to the reconstruction of the lower dimensional configuration.
+Without any additional information, there are infinite $\{\vec{z}_i\}$ that can be viewed as the optimal solution. For some invertible function $\Phi:\mathbb{R}^k\to\mathbb{R}^k$, a new manifold mapping $\Psi \circ \Phi^{-1}$ can be constructed. $\vec{x}_i = \Psi \circ \Phi^{-1} (\Phi(\vec{z}_i))$, which proves that $\{\Phi(\vec{z}_i)\}$ is equivalent to $\{\vec{z}_i\}$ when it comes to the reconstruction of the lower dimensional configuration.
 
 Without loss of generality, we assume that $\{\vec{z}_i\}$ are actually centered. So the distance matrix of $\{\vec{z}_i\}$ can be expressed as $B=Z^T Z$, so that $B_{ii}=||z_i||^2_2$ and $B_{ij}={z_i}^T z_j$.
 
 The embedding vectors $\{\hat{z}_{i}\}$ (estimate of points in lower dimensional feature space $\mathcal{M}_1$) are chosen in order to minimize the objective function:
 
-$$(\sum ||\vec{z}_i - \vec{z}_j||_2 - \Delta_{ij})^2$$
+$$\sum_{i,j} \left(\|\vec{z}_i - \vec{z}_j\|_2 - \Delta_{ij}\right)^2$$
 
 Following the same procedure explained in classical MDS chapter, we can compute each entry of $B$:
-$$B_{ij}= -\frac{1}{2} \Delta^2_{ij} + \frac{1}{d} \sum^{d}_{i=1} \Delta^2_{ij} + \frac{1}{d} \sum^{d}_{j=1} \Delta^2_{ij} - \frac{1}{2d^2} \sum^{d}_{i=1} \sum^{d}_{j=1} \Delta^2_{ij}$$
+$$B_{ij}= -\frac{1}{2} \left(\Delta^2_{ij} - \frac{1}{N} \sum^{N}_{k=1} \Delta^2_{kj} - \frac{1}{N} \sum^{N}_{k=1} \Delta^2_{ik} + \frac{1}{N^2} \sum^{N}_{k=1} \sum^{N}_{l=1} \Delta^2_{kl}\right)$$
 
-To express it in matrix form, it is actually, $B = - \frac{1}{2} H \Delta H$, where $H = I_n - \frac{1}{n} \mathbb{1} \mathbb{1}^T$.
+To express it in matrix form, it is actually, $B = - \frac{1}{2} H \Delta^{(2)} H$, where $\Delta^{(2)}$ is the matrix of elementwise-squared geodesic distances, i.e. $\Delta^{(2)}_{ij} = \Delta_{ij}^2$, and $H = I_N - \frac{1}{N} \mathbb{1} \mathbb{1}^T$.
 
 The next step is just a PCA problem. Implement eigen decomposition on matrix B, $B=U \Lambda U^T= (\Lambda^{1/2} U)^T (\Lambda^{1/2} U)$, then arrange the singular value in descending order, find the first $k^{\prime}$ ones. We acquire $\Lambda_{k^{\prime}}$ and $U_{k^{\prime}}$. 
 $$(\hat{z}_1 | \hat{z}_2 | \dots | \hat{z}_N) = \Lambda_{k^{\prime}} U_{k^{\prime}}$$
