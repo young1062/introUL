@@ -22,6 +22,10 @@ config:
 # finish rendering, so give them extra time before the screenshot is taken --
 # otherwise the captured image can come out blank/incomplete in the PDF.
 knitr::opts_chunk$set(screenshot.opts = list(delay = 3))
+# Give headless Chrome (used by webshot2 for the screenshots above) more than
+# the 10s default to start up -- a cold start can occasionally take longer,
+# which otherwise aborts the entire book render.
+options(chromote.timeout = 60)
 ```
 
 # Introduction {#intro}
