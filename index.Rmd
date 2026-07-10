@@ -26,6 +26,11 @@ knitr::opts_chunk$set(screenshot.opts = list(delay = 3))
 # the 10s default to start up -- a cold start can occasionally take longer,
 # which otherwise aborts the entire book render.
 options(chromote.timeout = 60)
+# Launch and warm up headless Chrome here, at the very start of the book,
+# rather than letting the first real htmlwidget screenshot trigger a cold
+# start -- the first-ever launch is the flakiest and has intermittently
+# caused the first figure or two in the book to come out blank/missing.
+tryCatch(chromote::default_chromote_object(), error = function(e) NULL)
 ```
 
 # Introduction {#intro}

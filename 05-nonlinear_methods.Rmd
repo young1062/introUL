@@ -277,6 +277,124 @@ Two consequences follow from this unifying view.  First, it explains why these m
 
 ## Exercises
 
+1. Let $k_1$ and $k_2$ be valid kernels on $\mathbb{R}^d\times\mathbb{R}^d$ (i.e. each satisfies Mercer's Condition \@ref(thm:mercer)).
 
+    a. Show that $k(\vec{x},\vec{y}) = k_1(\vec{x},\vec{y}) + k_2(\vec{x},\vec{y})$ is also a valid kernel. Hint: use the fact that the sum of two positive semidefinite matrices is positive semidefinite.
 
+    b. For three points $\vec{x}_1,\vec{x}_2,\vec{x}_3\in\mathbb{R}^d$, suppose a candidate kernel gives the matrix $${\bf K} = \begin{bmatrix} 1 & 0.9 & 0.1 \\ 0.9 & 1 & 0.9 \\ 0.1 & 0.9 & 1\end{bmatrix}.$$ Is ${\bf K}$ a valid kernel matrix? Justify your answer using Mercer's Condition.
+
+1. Consider the polynomial kernel $k(\vec{x},\vec{y}) = (1+\vec{x}^T\vec{y})^2$ for $\vec{x},\vec{y}\in\mathbb{R}^2$. Find an explicit feature map $\varphi:\mathbb{R}^2\to\mathbb{R}^m$ (for some finite $m$) such that $k(\vec{x},\vec{y}) = \varphi(\vec{x})^T\varphi(\vec{y})$.
+
+1. Recall that kernel PCA computes scores from the eigendecomposition of the doubly centered kernel matrix ${\bf HKH}$ where ${\bf K}_{ij} = k(\vec{x}_i,\vec{x}_j)$. Suppose we use the linear kernel $k(\vec{x},\vec{y}) = \vec{x}^T\vec{y}$.
+
+    a. Show that ${\bf K} = {\bf XX}^T$ where ${\bf X}$ is the (uncentered) data matrix with rows $\vec{x}_1^T,\dots,\vec{x}_N^T$.
+
+    b. Using the duality of PCA and classical scaling, explain why kernel PCA with the linear kernel recovers exactly the same scores as ordinary PCA on $\vec{x}_1,\dots,\vec{x}_N$.
+
+1. Let $\vec{x}_1 = -1,\, \vec{x}_2 = 0,\, \vec{x}_3 = 1 \in \mathbb{R}$, and consider the rbf kernel $k(x,y) = \exp\left(-(x-y)^2\right)$ (i.e. $\sigma = 1$).
+
+    a. Compute the $3\times 3$ kernel matrix ${\bf K}$ by hand.
+
+    b. Using R, compute the doubly centered matrix ${\bf HKH}$ and its eigendecomposition. Report the first kernel PC scores for $\vec{x}_1,\vec{x}_2,\vec{x}_3$.
+
+1. For each of the following subsets of $\mathbb{R}^2$, state whether it is a manifold. If it is, give its intrinsic dimension; if it is not, explain which point(s) fail Definition \@ref(def:def-manifold) and why.
+
+    a. Two lines through the origin with different slopes, i.e. $\{(t,t): t\in\mathbb{R}\} \cup \{(t,-t):t\in\mathbb{R}\}$.
+
+    b. The open unit disk $\{\vec{x}\in\mathbb{R}^2: \|\vec{x}\| < 1\}$.
+
+    c. A "T"-shaped union of two segments, $\{(0,y): -1\le y \le 1\} \cup \{(x,0): -1 \le x \le 1\}$.
+
+    d. The unit circle $\{\vec{x}\in\mathbb{R}^2: \|\vec{x}\|=1\}$.
+
+1. Let $A = \mathbb{R}$ and define the manifold map $\Psi:A\to\mathbb{R}^3$ by $\Psi(z) = (z,z^2,z^3)^T$.
+
+    a. Compute the Jacobian ${\bf J}_\Psi$ as a function of $z$.
+
+    b. Find the tangent space $T_{\vec{p}}(\mathcal{M})$ at the point $\vec{p} = \Psi(1) = (1,1,1)^T$.
+
+    c. Find the approximating tangent plane to $\mathcal{M}$ at $\vec{p}$.
+
+1. Consider the map $\Psi(t) = (\cos t,\sin t)^T$ for $t\in(0,2\pi)$, which traces out (most of) the unit circle.
+
+    a. Show that $\|d\Psi/dt\| = 1$ for all $t$, and conclude that $\Psi$ is a *local* isometry, i.e. for $t_1,t_2$ close together, the manifold distance between $\Psi(t_1)$ and $\Psi(t_2)$ equals $|t_1-t_2|$.
+
+    b. Show that $\Psi$ is not a *global* isometry by comparing the manifold distance between $\Psi(0.1)$ and $\Psi(2\pi-0.1)$ (measured by traveling around the circle the short way) to $|0.1 - (2\pi - 0.1)|$.
+
+1. Consider four points connected in a path, with edge weights $d_{12}=1,\, d_{23}=2,\, d_{34}=1$ (there is no direct edge between any other pair of points).
+
+    a. Write down the initial $4\times 4$ distance matrix ${\bf \Delta}^{(0)}$ used to initialize the Floyd-Warshall algorithm (using $\infty$ for pairs with no direct edge).
+
+    b. Run the Floyd-Warshall algorithm by hand to find the geodesic distance matrix $\Delta$ with entries $\Delta_{ij} = d^{\mathcal{G}}_{ij}$.
+
+1. Recall from Table \@ref(tab:tab-manifolds) that the preimage of the folded washer is an annulus, which is not convex. Explain, in terms of the neighborhood graph construction in ISOMAP's first step, why a non-convex preimage can cause the graph distance $d^{\mathcal{G}}_{ij}$ to badly overestimate the true manifold distance $d^{\mathcal{M}}_{ij}$ for some pairs of points.
+
+1. Suppose $\vec{x}_i\in\mathbb{R}$ has exactly two neighbors, $\vec{x}_j$ and $\vec{x}_l$, so that $N_i^k = \{j,l\}$.
+
+    a. Using the constraint $w_{ij}+w_{il}=1$, show that the LLE reconstruction problem $\min (\vec{x}_i - w_{ij}\vec{x}_j - w_{il}\vec{x}_l)^2$ has the closed-form solution $$w_{ij} = \frac{\vec{x}_i - \vec{x}_l}{\vec{x}_j-\vec{x}_l}, \qquad w_{il} = \frac{\vec{x}_j - \vec{x}_i}{\vec{x}_j-\vec{x}_l}.$$
+
+    b. For $\vec{x}_i = 2,\, \vec{x}_j = 0,\,\vec{x}_l = 5$, compute $w_{ij}$ and $w_{il}$ numerically and verify that $\vec{x}_i = w_{ij}\vec{x}_j + w_{il}\vec{x}_l$.
+
+1. Let $\vec{x}_1,\dots,\vec{x}_N\in\mathbb{R}^D$ have optimal LLE reconstruction weight matrix ${\bf W}$. Show directly (i.e. without invoking the general argument for $\epsilon(w)$ in the text) that if every point is reflected through the origin, i.e. $\vec{x}_i \mapsto -\vec{x}_i$ for all $i$, the optimal reconstruction weights are unchanged.
+
+1. Let $\vec{x}_1 = 0,\,\vec{x}_2=1,\,\vec{x}_3=5,\,\vec{x}_4=6 \in\mathbb{R}$. Use $\epsilon = 2$ and binary weights to build the neighborhood graph for Laplacian eigenmaps.
+
+    a. Write down the adjacency matrix ${\bf W}$, the degree matrix ${\bf D}$, and the graph Laplacian ${\bf L} = {\bf D}-{\bf W}$.
+
+    b. How many eigenvalues of ${\bf L}$ are exactly zero? Relate your answer to the number of connected components of the graph.
+
+    c. For $\vec{y} = (1,2,3,4)^T$, verify the identity $\vec{y}^T{\bf L}\vec{y} = \frac{1}{2}\sum_{i=1}^4\sum_{j=1}^4 {\bf W}_{ij}(y_i-y_j)^2$ (\@ref(eq:psd-gl)) by computing both sides directly.
+
+1. In HLLEs, the local Hessian is estimated using quadratic regression with design matrix ${\bf X}_i \in \mathbb{R}^{k\times(1+t+t(t+1)/2)}$, and we require $k$ to be at least the number of columns of ${\bf X}_i$ for the pseudoinverse to be well defined.
+
+    a. Explain why ${\bf X}_i$ has $1+t+t(t+1)/2$ columns by counting the intercept, linear, and quadratic/cross terms in the local quadratic Taylor expansion.
+
+    b. Show that the requirement $k \ge 1+t+t(t+1)/2$ is equivalent to $k > t(t+3)/2$.
+
+    c. For an intrinsic dimension of $t=5$, what is the minimum number of neighbors $k$ required?
+
+1. Let $g(x,y) = xy$.
+
+    a. Compute $\nabla g$ and $\mathcal{H}g$.
+
+    b. Compute $\|\mathcal{H}g\|_F^2$. Is it constant over $\mathbb{R}^2$?
+
+    c. Compare your answer in (b) to $\|\mathcal{H}g_1\|_F^2 = 8$ from the text's example with $g_1(x,y)=x^2+y^2$. Which function is "more curved" on average over $[-2,2]^2$?
+
+1. Laplacian eigenmaps use a single bandwidth $\sigma^2$ shared by every point, while UMAP calibrates a local bandwidth $\sigma_i$ for each point $\vec{x}_i$ individually. Suppose a dataset has one very densely sampled region and one very sparsely sampled region.
+
+    a. Explain what is likely to go wrong if a single, shared $\sigma^2$ is tuned to work well in the dense region and then applied to the sparse region (or vice versa).
+
+    b. Explain how UMAP's local bandwidth calibration, via the condition $\sum_{j\in\mathcal{N}_i} \exp\left(-\max(0,\|\vec{x}_i-\vec{x}_j\|-\rho_i)/\sigma_i\right) = \log_2(k)$, addresses this issue.
+
+1. Consider an autoencoder for data $\vec{x}\in\mathbb{R}^{500}$ with encoder layer widths $500 \to 100 \to 20 \to 3$ and a symmetric decoder $3\to 20 \to 100 \to 500$ (each arrow indicates one layer with weights and a bias). Using the formula for the number of parameters in an affine layer, compute the total number of trainable parameters in the encoder, the decoder, and the full autoencoder.
+
+1. Suppose the encoder and decoder of an autoencoder are both single linear layers with no bias and no activation function, i.e. $\mathcal{E}(\vec{x}) = {\bf W}\vec{x}$ for ${\bf W}\in\mathbb{R}^{t\times d}$ and $\mathcal{D}(\vec{z}) = {\bf V}\vec{z}$ for ${\bf V}\in\mathbb{R}^{d\times t}$, so that the reconstruction of $\vec{x}_i$ is ${\bf VW}\vec{x}_i$.
+
+    a. Explain why the reconstruction loss $$L({\bf W},{\bf V}) = \frac{1}{N}\sum_{i=1}^N \|\vec{x}_i - {\bf VW}\vec{x}_i\|^2$$ can be written as $\frac{1}{N}\|{\bf X} - {\bf X}({\bf VW})^T\|_F^2$ for the data matrix ${\bf X}$ with rows $\vec{x}_1^T,\dots,\vec{x}_N^T$.
+
+    b. The matrix ${\bf VW}\in\mathbb{R}^{d\times d}$ has rank at most $t$. Using the Eckart-Young-Mirsky Theorem \@ref(thm:svd-frob), explain why the optimal choice of ${\bf VW}$ is the best rank-$t$ approximation to ${\bf X}$ (up to centering), and conclude that a linear autoencoder's bottleneck spans the same subspace as the leading $t$ PCA loadings.
+
+1. Suppose ${\bf M} = ({\bf I}-{\bf W})^T({\bf I}-{\bf W})$ has eigenvalues $0 = \mu_1 < \mu_2 = 1 < \mu_3 = 3 < \mu_4 = 4$ with corresponding eigenvectors $\vec{v}_1,\vec{v}_2,\vec{v}_3,\vec{v}_4$.
+
+    a. Using $\lambda_{\max}=4$, compute the eigenvalues of ${\bf K}_{\text{LLE}} = \lambda_{\max}{\bf I}-{\bf M}$.
+
+    b. Confirm that the ordering of the eigenvalues flips, i.e. $\vec{v}_1$ (the *trivial* eigenvector of ${\bf M}$, associated with $\mu_1=0$) becomes the eigenvector associated with the *largest* eigenvalue of ${\bf K}_{\text{LLE}}$.
+
+    c. Since $\vec{v}_1$ corresponds to the trivial, constant-function direction, it must still be discarded even when working with ${\bf K}_{\text{LLE}}$. Which eigenvector should actually be used as the top coordinate of the LLE embedding, and to which eigenvalue of ${\bf K}_{\text{LLE}}$ does it correspond?
+
+1. The *S-curve* is another standard manifold learning benchmark, defined by the map $\Psi(s,t) = \left(\sin(s),\, t,\, \text{sign}(s)(\cos(s)-1)\right)^T$ for $s\in(-3\pi/2,3\pi/2)$ and $t\in(0,10)$.
+
+    ```{r, eval = FALSE}
+    N <- 2000
+    s <- runif(N, min = -3*pi/2, max = 3*pi/2)
+    t <- runif(N, min = 0, max = 10)
+    s_curve <- cbind(sin(s), t, sign(s)*(cos(s)-1))
+    ```
+
+    a. Generate $N=2000$ samples from the S-curve using the code above, and produce a 3-dimensional scatterplot color-coded by $s$.
+
+    b. Apply ISOMAP, LLE, Laplacian eigenmaps, HLLEs, and UMAP to recover a two-dimensional embedding of these data.
+
+    c. Which method(s) best recover the rectangular structure of the original $(s,t)$ coordinates? Which assumptions of each method are (or are not) satisfied by the S-curve, and how does this explain the differences you observe?
 
