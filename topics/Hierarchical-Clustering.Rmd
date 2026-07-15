@@ -1,4 +1,4 @@
-## Hierarchical Clustering 
+## Hierarchical Clustering {#sec-hierarchical-clustering}
 
 ```{r, echo = F}
 library("MASS")

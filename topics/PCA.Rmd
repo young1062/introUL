@@ -416,7 +416,7 @@ knitr::kable(head(wine,10))
 
 Prior to running PCA, we might be able to guess which coordinates account for the most variability. Proline (on the scale of 1000s) and magnesium (on the scale of 100s) have much larger values than other coordinates in the data matrix.  We can see this observation holds out immediately when looking at the *biplot* summarizing PCA run on the wine data.
 
-```{r}
+```{r, message = FALSE}
 library(ggbiplot)
 out <- prcomp(wine)
 ggbiplot(out, scale = 0, varname.color = "red")  +ylim(c(-250,250))

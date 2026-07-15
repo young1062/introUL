@@ -1,5 +1,5 @@
 
-## Hessian Eigenmaps (HLLEs)
+## Hessian Eigenmaps (HLLEs) {#sec-hessian-eigenmaps}
 
 ### Introduction
 

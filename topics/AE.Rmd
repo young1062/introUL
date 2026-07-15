@@ -10,7 +10,7 @@
 # use_python("/Users/alexyoung/anaconda3/bin/python3", required=TRUE)
 ```
 
-## Autoencoders (AEs)
+## Autoencoders (AEs) {#sec-autoencoders}
 
 ### Introduction 
 

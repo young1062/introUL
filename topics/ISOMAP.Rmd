@@ -17,7 +17,7 @@ myColorRamp <- function(colors, values) {
 ```
 
 
-## Isometric Feature Map (ISOMAP)
+## Isometric Feature Map (ISOMAP) {#sec-isomap}
 
 ### Introduction
 
@@ -82,7 +82,6 @@ Jumping slightly ahead, we then say the manifold distance between $\Psi(2\pi)$ a
 
 We may generalize this idea to any smooth manifold to define a new notion of distance.  Given a manifold $\mathcal{M}$, we define the manifold distance function $d_{\mathcal{M}} : \mathcal{M} \times \mathcal{M} \to [0,\infty)$ as follows 
 
-**Definition of Manifold Distance**
 ::: {.definition #def-manifold-dist name="Manifold Distance Function"}
 Given two points $\vec{x}$ and $\vec{y}$ on a smooth manifold, $\mathcal{M}$, let $\Gamma(\vec{x},\vec{y})$ be the set of all piecewise smooth curves connecting $\vec{x}$ and $\vec{y}$ constrained to stay on $\mathcal{M}$.  Then, we define the manifold distance to be
 \begin{equation}
@@ -99,7 +98,6 @@ As we reviewed above, the helix example with the arclength formula is one exampl
 
 We may now define the notion of isometry which is a central assumption of ISOMAP.
 
-**Definition of Isometry**
 ::: {.definition #def-isometry name="Isometry"}
 Let $\mathcal{M}_1$ be a manifold with distance function $d_{\mathcal{M}_1}$ and let $\mathcal{M}_2$ be a second manifold with distance function $d_{\mathcal{M}_2}$.  The mapping $\Psi:\mathcal{M}_1 \mapsto \mathcal{M}_2$ is an isometry if $$d_{\mathcal{M}_1}(x,y) = d_{\mathcal{M}_2}\left(\Psi(\vec{x}),\Psi(\vec{y})\right) \qquad \text{ for all } \vec{x},\vec{y}\in \mathcal{M}_1.$$
 :::

@@ -1,2 +1,0 @@
-<!-- Content moved into 05-nonlinear_methods.Rmd (now "Kernel Methods and Manifold Learning", #ch-nonlinear).
-     This file is kept (unused) so file numbering / _bookdown.yml do not need to change. -->

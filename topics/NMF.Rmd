@@ -1,4 +1,4 @@
-## Nonnegative Matrix Factorization
+## Nonnegative Matrix Factorization {#sec-nmf}
 
 ```{r nmf-setup, echo = FALSE, message = FALSE}
 library("plotly")

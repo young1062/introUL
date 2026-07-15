@@ -7,7 +7,7 @@ myColorRamp <- function(colors, values) {
 }
 ```
 
-## Locally Linear Embeddings (LLEs)
+## Locally Linear Embeddings (LLEs) {#sec-lle}
 
 ### Introduction
 

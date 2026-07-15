@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Index | An Introduction to Unsupervised Learning</title>
+  <meta name="description" content="An introductory text on the goals and methods of unsupervised learning" />
+  <meta name="generator" content="bookdown 0.47 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Index | An Introduction to Unsupervised Learning" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="An introductory text on the goals and methods of unsupervised learning" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Index | An Introduction to Unsupervised Learning" />
+  
+  <meta name="twitter:description" content="An introductory text on the goals and methods of unsupervised learning" />
+  
+
+<meta name="author" content="Alex Young and Cenhao Zhu" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="table-of-notation.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.12.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.25.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.25.2/plotly-latest.min.js"></script>
+<script src="libs/threejs-111/three.min.js"></script>
+<script src="libs/threejs-111/Detector.js"></script>
+<script src="libs/threejs-111/Projector.js"></script>
+<script src="libs/threejs-111/CanvasRenderer.js"></script>
+<script src="libs/threejs-111/TrackballControls.js"></script>
+<script src="libs/threejs-111/StateOrbitControls.js"></script>
+<script src="libs/scatterplotThree-binding-0.3.4/scatterplotThree.js"></script>
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Unsupervised Learning</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#unsupervised-learning-among-the-branches-of-machine-learning"><i class="fa fa-check"></i><b>1.1</b> Unsupervised learning among the branches of machine learning</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#what-can-we-learn-without-labels"><i class="fa fa-check"></i><b>1.2</b> What can we learn without labels?</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#what-this-book-covers"><i class="fa fa-check"></i><b>1.3</b> What this book covers</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i><b>1.4</b> Prerequisites</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#how-to-use-this-book"><i class="fa fa-check"></i><b>1.5</b> How to use this book</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="ch-prob.html"><a href="ch-prob.html"><i class="fa fa-check"></i><b>2</b> Mathematical Background and Notation</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="ch-prob.html"><a href="ch-prob.html#important-notation"><i class="fa fa-check"></i><b>2.1</b> Important notation</a></li>
+<li class="chapter" data-level="2.2" data-path="ch-prob.html"><a href="ch-prob.html#random-vectors-in-mathbbrd"><i class="fa fa-check"></i><b>2.2</b> Random vectors in <span class="math inline">\(\mathbb{R}^d\)</span></a></li>
+<li class="chapter" data-level="2.3" data-path="ch-prob.html"><a href="ch-prob.html#expectation-mean-and-covariance"><i class="fa fa-check"></i><b>2.3</b> Expectation, Mean, and Covariance</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="ch-prob.html"><a href="ch-prob.html#sample-mean-and-sample-covariance"><i class="fa fa-check"></i><b>2.3.1</b> Sample Mean and Sample Covariance</a></li>
+<li class="chapter" data-level="2.3.2" data-path="ch-prob.html"><a href="ch-prob.html#the-data-matrix"><i class="fa fa-check"></i><b>2.3.2</b> The Data Matrix</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="ch-prob.html"><a href="ch-prob.html#linear-algebra"><i class="fa fa-check"></i><b>2.4</b> Linear Algebra</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="ch-prob.html"><a href="ch-prob.html#assumed-background"><i class="fa fa-check"></i><b>2.4.1</b> Assumed Background</a></li>
+<li class="chapter" data-level="2.4.2" data-path="ch-prob.html"><a href="ch-prob.html#interpretations-of-matrix-multiplication"><i class="fa fa-check"></i><b>2.4.2</b> Interpretations of Matrix Multiplication</a></li>
+<li class="chapter" data-level="2.4.3" data-path="ch-prob.html"><a href="ch-prob.html#norms-and-distances"><i class="fa fa-check"></i><b>2.4.3</b> Norms and Distances</a></li>
+<li class="chapter" data-level="2.4.4" data-path="ch-prob.html"><a href="ch-prob.html#important-properties"><i class="fa fa-check"></i><b>2.4.4</b> Important properties</a></li>
+<li class="chapter" data-level="2.4.5" data-path="ch-prob.html"><a href="ch-prob.html#matrix-factorizations"><i class="fa fa-check"></i><b>2.4.5</b> Matrix Factorizations</a></li>
+<li class="chapter" data-level="2.4.6" data-path="ch-prob.html"><a href="ch-prob.html#positive-definiteness-and-matrix-powers"><i class="fa fa-check"></i><b>2.4.6</b> Positive Definiteness and Matrix Powers</a></li>
+<li class="chapter" data-level="2.4.7" data-path="ch-prob.html"><a href="ch-prob.html#hadamard-elementwise-operations"><i class="fa fa-check"></i><b>2.4.7</b> Hadamard (elementwise) operations</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="ch-prob.html"><a href="ch-prob.html#exercises"><i class="fa fa-check"></i><b>2.5</b> Exercises</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="ch-prob.html"><a href="ch-prob.html#probability"><i class="fa fa-check"></i><b>2.5.1</b> Probability</a></li>
+<li class="chapter" data-level="2.5.2" data-path="ch-prob.html"><a href="ch-prob.html#calculus"><i class="fa fa-check"></i><b>2.5.2</b> Calculus</a></li>
+<li class="chapter" data-level="2.5.3" data-path="ch-prob.html"><a href="ch-prob.html#linear-algebra-1"><i class="fa fa-check"></i><b>2.5.3</b> Linear Algebra</a></li>
+<li class="chapter" data-level="2.5.4" data-path="ch-prob.html"><a href="ch-prob.html#hybrid-problems"><i class="fa fa-check"></i><b>2.5.4</b> Hybrid Problems</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="central-goals-and-assumptions.html"><a href="central-goals-and-assumptions.html"><i class="fa fa-check"></i><b>3</b> Central goals and assumptions</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="central-goals-and-assumptions.html"><a href="central-goals-and-assumptions.html#sec-manifold-hypothesis"><i class="fa fa-check"></i><b>3.1</b> Dimension reduction and manifold learning</a></li>
+<li class="chapter" data-level="3.2" data-path="central-goals-and-assumptions.html"><a href="central-goals-and-assumptions.html#clustering"><i class="fa fa-check"></i><b>3.2</b> Clustering</a></li>
+<li class="chapter" data-level="3.3" data-path="central-goals-and-assumptions.html"><a href="central-goals-and-assumptions.html#generating-synthetic-data"><i class="fa fa-check"></i><b>3.3</b> Generating synthetic data</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="central-goals-and-assumptions.html"><a href="central-goals-and-assumptions.html#data-on-manifolds"><i class="fa fa-check"></i><b>3.3.1</b> Data on manifolds</a></li>
+<li class="chapter" data-level="3.3.2" data-path="central-goals-and-assumptions.html"><a href="central-goals-and-assumptions.html#clustered-data"><i class="fa fa-check"></i><b>3.3.2</b> Clustered data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="central-goals-and-assumptions.html"><a href="central-goals-and-assumptions.html#exercises-1"><i class="fa fa-check"></i><b>3.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="ch-linear.html"><a href="ch-linear.html"><i class="fa fa-check"></i><b>4</b> Linear Methods</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="ch-linear.html"><a href="ch-linear.html#sec-pca"><i class="fa fa-check"></i><b>4.1</b> Principal Component Analysis</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="ch-linear.html"><a href="ch-linear.html#derivation-using-iterative-projections"><i class="fa fa-check"></i><b>4.1.1</b> Derivation using Iterative Projections</a></li>
+<li class="chapter" data-level="4.1.2" data-path="ch-linear.html"><a href="ch-linear.html#pca-in-practice"><i class="fa fa-check"></i><b>4.1.2</b> PCA in Practice</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="ch-linear.html"><a href="ch-linear.html#sec-svd"><i class="fa fa-check"></i><b>4.2</b> Singular Value Decomposition</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="ch-linear.html"><a href="ch-linear.html#low-rank-approximations"><i class="fa fa-check"></i><b>4.2.1</b> Low-rank approximations</a></li>
+<li class="chapter" data-level="4.2.2" data-path="ch-linear.html"><a href="ch-linear.html#svd-and-low-rank-approximations"><i class="fa fa-check"></i><b>4.2.2</b> SVD and Low Rank Approximations</a></li>
+<li class="chapter" data-level="4.2.3" data-path="ch-linear.html"><a href="ch-linear.html#connections-with-pca"><i class="fa fa-check"></i><b>4.2.3</b> Connections with PCA</a></li>
+<li class="chapter" data-level="4.2.4" data-path="ch-linear.html"><a href="ch-linear.html#recommender-systems"><i class="fa fa-check"></i><b>4.2.4</b> Recommender Systems</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="ch-linear.html"><a href="ch-linear.html#sec-nmf"><i class="fa fa-check"></i><b>4.3</b> Nonnegative Matrix Factorization</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="ch-linear.html"><a href="ch-linear.html#interpretability-superpositions-and-positive-spans"><i class="fa fa-check"></i><b>4.3.1</b> Interpretability, Superpositions, and Positive Spans</a></li>
+<li class="chapter" data-level="4.3.2" data-path="ch-linear.html"><a href="ch-linear.html#geometric-interpretation"><i class="fa fa-check"></i><b>4.3.2</b> Geometric Interpretation</a></li>
+<li class="chapter" data-level="4.3.3" data-path="ch-linear.html"><a href="ch-linear.html#finding-a-nmf-multiplicative-updates"><i class="fa fa-check"></i><b>4.3.3</b> Finding a NMF: Multiplicative Updates</a></li>
+<li class="chapter" data-level="4.3.4" data-path="ch-linear.html"><a href="ch-linear.html#nmf-in-practice"><i class="fa fa-check"></i><b>4.3.4</b> NMF in practice</a></li>
+<li class="chapter" data-level="4.3.5" data-path="ch-linear.html"><a href="ch-linear.html#sec-nmf-ext"><i class="fa fa-check"></i><b>4.3.5</b> Regularization and Interpretability</a></li>
+<li class="chapter" data-level="4.3.6" data-path="ch-linear.html"><a href="ch-linear.html#sec-nmf-mle"><i class="fa fa-check"></i><b>4.3.6</b> NMF and Maximum Likelihood Estimation</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="ch-linear.html"><a href="ch-linear.html#sec-mds"><i class="fa fa-check"></i><b>4.4</b> Multidimensional Scaling</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="ch-linear.html"><a href="ch-linear.html#key-features-of-mds"><i class="fa fa-check"></i><b>4.4.1</b> Key features of MDS</a></li>
+<li class="chapter" data-level="4.4.2" data-path="ch-linear.html"><a href="ch-linear.html#classical-scaling"><i class="fa fa-check"></i><b>4.4.2</b> Classical Scaling</a></li>
+<li class="chapter" data-level="4.4.3" data-path="ch-linear.html"><a href="ch-linear.html#metric-mds"><i class="fa fa-check"></i><b>4.4.3</b> Metric MDS</a></li>
+<li class="chapter" data-level="4.4.4" data-path="ch-linear.html"><a href="ch-linear.html#nonmetric-mds"><i class="fa fa-check"></i><b>4.4.4</b> Nonmetric MDS</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="ch-linear.html"><a href="ch-linear.html#exercises-2"><i class="fa fa-check"></i><b>4.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html"><i class="fa fa-check"></i><b>5</b> Kernel Methods and Manifold Learning</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#sec-kernel-trick"><i class="fa fa-check"></i><b>5.1</b> Kernels and the Kernel Trick</a></li>
+<li class="chapter" data-level="5.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#sec-kpca"><i class="fa fa-check"></i><b>5.2</b> Kernel PCA</a></li>
+<li class="chapter" data-level="5.3" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#sec-manifolds"><i class="fa fa-check"></i><b>5.3</b> Brief primer on manifolds and differential geometry</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#charts-atlases-tangent-spaces-and-approximating-tangent-planes"><i class="fa fa-check"></i><b>5.3.1</b> Charts, atlases, tangent spaces and approximating tangent planes</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#sec-isomap"><i class="fa fa-check"></i><b>5.4</b> Isometric Feature Map (ISOMAP)</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#introduction"><i class="fa fa-check"></i><b>5.4.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.4.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#key-definitions"><i class="fa fa-check"></i><b>5.4.2</b> Key Definitions</a></li>
+<li class="chapter" data-level="5.4.3" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#algorithm"><i class="fa fa-check"></i><b>5.4.3</b> Algorithm</a></li>
+<li class="chapter" data-level="5.4.4" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#limitations-of-isomap"><i class="fa fa-check"></i><b>5.4.4</b> Limitations of ISOMAP</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#sec-lle"><i class="fa fa-check"></i><b>5.5</b> Locally Linear Embeddings (LLEs)</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#introduction-1"><i class="fa fa-check"></i><b>5.5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.5.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#algorithm-1"><i class="fa fa-check"></i><b>5.5.2</b> Algorithm</a></li>
+<li class="chapter" data-level="5.5.3" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#strengths-and-weaknesses-of-lle"><i class="fa fa-check"></i><b>5.5.3</b> Strengths and Weaknesses of LLE</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#sec-laplacian-eigenmaps"><i class="fa fa-check"></i><b>5.6</b> Laplacian Eigenmap (LEs)</a>
+<ul>
+<li class="chapter" data-level="5.6.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#algorithm-2"><i class="fa fa-check"></i><b>5.6.1</b> Algorithm</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#sec-hessian-eigenmaps"><i class="fa fa-check"></i><b>5.7</b> Hessian Eigenmaps (HLLEs)</a>
+<ul>
+<li class="chapter" data-level="5.7.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#introduction-2"><i class="fa fa-check"></i><b>5.7.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.7.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#assumptions-strength-and-weaknesses"><i class="fa fa-check"></i><b>5.7.2</b> Assumptions, Strength, and Weaknesses</a></li>
+</ul></li>
+<li class="chapter" data-level="5.8" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#sec-umap"><i class="fa fa-check"></i><b>5.8</b> Uniform Manifold Approximation and Projection (UMAP)</a>
+<ul>
+<li class="chapter" data-level="5.8.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#introduction-3"><i class="fa fa-check"></i><b>5.8.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.8.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#algorithm-3"><i class="fa fa-check"></i><b>5.8.2</b> Algorithm</a></li>
+<li class="chapter" data-level="5.8.3" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#strengths-and-weaknesses"><i class="fa fa-check"></i><b>5.8.3</b> Strengths and Weaknesses</a></li>
+</ul></li>
+<li class="chapter" data-level="5.9" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#sec-autoencoders"><i class="fa fa-check"></i><b>5.9</b> Autoencoders (AEs)</a>
+<ul>
+<li class="chapter" data-level="5.9.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#introduction-4"><i class="fa fa-check"></i><b>5.9.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.9.2" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#neural-networks-design-and-training"><i class="fa fa-check"></i><b>5.9.2</b> Neural networks: design and training</a></li>
+<li class="chapter" data-level="5.9.3" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#strengths-and-weaknesses-1"><i class="fa fa-check"></i><b>5.9.3</b> Strengths and weaknesses</a></li>
+</ul></li>
+<li class="chapter" data-level="5.10" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#comparison-of-manifold-learning-methods"><i class="fa fa-check"></i><b>5.10</b> Comparison of Manifold Learning Methods</a>
+<ul>
+<li class="chapter" data-level="5.10.1" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#visual-comparison-of-results"><i class="fa fa-check"></i><b>5.10.1</b> Visual comparison of results</a></li>
+</ul></li>
+<li class="chapter" data-level="5.11" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#sec-unifying-view"><i class="fa fa-check"></i><b>5.11</b> A Unifying View: Manifold Learning as Kernel PCA</a></li>
+<li class="chapter" data-level="5.12" data-path="ch-nonlinear.html"><a href="ch-nonlinear.html#exercises-3"><i class="fa fa-check"></i><b>5.12</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="ch-clustering.html"><a href="ch-clustering.html"><i class="fa fa-check"></i><b>6</b> Clustering</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="ch-clustering.html"><a href="ch-clustering.html#sec-center-based-clustering"><i class="fa fa-check"></i><b>6.1</b> Center-Based Clustering</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="ch-clustering.html"><a href="ch-clustering.html#k-means"><i class="fa fa-check"></i><b>6.1.1</b> <span class="math inline">\(k\)</span>-means</a></li>
+<li class="chapter" data-level="6.1.2" data-path="ch-clustering.html"><a href="ch-clustering.html#k-center-and-k-medoids"><i class="fa fa-check"></i><b>6.1.2</b> <span class="math inline">\(k\)</span>-center and <span class="math inline">\(k\)</span>-medoids</a></li>
+<li class="chapter" data-level="6.1.3" data-path="ch-clustering.html"><a href="ch-clustering.html#minimizing-clustering-loss-functions"><i class="fa fa-check"></i><b>6.1.3</b> Minimizing clustering loss functions</a></li>
+<li class="chapter" data-level="6.1.4" data-path="ch-clustering.html"><a href="ch-clustering.html#strengths-and-weaknesses-2"><i class="fa fa-check"></i><b>6.1.4</b> Strengths and Weaknesses</a></li>
+<li class="chapter" data-level="6.1.5" data-path="ch-clustering.html"><a href="ch-clustering.html#choosing-the-number-of-clusters"><i class="fa fa-check"></i><b>6.1.5</b> Choosing the number of clusters</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="ch-clustering.html"><a href="ch-clustering.html#sec-kernel-kmeans"><i class="fa fa-check"></i><b>6.2</b> Kernel <span class="math inline">\(k\)</span>-means</a></li>
+<li class="chapter" data-level="6.3" data-path="ch-clustering.html"><a href="ch-clustering.html#sec-hierarchical-clustering"><i class="fa fa-check"></i><b>6.3</b> Hierarchical Clustering</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="ch-clustering.html"><a href="ch-clustering.html#dendrograms"><i class="fa fa-check"></i><b>6.3.1</b> Dendrograms</a></li>
+<li class="chapter" data-level="6.3.2" data-path="ch-clustering.html"><a href="ch-clustering.html#building-a-dendrogram"><i class="fa fa-check"></i><b>6.3.2</b> Building a dendrogram</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="ch-clustering.html"><a href="ch-clustering.html#sec-model-based-clustering"><i class="fa fa-check"></i><b>6.4</b> Model-Based Clustering</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="ch-clustering.html"><a href="ch-clustering.html#gaussian-mixture-models-gmm"><i class="fa fa-check"></i><b>6.4.1</b> Gaussian Mixture Models (GMM)</a></li>
+<li class="chapter" data-level="6.4.2" data-path="ch-clustering.html"><a href="ch-clustering.html#expectation-maximization-em-algorithm"><i class="fa fa-check"></i><b>6.4.2</b> Expectation-Maximization (EM) Algorithm</a></li>
+<li class="chapter" data-level="6.4.3" data-path="ch-clustering.html"><a href="ch-clustering.html#model-selection-and-parameter-constraints"><i class="fa fa-check"></i><b>6.4.3</b> Model Selection and Parameter Constraints</a></li>
+<li class="chapter" data-level="6.4.4" data-path="ch-clustering.html"><a href="ch-clustering.html#weaknesses-and-limitations"><i class="fa fa-check"></i><b>6.4.4</b> Weaknesses and Limitations</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="ch-clustering.html"><a href="ch-clustering.html#sec-spec-clustering"><i class="fa fa-check"></i><b>6.5</b> Spectral Clustering</a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="ch-clustering.html"><a href="ch-clustering.html#introduction-5"><i class="fa fa-check"></i><b>6.5.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.5.2" data-path="ch-clustering.html"><a href="ch-clustering.html#algorithm-4"><i class="fa fa-check"></i><b>6.5.2</b> Algorithm</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="ch-clustering.html"><a href="ch-clustering.html#sec-cluster-validation"><i class="fa fa-check"></i><b>6.6</b> Cluster Validation</a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="ch-clustering.html"><a href="ch-clustering.html#the-rand-index-and-adjusted-rand-index"><i class="fa fa-check"></i><b>6.6.1</b> The Rand Index and Adjusted Rand Index</a></li>
+<li class="chapter" data-level="6.6.2" data-path="ch-clustering.html"><a href="ch-clustering.html#normalized-mutual-information"><i class="fa fa-check"></i><b>6.6.2</b> Normalized Mutual Information</a></li>
+<li class="chapter" data-level="6.6.3" data-path="ch-clustering.html"><a href="ch-clustering.html#worked-example-validating-clusterings-of-tumor-gene-expression-data"><i class="fa fa-check"></i><b>6.6.3</b> Worked Example: Validating Clusterings of Tumor Gene Expression Data</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="ch-clustering.html"><a href="ch-clustering.html#exercises-4"><i class="fa fa-check"></i><b>6.7</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="glossary.html"><a href="glossary.html"><i class="fa fa-check"></i>Glossary</a></li>
+<li class="chapter" data-level="" data-path="table-of-notation.html"><a href="table-of-notation.html"><i class="fa fa-check"></i>Table of Notation</a></li>
+<li class="chapter" data-level="" data-path="book-index.html"><a href="book-index.html"><i class="fa fa-check"></i>Index</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">An Introduction to Unsupervised Learning</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="book-index" class="section level1 unnumbered hasAnchor">
+<h1>Index<a href="book-index.html#book-index" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>This index points to the section, definition, or theorem where each topic is introduced, rather than to a page number, so that it remains equally useful in the PDF and web editions of this book.</p>
+<p><strong>A</strong></p>
+<ul>
+<li>Adjusted Rand Index, Definition <a href="ch-clustering.html#def:ari">6.3</a></li>
+<li>Association rules (out of scope for this book), <a href="index.html#intro">1</a></li>
+<li>Autoencoders, <a href="ch-nonlinear.html#sec-autoencoders">5.9</a></li>
+</ul>
+<p><strong>B</strong></p>
+<ul>
+<li>Bayesian Information Criterion (BIC), <a href="ch-clustering.html#sec-model-based-clustering">6.4</a></li>
+<li>Bottleneck (autoencoder), <a href="ch-nonlinear.html#sec-autoencoders">5.9</a></li>
+</ul>
+<p><strong>C</strong></p>
+<ul>
+<li>Centering matrix, <a href="index.html#intro">1</a></li>
+<li>Charts and atlases, <a href="ch-nonlinear.html#sec-manifolds">5.3</a></li>
+<li>Classical (metric) scaling, <a href="ch-linear.html#sec-mds">4.4</a></li>
+<li>Cluster validation, <a href="ch-clustering.html#sec-cluster-validation">6.6</a></li>
+<li>Clustering, overview, Chapter <a href="ch-clustering.html#ch-clustering">6</a>
+<ul>
+<li>Center-based, <a href="ch-clustering.html#sec-center-based-clustering">6.1</a></li>
+<li>Hierarchical, <a href="ch-clustering.html#sec-hierarchical-clustering">6.3</a></li>
+<li>Kernel <span class="math inline">\(k\)</span>-means, <a href="ch-clustering.html#sec-kernel-kmeans">6.2</a></li>
+<li>Model-based (GMM), <a href="ch-clustering.html#sec-model-based-clustering">6.4</a></li>
+<li>Spectral, <a href="ch-clustering.html#sec-spec-clustering">6.5</a></li>
+</ul></li>
+<li>Cophenetic correlation, Definition <a href="ch-clustering.html#def:cc">6.1</a></li>
+<li>Covariance constraints (GMM), <a href="ch-clustering.html#sec-model-based-clustering">6.4</a></li>
+</ul>
+<p><strong>D</strong></p>
+<ul>
+<li>Dendrograms, <a href="ch-clustering.html#sec-hierarchical-clustering">6.3</a></li>
+<li>Determinant, <a href="index.html#intro">1</a></li>
+<li>Dimension reduction, overview, <a href="index.html#intro">1</a></li>
+</ul>
+<p><strong>E</strong></p>
+<ul>
+<li>Eckart-Young-Mirsky Theorem, Theorem <a href="ch-linear.html#thm:svd-frob">4.3</a></li>
+<li>Eigenmaps, see <em>Laplacian eigenmap</em>, <em>Hessian eigenmaps</em></li>
+<li>Elbow plot, <a href="ch-clustering.html#sec-center-based-clustering">6.1</a></li>
+<li>Expectation-Maximization (EM) algorithm, <a href="ch-clustering.html#sec-model-based-clustering">6.4</a></li>
+</ul>
+<p><strong>F</strong></p>
+<ul>
+<li>Feature map, <a href="ch-nonlinear.html#sec-kernel-trick">5.1</a></li>
+</ul>
+<p><strong>G</strong></p>
+<ul>
+<li>Gap statistic, <a href="ch-clustering.html#sec-center-based-clustering">6.1</a></li>
+<li>Gaussian Mixture Models, <a href="ch-clustering.html#sec-model-based-clustering">6.4</a></li>
+<li>Geodesic distance, <a href="ch-nonlinear.html#sec-isomap">5.4</a></li>
+<li>Graph Laplacian, <a href="ch-nonlinear.html#sec-laplacian-eigenmaps">5.6</a></li>
+</ul>
+<p><strong>H</strong></p>
+<ul>
+<li>Hessian eigenmaps (HLLE), <a href="ch-nonlinear.html#sec-hessian-eigenmaps">5.7</a></li>
+<li>Hierarchical clustering, <a href="ch-clustering.html#sec-hierarchical-clustering">6.3</a></li>
+</ul>
+<p><strong>I</strong></p>
+<ul>
+<li>Intrinsic dimension, <a href="ch-nonlinear.html#sec-manifolds">5.3</a></li>
+<li>Isometry, Definition <a href="ch-nonlinear.html#def:def-isometry">5.6</a></li>
+<li>ISOMAP, <a href="ch-nonlinear.html#sec-isomap">5.4</a></li>
+</ul>
+<p><strong>K</strong></p>
+<ul>
+<li><span class="math inline">\(k\)</span>-center, <a href="ch-clustering.html#sec-center-based-clustering">6.1</a></li>
+<li><span class="math inline">\(k\)</span>-means, <a href="ch-clustering.html#sec-center-based-clustering">6.1</a>
+<ul>
+<li>Kernel <span class="math inline">\(k\)</span>-means, <a href="ch-clustering.html#sec-kernel-kmeans">6.2</a></li>
+<li>Lloyd’s algorithm, <a href="ch-clustering.html#sec-center-based-clustering">6.1</a></li>
+</ul></li>
+<li><span class="math inline">\(k\)</span>-medoids, <a href="ch-clustering.html#sec-center-based-clustering">6.1</a></li>
+<li>Kernel PCA, <a href="ch-nonlinear.html#sec-kpca">5.2</a></li>
+<li>Kernel trick, <a href="ch-nonlinear.html#sec-kernel-trick">5.1</a></li>
+</ul>
+<p><strong>L</strong></p>
+<ul>
+<li>Laplacian eigenmap, <a href="ch-nonlinear.html#sec-laplacian-eigenmaps">5.6</a></li>
+<li>Linkage (single, complete, average, Ward), <a href="ch-clustering.html#sec-hierarchical-clustering">6.3</a></li>
+<li>Loadings (PCA), <a href="ch-linear.html#sec-pca">4.1</a></li>
+<li>Locally Linear Embeddings (LLE), <a href="ch-nonlinear.html#sec-lle">5.5</a></li>
+</ul>
+<p><strong>M</strong></p>
+<ul>
+<li>Manifold, Definition <a href="ch-nonlinear.html#def:def-manifold">5.1</a></li>
+<li>Manifold distance, Definition <a href="ch-nonlinear.html#def:def-manifold-dist">5.5</a></li>
+<li>Manifold hypothesis, <a href="central-goals-and-assumptions.html#sec-manifold-hypothesis">3.1</a></li>
+<li>Manifold learning, overview, Chapter <a href="ch-nonlinear.html#ch-nonlinear">5</a></li>
+<li>Mercer’s condition, Theorem <a href="ch-nonlinear.html#thm:mercer">5.1</a></li>
+<li>MNIST dataset, <a href="index.html#intro">1</a></li>
+<li>Multidimensional Scaling (MDS), <a href="ch-linear.html#sec-mds">4.4</a></li>
+</ul>
+<p><strong>N</strong></p>
+<ul>
+<li>NCI60 tumor microarray dataset, <a href="ch-clustering.html#sec-cluster-validation">6.6</a></li>
+<li>Neighborhood graph, <a href="ch-nonlinear.html#sec-isomap">5.4</a></li>
+<li>Nonnegative Matrix Factorization (NMF), <a href="ch-linear.html#sec-nmf">4.3</a></li>
+<li>Normalized Mutual Information, Definition <a href="ch-clustering.html#def:nmi">6.4</a></li>
+</ul>
+<p><strong>P</strong></p>
+<ul>
+<li>Principal Component Analysis (PCA), <a href="ch-linear.html#sec-pca">4.1</a>
+<ul>
+<li>First PCA loading, Definition <a href="ch-linear.html#def:first-pca">4.1</a></li>
+<li>Optimality of PCA, Theorem <a href="ch-linear.html#thm:pca-opt">4.2</a></li>
+<li>PCA and eigendecomposition, Theorem <a href="ch-linear.html#thm:pca-eig">4.1</a></li>
+</ul></li>
+</ul>
+<p><strong>R</strong></p>
+<ul>
+<li>Rand Index, Definition <a href="ch-clustering.html#def:rand-index">6.2</a></li>
+<li>Recommendation systems, <a href="ch-linear.html#sec-svd">4.2</a></li>
+<li>Reinforcement learning, <a href="index.html#intro">1</a></li>
+</ul>
+<p><strong>S</strong></p>
+<ul>
+<li>Scree plot, <a href="ch-linear.html#sec-pca">4.1</a></li>
+<li>Self-supervised learning, <a href="index.html#intro">1</a></li>
+<li>Semi-supervised learning, <a href="index.html#intro">1</a></li>
+<li>Silhouette score, <a href="ch-clustering.html#sec-silhouette">6.1.5.3</a></li>
+<li>Singular Value Decomposition (SVD), <a href="ch-linear.html#sec-svd">4.2</a></li>
+<li>Spectral clustering, <a href="ch-clustering.html#sec-spec-clustering">6.5</a></li>
+<li>Supervised learning, <a href="index.html#intro">1</a></li>
+</ul>
+<p><strong>T</strong></p>
+<ul>
+<li>Tangent space, <a href="ch-nonlinear.html#sec-manifolds">5.3</a></li>
+</ul>
+<p><strong>U</strong></p>
+<ul>
+<li>UMAP, <a href="ch-nonlinear.html#sec-umap">5.8</a></li>
+<li>Unifying view (manifold learning as kernel PCA), <a href="ch-nonlinear.html#sec-unifying-view">5.11</a></li>
+<li>Unsupervised learning, definition, <a href="index.html#intro">1</a></li>
+</ul>
+<p><strong>W</strong></p>
+<ul>
+<li>Ward linkage, <a href="ch-clustering.html#sec-hierarchical-clustering">6.3</a></li>
+</ul>
+
+<div id="refs" class="references csl-bib-body">
+<div class="csl-entry">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline"><span class="smallcaps">Deng</span>, L. (2012). The mnist database of handwritten digit images for machine learning research. <em>IEEE Signal Processing Magazine</em> <strong>29</strong> 141–2.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline"><span class="smallcaps">Hastie</span>, T., <span class="smallcaps">Tibshirani</span>, R. and <span class="smallcaps">Friedman</span>, J. (2001). <em>The elements of statistical learning</em>. Springer New York Inc., New York, NY, USA.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline"><span class="smallcaps">Izenman</span>, A. J. (2008). <em>Modern multivariate statistical techniques: Regression, classification, and manifold learning</em>. Springer Publishing Company, Incorporated.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline"><span class="smallcaps">Trefethen</span>, L. N. and <span class="smallcaps">Bau</span>, D. (1997). <em>Numerical linear algebra</em>. SIAM.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline"><span class="smallcaps">Strang</span>, G. (2006). <em><a href="http://www.amazon.com/Linear-Algebra-Its-Applications-Edition/dp/0030105676">Linear algebra and its applications</a></em>. Thomson, Brooks/Cole, Belmont, CA.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline"><span class="smallcaps">Campadelli</span>, P., <span class="smallcaps">Casiraghi</span>, E., <span class="smallcaps">Ceruti</span>, C. and <span class="smallcaps">Rozza</span>, A. (2015). <a href="https://doi.org/10.1155/2015/759567">Intrinsic dimension estimation: Relevant techniques and a benchmark framework</a>. <em>Mathematical Problems in Engineering</em> <strong>2015</strong> 759567.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[7] </div><div class="csl-right-inline"><span class="smallcaps">Spivak</span>, M. D. (1979). <em>A comprehensive introduction to differential geometry</em>. Publish or Perish, Inc.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[8] </div><div class="csl-right-inline"><span class="smallcaps">Lee</span>, J. M. (2019). <em><a href="https://doi.org/10.1007/978-3-319-91755-9">Introduction to riemannian manifolds (second edition)</a></em>. Springer Nature.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[9] </div><div class="csl-right-inline"><span class="smallcaps">S.</span>, K. P. F. R. (1901). <a href="https://doi.org/10.1080/14786440109462720">LIII. On lines and planes of closest fit to systems of points in space</a>. <em>The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science</em> <strong>2</strong> 559–72.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[10] </div><div class="csl-right-inline"><span class="smallcaps">Hotelling</span>, H. (1933). Analysis of a complex of statistical variables into principal components. <em>Journal of educational psychology</em> <strong>24</strong> 417.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[11] </div><div class="csl-right-inline"><span class="smallcaps">Donoho</span>, D., <span class="smallcaps">Gavish</span>, M. and <span class="smallcaps">Romanov</span>, E. (2023). <a href="https://doi.org/10.1214/22-AOS2232"><span class="nocase">ScreeNOT: Exact MSE-optimal singular value thresholding in correlated noise</span></a>. <em>The Annals of Statistics</em> <strong>51</strong> 122–48.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[12] </div><div class="csl-right-inline"><span class="smallcaps">Cattell</span>, R. B. (1966). <a href="https://doi.org/10.1207/s15327906mbr0102\_10">The scree test for the number of factors</a>. <em>Multivariate Behavioral Research</em> <strong>1</strong> 245–76.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[13] </div><div class="csl-right-inline"><span class="smallcaps">Lee</span>, D. and <span class="smallcaps">Seung</span>, H. S. (2000). <a href="https://proceedings.neurips.cc/paper_files/paper/2000/file/f9d1152547c0bde01830b7e8bd60024c-Paper.pdf">Algorithms for non-negative matrix factorization</a>. In <em>Advances in neural information processing systems</em> vol 13, (T. Leen, T. Dietterich and V. Tresp, ed). MIT Press.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[14] </div><div class="csl-right-inline"><span class="smallcaps">Liu</span>, W., <span class="smallcaps">Tang</span>, A., <span class="smallcaps">Ye</span>, D. and <span class="smallcaps">Ji</span>, Z. (2008). <a href="https://doi.org/10.1109/ITAB.2008.4570528">Nonnegative singular value decomposition for microarray data analysis of spermatogenesis</a>. In <em>2008 international conference on information technology and applications in biomedicine</em> pp 225–8.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[15] </div><div class="csl-right-inline"><span class="smallcaps">Brunet</span>, J.-P., <span class="smallcaps">Tamayo</span>, P., <span class="smallcaps">Golub</span>, T. R. and <span class="smallcaps">Mesirov</span>, J. P. (2004). <a href="https://doi.org/10.1073/pnas.0308531101">Metagenes and molecular pattern discovery using matrix factorization</a>. <em>Proceedings of the National Academy of Sciences</em> <strong>101</strong> 4164–9.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[16] </div><div class="csl-right-inline"><span class="smallcaps">Cutler</span>, A. and <span class="smallcaps">Breiman</span>, L. (1994). <a href="http://www.jstor.org/stable/1269949">Archetypal analysis</a>. <em>Technometrics</em> <strong>36</strong> 338–47.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[17] </div><div class="csl-right-inline"><span class="smallcaps">Lin</span>, C.-H., <span class="smallcaps">Ma</span>, W.-K., <span class="smallcaps">Li</span>, W.-C., <span class="smallcaps">Chi</span>, C.-Y. and <span class="smallcaps">Ambikapathi</span>, A. (2014). <a href="https://doi.org/10.1109/TGRS.2015.2424719">Identifiability of the simplex volume minimization criterion for blind hyperspectral unmixing: The no pure-pixel case</a>. <em>IEEE Transactions on Geoscience and Remote Sensing</em> <strong>53</strong>.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[18] </div><div class="csl-right-inline"><span class="smallcaps">Fu</span>, X., <span class="smallcaps">Ma</span>, W.-K., <span class="smallcaps">Huang</span>, K. and <span class="smallcaps">Sidiropoulos</span>, N. D. (2015). <a href="https://doi.org/10.1109/TSP.2015.2404577">Blind separation of quasi-stationary sources: Exploiting convex geometry in covariance domain</a>. <em>IEEE Transactions on Signal Processing</em> <strong>63</strong> 1–1.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[19] </div><div class="csl-right-inline"><span class="smallcaps">Févotte</span>, C., <span class="smallcaps">Bertin</span>, N. and <span class="smallcaps">Durrieu</span>, J.-L. (2009). <a href="https://doi.org/10.1162/neco.2008.04-08-771">Nonnegative matrix factorization with the itakura-saito divergence: With application to music analysis</a>. <em>Neural Computation</em> <strong>21</strong> 793–830.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[20] </div><div class="csl-right-inline"><span class="smallcaps">Cox</span>, T. F. and <span class="smallcaps">Cox</span>, M. A. A. (2000). <em><a href="https://books.google.com/books?id=SKZzmEZqvqkC">Multidimensional scaling, second edition</a></em>. CRC Press.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[21] </div><div class="csl-right-inline"><span class="smallcaps">Alam</span>, M. A. and <span class="smallcaps">Fukumizu</span>, K. (2014). <a href="https://doi.org/10.3844/jcssp.2014.1139.1150">Hyperparameter selection in kernel principal component analysis</a>. <em>Journal of Computer Science</em> <strong>10</strong> 1139–50.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[22] </div><div class="csl-right-inline"><span class="smallcaps">Mika</span>, S., <span class="smallcaps">Schölkopf</span>, B., <span class="smallcaps">Smola</span>, A., <span class="smallcaps">Müller</span>, K.-R., <span class="smallcaps">Scholz</span>, M. and <span class="smallcaps">Rätsch</span>, G. (1998). <a href="https://proceedings.neurips.cc/paper_files/paper/1998/file/226d1f15ecd35f784d2a20c3ecf56d7f-Paper.pdf">Kernel PCA and de-noising in feature spaces</a>. In <em>Advances in neural information processing systems</em> vol 11, (M. Kearns, S. Solla and D. Cohn, ed). MIT Press.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[23] </div><div class="csl-right-inline"><span class="smallcaps">Little</span>, A., <span class="smallcaps">Lee</span>, J., <span class="smallcaps">Jung</span>, Y.-M. and <span class="smallcaps">Maggioni</span>, M. (2009). <a href="https://doi.org/10.1109/SSP.2009.5278634">Estimation of intrinsic dimensionality of samples from noisy low-dimensional manifolds in high dimensions with multiscale SVD</a>. In <em>IEEE Workshop on Statistical Signal Processing Proceedings</em> pp 85–8.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[24] </div><div class="csl-right-inline"><span class="smallcaps">Tenenbaum</span>, J. B., <span class="smallcaps">Silva</span>, V. de and <span class="smallcaps">Langford</span>, J. C. (2000). <a href="https://doi.org/10.1126/science.290.5500.2319">A global geometric framework for nonlinear dimensionality reduction</a>. <em>Science</em> <strong>290</strong> 2319–23.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[25] </div><div class="csl-right-inline"><span class="smallcaps">Bernstein</span>, M., <span class="smallcaps">Silva</span>, V., <span class="smallcaps">Langford</span>, J. and <span class="smallcaps">Tenenbaum</span>, J. (2001). Graph approximations to geodesics on embedded manifolds.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[26] </div><div class="csl-right-inline"><span class="smallcaps">Roweis</span>, S. T. and <span class="smallcaps">Saul</span>, L. K. (2000). <a href="https://doi.org/10.1126/science.290.5500.2323">Nonlinear dimensionality reduction by locally linear embedding</a>. <em>Science</em> <strong>290</strong> 2323–6.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[27] </div><div class="csl-right-inline"><span class="smallcaps">Chen</span>, J. and <span class="smallcaps">Liu</span>, Y. (2011). <a href="https://doi.org/10.1007/s10462-010-9200-z">Locally linear embedding: A survey</a>. <em>Artif. Intell. Rev.</em> <strong>36</strong> 29–48.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[28] </div><div class="csl-right-inline"><span class="smallcaps">Saul</span>, L. K. and <span class="smallcaps">Roweis</span>, S. T. (2003). <a href="https://doi.org/10.1162/153244304322972667">Think globally, fit locally: Unsupervised learning of low dimensional manifolds</a>. <strong>4</strong> 119–55.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[29] </div><div class="csl-right-inline"><span class="smallcaps">Anon</span>. (2019). <a href="https://doi.org/10.1016/j.patrec.2019.02.030">Locally linear embedding with additive noise</a>. <em>Pattern Recognition Letters</em> <strong>123</strong> 47–52.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[30] </div><div class="csl-right-inline"><span class="smallcaps">Chang</span>, H. and <span class="smallcaps">Yeung</span>, D.-Y. (2006). <a href="https://doi.org/10.1016/j.patcog.2005.07.011">Robust locally linear embedding</a>. <em>Pattern Recognition</em> <strong>39</strong> 1053–65.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[31] </div><div class="csl-right-inline"><span class="smallcaps">Belkin</span>, M. and <span class="smallcaps">Niyogi</span>, P. (2001). <a href="https://proceedings.neurips.cc/paper_files/paper/2001/file/f106b7f99d2cb30c3db1c3cc0fde9ccb-Paper.pdf">Laplacian eigenmaps and spectral techniques for embedding and clustering</a>. In <em>Advances in neural information processing systems</em> vol 14, (T. Dietterich, S. Becker and Z. Ghahramani, ed). MIT Press.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[32] </div><div class="csl-right-inline"><span class="smallcaps">Donoho</span>, D. L. and <span class="smallcaps">Grimes</span>, C. (2003). <a href="https://doi.org/10.1073/pnas.1031596100">Hessian eigenmaps: Locally linear embedding techniques for high-dimensional data</a>. <em>Proceedings of the National Academy of Sciences</em> <strong>100</strong> 5591–6.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[33] </div><div class="csl-right-inline"><span class="smallcaps">McInnes</span>, L., <span class="smallcaps">Healy</span>, J. and <span class="smallcaps">Melville</span>, J. (2018). UMAP: Uniform manifold approximation and projection for dimension reduction. <em>arXiv preprint arXiv:1802.03426</em>.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[34] </div><div class="csl-right-inline"><span class="smallcaps">Hinton</span>, G. E. and <span class="smallcaps">Salakhutdinov</span>, R. R. (2006). <a href="https://doi.org/10.1126/science.1127647">Reducing the dimensionality of data with neural networks</a>. <em>Science</em> <strong>313</strong> 504–7.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[35] </div><div class="csl-right-inline"><span class="smallcaps">Kingma</span>, D. P. and <span class="smallcaps">Ba</span>, J. (2015). Adam: A method for stochastic optimization. In <em>International conference on learning representations (ICLR)</em>.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[36] </div><div class="csl-right-inline"><span class="smallcaps">Vincent</span>, P., <span class="smallcaps">Larochelle</span>, H., <span class="smallcaps">Bengio</span>, Y. and <span class="smallcaps">Manzagol</span>, P.-A. (2008). <a href="https://doi.org/10.1145/1390156.1390294">Extracting and composing robust features with denoising autoencoders</a>. In ICML ’08 pp 1096–103. Association for Computing Machinery.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[37] </div><div class="csl-right-inline"><span class="smallcaps">Kingma</span>, D. P. and <span class="smallcaps">Welling</span>, M. (2013). <a href="https://api.semanticscholar.org/CorpusID:216078090">Auto-encoding variational bayes</a>. <em>CoRR</em> <strong>abs/1312.6114</strong>.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[38] </div><div class="csl-right-inline"><span class="smallcaps">Ham</span>, J., <span class="smallcaps">Lee</span>, D. D., <span class="smallcaps">Mika</span>, S. and <span class="smallcaps">Schölkopf</span>, B. (2004). <a href="https://doi.org/10.1145/1015330.1015417">A kernel view of the dimensionality reduction of manifolds</a>. In <em>Proceedings of the twenty-first international conference on machine learning (ICML)</em> p 47. ACM.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[39] </div><div class="csl-right-inline"><span class="smallcaps">Dhillon</span>, I. S., <span class="smallcaps">Guan</span>, Y. and <span class="smallcaps">Kulis</span>, B. (2004). <a href="https://doi.org/10.1145/1014052.1014118">Kernel k-means: Spectral clustering and normalized cuts</a>. In <em>Proceedings of the tenth ACM SIGKDD international conference on knowledge discovery and data mining</em> pp 551–6. ACM.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[40] </div><div class="csl-right-inline"><span class="smallcaps">Roux</span>, M. (2018). <a href="https://doi.org/10.1007/s00357-018-9259-9">A comparative study of divisive and agglomerative hierarchical clustering algorithms</a>. <em>Journal of Classification</em> <strong>35</strong> 345–66.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[41] </div><div class="csl-right-inline"><span class="nocase"><span class="smallcaps">Szekely</span>, G. J., <span class="smallcaps">Rizzo</span>, M. L., et al</span>. (2005). Hierarchical clustering via joint between-within distances: Extending ward’s minimum variance method. <em>Journal of classification</em> <strong>22</strong> 151–84.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[42] </div><div class="csl-right-inline"><span class="smallcaps">Everitt</span>, B. S. (2001). <em>Cluster analysis</em>. Arnold ; Oxford University Press, London : New York.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[43] </div><div class="csl-right-inline"><span class="smallcaps">Mojena</span>, R. (1977). <a href="https://doi.org/10.1093/comjnl/20.4.359"><span class="nocase">Hierarchical grouping methods and stopping rules: an evaluation*</span></a>. <em>The Computer Journal</em> <strong>20</strong> 359–63.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[44] </div><div class="csl-right-inline"><span class="smallcaps">Dempster</span>, A. P., <span class="smallcaps">Laird</span>, N. M. and <span class="smallcaps">Rubin</span>, D. B. (1977). <a href="https://doi.org/10.1111/J.2517-6161.1977.TB01600.X"><span class="nocase">Maximum Likelihood from Incomplete Data Via the EM Algorithm</span></a>. <em>Journal of the Royal Statistical Society Series B: Statistical Methodology</em> <strong>39</strong> 1–22.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[45] </div><div class="csl-right-inline"><span class="smallcaps">Banfield</span>, J. D. and <span class="smallcaps">Raftery</span>, A. E. (1993). <a href="http://www.jstor.org/stable/2532201">Model-based gaussian and non-gaussian clustering</a>. <em>Biometrics</em> <strong>49</strong> 803–21.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[46] </div><div class="csl-right-inline"><span class="smallcaps">Karlis</span>, D. and <span class="smallcaps">Santourian</span>, A. (2009). <a href="https://doi.org/10.1007/S11222-008-9072-0/METRICS"><span class="nocase">Model-based clustering with non-elliptically contoured distributions</span></a>. <em>Statistics and Computing</em> <strong>19</strong> 73–83.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[47] </div><div class="csl-right-inline"><span class="smallcaps">O’Hagan</span>, A., <span class="smallcaps">Murphy</span>, T. B., <span class="smallcaps">Gormley</span>, I. C., <span class="smallcaps">McNicholas</span>, P. D. and <span class="smallcaps">Karlis</span>, D. (2016). <a href="https://doi.org/10.1016/J.CSDA.2014.09.006"><span class="nocase">Clustering with the multivariate normal inverse Gaussian distribution</span></a>. <em>Computational Statistics &amp; Data Analysis</em> <strong>93</strong> 18–30.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[48] </div><div class="csl-right-inline"><span class="smallcaps">Dang</span>, U. J., <span class="smallcaps">Gallaugher</span>, M. P. B., <span class="smallcaps">Browne</span>, R. P. and <span class="smallcaps">McNicholas</span>, P. D. (2023). <a href="https://doi.org/10.1007/S00357-022-09427-7/TABLES/5"><span class="nocase">Model-Based Clustering and Classification Using Mixtures of Multivariate Skewed Power Exponential Distributions</span></a>. <em>Journal of Classification</em> <strong>40</strong> 145–67.</div>
+</div>
+<div class="csl-entry">
+<div class="csl-left-margin">[49] </div><div class="csl-right-inline"><span class="smallcaps">Dombowsky</span>, A. and <span class="smallcaps">Dunson</span>, D. B. (2025). <a href="https://doi.org/10.1080/01621459.2024.2427935;REQUESTEDJOURNAL:JOURNAL:UASA20;WGROUP:STRING:PUBLICATION"><span class="nocase">Bayesian Clustering via Fusing of Localized Densities</span></a>. <em>Journal of the American Statistical Association</em>.</div>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="table-of-notation.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/young1062/introUL07-back-matter.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["_main.pdf"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,4 +1,4 @@
-## Center-Based Clustering
+## Center-Based Clustering {#sec-center-based-clustering}
 
 ```{r, echo = F}
 library("MASS")

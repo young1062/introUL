@@ -1,7 +1,7 @@
 --- 
 title: "An Introduction to Unsupervised Learning"
 author: "Alex Young and Cenhao Zhu"
-date: "Version 0"
+date: "Version 1"
 documentclass: book
 bibliography:
 - book.bib
@@ -35,45 +35,96 @@ tryCatch(chromote::default_chromote_object(), error = function(e) NULL)
 
 # Introduction {#intro}
 
-Unsupervised machine learning (UL) is an overarching term for methods designed to understand the patterns and relationships within a set of **unlabeled data**.  UL is often discussed in contrast to (semi-)supervised learning. In the latter setting(s), one is primarly concerned with prediction and classification, and the machine learning algorithms therein focus on learning the relationship between a (often high dimensional) feature vector $\vec{x}$ and an observable outcome $y$ by training on a labeled dataset $\{(\vec{x}_i,y_i)\}_{i=1}^N$. As a concrete example, consider the MNIST dataset which contains a compendium of labeled digitized grayscale images of handwritten digits [@mnist].  The images themselves are the features, ($\vec{x}$), and the identity of the digit (0 to 9) gives the label, $y$ .  A supervised learning algorithm trained on the MNIST dataset would be able to classify a handwritten digit in a new grayscale image.
+Unsupervised machine learning (UL) is an overarching term for methods designed to understand the patterns and relationships within a set of **unlabeled data**.  As a concrete example, consider the MNIST dataset which contains a compendium of labeled digitized grayscale images of handwritten digits [@mnist].  The images themselves are the features, ($\vec{x}$), and the identity of the digit (0 to 9) gives the label, $y$.  A supervised learning algorithm trained on the MNIST dataset would be able to classify a handwritten digit in a new grayscale image.  An unsupervised algorithm applied to the very same images -- ignoring the digit labels entirely -- would instead try to answer a different kind of question: do the images naturally organize into groups, and can we describe each image with a small number of meaningful numbers rather than 784 raw pixel intensities?  Both questions are useful, but they are genuinely different questions, and answering them requires different tools.
 
-Prediction and classification are clearly defined goals which naturally translate to many settings. As such, supervised ML has found numerous applications across diverse fields of research from healthcare and medicine to astronomy and chemistry.  Given the clearly translatable goals of supervised learning, most texts on Machine Learning tend to emphasize this setting with much smaller discussion on the un- or semi-supervised setting.  For example, both *The Elements of Statistical Learning* by Hastie et al [@esl] and *Modern Multivariate Statistical Techniques* by Izenman [@izenman] are wonderful texts -- which were central to the early development of this book -- but lean towards supervised problems.
+## Unsupervised learning among the branches of machine learning
 
-Unlike the supervised setting, however, UL algorithms are applied to datasets without (or ignoring) labels. In contrast to the MNIST example above, you can think of have of a case where one has access to a large collection of $\vec{x}_i$, such as images, without any labels indicating the content(s) of the image.  Other examples include,
+Machine learning is often introduced through a small number of broad paradigms, distinguished by what kind of information is available during training and what kind of question we're trying to answer. It's worth briefly placing unsupervised learning among its neighbors before diving in, since the contrasts are genuinely clarifying.
 
-- a corpus of emails without any indication of which, if any, are spam
-- genomic data for each individual in a large population of cancer patients
-- collections of consumer data or ratings
-  
-Without labels, it may be difficult (particularly to students first seeing this branch of machine learning) to grasp the usefulness of UL including its applicability and what one is *learning* in practice.  In this book, we hope to address this difficulty and provide readers with a clear understanding of UL by covering motivating ideas, fundamental techniques, and clear and compelling applications.  For now, we'll discuss the high-altitude view of unsupervised learning.  
+**Supervised learning** is the setting most readers will have already encountered. One is primarily concerned with prediction and classification, and the machine learning algorithms therein focus on learning the relationship between a (often high dimensional) feature vector $\vec{x}$ and an observable outcome $y$ by training on a labeled dataset $\{(\vec{x}_i,y_i)\}_{i=1}^N$. Prediction and classification are clearly defined goals which naturally translate to many settings. As such, supervised ML has found numerous applications across diverse fields of research from healthcare and medicine to astronomy and chemistry. Given the clearly translatable goals of supervised learning, most texts on Machine Learning tend to emphasize this setting with much smaller discussion on the un- or semi-supervised setting. For example, both *The Elements of Statistical Learning* by Hastie et al [@esl] and *Modern Multivariate Statistical Techniques* by Izenman [@izenman] are wonderful texts -- which were central to the early development of this book -- but lean towards supervised problems.
 
-We'll focus on those cases where we have a collection of independent observations of (preprocessed) features stored in vectors $\vec{x}_1,\dots,\vec{x}_N\in\mathbb{R}^d$. This setting will be formalized in \@ref(ch-prob).  Broadly, UL learns patterns and similarities between the vectors which could allow us to 
+**Unsupervised learning**, the subject of this book, drops the labels $y_1,\dots,y_N$ entirely and works only with the features $\vec{x}_1,\dots,\vec{x}_N$. Rather than learning a mapping from $\vec{x}$ to $y$, UL algorithms look for structure that is already latent in the features themselves: groups of similar observations, simpler representations, or informative geometry we would otherwise never see by looking at raw, high-dimensional data.
 
-1) find subsets of the data which more similar to each other (clustering) or
-2) find simpler representations of the data which preserves important relationships (dimension reduction)
-3) identify common relationships between variables in the data (association rules)
+Between these two extremes sit a few related paradigms worth knowing by name, if only because you're likely to encounter them elsewhere.
 
-Each of three cases provide a simplified lens through which we can view our data, and in doing so, can open up a number of interesting possibilities.  
+- **Semi-supervised learning** trains a supervised model using a small labeled dataset $\{(\vec{x}_i,y_i)\}_{i=1}^n$ *together with* a much larger pool of unlabeled features $\{\vec{x}_i\}_{i=n+1}^N$ (labels are often expensive or slow to collect, while unlabeled data is comparatively cheap). Many semi-supervised methods work by first uncovering structure in the unlabeled data -- for instance, by clustering it or reducing its dimension using exactly the tools developed in this book -- and then using that structure to make the most of the few labels that are available.
 
-Clustering different genomic data in cancer patients could provide information to medical practitioners on which cancers exhibit common genetics signatures.  Applying dimension reduction to spam emails could allow one to identify odd emails which might be spam (anomaly detection). Learning the common relationships between variables in a consumer data set opens the possibility of matching consumers which items they might enjoy (recommendation systems).
+- **Self-supervised learning** also works with unlabeled data, but manufactures its own labels directly from the data rather than doing without them. A model might be trained to reconstruct an input from a compressed version of itself, or to predict a masked-out word from the words around it. The autoencoders we cover in Chapter \@ref(ch-nonlinear) are a classic example: they have no labels of any kind, yet they are trained by the same kind of supervised loss-minimization machinery used elsewhere in ML, just with the input standing in as its own target.
 
-The examples above are by no means exhaustive, but they do raise a few critical points.  
+- **Reinforcement learning** departs from the other paradigms most sharply. There is no fixed dataset at all; instead, an agent interacts sequentially with an environment, taking actions and receiving rewards, and the goal is to learn a policy that maximizes cumulative reward over time. Where the other paradigms all start from a static collection of observations, reinforcement learning is fundamentally about learning through interaction. (Harvard has recently introduced a dedicated undergraduate course on this topic, a sign of how distinct -- and how quickly growing -- this branch of ML has become.)
+
+We will not return to semi-supervised, self-supervised, or reinforcement learning in any real depth in this text, but it's worth keeping the contrast in mind: unsupervised learning is defined by the *absence* of labels, full stop, and by a focus on discovering structure for its own sake rather than as a means to a prediction.
+
+## What can we learn without labels?
+
+Without labels, it may be difficult (particularly to students first seeing this branch of machine learning) to grasp the usefulness of UL including its applicability and what one is *learning* in practice.  In this book, we hope to address this difficulty and provide readers with a clear understanding of UL by covering motivating ideas, fundamental techniques, and clear and compelling applications.  For now, we'll discuss the high-altitude view of unsupervised learning.
+
+We'll focus on those cases where we have a collection of independent observations of (preprocessed) features stored in vectors $\vec{x}_1,\dots,\vec{x}_N\in\mathbb{R}^d$. This setting will be formalized in Chapter \@ref(ch-prob).  Broadly, UL learns patterns and similarities between the vectors which could allow us to
+
+1) find subsets of the data which are more similar to each other (**clustering**), or
+2) find simpler representations of the data which preserve important relationships (**dimension reduction**).
+
+Each of these two cases provides a simplified lens through which we can view our data, and in doing so, can open up a number of interesting possibilities. A small sample of settings where these ideas have been put to genuine use:
+
+- **Genomics and medicine.** Clustering gene expression data from tumor samples can reveal that a single clinically-defined cancer type is actually a mixture of several molecularly distinct subtypes, each of which may respond differently to treatment. We'll work through a real example of exactly this kind of analysis, using microarray data from 64 human tumor samples, in Chapter \@ref(ch-clustering).
+
+- **Computer vision.** Reducing a dataset of images to a handful of coordinates -- as we will do repeatedly with the MNIST digits throughout this book -- lets us visualize how thousands of images relate to one another, spot mislabeled or unusual images, and dramatically compress data for downstream storage or modeling.
+
+- **Natural language and document collections.** A large corpus of emails, articles, or customer reviews can be clustered into topics or grouped by similarity without anyone having read and labeled a single document in advance, which is often the only realistic option when the corpus is large or labels don't yet exist (e.g. is this email spam, before anyone has flagged it as such?).
+
+- **Anomaly and fraud detection.** A dimension reduction technique fit on "typical" transactions, network traffic, or sensor readings gives us a notion of what normal data looks like in a low-dimensional representation; observations that reconstruct poorly or land far from the bulk of the data are natural candidates for further scrutiny.
+
+- **Recommendation and personalization.** Clustering users or items by behavior, or reducing a large, sparse matrix of user-item ratings to a small number of latent factors, underlies many recommendation systems -- we'll see a version of this idea when we discuss the singular value decomposition (Chapter \@ref(ch-linear)).
+
+- **Scientific exploratory data analysis more broadly.** Long before any formal hypothesis is tested, dimension reduction and clustering are often the first tools scientists reach for simply to see what a new, high-dimensional dataset looks like.
+
+The examples above are by no means exhaustive, but they do raise a few critical points.
 
 1) **Where**  Each application above is one step in a larger data science problem.  Unsupervised learning is rarely detached from a broader data science pipeline.  This is a stark difference from classification and prediction which are often viewed as isolated statistical problems (though careful practitioners recognize that data collection and cleaning and the communication of results are often of equal or greater importance than analysis). Examples are provided throughout the text demonstrating where UL can be useful.
 
-2) **What** One data set could be approached from one or more different perspectives. For example, one could apply dimension reduction to the cancer data to *visualize* the potentially complex data in a manner that preserves important relationships. Combining many approaches together makes unsupervised learning a powerful tool to exploratory data analysis and featurization, particularly when combined with expert level content knowledge.  Choosing a UL method is linked with what we hope to learn about our data.  
+2) **What** One data set could be approached from one or more different perspectives. For example, one could apply dimension reduction to the cancer data to *visualize* the potentially complex data in a manner that preserves important relationships. Combining many approaches together makes unsupervised learning a powerful tool to exploratory data analysis and featurization, particularly when combined with expert level content knowledge.  Choosing a UL method is linked with what we hope to learn about our data.
 
 3) **How** If we want an algorithm that clusters similar vectors or provides a visualization that keeps close points together, then we should be mindful of the meaning of similarity or proximity.  UL algorithms, sometimes implicitly, prioritize different relationships. We explore how these algorithms work from a geometric perspective which is a helpful intellectual scaffolding.
 
-In the remainder of this text, we focus primarily on dimension reduction (\@ref(ch-linear) and \@ref(ch-nonlinear)) and clustering (\@ref(ch-clustering)).
+## What this book covers
 
+To be precise about scope: this book is organized around the two pillars introduced above, dimension reduction and clustering, and says relatively little about other corners of unsupervised learning (association rule mining and generative modeling being two notable examples we do not cover in depth). Concretely, after a review chapter, the book proceeds as follows.
+
+- Chapter \@ref(ch-prob) briefly reviews the probability, linear algebra, and calculus this book leans on most heavily, and fixes the notation used throughout (see the Table of Notation at the end of the book for a quick-reference version).
+- Chapter \@ref(ch-linear) covers **linear** dimension reduction methods: principal component analysis, the singular value decomposition, nonnegative matrix factorization, and multidimensional scaling.
+- Chapter \@ref(ch-nonlinear) extends these ideas to **nonlinear** structure: the kernel trick and kernel PCA, the manifold hypothesis, and a tour of manifold learning methods (ISOMAP, locally linear embeddings, Laplacian and Hessian eigenmaps, UMAP) and autoencoders.
+- Chapter \@ref(ch-clustering) covers **clustering**: center-based methods ($k$-means, $k$-medoids, $k$-center, and their kernelized versions), hierarchical clustering, model-based clustering via Gaussian mixture models, spectral clustering, and how to validate a clustering once you have one.
+
+Every method is paired with worked examples (many using real data), a discussion of its strengths and weaknesses, and exercises at the end of each chapter.
 
 ## Prerequisites
 
-This text is targeted at upper level undergraduates with a well rounded background in the following courses and topics
+This text is targeted at upper level undergraduates with a well rounded background consistent with an undergraduate course in each of the following:
 
-1) Probability: random variables, expectation, variance, and covariance
-2) Linear algebra: matrix-vector multiplication, linear spaces, eigendecompositions
-3) Multivariable calculus: gradients and basic optimization
+- **Probability**
+    - Major concepts: mean, covariance, correlation, (in)dependence
+    - Minor concepts: likelihood functions, conditional expectation, parametric distributions (e.g. Gaussian)
+- **Linear algebra**
+    - Major concepts: interpretations of matrix-vector and matrix-matrix multiplication, spans, bases, matrix decompositions
+    - Minor concepts: orthonormal transformations, vector and matrix norms, Hadamard operations
+- **Multivariable calculus**
+    - Major concepts: gradients (computation and interpretation), optimization with and without constraints
+    - Minor concepts: multivariate Taylor expansions, determining properties of local optima via the Hessian matrix
 
-A brief review of the most important ideas is covered in Chapter \@ref(ch-prob).  Additional tools and techniques needed for specific algorithms are covered at a cursory level as needed. References to more thorough discussions are provided throughout for the interested reader.  
+A brief review of the most important ideas above, along with the notation used throughout the book, is covered in Chapter \@ref(ch-prob).  Additional tools and techniques needed for specific algorithms are covered at a cursory level as needed. References to more thorough discussions are provided throughout for the interested reader.
+
+## How to use this book
+
+This book grew out of *Stat 185: Unsupervised Learning*, taught at Harvard University since Fall 2019. The book emphasizes high-dimensional geometry and the insight linear algebra provides into *why* these methods work, rather than treating each algorithm as a black box.
+
+A few suggestions depending on how you're approaching the text:
+
+- **If you're using this book for a semester-long course** (as in its original setting), the chapters are designed to be read in order. Chapter \@ref(ch-prob) is intended as a review rather than a first introduction to its material -- if any of it is genuinely new to you, consider supplementing it with a dedicated probability, linear algebra, or multivariable calculus reference before proceeding. Chapters \@ref(ch-linear) through \@ref(ch-clustering) build on each other: the kernel methods in Chapter \@ref(ch-nonlinear) rely on the linear methods of Chapter \@ref(ch-linear), and the "Unifying View" closing that chapter connects manifold learning directly to spectral clustering in Chapter \@ref(ch-clustering).
+
+- **If you already know some of this material**, each chapter is reasonably self-contained past the review chapter. A reader already comfortable with PCA and the SVD, for instance, could reasonably start at Chapter \@ref(ch-nonlinear).
+
+- **If you're using this book for self-study**, work the exercises. Nearly every section closes with a mix of derivations, hand-computable numerical examples, and applied problems using real or synthetic data in R; the exercises are where the geometric intuition described above actually gets tested.
+
+- Throughout the text, definitions and theorems are set off in numbered boxes, worked examples are marked `Example`, and R code is shown whenever it clarifies *how* a method is actually computed rather than just *what* it computes.
+
+- A Table of Notation, Glossary, and Index are collected at the end of the book for quick reference.

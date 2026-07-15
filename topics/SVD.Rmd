@@ -56,7 +56,7 @@ SVD can provide one final note of insight regarding PCA. Suppose that $N < d$, w
 
 ### Recommender Systems
 
-SVD may also be applied to association rule learning which can identify similar items in datasets based on partial observations.  As a motivating example, consider the case where we have a dataset of user provided ratings of products, which could be items purchased, songs listed to, or movies watched.  In this case, ${\bf X}_{ij}$ indicates user $i$'s rating of item $j$.  Typically, most of the entries of ${\bf X}$ will be NA since users have likely interacted with a small number of items.  Using a variant of SVD, a simple recommendation system proceeds in two steps. First, we can impute the missing ratings. We can then use this result to infer similar movies which can be used for recommendation.
+SVD may also be applied to building recommendation systems which can identify similar items in datasets based on partial observations.  As a motivating example, consider the case where we have a dataset of user provided ratings of products, which could be items purchased, songs listed to, or movies watched.  In this case, ${\bf X}_{ij}$ indicates user $i$'s rating of item $j$.  Typically, most of the entries of ${\bf X}$ will be NA since users have likely interacted with a small number of items.  Using a variant of SVD, a simple recommendation system proceeds in two steps. First, we can impute the missing ratings. We can then use this result to infer similar movies which can be used for recommendation.
 
 #### Imputation
 

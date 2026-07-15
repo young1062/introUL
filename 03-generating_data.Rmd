@@ -1,4 +1,4 @@
-```{r, echo = FALSE}
+```{r, echo = FALSE, message = FALSE}
 library(MASS)
 library(threejs)
 ```
@@ -6,18 +6,82 @@ library(threejs)
 
 In the remainder of this text, we will largely focus on the case where we are given a dataset containing samples $\vec{x}_1,\dots,\vec{x}_N \in \mathbb{R}^d$.  We will assume that the vectors were drawn independently from some unknown data generating process.  As we discussed briefly in Chapter \@ref(intro), in UL we want to learn important relationships within the dataset that can provide a simplified but meaningful summary of the data. The central assumption to UL is that such structure exists, though the specifics vary depending on the setting.  
 
-The two largest areas of focus herein are dimension reduction/manifold learning and clustering which can both be used for feature engineering, data compression, and exploratory data analysis.  Dimension reduction is also commonly used for visualization.  We'll briefly discuss association rules in Section \@ref(sec-svd).
+The two largest areas of focus herein are dimension reduction/manifold learning and clustering which can both be used for feature engineering, data compression, and exploratory data analysis.  Dimension reduction is also commonly used for visualization.
 
 
-## Dimension reduction and manifold learning
+## Dimension reduction and manifold learning {#sec-manifold-hypothesis}
 
 Algorithms for dimension reduction and manifold learning have a number of different applications which are all based on the Manifold Hypothesis
 
 ::: {.hypothesis #manifold-hypothesis name="Manifold Hypothesis"}
-The points in a high-dimensional dataset live on a latent low-dimension surface (also called a manifold). 
+The points in a high-dimensional dataset live on a latent low-dimension surface (also called a manifold).
 :::
 
 The manifold hypothesis implies that the dataset can be described by a much smaller number of dimensions. Determining the manifold structure and a simplified set of coordinates for each point on the manifold is the central goal of these algorithms.
+
+A simple mechanism for generating data on a manifold makes the hypothesis above concrete. Assume there are points $\vec{z}_1,\dots,\vec{z}_N\in A \subset \mathbb{R}^t$ which are *iid* random samples from some probability distribution. These points are (nonlinearly) mapped into a higher dimensional space $\mathbb{R}^d$ by a smooth map $\Psi$ giving data $\vec{x}_i = \Psi(\vec{z}_i)$ for $i=1,\dots,N.$   Hereafter, we refer to $\Psi$ as the manifold map.  In this setting, we are only given $\vec{x}_1,\dots,\vec{x}_N$, and we want to recover the lower-dimensional $\vec{z}_1,\dots,\vec{z}_N$. If possible, we would also like recover $\Psi$ and $\Psi^{-1}$ and in the most ideal case, the sampling distribution that generated the lower-dimensional coordinates $\vec{z}_1,\dots,\vec{z}_N$.
+
+::: {.example #ex-swiss-roll name="Mapping to the Swiss Roll"}
+Let $A = (\pi/2,9\pi/2)\times (0,15)$.  We define the map $\Psi:A\to \mathbb{R}^3$ as follows
+$$\Psi(\vec{z}) = \Psi(z_1,z_2) = \begin{bmatrix} z_1\sin(z_1) \\ z_1\cos(z_1) \\ z_2 \end{bmatrix}$$
+Below we show $N=10^4$ \emph{iid} samples which are drawn uniformly from $A$.  We then show the resulting observations after applying map $\Psi$ to each sample.
+```{r, echo = FALSE}
+N <- 1e4
+myColorRamp <- function(colors, values) {
+    v <- (values - min(values))/diff(range(values))
+    x <- colorRamp(colors)(v)
+    rgb(x[,1], x[,2], x[,3], maxColorValue = 255)
+}
+library(scatterplot3d)
+S <- matrix(NA, nrow = N, ncol = 2)
+Swiss <- matrix(NA, nrow = N, ncol = 3)
+for( n in 1:N){
+    s <- runif(1, min = pi/2, max = 9*pi/2)
+    t <- runif(1, min = 0,      max = 15)
+    S[n,] <- c(s,t)
+    Swiss[n, ] <- c( s*sin(s), s*cos(s),t )
+}
+par(mfrow = c(1,2))
+plot(S[,1],S[,2],
+     xlab = expression(z[1]), ylab = expression(z[2]),
+     main = "Low-Dimensional Samples",
+     cex = 0.1)
+scatterplot3d(Swiss, color = myColorRamp(c("red","purple","blue","green","yellow"), S[,1] ),
+               xlab = expression(x[1]), ylab = expression(x[2]), zlab = expression(x[3]),
+              angle = 90,
+              main = "Samples after applying \nthe Manifold Map",
+              cex.symbols = 0.5)
+```
+:::
+
+
+We may also consider the more complicated case where the observations are corrupted by additive noise.  In this setting, the typical assumption is that the noise follows after the manifold map so that our data are $$\vec{x}_i = \Psi(\vec{z}_i) + \vec{\epsilon}_i, \qquad i = 1,\dots, N$$ for some \emph{iid} noise vectors $\{\vec{\epsilon}_i\}_{i=1,\dots,N}.$
+
+::: {.example #ex-swiss-w-noise name="Swiss Roll with Additive Gaussian Noise"}
+
+Here, we perturb the observations in the preceding example with additive $\mathcal{N}(\vec{0},0.1{\bf I})$ noise.
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+library("threejs")
+scatterplot3js(Swiss+matrix(rnorm(prod(dim(Swiss)),mean = 0,sd = 0.5), nrow = nrow(Swiss)), color = myColorRamp(c("red","purple","blue","green","yellow"), S[,1] ),
+               xlab = expression(x[1]), ylab = expression(x[2]), zlab = expression(x[3]),
+              angle = 90,
+              main = "Swiss Roll Data Perturbed by Additive Noise",
+              pch = '.',
+              size = 0.1)
+```
+:::
+
+In addition to the goals in the noiseless case, we may also add the goal of learning the noiseless version of the data which reside on a manifold.
+
+
+However, there are a number of practical issues to this setup.  First, the dimension, $t$, of the original lower-dimensional points is typically unknown.  Similar to previous methods, we could pick a value of $t$ with the goal of visualization, base our choice off of prior knowledge, or run our algorithms different choices of $t$ and compare the results.  More advanced methods for estimating the true value of $t$ are an open area of research [@dim_est1].
+
+There is also a issue with the uniqueness of this problem statement.  Given only the high dimensional observations, there is no way we could identify the original lower-dimensional points without more information.  In fact, one could find an unlimited number of equally suitable results.
+
+Let $\Phi:\mathbb{R}^t\to\mathbb{R}^t$ be an invertible function.  As an example, you could think of $\Phi$ as defining a translation, reflection, rotation, or some composition of these operations -- we will see a similar identifiability issue when we discuss classical scaling and dimension reduction more generally later in this book.  If our original observed data are $\vec{x}_i = \Psi(\vec{z}_i)$, our manifold learning algorithm could instead infer that the manifold map is $\Psi \circ \Phi^{-1}$ and the lower-dimensional points are $\Phi(\vec{z}_i)$. This is a perfectly reasonable result since $(\Psi\circ \Phi^{-1})\circ\Phi(\vec{z}_i) = \Psi(\vec{z}_i)= \vec{x}_i$ for $i=1,\dots,N$, which is the only result we require.  Without additional information, there is little we could do to address this issue.  For the purposes of visualization, however, we will typically be most interested in the relationship between the lower-dimensional points rather than their specific location or orientation.  As such, we need not be concerned about a manifold learning algorithm that provides a translated or rotated representation of $\vec{z}_1,\dots,\vec{z}_N.$ More complicated transformations of the lower-dimensional coordinates are of greater concern and may be addressed through additional assumptions about the manifold map $\Psi.$
+
+We will review a small collection of different methods which address the manifold learning problem in Chapter \@ref(ch-nonlinear).  Many of these methods are motivated based on important concepts from differential geometry, the branch of mathematics focused on manifolds.  Many of the details of differential geometry are beyond the scope of this book, so we will focus on a few key ideas when we return to this topic. For the more mathematically-minded reader, see [@spivak;@jm_lee].
 
 
 ## Clustering

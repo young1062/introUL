@@ -1,6 +1,6 @@
 # Kernel Methods and Manifold Learning {#ch-nonlinear}
 
-## Kernels and the Kernel Trick
+## Kernels and the Kernel Trick {#sec-kernel-trick}
 
 The techniques considered in the previous chapter (PCA, NMF, SVD, and classical Scaling) are ill suited to identify nonlinear structure and dependence in data.  If we wish to most efficiently reduce dimensions without loss of information, we will need techniques which incorporate nonlinear structure.  One can expand a data matrix by including specific nonlinear relationships then apply PCA or SVD but there are numerous problems with this approach.  In particular, which relationships does one choose to include? Even including simple quadratic or cubic terms (features) can result in a data matrix with a massive increase in the number of columns. Even when the original dimensionality of the data is moderate, the including of polynomial terms can quickly result in a data matrix of nonlinear features with an untenable number of columns which can make application of the linear methods we have discussed much more computationally demanding to implement.
 
@@ -38,83 +38,9 @@ where $\ell_j = \binom{d+j-1}{j}$ and $a_\ell^{(j)} = \frac{(2\sigma)^{j/2}x_1^{
 ```{r child = 'topics/kPCA.Rmd'}
 ```
 
-## The Manifold Hypothesis
+## Brief primer on manifolds and differential geometry {#sec-manifolds}
 
-In the preceding section, we focused our attention on linear manifolds and saw cases where this structure was insufficient.  Using kernel PCA, we tried to find a workaround by first (implicity) mapping our data to a higher dimensional feature space then approximating results with linear subspaces (of feature space). In this Chapter, we will investigate several methods to estimate a lower-dimensional representation assuming the data live on a manifold, which we hereafter refer to as the manifold hypothesis. This hypothesis is the central assumptions of modern nonlinear dimension reduction methods and can be stated as follows.
-
-::: {.definition name="Manifold Hypothesis"}
-The observed data $\vec{x}_1,\dots,\vec{x}_N\in\mathbb{R}$ are concentrated on or near a manifold of intrinsic dimension $t\ll d.$
-:::
-
-In the following sections, we will provide more background on the mathematical foundation of nonlinear manifolds. Specifically, what is a manifold (and what is not) and what do we mean by intrinsic dimensionality.  We'll also touch on important properties which guides the assumptions used by various methods of nonlinear dimension reduction. For now, let's discuss a simple mechanism for generating data on a manifold.
-
-Assume there are points $\vec{z}_1,\dots,\vec{z}_N\in A \subset \mathbb{R}^t$ which are *iid* random samples from some probability distribution. These points are (nonlinearly) mapped into a higher dimensional space $\mathbb{R}^d$ by a smooth map $\Psi$ giving data $\vec{x}_i = \Psi(\vec{z}_i)$ for $i=1,\dots,N.$   Hereafter, we refer to $\Psi$ as the manifold map.  In this setting, we are only given $\vec{x}_1,\dots,\vec{x}_N$, and we want to recover the lower-dimensional $\vec{z}_1,\dots,\vec{z}_N$. If possible, we would also like recover $\Psi$ and $\Psi^{-1}$ and in the most ideal case, the sampling distribution that generated the lower-dimensional coordinates $\vec{z}_1,\dots,\vec{z}_N$. 
-
-::: {.example #ex-swiss-roll name="Mapping to the Swiss Roll"}
-Let $A = (\pi/2,9\pi/2)\times (0,15)$.  We define the map $\Psi:A\to \mathbb{R}^3$ as follows
-$$\Psi(\vec{z}) = \Psi(z_1,z_2) = \begin{bmatrix} z_1\sin(z_1) \\ z_1\cos(z_1) \\ z_2 \end{bmatrix}$$
-Below we show $N=10^4$ \emph{iid} samples which are drawn uniformly from $A$.  We then show the resulting observations after applying map $\Psi$ to each sample.
-```{r, echo = FALSE}
-N <- 1e4
-myColorRamp <- function(colors, values) {
-    v <- (values - min(values))/diff(range(values))
-    x <- colorRamp(colors)(v)
-    rgb(x[,1], x[,2], x[,3], maxColorValue = 255)
-}
-library(scatterplot3d)
-S <- matrix(NA, nrow = N, ncol = 2)
-Swiss <- matrix(NA, nrow = N, ncol = 3)
-for( n in 1:N){
-    s <- runif(1, min = pi/2, max = 9*pi/2)
-    t <- runif(1, min = 0,      max = 15)
-    S[n,] <- c(s,t)
-    Swiss[n, ] <- c( s*sin(s), s*cos(s),t )
-}
-par(mfrow = c(1,2))
-plot(S[,1],S[,2],
-     xlab = expression(z[1]), ylab = expression(z[2]),
-     main = "Low-Dimensional Samples",
-     cex = 0.1)
-scatterplot3d(Swiss, color = myColorRamp(c("red","purple","blue","green","yellow"), S[,1] ),
-               xlab = expression(x[1]), ylab = expression(x[2]), zlab = expression(x[3]),
-              angle = 90,
-              main = "Samples after applying \nthe Manifold Map",
-              cex.symbols = 0.5)
-```
-:::
-
-
-We may also consider the more complicated case where the observations are corrupted by additive noise.  In this setting, the typical assumption is that the noise follows after the manifold map so that our data are $$\vec{x}_i = \Psi(\vec{z}_i) + \vec{\epsilon}_i, \qquad i = 1,\dots, N$$ for some \emph{iid} noise vectors $\{\vec{\epsilon}_i\}_{i=1,\dots,N}.$  
-
-::: {.example #ex-swiss-w-noise name="Swiss Roll with Additive Gaussian Noise"}
-
-Here, we perturb the observations in the preceding example with additive $\mathcal{N}(\vec{0},0.1{\bf I})$ noise.
-
-```{r, echo = FALSE, warning = FALSE, message = FALSE}
-library("threejs")
-scatterplot3js(Swiss+matrix(rnorm(prod(dim(Swiss)),mean = 0,sd = 0.5), nrow = nrow(Swiss)), color = myColorRamp(c("red","purple","blue","green","yellow"), S[,1] ),
-               xlab = expression(x[1]), ylab = expression(x[2]), zlab = expression(x[3]),
-              angle = 90,
-              main = "Swiss Roll Data Perturbed by Additive Noise", 
-              pch = '.',
-              size = 0.1)
-```
-:::
-
-In addition to the goals in the noiseless case, we may also add the goal of learning the noiseless version of the data which reside on a manifold.
-
-
-However, there are a number of practical issues to this setup.  First, the dimension, $t$, of the original lower-dimensional points is typically unknown.  Similar to previous methods, we could pick a value of $t$ with the goal of visualization, base our choice off of prior knowledge, or run our algorithms different choices of $t$ and compare the results.  More advanced methods for estimating the true value of $t$ are an open area of research [@dim_est1].  
-
-There is also a issue with the uniqueness problem statement.  Given only the high dimensional observations, there is no way we could identify the original lower-dimensional points without more information.  In fact, one could find an unlimited sources of equally suitable results.  
-
-Let $\Phi:\mathbb{R}^t\to\mathbb{R}^t$ be an invertible function.  As an example, you could think of $\Phi$ as defining a translation, reflection, rotation, or some composition of these operations akin to the nonuniqueness issue we addressed in classical scaling.  If our original observed data are $\vec{x}_i = \Psi(\vec{z}_i)$, our manifold learning algorithm could instead infer that the manifold map is $\Psi \circ \Phi^{-1}$ and the lower-dimensional points are $\Phi(\vec{z}_i)$. This is a perfectly reasonable result since $(\Psi\circ \Phi^{-1})\circ\Phi(\vec{z}_i) = \Psi(\vec{z}_i)= \vec{x}_i$ for $i=1,\dots,N$, which is the only result we require.  Without additional information, there is little we could do to address this issue.  For the purposes of visualization, however, we will typically be most interested in the relationship between the lower-dimensional points rather than their specific location or orientation.  As such, we need not be concerned about a manifold learning algorithm that provides a translated or rotated representation of $\vec{z}_1,\dots,\vec{z}_N.$ More complicated transformations of the lower-dimensional coordinates are of greater concern and may be addressed through additional assumptions about the manifold map $\Psi.$
-
-In the following sections, we will review a small collection of different methods which address the manifold learning problem.  Many of the methods are motivated based on important concepts from differential geometry, the branch of mathematics focused on manifolds.  Many of the details of differential geometry are beyond the scope of this book, so we will focus on a few key ideas here. For the more mathematically-minded reader, see [@spivak;@jm_lee].
-
-
-## Brief primer on manifolds {#sec-manifolds}
-While our data may exhibit some low-dimensional structure, there is no practical reason to expect such behavior to be inherently linear.   In the resulting sections, we will explore methods which consider **nonlinear** structure and assume the data reside on or near a manifold.  Such methods are referred to as nonlinear dimension reduction or manifold learning.  Critical to this discussion is the notion of a manifold.
+In the preceding section, we focused our attention on linear manifolds and saw cases where this structure was insufficient.  Using kernel PCA, we tried to find a workaround by first (implicity) mapping our data to a higher dimensional feature space then approximating results with linear subspaces (of feature space). We now turn to a family of methods that take a more direct approach, assuming the data live on or near a manifold -- the manifold hypothesis introduced in Section \@ref(sec-manifold-hypothesis) -- rather than relying on a fixed kernel.  While our data may exhibit some low-dimensional structure, there is no practical reason to expect such behavior to be inherently linear.  In the remaining sections of this chapter, we will explore methods which consider **nonlinear** structure directly.  Such methods are referred to as nonlinear dimension reduction or manifold learning.  Critical to this discussion is the notion of a manifold.
 
 ::: {.definition #def-manifold name="Informal Definition of a Manifold"}
 A manifold is a (topological) space which locally resembles Euclidean space.  Each point on a $t$-dimensional manifold has a neighborhood that can be mapped continuously to $\mathbb{R}^t$. We call $t$ the intrinsic dimension of the manifold.
@@ -125,7 +51,7 @@ We'll return to mathematical details shortly, but let's stick with intuition for
 
 ::: {.example #ex-manifolds name="Examples of Manifolds"}
 Many familiar geometric objects are manifolds such as lines, planes, and spheres.  For example,
-Let $\vec{w}_1,\dots,\vec{w}_k\in\mathbb{R}^d$ be a set of linearly independent vectors. Then $\text{span}(\vec{w}_1,\dots,\vec{w}_k)$ is a $k$-dimensional manifold in $\mathbb{R}^d.$ When $k=1$, the span is a line; for $k>1$ the span is a hyperplane.  The sphere unit sphere $\{\vec{x}\in\mathbb{R}^d:\,\|\vec{x}\|=1\}$ is a $d-1$ dimensional manifold.  For example, when $d=3$ manifold resembles the surface of the earth which locally looks like a portion of the 2-dimensional plane.  The swiss roll example above is a two-dimensional manifold in $\mathbb{R}^3$.
+Let $\vec{w}_1,\dots,\vec{w}_k\in\mathbb{R}^d$ be a set of linearly independent vectors. Then $\text{span}(\vec{w}_1,\dots,\vec{w}_k)$ is a $k$-dimensional manifold in $\mathbb{R}^d.$ When $k=1$, the span is a line; for $k>1$ the span is a hyperplane.  The sphere unit sphere $\{\vec{x}\in\mathbb{R}^d:\,\|\vec{x}\|=1\}$ is a $d-1$ dimensional manifold.  For example, when $d=3$ manifold resembles the surface of the earth which locally looks like a portion of the 2-dimensional plane.  The Swiss roll from Example \@ref(exm:ex-swiss-roll) is a two-dimensional manifold in $\mathbb{R}^3$.
 :::
 
 In short manifold as a nice smooth, curved surface. There are several reasons why a subset may not be a manifold.  The most straightforward examples are cases where the manifold as a self intersection or a sharp point.
@@ -147,7 +73,7 @@ Hereafter, we will focus on manifolds which are a subset of $\mathbb{R}^d$, whic
 Now, some mathematical foundation.  Let $\mathcal{M}$ be a manifold in $\mathbb{R}^d$ with intrinsic dimension $t<d$.  For every point $\vec{x}\in\mathcal{M}$, there is a neighborhood $U_x\subset \mathcal{M}$ containing $\vec{x}$ and a function $\phi_x: U_x \to \phi_x(U_x) \subset \mathbb{R}^t$ which is continuous, bijective, and has continuous inverse (a *homeomorphism* if you like greek). The pair $(U_x,\phi_x)$ is called a chart and behaves much like a map of the area around $\vec{x}$. There are many choices for $\phi_x$, but we can always choose one which maps $\vec{x}\in\mathbb{R}^d$ to the origin in $\mathbb{R}^t$.  For vectors $\vec{z}\in U_x$, we call $\phi_x(\vec{z})\in\mathbb{R}^t$ the *local* coordinates of $\vec{z}.$
 
 :::{.example name="Charts and Manifold Maps"}
-Let's revisit the swiss roll example from the previous section where $A = (\pi/2,9\pi/2)\times (0,15)$.  We defined the map $\Psi:A\to \mathbb{R}^3$ as follows
+Let's revisit the Swiss roll example (Example \@ref(exm:ex-swiss-roll)) where $A = (\pi/2,9\pi/2)\times (0,15)$.  We defined the map $\Psi:A\to \mathbb{R}^3$ as follows
 $$\Psi(\vec{z}) = \Psi(z_1,z_2) = \begin{bmatrix} z_1\sin(z_1) \\ z_1\cos(z_1) \\ z_2 \end{bmatrix}.$$
 For other manifolds, we may need multiple charts to cover the manifold, but we only need one chart the swiss roll (or any manifold defined through a homeomorphic manifold map).   Let the neighborhood be the entire manifold, i.e. $U = \mathcal{M}$ Given $\vec{x}=(x_1,x_2,x_3)^T$, let $\phi(\vec{x}) = (\sqrt(x_1^2+x_2^2),x_3)^T.$  This chart essentially unrolls the swiss roll and turns it back into a rectangle in $\mathbb{R}^2$ so that the local coordinates are the original coordinates! 
 :::
@@ -263,7 +189,7 @@ SVD and PCA still have their uses thanks to the locally Euclidean nature of mani
 ```{r child = 'topics/Manifold_Learning_Examples.Rmd'}
 ```
 
-## A Unifying View: Manifold Learning as Kernel PCA
+## A Unifying View: Manifold Learning as Kernel PCA {#sec-unifying-view}
 
 Having covered ISOMAP, LLE, and Laplacian eigenmaps, it is worth stepping back to notice a common thread.  Each method feels different -- one preserves geodesic distances, one preserves local linear reconstructions, one preserves a weighted graph structure -- yet each method ultimately produces its embedding the same way: by eigendecomposing a particular symmetric matrix built from the data and taking the leading eigenvectors (suitably scaled) as coordinates.  This is exactly the recipe used by kernel PCA.  It turns out that this similarity is not a coincidence.  ISOMAP, LLE, and Laplacian eigenmaps can each be written as kernel PCA applied to a specific, data-dependent "kernel" matrix in place of the doubly centered kernel matrix ${\bf HKH}$ from earlier in this chapter [@ham_kernel_view].
 

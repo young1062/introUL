@@ -1,2 +1,121 @@
-<!-- rand index and rand index R for testing -->
-<!-- silhouette and gap statistics  -->
+## Cluster Validation {#sec-cluster-validation}
+
+Throughout this chapter, we've seen several ways to judge a clustering using only the data itself: the elbow plot and Gap statistic (which compare within-cluster variation to what we'd expect under no clustering structure at all), the silhouette score (\@ref(sec-silhouette)) (which measures how much better each point fits its own cluster than the next closest one), and for hierarchical clustering specifically, the cophenetic correlation coefficient (Definition \@ref(def:cc)). These are all **internal** validation methods: they never use any information beyond the data $\vec{x}_1,\dots,\vec{x}_N$ and the clustering itself.
+
+Occasionally, we have access to a second source of information: a known grouping of the same data that we'd like our clustering to recover. This could be a set of true class labels available for benchmarking purposes (as in the example below), a previously published clustering we want to reproduce or compare against, or even the output of a second clustering algorithm we'd like to compare to a first. When such a reference partition is available, we can measure how well our clustering agrees with it directly, rather than relying on an internal proxy for quality. This is called **external** validation.
+
+It is worth emphasizing why this differs from supervised learning. We are not using the labels to fit the clustering itself, nor could we in most genuinely unsupervised applications where no such labels exist. Instead, external validation is primarily a tool for methodology: comparing algorithms against each other on benchmark data, sanity-checking a new method, or -- as in the example below -- better understanding what a clustering has and has not recovered when a partial or imperfect reference grouping happens to be available.
+
+### The Rand Index and Adjusted Rand Index
+
+Suppose we have two partitions of the same $N$ samples into groups: a clustering $C = \{C_1,\dots,C_k\}$ we've produced and a reference partition $C' = \{C_1',\dots,C_{k'}'\}$ we'd like to compare it to (the number of groups $k$ and $k'$ need not match). The most natural way to compare two partitions is to ask, for every pair of samples, whether the two partitions agree on whether that pair belongs together.
+
+::: {.definition #rand-index name="Rand Index"}
+For each of the $\binom{N}{2}$ pairs of samples $\{\vec{x}_i,\vec{x}_j\}$, $i<j$, say the pair is
+
+- **concordant** if $\vec{x}_i$ and $\vec{x}_j$ are in the same group under both $C$ and $C'$, or in different groups under both $C$ and $C'$;
+- **discordant** otherwise, i.e. the two partitions disagree on whether $\vec{x}_i$ and $\vec{x}_j$ belong together.
+
+Letting $a$ denote the number of concordant pairs and $\binom{N}{2}$ the total number of pairs, the *Rand Index* is
+$$RI(C,C') = \frac{a}{\binom{N}{2}} \in [0,1].$$
+:::
+
+The Rand Index is easy to interpret -- it is simply the fraction of all pairs of samples on which the two partitions agree -- but it has an unfortunate flaw. Even two *independent, random* partitions of the data tend to agree on a large fraction of pairs, especially when $k$ or $k'$ is large, since most pairs of samples end up in different groups under both partitions purely by chance and are counted as concordant. As a result, the Rand Index is typically far from zero even when the clustering has learned nothing about the reference partition, and it is not straightforward to compare Rand Index values across different choices of $k$.
+
+To fix this, we adjust the Rand Index so that its expected value under a random partition (with the same cluster sizes as $C$ and $C'$) is exactly zero.
+
+::: {.definition #ari name="Adjusted Rand Index"}
+Let $n_{ij}$ denote the number of samples in both $C_i$ and $C_j'$, let $n_{i\cdot} = \sum_j n_{ij}$ be the size of $C_i$, and let $n_{\cdot j} = \sum_i n_{ij}$ be the size of $C_j'$. The *Adjusted Rand Index* is
+$$ARI(C,C') = \frac{\displaystyle\sum_{i,j}\binom{n_{ij}}{2} - \left[\sum_i \binom{n_{i\cdot}}{2}\sum_j\binom{n_{\cdot j}}{2}\right]\Big/\binom{N}{2}}{\displaystyle\frac{1}{2}\left[\sum_i \binom{n_{i\cdot}}{2}+\sum_j\binom{n_{\cdot j}}{2}\right] - \left[\sum_i \binom{n_{i\cdot}}{2}\sum_j\binom{n_{\cdot j}}{2}\right]\Big/\binom{N}{2}}.$$
+:::
+
+While the formula above looks intimidating, the interpretation is simple: $ARI(C,C') = 1$ when the two partitions agree perfectly (up to relabeling of the groups), $ARI(C,C') \approx 0$ when $C$ is no better than a random partition with the same cluster sizes, and $ARI(C,C')$ can be (mildly) negative when $C$ agrees with $C'$ *less* than a random partition would. Crucially, unlike the Rand Index, values of the ARI are comparable across different numbers of clusters $k$ and different sample sizes $N$, which makes it the more commonly reported of the two in practice.
+
+### Normalized Mutual Information
+
+A second, quite different way to compare two partitions comes from information theory rather than pairwise agreement. If we think of a random sample's cluster membership under $C$ as a random variable $\mathcal{C}$ and its group membership under $C'$ as a random variable $\mathcal{C}'$, we can ask how much knowing $\mathcal{C}$ tells us about $\mathcal{C}'$.
+
+::: {.definition #nmi name="Normalized Mutual Information"}
+Using the notation of Definition \@ref(def:ari), let $p_{ij} = n_{ij}/N$, $p_{i\cdot} = n_{i\cdot}/N$, and $p_{\cdot j} = n_{\cdot j}/N$ denote the empirical joint and marginal distributions of $(\mathcal{C},\mathcal{C}')$. The *mutual information* between $C$ and $C'$ is
+$$MI(C,C') = \sum_{i,j} p_{ij} \log\left(\frac{p_{ij}}{p_{i\cdot}p_{\cdot j}}\right),$$
+and letting $H(C) = -\sum_i p_{i\cdot}\log p_{i\cdot}$ and $H(C') = -\sum_j p_{\cdot j}\log p_{\cdot j}$ denote the (empirical) entropies of $C$ and $C'$, the *Normalized Mutual Information* is
+$$NMI(C,C') = \frac{2\,MI(C,C')}{H(C)+H(C')} \in [0,1].$$
+:::
+
+The mutual information $MI(C,C')$ measures (in nats, if using the natural logarithm) how much the uncertainty in a sample's group under $C'$ is reduced once we know its group under $C$; it is zero exactly when $\mathcal{C}$ and $\mathcal{C}'$ are independent. Dividing by the average of the two entropies rescales $MI$ to lie in $[0,1]$: $NMI(C,C')=0$ when the partitions share no information and $NMI(C,C')=1$ when each partition is a deterministic function of the other (in particular, when they agree perfectly). Unlike the Rand Index, mutual information is already comparatively well behaved under random partitions, but it -- like the Rand Index -- has no built-in preference for a particular $k$, so it should still be compared across values of $k$ with some caution, a point the example below illustrates directly.
+
+### Worked Example: Validating Clusterings of Tumor Gene Expression Data
+
+Let's put both of these tools to use on a genuinely messy, real dataset: the NCI60 microarray data compiled in @esl. The data record the expression levels of $6{,}830$ genes ($d=6830$) measured via microarray for $N=64$ human tumor samples. Each tumor's expression level for a given gene is reported as a log-ratio relative to a reference sample, so entries of the data matrix ${\bf X}\in \mathbb{R}^{64\times 6830}$ can be positive or negative. Each of the 64 tumor samples also comes with a label recording the type of cancer it was taken from -- BREAST, COLON, LEUKEMIA, RENAL, and so on -- giving us 14 labels to use as an external reference partition. A handful of these labels (e.g. K562A-repro and K562B-repro) are technical replicates of the same cell line rather than biologically distinct cancer types, so we should not expect even a great clustering to recover exactly 14 well-separated groups.
+
+```{r, echo = FALSE}
+nci.data <- as.matrix(read.csv("../data/nci_data.csv"))
+nci.label <- read.csv("../data/nci_label.csv")$V1
+```
+
+Before clustering, it's worth checking whether the genes (columns of ${\bf X}$) are on comparable scales.
+
+```{r, echo = FALSE, fig.cap = "Variance of expression level across the 6,830 genes in the NCI60 data"}
+gene_vars <- apply(nci.data, 2, var)
+hist(gene_vars, breaks = 80, xlab = "Variance of gene expression", main = "")
+```
+
+The variances span nearly a 300-fold range. Since every clustering method we've discussed relies on Euclidean (or a closely related) distance, genes with the largest raw variance would otherwise dominate every pairwise distance calculation regardless of their actual biological relevance. We'll standardize each gene to have mean zero and variance one before clustering, matching the convention used elsewhere in this book when features are not already on a common scale.
+
+```{r, echo = FALSE}
+nci.scaled <- scale(nci.data, center = TRUE, scale = TRUE)
+```
+
+Now let's cluster the (standardized) data using a few methods we've covered in this chapter -- $k$-means, and hierarchical clustering with both average and Ward linkage -- at a few different choices of $k$, and compare the silhouette score (an internal measure) to the ARI and NMI against the true tumor type labels (external measures).
+
+```{r nci-validation, echo = FALSE}
+euc <- dist(nci.scaled)
+
+nmi <- function(c1, c2) {
+  tab <- table(c1, c2)
+  pij <- tab / sum(tab)
+  pi_ <- rowSums(pij); pj_ <- colSums(pij)
+  mi <- sum(pij[pij > 0] * log(pij[pij > 0] / outer(pi_, pj_)[pij > 0]))
+  h1 <- -sum(pi_[pi_ > 0] * log(pi_[pi_ > 0]))
+  h2 <- -sum(pj_[pj_ > 0] * log(pj_[pj_ > 0]))
+  2 * mi / (h1 + h2)
+}
+
+set.seed(185)
+results <- data.frame()
+for (k in c(2, 4, 14)) {
+  clusterings <- list(
+    "k-means" = kmeans(nci.scaled, k, nstart = 10)$cluster,
+    "Hier., average linkage" = cutree(hclust(euc, method = "average"), k),
+    "Hier., Ward linkage" = cutree(hclust(euc, method = "ward.D"), k)
+  )
+  for (nm in names(clusterings)) {
+    cl <- clusterings[[nm]]
+    results <- rbind(results, data.frame(
+      k = k, Method = nm,
+      Silhouette = round(mean(cluster::silhouette(cl, euc)[, 3]), 3),
+      ARI = round(mclust::adjustedRandIndex(cl, nci.label), 3),
+      NMI = round(nmi(cl, nci.label), 3)
+    ))
+  }
+}
+knitr::kable(results, row.names = FALSE, caption = "Internal (Silhouette) vs. external (ARI, NMI) validation on the NCI60 data")
+```
+
+Two things stand out. First, the silhouette score barely moves across $k$ and stays quite low throughout ($\approx 0.07$ to $0.12$) -- unsurprising for real, noisy, high-dimensional biological data without the well-separated blobs of our earlier synthetic examples, but also not very informative: silhouette alone gives us almost no reason to prefer $k=14$ over $k=2$. Second, and in sharp contrast, both ARI and NMI increase substantially as $k$ grows, roughly tripling from $k=2$ to $k=14$. Knowing the true tumor types reveals that the finer partitions are, in fact, capturing considerably more of the real structure in the data than an internal diagnostic alone would have suggested. Ward linkage is the strongest performer at every $k$, consistent with our discussion of linkage methods.
+
+We can also look at this qualitatively. Below, we project the data onto its first two principal components and compare the true tumor types to the $k=14$ Ward clustering, the best-performing configuration in the table above.
+
+```{r, echo = FALSE, fig.cap = "Left: samples colored by true tumor type. Right: samples colored by Ward-linkage clustering (k=14). Colors are not matched between panels, but the well-separated group near the bottom is recovered nearly identically by both."}
+pc <- prcomp(nci.scaled)
+hc.ward.14 <- cutree(hclust(euc, method = "ward.D"), 14)
+par(mfrow = c(1, 2))
+plot(pc$x[, 1], pc$x[, 2], col = as.factor(nci.label), pch = 16,
+     xlab = "PC1", ylab = "PC2", main = "True tumor type")
+plot(pc$x[, 1], pc$x[, 2], col = hc.ward.14, pch = 16,
+     xlab = "PC1", ylab = "PC2", main = "Ward clustering, k=14")
+```
+
+The cluster of points near the bottom of both panels is recovered almost identically whether we use the true labels or the clustering, which matches its high visual separation from the rest of the data. Elsewhere, the two panels agree less -- a reminder that even our best-performing configuration achieved an ARI of only $0.473$, far from perfect agreement.
+
+This example highlights the central lesson of cluster validation: internal and external methods can, and sometimes do, disagree. When ground truth is genuinely unavailable (the ordinary case in unsupervised learning), internal diagnostics like the ones from earlier in this chapter are all we have, but this example is a useful reminder that a clustering with a mediocre internal score is not necessarily a poor clustering, and vice versa.

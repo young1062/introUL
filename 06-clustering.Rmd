@@ -37,7 +37,7 @@ There is one main commonality (and associated set of notation) that will persist
 ```{r child = 'topics/Center-Based-Clustering.Rmd'}
 ```
 
-## Kernel $k$-means
+## Kernel $k$-means {#sec-kernel-kmeans}
 
 The kernel trick is not limited to PCA.  Recall from \@ref(ch-nonlinear) that the kernel trick lets us replace inner products $\vec{x}_i^T\vec{x}_j$ with a kernel evaluation $k(\vec{x}_i,\vec{x}_j)$, giving many linear methods access to nonlinear structure without ever explicitly computing the feature map $\varphi$.  The $k$-means loss function introduced above is a natural candidate, since expanding the squared norm shows that it only involves inner products of the data,
 $$\|\vec{x}_i - \vec{\mu}_\ell\|^2 = \vec{x}_i^T\vec{x}_i - \frac{2}{|C_\ell|}\sum_{\vec{x}_j \in C_\ell} \vec{x}_i^T\vec{x}_j + \frac{1}{|C_\ell|^2}\sum_{\vec{x}_j,\vec{x}_{j'} \in C_\ell} \vec{x}_j^T\vec{x}_{j'}, \qquad \vec{\mu}_\ell = \frac{1}{|C_\ell|}\sum_{\vec{x}_j \in C_\ell} \vec{x}_j.$$
@@ -58,7 +58,7 @@ As with kernel PCA (\@ref(ch-nonlinear)), the choice and tuning of the kernel is
 
 Consider $N=400$ points sampled uniformly around two concentric circles with additive noise, a shape ordinary $k$-means cannot separate correctly since neither ring is convex (let alone spherical).
 
-```{r, echo = FALSE, fig.cap = "Nested rings which are not separable by ordinary k-means"}
+```{r, echo = FALSE, message = FALSE, fig.cap = "Nested rings which are not separable by ordinary k-means"}
 library("kernlab")
 set.seed(185)
 N <- 400
@@ -97,4 +97,105 @@ Kernel $k$-means also has an important connection to a clustering method discuss
 ```
 
 <!-- Clustering comparisons and metrics -->
+```{r child = 'topics/Methods-for-Comparing-Clustering.Rmd'}
+```
+
+## Exercises
+
+1. Recall that the intracluster variation is defined as $V(C_\ell) = \frac{1}{2|C_\ell|}\sum_{\vec{x}_i,\vec{x}_j \in C_\ell}\|\vec{x}_i-\vec{x}_j\|^2$. Show algebraically that $$V(C_\ell) = \sum_{\vec{x}_i \in C_\ell}\|\vec{x}_i-\vec{\mu}_\ell\|^2$$ where $\vec{\mu}_\ell$ is the sample mean of the points in $C_\ell$. Hint: expand $\|\vec{x}_i-\vec{x}_j\|^2 = \|(\vec{x}_i-\vec{\mu}_\ell)-(\vec{x}_j-\vec{\mu}_\ell)\|^2$ and use the fact that $\sum_{\vec{x}_i\in C_\ell}(\vec{x}_i-\vec{\mu}_\ell) = \vec{0}$.
+
+1. Let $\vec{x}_1,\dots,\vec{x}_4 = 0,1,9,10 \in\mathbb{R}$ and consider two candidate partitions into $k=2$ clusters: Partition A, $C_1=\{0,1\}, C_2=\{9,10\}$; and Partition B, $C_1=\{0,9\}, C_2=\{1,10\}$.
+
+    a. Compute $T_{kmeans}$ for Partition A and for Partition B.
+
+    b. Which partition does the $k$-means loss prefer? Does this match your intuition?
+
+1. Let $\vec{x}_1,\dots,\vec{x}_5 = -2,-1,0,1,10 \in \mathbb{R}$, and consider a single cluster ($k=1$) containing all five points.
+
+    a. Find the center $c$ minimizing the $k$-means loss $\sum_i (x_i-c)^2$, and compute the resulting loss.
+
+    b. Find the center $c\in\{x_1,\dots,x_5\}$ minimizing the $k$-medoids loss $\sum_i |x_i-c|$, and compute the resulting loss.
+
+    c. The outlier at $x=10$ pulls the $k$-means center far from the tight cluster of the other four points, while the $k$-medoids center stays inside it. Explain why, using the difference between squared and non-squared distance.
+
+1. Consider $\vec{x}_1,\dots,\vec{x}_6 = 1,2,3,8,9,10\in\mathbb{R}$ and $k=2$. Run Lloyd's algorithm by hand starting from initial centers $c_1=1,\, c_2=4$.
+
+    a. Find the cluster assignments and updated centers after one iteration.
+
+    b. Find the cluster assignments and updated centers after a second iteration.
+
+    c. Has the algorithm converged? How does the final partition compare to what you'd guess visually?
+
+1. Consider four points in $\mathbb{R}^2$: $A=(0,0),\, B=(1,0)$ in cluster 1, and $C=(10,0),\, D=(11,0)$ in cluster 2, using Euclidean distance.
+
+    a. Compute the silhouette $s_A$ for point $A$.
+
+    b. Compute the silhouette $s_B$ for point $B$.
+
+    c. Without further computation, state $s_C$ and $s_D$ and explain why symmetry gives you these values for free.
+
+1. Suppose we fit GMMs with $K=1,2,3$ clusters to a dataset with $N=100$ observations, obtaining maximized log-likelihoods $\log L_1^* = -150,\, \log L_2^* = -120,\, \log L_3^*=-115$, and suppose the corresponding number of free parameters are $\mathcal{P}_1=5,\,\mathcal{P}_2=11,\,\mathcal{P}_3=17$.
+
+    a. Compute $BIC_1, BIC_2,$ and $BIC_3$ using $BIC_k = 2\log L_k^* - \mathcal{P}_k \log N$.
+
+    b. Which $K$ does BIC select? Explain why this need not be the $K$ with the largest $\log L_k^*$.
+
+1. For data in $\mathbb{R}^3$ ($d=3$) with $K=4$ clusters, count the number of free parameters (means, covariance parameters, and cluster probabilities combined) under
+
+    a. the EII model (equal volume, spherical shape, no orientation to speak of), i.e. ${\bf \Sigma}_j = \lambda {\bf I}$ for all $j$.
+
+    b. the VVV model (fully unconstrained covariances).
+
+1. Given cluster densities $f_1 = \mathcal{N}(0,1)$ and $f_2 = \mathcal{N}(5,1)$ (both univariate) with equal prior probabilities $p_1=p_2=0.5$, compute the posterior probability $p(Z=1\mid x=2)$ that a point at $x=2$ belongs to cluster 1. Recall from Example \@ref(exm:gmm) that this posterior is what allows GMMs to produce "fuzzy" cluster assignments.
+
+1. Recall the kernel $k$-means distance $\|\varphi(\vec{x}_i)-\bar\varphi_\ell\|_{\mathcal{H}}^2 = k(\vec{x}_i,\vec{x}_i) - \frac{2}{|C_\ell|}\sum_{\vec{x}_j\in C_\ell}k(\vec{x}_i,\vec{x}_j) + \frac{1}{|C_\ell|^2}\sum_{\vec{x}_j,\vec{x}_{j'}\in C_\ell}k(\vec{x}_j,\vec{x}_{j'})$. Show that using the linear kernel $k(\vec{x},\vec{y})=\vec{x}^T\vec{y}$ recovers exactly the ordinary $k$-means distance $\|\vec{x}_i-\vec{\mu}_\ell\|^2$, so that kernel $k$-means with a linear kernel is just ordinary $k$-means.
+
+1. Consider four points $A,B,C,D$ with pairwise distances $d(A,B)=2,\, d(A,C)=8,\, d(A,D)=9,\, d(B,C)=7,\, d(B,D)=8,\, d(C,D)=3$.
+
+    a. Build the dendrogram using **single** linkage. At what heights do the merges occur?
+
+    b. Build the dendrogram using **complete** linkage. At what heights do the merges occur?
+
+    c. The two dendrograms agree on which points merge first, but disagree on the height of the final merge. Explain this difference in terms of the definitions of single and complete linkage.
+
+1. Using the single-linkage dendrogram from the previous exercise:
+
+    a. Write down the cophenetic distance (Definition \@ref(def:cc)) between each of the 6 pairs of points.
+
+    b. Using R, compute the cophenetic correlation coefficient between the original distances and the cophenetic distances.
+
+1. Let $C=\{\{1,2,3\},\{4,5\}\}$ be a clustering of 5 points and let $C'=\{\{1,2\},\{3,4,5\}\}$ be a reference partition (e.g. true labels).
+
+    a. Build the $2\times 2$ contingency table with entries $n_{ij}$ as in Definition \@ref(def:ari).
+
+    b. By directly examining all $\binom{5}{2}=10$ pairs, count how many are concordant (both partitions agree the pair is together, or agree it is apart) and compute the Rand Index.
+
+    c. Using your contingency table from (a) and the formula $RI(C,C') = \left[2\sum_{ij}\binom{n_{ij}}{2} + \binom{N}{2} - \sum_i\binom{n_{i\cdot}}{2}-\sum_j\binom{n_{\cdot j}}{2}\right]\big/\binom{N}{2}$, recompute the Rand Index and confirm it matches your answer to (b).
+
+    d. Compute the Adjusted Rand Index using Definition \@ref(def:ari).
+
+    e. Using a calculator or R, compute the Normalized Mutual Information using Definition \@ref(def:nmi).
+
+1. Two independent, uniformly random partitions of $N=1000$ points, each into 50 clusters of 20 points, tend to have a Rand Index well above zero even though they share no real structure. Explain why, without computing anything -- think about what fraction of pairs of points end up in *different* clusters under each partition, and how that fraction alone drives most of the agreement.
+
+1. Let $\vec{x}_1,\dots,\vec{x}_4 = 0,1,5,6\in\mathbb{R}$, and build the (unweighted, binary) neighborhood graph for spectral clustering using $\epsilon = 2$, so that $\vec{x}_i,\vec{x}_j$ are connected exactly when $|\vec{x}_i-\vec{x}_j|\le \epsilon$.
+
+    a. Write down the adjacency matrix ${\bf W}$ and graph Laplacian ${\bf L}={\bf D}-{\bf W}$.
+
+    b. Find the eigenvalues of ${\bf L}$. How many are exactly zero, and how does this relate to the number of connected components of the graph?
+
+    c. Give a pair of orthogonal eigenvectors spanning the null space of ${\bf L}$, and explain how using these as a 2-dimensional embedding followed by $k$-means with $k=2$ recovers the two connected components exactly.
+
+1. In the Kernel $k$-means section of this chapter, ordinary $k$-means fails on the nested rings example while kernel $k$-means with an rbf kernel succeeds. Using the equivalence between kernel $k$-means (with a graph-based kernel) and spectral clustering, explain conceptually why spectral clustering would also be expected to succeed on the same nested rings data.
+
+1. The `iris` dataset contains known species labels for $N=150$ flowers, giving us external ground truth to validate against.
+
+    a. Standardize the four numeric iris features, then cluster the standardized data into $k=3$ groups using $k$-means, hierarchical clustering (try both average and Ward linkage), and a Gaussian mixture model.
+
+    b. For each of the four clusterings, compute the silhouette score, the Adjusted Rand Index, and the Normalized Mutual Information against the true species labels.
+
+    c. Does the method with the best silhouette score also have the best ARI/NMI? If not, what does that tell you about relying on internal validation alone?
+
+    d. It is well known that two of the three iris species (versicolor and virginica) overlap substantially in feature space, while the third (setosa) is well separated from the other two. Does this show up in your results? Which pairs of species are most often confused by your clusterings?
+
 

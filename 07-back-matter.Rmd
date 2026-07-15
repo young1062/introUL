@@ -1,0 +1,294 @@
+# Glossary {-}
+
+**Adjusted Rand Index (ARI).** A measure of agreement between two partitions of the same data (e.g. a clustering and a set of true labels) that corrects the ordinary Rand Index for the agreement expected by chance; see Definition \@ref(def:ari).
+
+**Autoencoder.** A neural network trained to reconstruct its own input through a lower-dimensional bottleneck layer, used as a nonlinear alternative to PCA for dimension reduction; see \@ref(sec-autoencoders).
+
+**Bandwidth.** A tuning parameter (often denoted $\sigma$ or $\sigma^2$) controlling the scale of an RBF kernel or similar weighting function; larger bandwidths treat more distant points as similar.
+
+**Bayesian Information Criterion (BIC).** A model selection criterion that balances a model's goodness of fit against its number of parameters, used to choose the number of clusters in a Gaussian mixture model.
+
+**Centering matrix.** The matrix ${\bf H} = {\bf I} - \frac{1}{N}\vec{1}\vec{1}^T$, which subtracts the column means from a data matrix when applied on the left.
+
+**Chart.** A local, continuous, invertible map from a neighborhood on a manifold to Euclidean space, used to assign local coordinates to nearby points; see \@ref(sec-manifolds).
+
+**Cluster.** A subset of the data whose members are more similar to one another than to members of other subsets.
+
+**Clustering.** The unsupervised learning task of partitioning data into groups of similar observations; see Chapter \@ref(ch-clustering).
+
+**Cophenetic correlation.** The correlation between the original pairwise distances in a dataset and the heights at which pairs of points are merged in a hierarchical clustering dendrogram, used to assess how faithfully a dendrogram represents the original distances; see Definition \@ref(def:cc).
+
+**Dendrogram.** A tree diagram showing the sequence of merges (or splits) produced by hierarchical clustering.
+
+**Dimension reduction.** The unsupervised learning task of finding a lower-dimensional representation of data that preserves important relationships.
+
+**Elbow plot.** A plot of a clustering loss (e.g. total within-cluster variation) against the number of clusters $k$, used informally to select $k$ by looking for a bend, or "elbow," in the curve.
+
+**Expectation-Maximization (EM) algorithm.** An iterative algorithm for maximum likelihood estimation in models with latent variables, such as Gaussian mixture models, alternating between computing posterior cluster probabilities (E-step) and updating parameters (M-step).
+
+**Feature map.** The (possibly implicit, possibly infinite-dimensional) function $\varphi$ associated with a kernel $k$, such that $k(\vec{x},\vec{y}) = \varphi(\vec{x})^T\varphi(\vec{y})$.
+
+**Gap statistic.** A method for choosing the number of clusters $k$ by comparing the within-cluster variation of the observed data to the within-cluster variation expected under a reference distribution with no clustering structure.
+
+**Gaussian Mixture Model (GMM).** A probabilistic model for clustering in which the data are assumed to arise from a mixture of several Gaussian distributions, one per cluster; see \@ref(sec-model-based-clustering).
+
+**Geodesic distance.** The length of the shortest path between two points that stays on a manifold, as opposed to the (generally shorter) straight-line Euclidean distance between the same two points in the ambient space.
+
+**Graph Laplacian.** The matrix ${\bf L} = {\bf D} - {\bf W}$, where ${\bf W}$ is a graph's weighted adjacency matrix and ${\bf D}$ is its diagonal degree matrix; central to Laplacian eigenmaps and spectral clustering.
+
+**Hessian eigenmaps (HLLE).** A manifold learning method that recovers low-dimensional coordinates from the null space of an estimated Hessian operator on the manifold; see \@ref(sec-hessian-eigenmaps).
+
+**Intrinsic dimension.** The true (typically much smaller) dimension of the manifold on which high-dimensional data are assumed to lie.
+
+**Isometry.** A mapping between two spaces that exactly preserves distances; central to the assumptions behind ISOMAP; see Definition \@ref(def:def-isometry).
+
+**ISOMAP.** A manifold learning method that applies classical multidimensional scaling to estimated geodesic distances rather than Euclidean distances; see \@ref(sec-isomap).
+
+**$k$-center.** A center-based clustering method that chooses cluster centers (from among the data points) to minimize the *maximum* distance from any point to its assigned center; see \@ref(sec-center-based-clustering).
+
+**$k$-means.** A center-based clustering method that partitions data into $k$ clusters by minimizing the total squared Euclidean distance from each point to its cluster's mean; see \@ref(sec-center-based-clustering).
+
+**$k$-medoids.** A center-based clustering method, similar to $k$-means, that requires cluster centers to be data points and typically uses (non-squared) distance; see \@ref(sec-center-based-clustering).
+
+**Kernel.** A function $k(\vec{x},\vec{y})$ that computes an inner product in some (possibly implicit) feature space, allowing linear methods to be applied to nonlinear structure without explicitly computing the feature map; see \@ref(sec-kernel-trick).
+
+**Kernel PCA.** A nonlinear extension of PCA obtained by applying PCA to the (implicit) feature-space representation of the data via the kernel trick; see \@ref(sec-kpca).
+
+**Kernel trick.** The technique of replacing inner products $\vec{x}^T\vec{y}$ with kernel evaluations $k(\vec{x},\vec{y})$ to obtain a nonlinear version of a linear method; see \@ref(sec-kernel-trick).
+
+**Laplacian eigenmap.** A manifold learning method that recovers low-dimensional coordinates from the eigenvectors of the graph Laplacian, prioritizing the preservation of local neighborhoods; see \@ref(sec-laplacian-eigenmaps).
+
+**Linkage.** In hierarchical clustering, the rule (e.g. single, complete, average, or Ward) used to compute the dissimilarity between two clusters, each possibly containing more than one point; see \@ref(sec-hierarchical-clustering).
+
+**Loadings.** The eigenvectors of the sample covariance matrix in PCA, giving the directions along which the data vary the most.
+
+**Locally Linear Embedding (LLE).** A manifold learning method that recovers low-dimensional coordinates by preserving the local, linear reconstruction weights of each point from its nearest neighbors; see \@ref(sec-lle).
+
+**Manifold.** A space that locally resembles Euclidean space near every point, though it may be globally curved; see Definition \@ref(def:def-manifold).
+
+**Manifold hypothesis.** The assumption that observed high-dimensional data lie on or near a manifold of much smaller intrinsic dimension; see \@ref(sec-manifold-hypothesis).
+
+**Manifold learning.** The branch of nonlinear dimension reduction concerned with recovering a low-dimensional manifold structure from high-dimensional data.
+
+**Mercer's condition.** The condition a function $k$ must satisfy to be a valid kernel, namely that every kernel matrix it produces is positive semidefinite; see Theorem \@ref(thm:mercer).
+
+**Multidimensional Scaling (MDS).** A family of dimension reduction methods that find a low-dimensional configuration of points whose pairwise distances best match a given set of original distances or dissimilarities; see \@ref(sec-mds).
+
+**Neighborhood graph.** A graph connecting each data point to some set of nearby points (e.g. its $k$ nearest neighbors, or all points within distance $\epsilon$), used as the starting point for most manifold learning and spectral methods.
+
+**Nonnegative Matrix Factorization (NMF).** A dimension reduction method that factors a nonnegative data matrix into the product of two nonnegative matrices, often yielding an interpretable, parts-based representation; see \@ref(sec-nmf).
+
+**Normalized Mutual Information (NMI).** An information-theoretic measure of agreement between two partitions of the same data, normalized to lie between 0 (no shared information) and 1 (perfect agreement); see Definition \@ref(def:nmi).
+
+**Principal Component Analysis (PCA).** A linear dimension reduction method that finds the directions of maximum variance in the data; see \@ref(sec-pca).
+
+**Rand Index.** The fraction of all pairs of samples on which two partitions of the data agree (both place the pair together, or both place it apart); see Definition \@ref(def:rand-index).
+
+**Reconstruction error.** The discrepancy between the original data and its approximation after dimension reduction and (if applicable) mapping back to the original space.
+
+**Scree plot.** A plot of PCA variances (eigenvalues) against component number, used informally to choose the number of components to retain by looking for a bend, or "elbow," in the curve.
+
+**Silhouette score.** A measure of how well each point fits its assigned cluster relative to the next-closest cluster, averaged over all points to assess the quality of a clustering; see \@ref(sec-silhouette).
+
+**Singular Value Decomposition (SVD).** A matrix factorization ${\bf X} = {\bf USV}^T$ expressing any matrix as an orthogonal transformation, a scaling, and a second orthogonal transformation; closely related to PCA; see \@ref(sec-svd).
+
+**Spectral clustering.** A clustering method that partitions data using the eigenvectors of a graph Laplacian built from the data; see \@ref(sec-spec-clustering).
+
+**Tangent space.** The linear subspace that best approximates a manifold at a given point, spanned by the columns of the Jacobian of the manifold map at that point.
+
+**UMAP (Uniform Manifold Approximation and Projection).** A manifold learning method that constructs a fuzzy neighborhood graph and directly optimizes a low-dimensional embedding to match it, rather than solving an eigenvalue problem; see \@ref(sec-umap).
+
+**Unsupervised learning.** The branch of machine learning concerned with finding structure in unlabeled data, as opposed to supervised learning's focus on predicting a labeled outcome; see Chapter \@ref(intro).
+
+# Table of Notation {-}
+
+The table below collects the most frequently used notation in this book for quick reference. Some symbols are reused across chapters for closely related purposes (e.g. ${\bf W}$ denotes a graph adjacency matrix in the manifold learning and spectral clustering sections, but an NMF feature matrix in Chapter \@ref(ch-linear) and a neural network weight matrix in the autoencoder section); in these cases, the "Context" column indicates where each usage applies. A more detailed discussion of notation and conventions is given in Chapter \@ref(ch-prob).
+
+```{r, echo = FALSE, results = "asis"}
+notation <- data.frame(
+  Symbol = c(
+    "$N$", "$d$", "$t$", "$k$",
+    "$\\vec{x},\\vec{y},\\vec{z}$", "$\\vec{0},\\, \\vec{1}$", "$\\vec{x}^T$",
+    "$\\vec{x}^T\\vec{y}$", "$\\vec{x}\\vec{y}^T$", "$\\|\\vec{x}\\|$",
+    "${\\bf A},{\\bf X},{\\bf \\Sigma}$", "${\\bf A}_{ij}$", "${\\bf A}^T$",
+    "${\\bf I}$", "$Tr({\\bf B})$", "$\\det({\\bf B})$",
+    "${\\bf H}$", "$\\nabla f$", "$\\mathcal{H}f$",
+    "$\\hat{\\mu},\\, \\hat{\\bf \\Sigma}$", "$\\lambda_1,\\dots,\\lambda_d$", "$\\vec{w}_1,\\dots,\\vec{w}_d$",
+    "$k(\\vec{x},\\vec{y})$", "${\\bf K}$", "$\\varphi$",
+    "$\\mathcal{H}$", "$C_1,\\dots,C_k$", "$\\vec{\\mu}_\\ell,\\, \\vec{c}_\\ell$",
+    "$\\Psi$", "$\\mathcal{M}$", "$\\phi$",
+    "${\\bf W}$", "${\\bf D}$", "${\\bf L}$",
+    "$\\mathbb{1}(\\cdot)$", "$\\mathcal{N}(\\vec{\\mu},{\\bf \\Sigma})$", "$Z_i$"
+  ),
+  Meaning = c(
+    "Number of samples/observations", "Dimension of the original data", "Reduced or intrinsic dimension", "Number of clusters",
+    "Vectors (lowercase, arrow)", "Vector of all zeros / all ones", "Transpose of $\\vec{x}$ (a row vector)",
+    "Inner (dot) product", "Outer product (a matrix)", "Euclidean norm of $\\vec{x}$",
+    "Matrices (bold)", "Entry in row $i$, column $j$", "Transpose of ${\\bf A}$",
+    "Identity matrix", "Trace of ${\\bf B}$", "Determinant, also written $|{\\bf B}|$",
+    "Centering matrix ${\\bf I}-\\frac{1}{N}\\vec{1}\\vec{1}^T$", "Gradient of $f$", "Hessian matrix of $f$",
+    "Sample mean / sample covariance", "Eigenvalues, decreasing order", "Eigenvectors, e.g. PCA loadings",
+    "Kernel function", "Kernel matrix, ${\\bf K}_{ij}=k(\\vec{x}_i,\\vec{x}_j)$", "Feature map for a kernel",
+    "Feature space for a kernel", "A partition of the data into clusters", "Center of cluster $\\ell$",
+    "A manifold map, $\\vec{x}_i = \\Psi(\\vec{z}_i)$", "A manifold", "A chart on a manifold",
+    "Graph adjacency/weight matrix; also NMF and neural net weights", "Diagonal degree matrix of a graph", "Graph Laplacian, ${\\bf L}={\\bf D}-{\\bf W}$",
+    "Indicator function (1 if true, else 0)", "Multivariate normal, mean $\\vec{\\mu}$, cov. ${\\bf \\Sigma}$", "Latent cluster label for sample $i$"
+  ),
+  Context = c(
+    "General", "General", "Manifold learning", "Clustering",
+    "General", "General", "General",
+    "General", "General", "General",
+    "General", "General", "General",
+    "General", "General", "General",
+    "Ch. 2, 4", "Ch. 2", "Ch. 2",
+    "Ch. 2, 4", "Ch. 4", "Ch. 4",
+    "Ch. 5-6", "Ch. 5-6", "Ch. 5",
+    "Ch. 5", "Ch. 6", "Ch. 6",
+    "Ch. 5", "Ch. 5", "Ch. 5",
+    "Ch. 5-6", "Ch. 5-6", "Ch. 5-6",
+    "General", "General", "Ch. 6"
+  )
+)
+tbl_format <- if (knitr::is_latex_output()) "latex" else if (knitr::is_html_output()) "html" else "pipe"
+if (knitr::is_latex_output()) cat("\\footnotesize\n\n")
+print(knitr::kable(notation, format = tbl_format,
+             col.names = c("Symbol", "Meaning", "Context"),
+             align = "llc", escape = FALSE))
+if (knitr::is_latex_output()) cat("\n\\normalsize\n")
+```
+
+# Index {- #book-index}
+
+This index points to the section, definition, or theorem where each topic is introduced, rather than to a page number, so that it remains equally useful in the PDF and web editions of this book.
+
+**A**
+
+- Adjusted Rand Index, Definition \@ref(def:ari)
+- Association rules (out of scope for this book), \@ref(intro)
+- Autoencoders, \@ref(sec-autoencoders)
+
+**B**
+
+- Bayesian Information Criterion (BIC), \@ref(sec-model-based-clustering)
+- Bottleneck (autoencoder), \@ref(sec-autoencoders)
+
+**C**
+
+- Centering matrix, \@ref(intro)
+- Charts and atlases, \@ref(sec-manifolds)
+- Classical (metric) scaling, \@ref(sec-mds)
+- Cluster validation, \@ref(sec-cluster-validation)
+- Clustering, overview, Chapter \@ref(ch-clustering)
+  - Center-based, \@ref(sec-center-based-clustering)
+  - Hierarchical, \@ref(sec-hierarchical-clustering)
+  - Kernel $k$-means, \@ref(sec-kernel-kmeans)
+  - Model-based (GMM), \@ref(sec-model-based-clustering)
+  - Spectral, \@ref(sec-spec-clustering)
+- Cophenetic correlation, Definition \@ref(def:cc)
+- Covariance constraints (GMM), \@ref(sec-model-based-clustering)
+
+**D**
+
+- Dendrograms, \@ref(sec-hierarchical-clustering)
+- Determinant, \@ref(intro)
+- Dimension reduction, overview, \@ref(intro)
+
+**E**
+
+- Eckart-Young-Mirsky Theorem, Theorem \@ref(thm:svd-frob)
+- Eigenmaps, see *Laplacian eigenmap*, *Hessian eigenmaps*
+- Elbow plot, \@ref(sec-center-based-clustering)
+- Expectation-Maximization (EM) algorithm, \@ref(sec-model-based-clustering)
+
+**F**
+
+- Feature map, \@ref(sec-kernel-trick)
+
+**G**
+
+- Gap statistic, \@ref(sec-center-based-clustering)
+- Gaussian Mixture Models, \@ref(sec-model-based-clustering)
+- Geodesic distance, \@ref(sec-isomap)
+- Graph Laplacian, \@ref(sec-laplacian-eigenmaps)
+
+**H**
+
+- Hessian eigenmaps (HLLE), \@ref(sec-hessian-eigenmaps)
+- Hierarchical clustering, \@ref(sec-hierarchical-clustering)
+
+**I**
+
+- Intrinsic dimension, \@ref(sec-manifolds)
+- Isometry, Definition \@ref(def:def-isometry)
+- ISOMAP, \@ref(sec-isomap)
+
+**K**
+
+- $k$-center, \@ref(sec-center-based-clustering)
+- $k$-means, \@ref(sec-center-based-clustering)
+  - Kernel $k$-means, \@ref(sec-kernel-kmeans)
+  - Lloyd's algorithm, \@ref(sec-center-based-clustering)
+- $k$-medoids, \@ref(sec-center-based-clustering)
+- Kernel PCA, \@ref(sec-kpca)
+- Kernel trick, \@ref(sec-kernel-trick)
+
+**L**
+
+- Laplacian eigenmap, \@ref(sec-laplacian-eigenmaps)
+- Linkage (single, complete, average, Ward), \@ref(sec-hierarchical-clustering)
+- Loadings (PCA), \@ref(sec-pca)
+- Locally Linear Embeddings (LLE), \@ref(sec-lle)
+
+**M**
+
+- Manifold, Definition \@ref(def:def-manifold)
+- Manifold distance, Definition \@ref(def:def-manifold-dist)
+- Manifold hypothesis, \@ref(sec-manifold-hypothesis)
+- Manifold learning, overview, Chapter \@ref(ch-nonlinear)
+- Mercer's condition, Theorem \@ref(thm:mercer)
+- MNIST dataset, \@ref(intro)
+- Multidimensional Scaling (MDS), \@ref(sec-mds)
+
+**N**
+
+- NCI60 tumor microarray dataset, \@ref(sec-cluster-validation)
+- Neighborhood graph, \@ref(sec-isomap)
+- Nonnegative Matrix Factorization (NMF), \@ref(sec-nmf)
+- Normalized Mutual Information, Definition \@ref(def:nmi)
+
+**P**
+
+- Principal Component Analysis (PCA), \@ref(sec-pca)
+  - First PCA loading, Definition \@ref(def:first-pca)
+  - Optimality of PCA, Theorem \@ref(thm:pca-opt)
+  - PCA and eigendecomposition, Theorem \@ref(thm:pca-eig)
+
+**R**
+
+- Rand Index, Definition \@ref(def:rand-index)
+- Recommendation systems, \@ref(sec-svd)
+- Reinforcement learning, \@ref(intro)
+
+**S**
+
+- Scree plot, \@ref(sec-pca)
+- Self-supervised learning, \@ref(intro)
+- Semi-supervised learning, \@ref(intro)
+- Silhouette score, \@ref(sec-silhouette)
+- Singular Value Decomposition (SVD), \@ref(sec-svd)
+- Spectral clustering, \@ref(sec-spec-clustering)
+- Supervised learning, \@ref(intro)
+
+**T**
+
+- Tangent space, \@ref(sec-manifolds)
+
+**U**
+
+- UMAP, \@ref(sec-umap)
+- Unifying view (manifold learning as kernel PCA), \@ref(sec-unifying-view)
+- Unsupervised learning, definition, \@ref(intro)
+
+**W**
+
+- Ward linkage, \@ref(sec-hierarchical-clustering)

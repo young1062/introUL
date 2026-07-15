@@ -186,7 +186,7 @@ We then use triplets of \underline{E}qual, \underline{V}ariable, and \underline{
 
 For each covariance model, we can count the associated number of parameters and compute BIC accordingly. As a result, we have quantitative method for choosing the number of clusters and the optimal covariance model (for a given number of clusters). GMMs (with the help of the EM algorithm for fitting) provide a self-contained clustering framework with easy to interpret model selection criteria. However, there are inherent limitations which should be addressed.
 
-### Weakneses and Limitations
+### Weaknesses and Limitations
 
 Unlike center-based methods, GMMs allow for a greater level of flexibility in the shapes of clusters (ellipses vs spheres). However, ellipsoids may still be inadequate choices a cluster supported on or near a nonlinear manifold.  For example, in the **smile** data below.
 

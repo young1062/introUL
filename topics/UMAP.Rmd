@@ -12,7 +12,7 @@ myColorRamp <- function(colors, values) {
 }
 ```
 
-## Uniform Manifold Approximation and Projection (UMAP)
+## Uniform Manifold Approximation and Projection (UMAP) {#sec-umap}
 
 ### Introduction
 

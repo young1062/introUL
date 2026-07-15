@@ -1,4 +1,4 @@
-## Kernel PCA
+## Kernel PCA {#sec-kpca}
 
 Suppose we have a kernel $k$ and associated feature map $\varphi$.  In kernel PCA, we want to apply to PCA to the featurized data $\varphi(\vec{x}_1),\dots,\varphi(\vec{x}_N)$ rather than the original data.  The idea is that by studying the featurized data, we can identify additional nonlinear structure in the features that provides a better lower-dimensional representation of the data.  We have discussed three approaches to computing PC scores to data: (i) diagonalization of the sample covariance, (ii) applying SVD to the centered data, and (iii) using the duality of PCA and classical scaling.  
 
@@ -29,7 +29,7 @@ scatterplot3d::scatterplot3d(helix, xlab = '', ylab = '', zlab = '')
 From these graphs, one would infer very different lower dimensional choices depending on the kernel and parameters. The polynomial kernel provides the most robust estimate of the one-dimensional nature of the data.
 
 
-```{r, echo = FALSE, fig.cap="kPCA Variances for different Kernels"}
+```{r, echo = FALSE, message = FALSE, fig.cap="kPCA Variances for different Kernels"}
 library("kernlab")
 out1 <- kpca(helix, kernel = "rbfdot", kpar = list(sigma = 1))
 out2 <- kpca(helix, kernel = "rbfdot", kpar = list(sigma = 0.5))
