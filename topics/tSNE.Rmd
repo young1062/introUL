@@ -1,0 +1,98 @@
+
+```{r tsne-setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, cache = TRUE)
+set.seed(1)
+require("Rtsne")
+require("scatterplot3d")
+
+myColorRamp <- function(colors, values) {
+    v <- (values - min(values))/diff(range(values))
+    x <- colorRamp(colors)(v)
+    rgb(x[,1], x[,2], x[,3], maxColorValue = 255)
+}
+```
+
+## t-Distributed Stochastic Neighbor Embedding (t-SNE) {#sec-tsne}
+
+### Introduction
+
+t-SNE was introduced by van der Maaten and Hinton in 2008 [@tsne] and, alongside UMAP, remains one of the two most widely used tools for visualizing high-dimensional data. Like UMAP, t-SNE is a local method built from a notion of neighborhood rather than the pairwise geodesic distances used by ISOMAP, and like UMAP, it produces its embedding by directly optimizing the positions of low-dimensional points rather than solving a single eigenvalue problem. The two methods share this same basic recipe -- build an affinity between points in $\mathbb{R}^d$, build a comparable affinity between candidate points in $\mathbb{R}^t$, and move the candidate points to make the two affinities agree -- and, as we will see later in this chapter, this shared recipe is not a coincidence (\@ref(sec-unifying-view)). The interesting differences between the methods are in the details of how each affinity is built and what notion of "agreement" each one optimizes.
+
+### Algorithm
+
+#### Affinities in the original space
+
+As with Laplacian eigenmaps and UMAP, we begin by turning distances in $\mathbb{R}^d$ into affinities. For each $\vec{x}_i$, t-SNE defines a conditional probability that $\vec{x}_i$ would pick $\vec{x}_j$ as its neighbor,
+$$p_{j|i} = \frac{\exp\left(-\|\vec{x}_i-\vec{x}_j\|^2/2\sigma_i^2\right)}{\sum_{k\ne i} \exp\left(-\|\vec{x}_i-\vec{x}_k\|^2/2\sigma_i^2\right)}, \qquad p_{i|i}=0,$$
+using a Gaussian centered at $\vec{x}_i$ with its own bandwidth $\sigma_i$. As in UMAP, this bandwidth is calibrated locally rather than shared across the whole dataset: $\sigma_i$ is chosen (by binary search) so that the Shannon entropy of $\{p_{j|i}\}_{j\ne i}$ equals $\log_2(\text{Perp})$ for a user-specified *perplexity*, which is best understood as a smooth stand-in for the number of effective neighbors of $\vec{x}_i$ -- points in dense regions get a small $\sigma_i$ and points in sparse regions get a large one, so that every point ends up with roughly the same amount of "neighborhood mass" regardless of local density. This is precisely the same density-adaptivity problem that motivated UMAP's local bandwidth $\sigma_i$ (\@ref(sec-umap)), solved with a different calibration target.
+
+Since $p_{j|i}$ need not equal $p_{i|j}$, we symmetrize by averaging,
+$$p_{ij} = \frac{p_{j|i}+p_{i|j}}{2N}.$$
+
+#### Affinities in the embedding and the crowding problem
+
+Given candidate low-dimensional points $\vec{y}_1,\dots,\vec{y}_N\in\mathbb{R}^t$, the most direct approach would define an analogous Gaussian affinity $q_{ij}$ in the embedding and ask that $q_{ij}$ match $p_{ij}$ as closely as possible. This is essentially what earlier methods (including the original SNE that t-SNE improves on) did, and it runs into a real geometric obstruction.
+
+Think about how much "room" there is around a point at a given distance $r$ in $\mathbb{R}^d$: the volume of a thin shell of radius $r$ grows like $r^{d-1}$, so in high dimensions there is an enormous amount of space available at moderate distances -- room enough for many points to sit at a similar, moderate similarity to $\vec{x}_i$. A two- or three-dimensional embedding has nowhere near this much room. If we insist on reproducing every moderate high-dimensional affinity with an equally moderate low-dimensional distance, the embedding is forced to crowd unrelated points close together simply because there isn't enough space to spread them all out -- distinct clusters end up squeezed into the middle of the picture. This is known as the **crowding problem**.
+
+t-SNE's fix is to give the embedding a different, heavier-tailed notion of affinity than the original space uses. Instead of a Gaussian, we use a Student-t distribution with one degree of freedom (a Cauchy distribution),
+$$q_{ij} = \frac{\left(1+\|\vec{y}_i-\vec{y}_j\|^2\right)^{-1}}{\sum_{k\ne \ell} \left(1+\|\vec{y}_k-\vec{y}_\ell\|^2\right)^{-1}}, \qquad q_{ii}=0.$$
+The Cauchy density decays polynomially ($\propto \|\vec{y}_i-\vec{y}_j\|^{-2}$) rather than the Gaussian's exponential decay, so a moderate affinity $p_{ij}$ can now be matched by $q_{ij}$ at a *larger* embedded distance than a same-shaped Gaussian would have allowed. Geometrically, this hands moderately dissimilar points an escape route: they are permitted to drift apart in the embedding while genuinely close neighbors -- which still require a small $\|\vec{y}_i-\vec{y}_j\|$ to produce a large $q_{ij}$ -- remain tightly packed. The mismatch between the two tail shapes is doing real work here, actively pushing weakly related points apart to make room for the points that matter.
+
+#### Optimizing the embedding
+
+With both sets of affinities in hand, t-SNE chooses $\vec{y}_1,\dots,\vec{y}_N$ to minimize the Kullback-Leibler divergence between them,
+$$C(\vec{y}_1,\dots,\vec{y}_N) = \sum_{i\ne j} p_{ij}\log\left(\frac{p_{ij}}{q_{ij}}\right).$$
+This loss is asymmetric in a useful way: it penalizes using a small $q_{ij}$ to represent a large $p_{ij}$ far more heavily than the reverse, so the optimization prioritizes keeping genuine neighbors close over faithfully preserving large distances. Minimizing $C$ via gradient descent produces a force not unlike UMAP's attractive and repulsive forces (\@ref(sec-umap)): pairs with $p_{ij} > q_{ij}$ pull $\vec{y}_i$ and $\vec{y}_j$ together, while pairs with $p_{ij} < q_{ij}$ push them apart. In practice, the optimization is initialized (often from a small random configuration or a PCA projection), run with momentum to speed convergence, and typically uses an "early exaggeration" phase which temporarily inflates the $p_{ij}$ to encourage well-separated clusters to form before fine details are refined.
+
+::: {.example #tsne-swiss name="t-SNE applied to the Swiss Roll"}
+
+Let's revisit the swiss roll one more time and compare t-SNE's embedding to what we've seen from ISOMAP, LLE, and UMAP.
+
+```{r, echo = FALSE, fig.cap = "The Swiss Roll (left) and its t-SNE embedding (right)"}
+N <- 2000
+s <- runif(N, min = pi/2, max = 9*pi/2)
+t <- runif(N, min = 0, max = 15)
+swiss <- cbind(s*sin(s), s*cos(s), t)
+embedding <- Rtsne(swiss, dims = 2, perplexity = 30, check_duplicates = FALSE)$Y
+par(mfrow = c(1,2))
+scatterplot3d(swiss, color = myColorRamp(c("red","purple","blue","green","yellow"), s),
+              xlab = "", ylab = "", zlab = "", main = "Swiss Roll", cex.symbols = 0.3, angle = 90)
+plot(embedding[,1], embedding[,2], col = myColorRamp(c("red","purple","blue","green","yellow"), s),
+     xlab = "", ylab = "", main = "t-SNE Embedding", pch = 16, cex = 0.5)
+```
+
+Like UMAP, t-SNE successfully separates the roll along its length, and the coloring confirms that nearby points on the manifold remain nearby in the embedding. Also like UMAP, the result is not a faithful rectangle -- t-SNE has stretched, compressed, and torn the manifold into disconnected pieces in a few places, a direct consequence of the crowding problem discussion above: the algorithm is actively trading distance-fidelity for the breathing room needed to keep local neighborhoods intact.
+
+:::
+
+### Strengths and Weaknesses
+
+#### Strengths
+
+1) **Excellent at revealing cluster structure**
+
+The combination of the asymmetric KL loss and the heavy-tailed embedding affinity makes t-SNE particularly good at pulling apart genuinely distinct clusters, which is a large part of why it became a default first step for visualizing datasets such as single-cell genomic data or the internal representations learned by neural networks.
+
+2) **Few conceptual moving parts**
+
+Beyond the perplexity, there are relatively few choices to make, and the perplexity itself has a fairly direct interpretation (an effective neighborhood size) that makes it easier to reason about than some of the tuning parameters of other methods.
+
+3) **Directly addresses a real geometric obstruction**
+
+Unlike methods that inherit a single fixed notion of similarity from the ambient space, t-SNE's use of mismatched tail behavior between $p_{ij}$ and $q_{ij}$ is a deliberate, principled response to the crowding problem, not an incidental design choice.
+
+#### Weaknesses
+
+1) **Distances and cluster sizes are not meaningful**
+
+As with UMAP, t-SNE prioritizes neighborhoods over distances. The size of a cluster in a t-SNE plot and the gap between two clusters are both driven largely by the optimization and the perplexity, not by the true geometry of the data, and should not be over-interpreted.
+
+2) **No natural out-of-sample extension**
+
+t-SNE optimizes the positions of a fixed set of points directly; there is no manifold map $\Psi$ or its inverse to apply to a new observation, so embedding new data typically requires rerunning the entire optimization (or falling back on a separate out-of-sample heuristic).
+
+3) **Sensitive to perplexity, and computationally demanding**
+
+Very different perplexities can produce visually different embeddings of the same data, and unlike UMAP's spectral initialization, t-SNE's optimization has no principled starting point, so different runs (or different random initializations) can converge to different local optima. The $O(N^2)$ cost of the exact pairwise affinities above also makes t-SNE slower than UMAP on large datasets in practice, though accelerated approximations (e.g. Barnes-Hut and FFT-based variants) are commonly used to mitigate this.
+

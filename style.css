@@ -1,3 +1,15 @@
+/* Suppress pandoc's auto-generated title/author/date block on the landing
+   page -- the Preface section below it already shows the title, authors,
+   and cover image in a custom layout, so this default block is redundant. */
+#header {
+  display: none;
+}
+/* Hide the visible "Preface" heading on the landing page -- the cover image
+   should be the first thing seen. The sidebar nav still shows "Preface" for
+   orientation, since that comes from the heading text, not this element. */
+#preface > h1 {
+  display: none;
+}
 p.caption {
   color: #777;
   margin-top: 10px;

@@ -10,7 +10,7 @@ Matrices will be denoted in **bold** so that ${\bf A}\in\mathbb{R}^{m\times n}$ 
 
 Using this above notation, we may also define the inner product and outer product of two vectors.  For vectors $\vec{x}$ and $\vec{y}$, the inner product or dot product of $\vec{x}$ and $\vec{y}$ is the scalar $\vec{x}^T \vec{y} = \sum_{i=1}^d x_i y_i$. Alternatively, we may also consider the outer product $\vec{x}\vec{y}^T$ which is a matrix such that $(\vec{x} \vec{y}^T)_{ij} = x_i y_j.$ For the inner product to be well defined $\vec{x}$ and $\vec{y}$ must have the same dimension.  This is not the case for the outer product. If $\vec{x}\in\mathbb{R}^m$ and $\vec{y}\in\mathbb{R}^n$ then $\vec{x} \vec{y}^T \in \mathbb{R}^{m\times n}.$ If we view a $d$-dimensional vector as a $d\times 1$ matrix, then both of these algebraic computations are completely consistent with standard matrix multiplication which we will revisit near the end of this chapter.
 
-Let $f:\mathbb{R}^d\to \mathbb{R}$ be a function of $d$-dimensional vector $\vec{x}$.  Then we define the gradient of $f$ with respect to $\vec{x}$, denoted $\nabla f$, to be the $d$-dimensional vector of partial deriviates of $f$ with respect to the coordinates of $\vec{x}$ so that $$\nabla f = \begin{bmatrix} \frac{\partial f}{ \partial x_1} \\ \vdots \\ \frac{\partial f}{\partial x_d} \end{bmatrix}.$$  The Hessian matrix of $f$ with respect to $\vec{x}$, denoted as $\mathcal{H}f$, is the $d\times d$ matrix of second order partial derivatives of $f$ with respect to the coordinates of $\vec{x}$ so that $(\mathcal{H}f)_{ij} = \frac{\partial^2 f}{\partial x_i \partial x_j}$. If we are considering a function of multiple vector valued variables, e.g. $f(\vec{x},\vec{y},\vec{z})$ then we use $\nabla_{\vec{x}}$ to denote the gradient of $f$ w.r.t. the vector $\vec{x}$ only. 
+Let $f:\mathbb{R}^d\to \mathbb{R}$ be a function of $d$-dimensional vector $\vec{x}$.  Then we define the gradient of $f$ with respect to $\vec{x}$, denoted $\nabla f$, to be the $d$-dimensional vector of partial deriviates of $f$ with respect to the coordinates of $\vec{x}$ so that $$\nabla f = \begin{bmatrix} \frac{\partial f}{ \partial x_1} \\ \vdots \\ \frac{\partial f}{\partial x_d} \end{bmatrix}.$$  The Hessian matrix of $f$ with respect to $\vec{x}$, denoted as $\nabla^2 f$, is the $d\times d$ matrix of second order partial derivatives of $f$ with respect to the coordinates of $\vec{x}$ so that $(\nabla^2 f)_{ij} = \frac{\partial^2 f}{\partial x_i \partial x_j}$. If we are considering a function of multiple vector valued variables, e.g. $f(\vec{x},\vec{y},\vec{z})$ then we use $\nabla_{\vec{x}}$ to denote the gradient of $f$ w.r.t. the vector $\vec{x}$ only. 
 
 
 ## Random vectors in $\mathbb{R}^d$
@@ -150,11 +150,11 @@ In many cases, we'll consider a collection of $N$ $iid$ vectors $\vec{x}_1,\dots
 
 Similarly, we define the sample covariance matrix to be 
 \begin{equation}
-{\bf \bar{\Sigma}} = \frac{1}{N} \sum_{i=1}^N (\vec{x}_i - \bar{x})(\vec{x}_i - \bar{X})^T = \left(\frac{1}{N}\sum_{i=1}^N \vec{x}_i\vec{x}_i^T\right) - \bar{x}\bar{x}^T
+{\bf \bar{\Sigma}} = \frac{1}{N} \sum_{i=1}^N (\vec{x}_i - \bar{x})(\vec{x}_i - \bar{x})^T = \left(\frac{1}{N}\sum_{i=1}^N \vec{x}_i\vec{x}_i^T\right) - \bar{x}\bar{x}^T
 (\#eq:def-sample-covariance)
 \end{equation}
 In \@ref(eq:def-sample-covariance), dividing by $N$ rather than $N-1$ yields biased estimates of the terms of the sample covariance matrix.  However, the final formula in \@ref(eq:def-sample-covariance) more directly matches the corresponding term in the definition of the covariance matrix.  Had we used a factor of $1/(N-1)$ instead, we would have 
-$$\frac{1}{N-1}\sum_{i=1}^N (\vec{x}_i - \bar{X})(\vec{x}_i - \bar{X})^T = \left(\frac{1}{N}\sum_{i=1}^N \vec{x}_i\vec{x}_i^T\right) - \frac{N}{N-1}\bar{x}\bar{x}^T$$ which is slightly more cumbersome.  In the examples we will consider, $N$ will typically be large enough so that the numerical difference is small. As such, we will opt for algebraically convenient definition form of \@ref(eq:def-sample-covariance) as our definition of the sample covariance matrix.  
+$$\frac{1}{N-1}\sum_{i=1}^N (\vec{x}_i - \bar{x})(\vec{x}_i - \bar{x})^T = \left(\frac{1}{N}\sum_{i=1}^N \vec{x}_i\vec{x}_i^T\right) - \frac{N}{N-1}\bar{x}\bar{x}^T$$ which is slightly more cumbersome.  In the examples we will consider, $N$ will typically be large enough so that the numerical difference is small. As such, we will opt for algebraically convenient definition form of \@ref(eq:def-sample-covariance) as our definition of the sample covariance matrix.  
 
 Alternatively, we can view the sample mean and sample covariance as the mean and covariance (using expectation rather than averages) of the empirical distribution from a collection of samples $\vec{x}_1,\dots,\vec{x}_N$ defined below.
 
@@ -446,9 +446,15 @@ Unlike standard matrix multiplication, the Hadamard product $\odot$ is commutati
 
 Furthermore, we define Hadamard powers as
 $${\bf A}^{\circ k} \in\mathbb{R}^{m\times n} \text{ such that } \left({\bf A}^{\circ k}\right)_{ij} = \left({\bf A}_{ij}\right)^k.$$
-For the special case $k=-1$, we refer to ${\bf A}^{\circ (-1)}$ as the Hadamard inverse.  
+For the special case $k=-1$, we refer to ${\bf A}^{\circ (-1)}$ as the Hadamard inverse.
 
+## Summary
 
+This chapter built the mathematical vocabulary the rest of the book relies on, but it is worth pausing to notice that almost every piece of it is secretly geometric. A random vector's covariance matrix is not just a table of variances and covariances -- its eigendecomposition ${\bf \Sigma} = {\bf Q\Lambda Q}^T$ describes an ellipsoid, with the eigenvectors giving the ellipsoid's axes and the eigenvalues giving their lengths. This picture is what makes a multivariate Gaussian's density contours literal ellipses (or ellipsoids) in $\mathbb{R}^d$, and it is the same picture we will lean on repeatedly once we start asking which directions in a dataset carry the most information.
+
+Quadratic forms $\vec{x}^T{\bf A}\vec{x}$ generalize this idea beyond a fixed distribution: any symmetric matrix ${\bf A}$ defines a quadratic surface, and positive semidefiniteness is exactly the statement that this surface curves upward in every direction, never downward. We will see this exact condition reappear as Mercer's condition for a valid kernel (\@ref(sec-kernel-trick)) and as the reason a graph Laplacian's eigenvalues are always nonnegative (\@ref(sec-laplacian-eigenmaps)) -- two settings that look unrelated to covariance matrices at first glance, but rest on the same underlying geometric fact. Gradients and Hessians extend this local, curvature-based way of thinking to arbitrary smooth functions, and will return in force when we discuss how a function behaves on a curved manifold rather than a flat Euclidean space (\@ref(sec-hessian-eigenmaps)).
+
+The throughline is this: almost everything unsupervised learning does is a statement about the *shape* of data -- its spread, its curvature, its local structure -- and the algebra in this chapter is simply the language for making those shapes precise. Keep that in mind as a guide going forward, since the specific tool (an eigendecomposition, a norm, a trace) will change from method to method, but the goal of describing geometric structure will not.
 
 ## Exercises
 
@@ -524,7 +530,7 @@ $$\vec{\mu} = \begin{pmatrix}
 
 ### Calculus
 
-1. Let $f(\vec{x}) = \vec{x}^T {\bf A}\vec{x}$ for a vector $\vec{x}\in \mathbb{R}^d$ and a matrix ${\bf A}\in\mathbb{R}^{d\times d}$ which is constant.  Give expressions for $\nabla f$ and $\mathcal{H} f$ using only matrices and vectors (no summation notation is allowed).
+1. Let $f(\vec{x}) = \vec{x}^T {\bf A}\vec{x}$ for a vector $\vec{x}\in \mathbb{R}^d$ and a matrix ${\bf A}\in\mathbb{R}^{d\times d}$ which is constant.  Give expressions for $\nabla f$ and $\nabla^2 f$ using only matrices and vectors (no summation notation is allowed).
 
 1. Let $\vec{x}\in\mathbb{R}^m$ and $\vec{y}\in\mathbb{R}^n$.  Compute the gradient of $\|\vec{x}\vec{y}^T\|_F^2$ with respect to $\vec{x}$.  
 

@@ -1,1 +1,16 @@
 \usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tikz}
+
+\makeatletter
+\renewcommand{\maketitle}{%
+\begin{titlepage}
+\begin{tikzpicture}[remember picture, overlay]
+\node[anchor=center] at (current page.center) {\includegraphics[width=\paperwidth]{images/IntroUL_cover.png}};
+\node[anchor=north, text width=0.85\paperwidth, align=center, yshift=-1.8cm] at (current page.north) {\color{white}\Huge\bfseries \@title};
+\node[anchor=south, text width=0.85\paperwidth, align=center, yshift=1.6cm] at (current page.south) {\color{white}\Large \@author};
+\end{tikzpicture}
+\end{titlepage}
+}
+\makeatother

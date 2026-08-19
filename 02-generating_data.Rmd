@@ -2,7 +2,7 @@
 library(MASS)
 library(threejs)
 ```
-# Central goals and assumptions
+# Central goals and assumptions {#ch-goals}
 
 In the remainder of this text, we will largely focus on the case where we are given a dataset containing samples $\vec{x}_1,\dots,\vec{x}_N \in \mathbb{R}^d$.  We will assume that the vectors were drawn independently from some unknown data generating process.  As we discussed briefly in Chapter \@ref(intro), in UL we want to learn important relationships within the dataset that can provide a simplified but meaningful summary of the data. The central assumption to UL is that such structure exists, though the specifics vary depending on the setting.  
 
@@ -84,13 +84,43 @@ Let $\Phi:\mathbb{R}^t\to\mathbb{R}^t$ be an invertible function.  As an example
 We will review a small collection of different methods which address the manifold learning problem in Chapter \@ref(ch-nonlinear).  Many of these methods are motivated based on important concepts from differential geometry, the branch of mathematics focused on manifolds.  Many of the details of differential geometry are beyond the scope of this book, so we will focus on a few key ideas when we return to this topic. For the more mathematically-minded reader, see [@spivak;@jm_lee].
 
 
-## Clustering
+## Clustering {#sec-clustering-hypothesis}
 
 ::: {.hypothesis #clustering-hypothesis name="Clustering Hypothesis"}
 The points in a dataset can be grouped into well defined subsets. Points in each subset are similar and points in different subsets are not.
 :::
 
 The cluster hypothesis suggests there are non-overlapping regions. Within each region there are (many) similar points, and there are no points whose are comparably similar to those in more than one subset.
+
+Turning this hypothesis into a working method for finding clusters ourselves raises a number of questions:
+
+i) how many clusters (if any) exist?
+ii) what do we mean by similar observations?
+
+As we will see through a series of examples, these two points are linked. Given a notion of similarity (which is implicitly defined for some clustering algorithms and tuneable for others), a certain number of clusters and clustering of data may be optimal. Given a different notion of similarity, an entirely different organization of the data into a different number of clusters may arise.
+
+For now, let us focus on the latter question regarding similarity.  Consider the following three examples of data sets in $\mathbb{R}^2$.  Visually, how would you cluster the observations? In particular, how many subgroups would you say exist and how would your partition the data into these subgroups?
+
+::: {.example #clusterwhat name="Different notions of similar subgroups"}
+
+```{r ex-cluster, fig.align='center', fig.width=10, echo = FALSE}
+set.seed(185)
+library("MASS")
+N <- 200
+rho <- 3/4
+data1 <- matrix(rnorm(N*2, mean = -2), nrow = N) + matrix((runif(N) < 0.5),nrow = N) %*% matrix(c(4,4),nrow = 1)
+data2 <- rbind(mvrnorm(N/2, mu = c(-2,-2), Sigma = matrix(c(1,rho,rho,1),nrow = 2)),
+               mvrnorm(N/2, mu = c(2,2), Sigma = matrix(c(1,-rho,-rho,1),nrow = 2)))
+data3 <- matrix(rnorm(N*2), nrow = N)
+data3 <- diag(1 + (runif(N) < 0.5) + (runif(N) < 0.5)) %*% diag(1/sqrt(diag(data3 %*% t(data3)))) %*% data3
+par(mfrow = c(1,3))
+plot(data1, xlab = '', ylab = '', main = "Case 1")
+plot(data2, xlab = '', ylab = '', main = "Case 2")
+plot(data3, xlab = '', ylab = '', main = "Case 3")
+```
+:::
+
+The questions posed above can be reasonably answered based on the figures but will not be so easy in high dimensions.  We'll explore these questions and discuss data driven ways to estimate the appropriate number of clusters for a specific algorithm in Chapter \@ref(ch-clustering).
 
 ## Generating synthetic data 
 
@@ -235,6 +265,12 @@ for (i in 1:N){
 plot(X, col = c("blue","red")[z+1], xlab =expression(x[1]),ylab =expression(x[2]))
 ```
 :::
+
+## Summary
+
+Underneath the specific algorithms in the chapters ahead, unsupervised learning almost always rests on one of two geometric beliefs about the data cloud $\vec{x}_1,\dots,\vec{x}_N$: either the points lie near a lower-dimensional surface (the manifold hypothesis, \@ref(sec-manifold-hypothesis)), or the points separate into visually distinct subgroups (the clustering hypothesis, \@ref(sec-clustering-hypothesis)). These are genuinely different assumptions -- a single, connected Swiss roll satisfies the first without remotely satisfying the second, while several well-separated blobs can satisfy the second without lying near any interesting low-dimensional surface at all -- and much of the difficulty in unsupervised learning comes from not knowing in advance which picture, if either, actually describes your data.
+
+It's worth internalizing that these two pictures are not competitors so much as two different lenses for the same underlying question: what shape does this data cloud have? Dimension reduction asks how thin the cloud is; clustering asks how disconnected it is. A dataset can be well described by neither, by one, or by both simultaneously -- the nested rings we'll revisit throughout Chapter \@ref(ch-clustering) are simultaneously a union of two one-dimensional manifolds *and* two well-separated clusters. Since we rarely know the ground truth, we build synthetic examples with a known geometry precisely so that we can watch each method succeed or fail against a shape we understand completely, before ever trusting it on real data whose shape we don't.
 
 ## Exercises
 

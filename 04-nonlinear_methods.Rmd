@@ -177,6 +177,10 @@ SVD and PCA still have their uses thanks to the locally Euclidean nature of mani
 ```{r child = 'topics/hessian_eigenmaps.Rmd'}
 ```
 
+<!-- t-SNE -->
+```{r child = 'topics/tSNE.Rmd'}
+```
+
 <!-- UMAP -->
 ```{r child = 'topics/UMAP.Rmd'}
 ```
@@ -200,6 +204,14 @@ Having covered ISOMAP, LLE, and Laplacian eigenmaps, it is worth stepping back t
 **Laplacian eigenmaps.** By the same flip argument, the Laplacian eigenmap embedding built from the smallest nontrivial eigenvectors of ${\bf L}_{sym}$ is the kernel PCA embedding using the (Moore-Penrose) pseudoinverse ${\bf K}_{\text{LE}} = {\bf L}_{sym}^{\dagger}$ as the kernel matrix.
 
 Two consequences follow from this unifying view.  First, it explains why these methods behave so differently from kernel PCA with a fixed kernel like the rbf kernel.  The matrices ${\bf K}_{\text{ISOMAP}}$, ${\bf K}_{\text{LLE}}$, and ${\bf K}_{\text{LE}}$ are all built from the entire training sample (through a $k$-nearest-neighbor graph), rather than from a function $k(\vec{x},\vec{y})$ that can be evaluated on two arbitrary points.  This is precisely why ordinary kernel PCA readily extends to new, out-of-sample points while ISOMAP, LLE, and Laplacian eigenmaps do not -- doing so requires a Nyström-type approximation of the relevant kernel [@ham_kernel_view].  Second, it foreshadows a connection we revisit in the next chapter.  The graph Laplacian ${\bf L}_{sym}$ used above to build ${\bf K}_{\text{LE}}$ is the same graph Laplacian at the heart of spectral clustering (\@ref(sec-spec-clustering)), and kernel $k$-means with a graph-based kernel recovers the same spectral clustering objective.  Dimension reduction and clustering, at least for these methods, are two sides of the same eigenvalue problem.
+
+## Summary
+
+This chapter's methods all attack the same limitation identified at the end of the last chapter -- linear methods can only fit flat structure -- but they do so along two genuinely different geometric strategies, and it's worth keeping the distinction straight.
+
+The first strategy, the kernel trick, keeps the machinery of linear methods entirely intact and instead changes the space they operate in: by (implicitly) mapping the data into a higher-, possibly infinite-dimensional feature space $\mathcal{H}$ where the structure straightens out, kernel PCA lets us keep using inner products and eigendecompositions while still capturing curved structure back in the original coordinates (\@ref(sec-kernel-trick), \@ref(sec-kpca)). The second strategy, manifold learning, instead works directly with the local geometry of the data -- tangent spaces, neighborhood graphs, geodesic distances -- and asks what a nonlinear surface would have to look like to produce the neighborhood structure we observe. ISOMAP preserves geodesic distances; LLE preserves each point's local linear reconstruction from its neighbors; Laplacian and Hessian eigenmaps preserve smoothness and local flatness through a graph Laplacian or an estimated local Hessian; t-SNE and UMAP abandon a single eigenvalue problem altogether and instead directly optimize an embedding to match an affinity built from local neighborhoods, using this extra flexibility to explicitly counteract the crowding problem (\@ref(sec-tsne)) that a fixed, single-shot eigendecomposition cannot address.
+
+The unifying view (\@ref(sec-unifying-view)) is, in a sense, the real punchline of the chapter: it shows that ISOMAP, LLE, and Laplacian eigenmaps are not a separate family of techniques from kernel PCA at all, but kernel PCA applied to a cleverly constructed, data-dependent kernel matrix. The two strategies we started with turn out to be the same strategy, differing only in whether the "kernel" comes from a fixed function $k(\vec{x},\vec{y})$ or from the neighborhood structure of the specific dataset in front of us. Every method in this chapter, in the end, is still doing exactly what PCA did -- finding the leading eigenvectors of a symmetric matrix -- just choosing that matrix far more cleverly.
 
 ## Exercises
 
@@ -281,11 +293,11 @@ Two consequences follow from this unifying view.  First, it explains why these m
 
 1. Let $g(x,y) = xy$.
 
-    a. Compute $\nabla g$ and $\mathcal{H}g$.
+    a. Compute $\nabla g$ and $\nabla^2 g$.
 
-    b. Compute $\|\mathcal{H}g\|_F^2$. Is it constant over $\mathbb{R}^2$?
+    b. Compute $\|\nabla^2 g\|_F^2$. Is it constant over $\mathbb{R}^2$?
 
-    c. Compare your answer in (b) to $\|\mathcal{H}g_1\|_F^2 = 8$ from the text's example with $g_1(x,y)=x^2+y^2$. Which function is "more curved" on average over $[-2,2]^2$?
+    c. Compare your answer in (b) to $\|\nabla^2 g_1\|_F^2 = 8$ from the text's example with $g_1(x,y)=x^2+y^2$. Which function is "more curved" on average over $[-2,2]^2$?
 
 1. Laplacian eigenmaps use a single bandwidth $\sigma^2$ shared by every point, while UMAP calibrates a local bandwidth $\sigma_i$ for each point $\vec{x}_i$ individually. Suppose a dataset has one very densely sampled region and one very sparsely sampled region.
 

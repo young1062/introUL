@@ -8,6 +8,8 @@
 
 **Bayesian Information Criterion (BIC).** A model selection criterion that balances a model's goodness of fit against its number of parameters, used to choose the number of clusters in a Gaussian mixture model.
 
+**Border point.** In DBSCAN, a point that is not itself a core point but falls within the $\epsilon$-neighborhood of one, and so is included on the edge of that core point's cluster; see \@ref(sec-dbscan).
+
 **Centering matrix.** The matrix ${\bf H} = {\bf I} - \frac{1}{N}\vec{1}\vec{1}^T$, which subtracts the column means from a data matrix when applied on the left.
 
 **Chart.** A local, continuous, invertible map from a neighborhood on a manifold to Euclidean space, used to assign local coordinates to nearby points; see \@ref(sec-manifolds).
@@ -18,7 +20,15 @@
 
 **Cophenetic correlation.** The correlation between the original pairwise distances in a dataset and the heights at which pairs of points are merged in a hierarchical clustering dendrogram, used to assess how faithfully a dendrogram represents the original distances; see Definition \@ref(def:cc).
 
+**Core point.** In DBSCAN, a point whose $\epsilon$-neighborhood contains at least $\text{minPts}$ points, marking it as sitting in the interior of a dense region; see \@ref(sec-dbscan).
+
+**Crowding problem.** The geometric obstruction, addressed by t-SNE, in which a low-dimensional embedding has far less "room" at moderate distances than a high-dimensional space does, forcing methods that use the same notion of affinity in both spaces to crowd unrelated points together; see \@ref(sec-tsne).
+
+**DBSCAN (Density-Based Spatial Clustering of Applications with Noise).** A clustering method that builds clusters from chains of overlapping, sufficiently dense neighborhoods, allowing it to recover arbitrarily shaped clusters and to explicitly label sparse points as noise rather than assigning them to a cluster; see \@ref(sec-dbscan).
+
 **Dendrogram.** A tree diagram showing the sequence of merges (or splits) produced by hierarchical clustering.
+
+**Density-reachability.** In DBSCAN, the relation by which a point can be reached from a core point through a chain of overlapping $\epsilon$-neighborhoods of core points; the basis for how DBSCAN builds clusters of arbitrary shape; see Definition \@ref(def:def-density-reach).
 
 **Dimension reduction.** The unsupervised learning task of finding a lower-dimensional representation of data that preserves important relationships.
 
@@ -76,9 +86,13 @@
 
 **Neighborhood graph.** A graph connecting each data point to some set of nearby points (e.g. its $k$ nearest neighbors, or all points within distance $\epsilon$), used as the starting point for most manifold learning and spectral methods.
 
+**Noise point.** In DBSCAN, any point that is neither a core point nor a border point, and is therefore excluded from every cluster entirely rather than forced into the nearest one; see \@ref(sec-dbscan).
+
 **Nonnegative Matrix Factorization (NMF).** A dimension reduction method that factors a nonnegative data matrix into the product of two nonnegative matrices, often yielding an interpretable, parts-based representation; see \@ref(sec-nmf).
 
 **Normalized Mutual Information (NMI).** An information-theoretic measure of agreement between two partitions of the same data, normalized to lie between 0 (no shared information) and 1 (perfect agreement); see Definition \@ref(def:nmi).
+
+**Perplexity.** In t-SNE, a user-specified tuning parameter, interpretable as a smooth stand-in for the effective number of neighbors of each point, used to locally calibrate the bandwidth of the high-dimensional affinities; see \@ref(sec-tsne).
 
 **Principal Component Analysis (PCA).** A linear dimension reduction method that finds the directions of maximum variance in the data; see \@ref(sec-pca).
 
@@ -96,6 +110,8 @@
 
 **Tangent space.** The linear subspace that best approximates a manifold at a given point, spanned by the columns of the Jacobian of the manifold map at that point.
 
+**t-SNE (t-Distributed Stochastic Neighbor Embedding).** A manifold learning method that matches Gaussian affinities in the original space to heavy-tailed (Student-t) affinities in the embedding, using the mismatch in tail shape to counteract the crowding problem; see \@ref(sec-tsne).
+
 **UMAP (Uniform Manifold Approximation and Projection).** A manifold learning method that constructs a fuzzy neighborhood graph and directly optimizes a low-dimensional embedding to match it, rather than solving an eigenvalue problem; see \@ref(sec-umap).
 
 **Unsupervised learning.** The branch of machine learning concerned with finding structure in unlabeled data, as opposed to supervised learning's focus on predicting a labeled outcome; see Chapter \@ref(intro).
@@ -112,7 +128,7 @@ notation <- data.frame(
     "$\\vec{x}^T\\vec{y}$", "$\\vec{x}\\vec{y}^T$", "$\\|\\vec{x}\\|$",
     "${\\bf A},{\\bf X},{\\bf \\Sigma}$", "${\\bf A}_{ij}$", "${\\bf A}^T$",
     "${\\bf I}$", "$Tr({\\bf B})$", "$\\det({\\bf B})$",
-    "${\\bf H}$", "$\\nabla f$", "$\\mathcal{H}f$",
+    "${\\bf H}$", "$\\nabla f$", "$\\nabla^2 f$",
     "$\\hat{\\mu},\\, \\hat{\\bf \\Sigma}$", "$\\lambda_1,\\dots,\\lambda_d$", "$\\vec{w}_1,\\dots,\\vec{w}_d$",
     "$k(\\vec{x},\\vec{y})$", "${\\bf K}$", "$\\varphi$",
     "$\\mathcal{H}$", "$C_1,\\dots,C_k$", "$\\vec{\\mu}_\\ell,\\, \\vec{c}_\\ell$",
@@ -140,7 +156,7 @@ notation <- data.frame(
     "General", "General", "General",
     "General", "General", "General",
     "General", "General", "General",
-    "Ch. 2, 4", "Ch. 2", "Ch. 2",
+    "Ch. 2, 4", "Ch. 2", "Ch. 2, 5",
     "Ch. 2, 4", "Ch. 4", "Ch. 4",
     "Ch. 5-6", "Ch. 5-6", "Ch. 5",
     "Ch. 5", "Ch. 6", "Ch. 6",
@@ -170,6 +186,7 @@ This index points to the section, definition, or theorem where each topic is int
 **B**
 
 - Bayesian Information Criterion (BIC), \@ref(sec-model-based-clustering)
+- Border point (DBSCAN), \@ref(sec-dbscan)
 - Bottleneck (autoencoder), \@ref(sec-autoencoders)
 
 **C**
@@ -180,16 +197,21 @@ This index points to the section, definition, or theorem where each topic is int
 - Cluster validation, \@ref(sec-cluster-validation)
 - Clustering, overview, Chapter \@ref(ch-clustering)
   - Center-based, \@ref(sec-center-based-clustering)
+  - DBSCAN, \@ref(sec-dbscan)
   - Hierarchical, \@ref(sec-hierarchical-clustering)
   - Kernel $k$-means, \@ref(sec-kernel-kmeans)
   - Model-based (GMM), \@ref(sec-model-based-clustering)
   - Spectral, \@ref(sec-spec-clustering)
 - Cophenetic correlation, Definition \@ref(def:cc)
+- Core point (DBSCAN), \@ref(sec-dbscan)
 - Covariance constraints (GMM), \@ref(sec-model-based-clustering)
+- Crowding problem, \@ref(sec-tsne)
 
 **D**
 
+- DBSCAN, \@ref(sec-dbscan)
 - Dendrograms, \@ref(sec-hierarchical-clustering)
+- Density-reachability and density-connectivity, Definition \@ref(def:def-density-reach)
 - Determinant, \@ref(intro)
 - Dimension reduction, overview, \@ref(intro)
 
@@ -253,11 +275,13 @@ This index points to the section, definition, or theorem where each topic is int
 
 - NCI60 tumor microarray dataset, \@ref(sec-cluster-validation)
 - Neighborhood graph, \@ref(sec-isomap)
+- Noise point (DBSCAN), \@ref(sec-dbscan)
 - Nonnegative Matrix Factorization (NMF), \@ref(sec-nmf)
 - Normalized Mutual Information, Definition \@ref(def:nmi)
 
 **P**
 
+- Perplexity (t-SNE), \@ref(sec-tsne)
 - Principal Component Analysis (PCA), \@ref(sec-pca)
   - First PCA loading, Definition \@ref(def:first-pca)
   - Optimality of PCA, Theorem \@ref(thm:pca-opt)
@@ -282,6 +306,7 @@ This index points to the section, definition, or theorem where each topic is int
 **T**
 
 - Tangent space, \@ref(sec-manifolds)
+- t-SNE, \@ref(sec-tsne)
 
 **U**
 

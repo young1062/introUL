@@ -33,6 +33,22 @@ options(chromote.timeout = 60)
 tryCatch(chromote::default_chromote_object(), error = function(e) NULL)
 ```
 
+# Preface {-}
+
+```{r, echo = FALSE, eval = knitr::is_html_output(), results = "asis"}
+cat('<div style="position:relative; max-width:600px; margin:0 auto 1.5em auto;">\n')
+cat('<img src="images/IntroUL_cover.png" style="width:100%; display:block;">\n')
+cat('<div style="position:absolute; top:6%; left:0; right:0; text-align:center; color:white; padding:0 5%;">\n')
+cat('<h1 style="margin:0;">An Introduction to Unsupervised Learning</h1>\n')
+cat('</div>\n')
+cat('<div style="position:absolute; bottom:5%; left:0; right:0; text-align:center; color:white;">\n')
+cat('<h3 style="font-weight:normal; margin:0;">Alex Young and Cenhao Zhu</h3>\n')
+cat('</div>\n')
+cat('</div>\n')
+```
+
+Copyright © 2023-2026 Alex Young and Cenhao Zhu. All rights reserved.
+
 # Introduction {#intro}
 
 Unsupervised machine learning (UL) is an overarching term for methods designed to understand the patterns and relationships within a set of **unlabeled data**.  As a concrete example, consider the MNIST dataset which contains a compendium of labeled digitized grayscale images of handwritten digits [@mnist].  The images themselves are the features, ($\vec{x}$), and the identity of the digit (0 to 9) gives the label, $y$.  A supervised learning algorithm trained on the MNIST dataset would be able to classify a handwritten digit in a new grayscale image.  An unsupervised algorithm applied to the very same images -- ignoring the digit labels entirely -- would instead try to answer a different kind of question: do the images naturally organize into groups, and can we describe each image with a small number of meaningful numbers rather than 784 raw pixel intensities?  Both questions are useful, but they are genuinely different questions, and answering them requires different tools.

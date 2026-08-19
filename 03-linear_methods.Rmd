@@ -16,6 +16,14 @@
 ```{r child = 'topics/classic-MDS.Rmd'}
 ```
 
+## Summary
+
+The four methods in this chapter can feel like a grab bag -- PCA, SVD, NMF, and classical MDS solve superficially different problems -- but geometrically they are close relatives, each fitting the best *flat* (linear or affine) approximation to the data under a different constraint or a different notion of "best."
+
+PCA looks for the directions of maximum variance, which is the same as looking for the lower-dimensional hyperplane that the data hug most tightly; the eigenvectors of the covariance matrix are literally the axes of the ellipsoid that best summarizes the data's spread (\@ref(sec-pca)). SVD generalizes this same idea to any matrix, not just a centered covariance matrix, and the Eckart-Young-Mirsky Theorem tells us that truncating the SVD gives the best possible low-rank -- geometrically, the best low-dimensional -- approximation to a matrix in exactly the same least-squares sense PCA uses (\@ref(sec-svd)). NMF asks the same low-rank question but adds a nonnegativity constraint, which changes the geometry from an unconstrained hyperplane to a convex cone: instead of finding orthogonal axes, NMF looks for a small set of nonnegative "archetype" vectors whose convex hull contains (or nearly contains) the data (\@ref(sec-nmf)). Classical MDS approaches the same underlying question from the opposite direction, starting only from pairwise distances rather than coordinates, and its duality with PCA (\@ref(sec-mds)) confirms that these are really two views of one geometric operation: recovering a configuration of points, up to rotation, from either its covariance structure or its distance structure.
+
+The shared limitation is exactly this commitment to flatness. Every method here finds the best hyperplane, cone, or rigid configuration -- and when the data's true structure is curved, as with the Swiss roll, no linear method can do better than a fundamentally flawed approximation. That limitation is precisely the motivation for the nonlinear methods in the next chapter.
+
 ## Exercises
 
 1. Show that the PCA scores are centered.

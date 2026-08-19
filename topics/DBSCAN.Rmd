@@ -1,0 +1,112 @@
+
+```{r dbscan-setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, cache = TRUE)
+set.seed(185)
+require("dbscan")
+```
+
+## Density-Based Spatial Clustering (DBSCAN) {#sec-dbscan}
+
+### Introduction
+
+Every clustering method we have discussed so far commits to a particular geometric picture of what a cluster looks like. Center-based methods look for clusters shaped like balls (or, for GMMs, ellipsoids) around a small number of centers; hierarchical methods build clusters by repeatedly merging whichever pair of points or subgroups is closest; spectral clustering and kernel $k$-means look for clusters that are well separated by cuts in a similarity graph. DBSCAN (Density-Based Spatial Clustering of Applications with Noise), introduced by @dbscan, commits to a different picture entirely: a cluster is a region of high point density, separated from other clusters by regions of low density, and a cluster's shape is whatever shape that dense region happens to be. This makes DBSCAN a natural fit for exactly the kind of non-convex structure (nested rings, elongated arcs, and other shapes with no meaningful "center") that causes center-based methods to fail.
+
+DBSCAN also breaks from the other methods we've seen in a second, equally important way: it does not assign every point to a cluster. Points sitting in low-density regions are explicitly labeled **noise** and left out of every cluster entirely, rather than being forced into whichever cluster happens to be nearest. Together with never having to specify $k$ in advance, this makes DBSCAN especially useful for exploratory analysis of data one suspects contains real outliers.
+
+### Algorithm
+
+DBSCAN's entire notion of a cluster is built from just two ingredients: a radius $\epsilon$ and a minimum count $\text{minPts}$. Given these, every point in the data is classified into one of three types.
+
+1) **Core point**: $\vec{x}_i$ is a core point if its $\epsilon$-neighborhood $N_\epsilon(\vec{x}_i) = \{\vec{x}_j : \|\vec{x}_i-\vec{x}_j\|\le \epsilon\}$ contains at least $\text{minPts}$ points (including $\vec{x}_i$ itself). Core points sit in the interior of a dense region.
+
+2) **Border point**: $\vec{x}_i$ is a border point if it is not itself a core point, but $N_\epsilon(\vec{x}_i)$ contains a core point. Border points sit on the edge of a dense region.
+
+3) **Noise point**: any point that is neither a core point nor a border point. Noise points are not close enough to any dense region to belong to one.
+
+Clusters are then built directly out of the core points using two linked notions of reachability.
+
+::: {.definition #def-density-reach name="Density-Reachability and Density-Connectivity"}
+A point $\vec{x}_j$ is **directly density-reachable** from a core point $\vec{x}_i$ if $\vec{x}_j \in N_\epsilon(\vec{x}_i)$. More generally, $\vec{x}_j$ is **density-reachable** from $\vec{x}_i$ if there is a chain of core points $\vec{x}_i = \vec{x}_{(1)}, \vec{x}_{(2)},\dots,\vec{x}_{(m)} = \vec{x}_j$ such that each $\vec{x}_{(\ell+1)}$ is directly density-reachable from $\vec{x}_{(\ell)}$. Two points $\vec{x}_i$ and $\vec{x}_j$ are **density-connected** if there is some core point $\vec{x}_k$ from which both are density-reachable.
+:::
+
+A DBSCAN cluster is then a maximal set of density-connected points -- geometrically, think of every core point as an overlapping ball of radius $\epsilon$; a cluster is exactly the (possibly very elongated or curved) region swept out by chaining these overlapping balls together, plus whatever border points happen to fall along its edge. Since this chain can bend, it is what allows a single DBSCAN cluster to trace out an arbitrarily shaped, non-convex region, in sharp contrast to the balls and ellipsoids that center-based methods are restricted to.
+
+1) **Choose $\epsilon$ and minPts.** Every point is not yet visited.
+
+2) **Classify and expand.** Pick an unvisited point $\vec{x}_i$ and compute $N_\epsilon(\vec{x}_i)$.
+
+    i) If $|N_\epsilon(\vec{x}_i)| < \text{minPts}$, temporarily label $\vec{x}_i$ as noise (it may later be reclaimed as a border point).
+
+    ii) Otherwise, $\vec{x}_i$ is a core point and starts a new cluster. Add every point in $N_\epsilon(\vec{x}_i)$ to the cluster, and for each of those points that is *itself* a core point, recursively add its $\epsilon$-neighborhood as well -- exactly the chaining process in Definition \@ref(def:def-density-reach).
+
+3) **Repeat** step 2 until every point has been visited. Any point never reached by this expansion remains permanently labeled as noise.
+
+Notice that $k$, the number of clusters, is never specified -- it falls out naturally as the number of separate dense regions the data happens to contain. The real tuning parameters are $\epsilon$ and $\text{minPts}$, and the two trade off against each other: raising $\text{minPts}$ demands denser evidence before calling a point core, while raising $\epsilon$ makes it easier for nearby dense regions to bridge together into a single cluster. A common rule of thumb, used below, is to fix $\text{minPts}$ (often around twice the data dimension) and choose $\epsilon$ by plotting each point's distance to its $\text{minPts}$-th nearest neighbor in increasing order and looking for a "knee" -- a sharp jump marking the transition from typical within-cluster spacing to the much larger gaps between clusters.
+
+::: {.example #dbscan-rings name="DBSCAN applied to Nested Rings with Noise"}
+
+Let's return to the nested rings from the Kernel $k$-means section (\@ref(sec-kernel-kmeans)), a shape that defeats ordinary $k$-means precisely because neither ring is convex. This time, we scatter a handful of uniformly random noise points across the plane as well, to see how DBSCAN handles points that don't belong to either ring at all.
+
+```{r, echo = FALSE, fig.cap = "Nested rings with scattered noise points"}
+N <- 400
+theta <- runif(N, 0, 2*pi)
+r <- rep(c(1,3), each = N/2) + rnorm(N, sd = 0.1)
+rings <- cbind(r*cos(theta), r*sin(theta))
+noise <- cbind(runif(20, -4, 4), runif(20, -4, 4))
+data <- rbind(rings, noise)
+plot(data, xlab = "", ylab = "", pch = 16, cex = 0.5, asp = 1)
+```
+
+To choose $\epsilon$, we plot the distance from each point to its 5th nearest neighbor.
+
+```{r, fig.cap = "kNN distance plot used to choose epsilon"}
+kNNdistplot(data, minPts = 5)
+abline(h = 0.5, col = "red", lty = 2)
+```
+
+The knee near $\epsilon=0.5$ separates the small distances typical of points inside a ring from the much larger distances of the scattered noise, so we use $\epsilon=0.5$ and $\text{minPts}=5$.
+
+```{r, fig.cap = "DBSCAN clustering of the nested rings; open circles are labeled noise"}
+out <- dbscan(data, eps = 0.5, minPts = 5)
+plot(data, col = out$cluster + 1, pch = ifelse(out$cluster == 0, 1, 16),
+     xlab = "", ylab = "", asp = 1)
+```
+
+DBSCAN recovers both rings exactly, correctly refusing to merge them into a single cluster despite sharing the same center, and it labels essentially all of the scattered points as noise (open circles) rather than forcing them into whichever ring happens to be closest. Kernel $k$-means (\@ref(exm:kkmeans-rings)) can also separate the two rings, but only by first mapping the data into a feature space where they become linearly separable; DBSCAN reaches the same partition by reasoning about density directly in the original coordinates, and gets the noise points "for free" as a byproduct of that reasoning.
+
+:::
+
+### Strengths and Weaknesses
+
+#### Strengths
+
+1) **No assumption on cluster shape**
+
+Because clusters are built by chaining overlapping neighborhoods rather than measuring distance to a center, DBSCAN can recover clusters of essentially any shape, including the non-convex rings above.
+
+2) **The number of clusters is discovered, not specified**
+
+Unlike $k$-means, hierarchical clustering, and GMMs, DBSCAN never requires $k$ as an input; the number of clusters emerges from the density structure of the data itself.
+
+3) **Built-in outlier detection**
+
+Noise points are identified automatically as part of the clustering process, rather than requiring a separate outlier-detection step beforehand.
+
+#### Weaknesses
+
+1) **A single global $\epsilon$ struggles with varying density**
+
+DBSCAN uses one $\epsilon$ (and $\text{minPts}$) for the entire dataset. If some true clusters are much denser than others, a single $\epsilon$ that works well for the dense cluster may be too small to connect the sparse one, splitting it into fragments or noise -- the same shared-bandwidth issue we saw motivate UMAP's *local* bandwidth calibration (\@ref(sec-umap)), here appearing as a limitation rather than a solved problem.
+
+2) **Sensitive to the choice of $\epsilon$ and minPts**
+
+Small changes to $\epsilon$ can noticeably change which points are labeled noise versus border, and whether two nearby clusters merge into one.
+
+3) **No natural cluster representative**
+
+Because clusters are not built around a center, DBSCAN provides no direct analog of a cluster mean or medoid, which some downstream tasks may expect.
+
+4) **Struggles in high dimensions**
+
+Like other methods relying on local neighborhoods (\@ref(sec-umap), \@ref(sec-spec-clustering)), the notion of a meaningful density estimate degrades as dimension grows, since pairwise distances tend to concentrate around a common value in high dimensions, leaving little contrast between "close" and "far" for a fixed $\epsilon$ to distinguish.
+

@@ -1,34 +1,6 @@
 # Clustering {#ch-clustering}
 
-We now turn to clustering, which is the branch of UL focused on partitioning our data into subgroups of similar observations.  Hereafter, we use the terms clusters and subgroups interchangeably.  There are naturally a number of questions which arise including:
-
-i) how many clusters (if any) exist?
-ii) what do we mean by similar observations?
-
-As we will see through a series of examples, these two points are linked. Given a notion of similarity (which are implicitly defined for different clustering algorithms and tuneable for others), a certain number of clusters and clustering of data may be optimal. Given a different notion of similarity, an entirely different organization of the data into a different number of clusters may arise. 
-
-For now, let us focus on the latter question regarding similarity.  Consider the following three examples of data sets in $\mathbb{R}^2$.  Visually, how would you cluster the observations? In particular, how many subgroups would you say exist and how would your partition the data into these subgroups?
-
-::: {.example #clusterwhat name="Different notions of similar subgroups"}
-
-```{r ex-cluster, fig.align='center', fig.width=10, echo = FALSE}
-set.seed(185)
-library("MASS")
-N <- 200
-rho <- 3/4
-data1 <- matrix(rnorm(N*2, mean = -2), nrow = N) + matrix((runif(N) < 0.5),nrow = N) %*% matrix(c(4,4),nrow = 1)
-data2 <- rbind(mvrnorm(N/2, mu = c(-2,-2), Sigma = matrix(c(1,rho,rho,1),nrow = 2)),
-               mvrnorm(N/2, mu = c(2,2), Sigma = matrix(c(1,-rho,-rho,1),nrow = 2)))
-data3 <- matrix(rnorm(N*2), nrow = N)
-data3 <- diag(1 + (runif(N) < 0.5) + (runif(N) < 0.5)) %*% diag(1/sqrt(diag(data3 %*% t(data3)))) %*% data3
-par(mfrow = c(1,3))
-plot(data1, xlab = '', ylab = '', main = "Case 1")
-plot(data2, xlab = '', ylab = '', main = "Case 2")
-plot(data3, xlab = '', ylab = '', main = "Case 3")
-```
-:::
-
-The questions posed above can be reasonably answered based on the figures but will not be so easy in high dimensions.  We'll explore these questions and discuss data driven ways to estimate the appropriate number of cluster **for a specific algorithm** in the following sections.
+We now turn to clustering, which is the branch of UL focused on partitioning our data into subgroups of similar observations.  Hereafter, we use the terms clusters and subgroups interchangeably.  Recall from Section \@ref(sec-clustering-hypothesis) of Chapter \@ref(ch-goals) that clustering rests on the assumption that our data organize into well defined subsets, which raises two linked questions: how many clusters (if any) exist, and what do we mean by similar observations?  As the visual examples there showed, the answer to the second question -- our notion of similarity -- directly shapes the answer to the first, and this will not be so easy to resolve visually once we move beyond two dimensions.  We now discuss data driven ways to estimate the appropriate number of clusters for a specific algorithm.
 
 There is one main commonality (and associated set of notation) that will persist throughout this section.  The ultimate goal of clustering is to separate data $\vec{x}_1,\dots,\vec{x}_N$ into $k$ groups. The choice of $k$ is critical in clustering.  Some algorithms proceed by iteratively merging observations until only $k$ clusters remain (hierarchical methods). Others (center- and model-based and spectral methods) treat clustering as a partitioning problem, where each element of the partition corresponds to a pre-specified number of clusters. Algorithm dependent methods for choosing $k$ can be used for deciding optimal number of clusters without a priori knowledge.
 
@@ -96,9 +68,21 @@ Kernel $k$-means also has an important connection to a clustering method discuss
 ```{r child = 'topics/Spectral-Clustering.Rmd'}
 ```
 
+<!-- DBSCAN -->
+```{r child = 'topics/DBSCAN.Rmd'}
+```
+
 <!-- Clustering comparisons and metrics -->
 ```{r child = 'topics/Methods-for-Comparing-Clustering.Rmd'}
 ```
+
+## Summary
+
+If Chapter \@ref(ch-nonlinear) was organized around two strategies for handling curved structure, this chapter is organized around competing geometric definitions of the word "cluster" itself, and choosing a clustering method is really choosing which definition matches your data.
+
+Center-based methods ($k$-means, $k$-medoids, $k$-center) define a cluster as a set of points close to a single representative center, which implicitly commits to roughly ball-shaped clusters (\@ref(sec-center-based-clustering)). Kernel $k$-means keeps this same center-based picture but relocates it to an implicit feature space, letting it recover clusters -- like the nested rings -- that are not ball-shaped in the original coordinates but become so after an implicit nonlinear mapping (\@ref(sec-kernel-kmeans)). Hierarchical clustering drops the notion of a center entirely and instead builds structure bottom-up from pairwise distances, with the choice of linkage function encoding a different geometric rule for how two whole clusters, not just two points, should be compared (\@ref(sec-hierarchical-clustering)). Model-based clustering (GMMs) replaces hard geometric boundaries with soft, probabilistic ones, representing each cluster as an ellipsoidal region of high density and allowing points to belong fractionally to more than one cluster (\@ref(sec-model-based-clustering)). Spectral clustering steps back from distances in the original space altogether, instead defining clusters as well-connected regions of a similarity graph -- a picture that, as we saw, is secretly equivalent to kernel $k$-means with a graph-based kernel (\@ref(sec-spec-clustering)). And DBSCAN commits to yet another picture, defining a cluster as a connected region of high density with no assumption on shape at all, and -- unlike every other method in this chapter -- allowing points to belong to no cluster whatsoever (\@ref(sec-dbscan)).
+
+None of these definitions is more "correct" than the others; each is simply a different geometric lens, well suited to some datasets and poorly suited to others, which is exactly why the nested rings example recurs throughout this chapter as a stress test. Since we generally don't know in advance which geometric picture fits our data, the cluster validation tools at the end of the chapter (\@ref(sec-cluster-validation)) become essential: they let us check, after the fact, whether the geometric assumptions a method made were actually the right ones for the data we gave it.
 
 ## Exercises
 

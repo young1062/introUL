@@ -187,20 +187,20 @@ Briefly, we discuss two version which are constructed to generate features which
 Before discussing Archetypal Analysis, we need an additional geometric idea.
 
 :::{.definition #conv name="Convex Hull"}
-Given a set of vectors $\mathcal{H}=\{\vec{h}_1,\dots,\vec{h}_k\}\subset\mathbb{R}^d$, the convex hull of $\mathcal{H}$ is the set
-$$\text{conv}(\mathcal{H}) = \{b_1\vec{h}_1+\cdots + b_k \vec{h}_k: b_1,\dots,b_k \ge 0,\, b_1+\dots+b_k = 1\}$$
+Given a set of vectors $\mathcal{V}=\{\vec{h}_1,\dots,\vec{h}_k\}\subset\mathbb{R}^d$, the convex hull of $\mathcal{V}$ is the set
+$$\text{conv}(\mathcal{V}) = \{b_1\vec{h}_1+\cdots + b_k \vec{h}_k: b_1,\dots,b_k \ge 0,\, b_1+\dots+b_k = 1\}$$
 :::
 
-The weights in the above definition are constrained to be positive, similar to the definition of positive span, but with the added constraint that they sum to one.  Thus, for a set of vectors $\mathcal{H}$
+The weights in the above definition are constrained to be positive, similar to the definition of positive span, but with the added constraint that they sum to one.  Thus, for a set of vectors $\mathcal{V}$
 
-$$\text{conv}(\mathcal{H}) \subset \Gamma(\mathcal{H}) \subset \text{span}(\mathcal{H}).$$
+$$\text{conv}(\mathcal{V}) \subset \Gamma(\mathcal{V}) \subset \text{span}(\mathcal{V}).$$
 An example of a convex hull (shown in grey) of set of vectors (points in red) in $\mathbb{R}^2$ is shown below.  Imagine wrapping a string around the set of points and pulling it tight.  Everything on/within the loop is in the convex hull. An analogous interpretation holds in higher dimensions using a "sheet" rather than a string.
 
 ```{r, echo = F}
 knitr::include_graphics("images/mnist_convex_hull.pdf")
 ```
 
-Importantly, we can view the coefficient $c_1,\dots,c_k$ as defining (probability) weights. Thus, every point in the convex hull of ${\bf H}$ is a weighted average of the vectors in $\mathcal{H}$ and one then expects any point in the convex hull of $\mathcal{H}$ to resemble the vectors in $\mathcal{H}$.   In archetypal analysis [@arch], we add the constraint that the features (row of ${\bf H}$) are themselves elements in the convex hull of the original data so that ${\bf H}= {\bf B X}$ where ${\bf B}\in\mathbb{R}_{\ge 0}^{k\times N}$ must satisfy the constraint ${\bf B}\vec{1}_N = \vec{1}_k$. 
+Importantly, we can view the coefficients $b_1,\dots,b_k$ as defining (probability) weights. Thus, every point in the convex hull of $\mathcal{V}$ is a weighted average of the vectors in $\mathcal{V}$ and one then expects any point in the convex hull of $\mathcal{V}$ to resemble the vectors in $\mathcal{V}$.   In archetypal analysis [@arch], we add the constraint that the features (row of ${\bf H}$) are themselves elements in the convex hull of the original data so that ${\bf H}= {\bf B X}$ where ${\bf B}\in\mathbb{R}_{\ge 0}^{k\times N}$ must satisfy the constraint ${\bf B}\vec{1}_N = \vec{1}_k$.
 
 Under this setup, we then want to solve the following constrained optimization problem
 $$\text{argmin}_{{\bf W}\in \mathbb{R}_{\ge 0}^{N\times k},\,{\bf B}\in\mathbb{R}_{\ge 0}^{k\times N}, {\bf B}\vec{1}_N = \vec{1}_k}\| {\bf X}- {\bf WBX}\|_F.$$
