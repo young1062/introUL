@@ -16,7 +16,7 @@ myColorRamp <- function(colors, values) {
 
 ### Introduction
 
-t-Distributed Stochastic Node Embedding (t-SNE) was introduced by van der Maaten and Hinton in 2008 [@tsne] and is one of the two most widely used tools for visualizing high-dimensional data.  We'll cover the other most common method, UMAP, in the next section. Both t-SNE and UMAP share a common setup.  First, build an affinity between points in $\mathbb{R}^d$, build a comparable affinity between candidate points in $\mathbb{R}^t$, and move the candidate points to make the two affinities agree.  However, they offer a more dynamic method of locally adapting the affinity for each observation. The interesting differences between the methods are in the details of how each affinity is built and what notion of "agreement" each one optimizes.
+t-Distributed Stochastic Neighbor Embedding (t-SNE) was introduced by van der Maaten and Hinton in 2008 [@tsne] and is one of the two most widely used tools for visualizing high-dimensional data.  We'll cover the other most common method, UMAP, in the next section. Both t-SNE and UMAP share a common setup.  First, build an affinity between points in $\mathbb{R}^d$, build a comparable affinity between candidate points in $\mathbb{R}^t$, and move the candidate points to make the two affinities agree.  However, they offer a more dynamic method of locally adapting the affinity for each observation. The interesting differences between the methods are in the details of how each affinity is built and what notion of "agreement" each one optimizes.
 
 ### Algorithm
 
@@ -41,7 +41,7 @@ gives a discrete probability distribution.
 
 #### Affinities in the embedding and the crowding problem
 
-Given candidate low-dimensional points $\vec{y}_1,\dots,\vec{y}_N\in\mathbb{R}^t$, the most direct approach would define an analogous Gaussian affinity $q_{ij}$ in the embedding and ask that $q_{ij}$ match $p_{ij}$ as closely as possible. This is essentially what earlier methods (including the original stochastic node embedding that t-SNE improves on) did, but it runs into a real geometric obstruction.
+Given candidate low-dimensional points $\vec{y}_1,\dots,\vec{y}_N\in\mathbb{R}^t$, the most direct approach would define an analogous Gaussian affinity $q_{ij}$ in the embedding and ask that $q_{ij}$ match $p_{ij}$ as closely as possible. This is essentially what earlier methods (including the original stochastic neighbor embedding that t-SNE improves on) did, but it runs into a real geometric obstruction.
 
 Think about how much "room" there is around a point at a given distance $r$ in $\mathbb{R}^d$: the volume of a thin shell of radius $r$ grows like $r^{d-1}$, so in high dimensions there is an enormous amount of space available at moderate distances -- room enough for many points to sit at a similar, moderate similarity to $\vec{x}_i$. A two- or three-dimensional embedding has nowhere near this much room. If we insist on reproducing every moderate high-dimensional affinity with an equally moderate low-dimensional distance, the embedding is forced to crowd unrelated points close together simply because there isn't enough space to spread them all out -- distinct clusters end up squeezed into the middle of the picture. This is known as the **crowding problem**.
 
