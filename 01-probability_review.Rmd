@@ -154,7 +154,7 @@ Similarly, we define the sample covariance matrix to be
 (\#eq:def-sample-covariance)
 \end{equation}
 In \@ref(eq:def-sample-covariance), dividing by $N$ rather than $N-1$ yields biased estimates of the terms of the sample covariance matrix.  However, the final formula in \@ref(eq:def-sample-covariance) more directly matches the corresponding term in the definition of the covariance matrix.  Had we used a factor of $1/(N-1)$ instead, we would have 
-$$\frac{1}{N-1}\sum_{i=1}^N (\vec{x}_i - \bar{x})(\vec{x}_i - \bar{x})^T = \left(\frac{1}{N}\sum_{i=1}^N \vec{x}_i\vec{x}_i^T\right) - \frac{N}{N-1}\bar{x}\bar{x}^T$$ which is slightly more cumbersome.  In the examples we will consider, $N$ will typically be large enough so that the numerical difference is small. As such, we will opt for algebraically convenient definition form of \@ref(eq:def-sample-covariance) as our definition of the sample covariance matrix.  
+$$\frac{1}{N-1}\sum_{i=1}^N (\vec{x}_i - \bar{x})(\vec{x}_i - \bar{x})^T = \left(\frac{1}{N-1}\sum_{i=1}^N \vec{x}_i\vec{x}_i^T\right) - \frac{N}{N-1}\bar{x}\bar{x}^T$$ which is slightly more cumbersome.  In the examples we will consider, $N$ will typically be large enough so that the numerical difference is small. As such, we will opt for algebraically convenient definition form of \@ref(eq:def-sample-covariance) as our definition of the sample covariance matrix.  
 
 Alternatively, we can view the sample mean and sample covariance as the mean and covariance (using expectation rather than averages) of the empirical distribution from a collection of samples $\vec{x}_1,\dots,\vec{x}_N$ defined below.
 
