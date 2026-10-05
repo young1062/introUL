@@ -22,3 +22,5 @@ _main.log
 _main.tex
 .ipynb_checkpoints/
 .claude
+# iCloud duplicate copies ("file 2.html", "file 3.png", ...)
+* [0-9].*
